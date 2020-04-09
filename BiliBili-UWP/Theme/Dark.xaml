@@ -1,0 +1,39 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BiliBili_UWP.Theme">
+
+    <AcrylicBrush x:Key="SideBackground" BackgroundSource="HostBackdrop" TintColor="#282828" FallbackColor="#282828" TintOpacity="0.7"/>
+    <AcrylicBrush x:Key="PopupBackground" BackgroundSource="Backdrop" TintColor="#1C1C1C" FallbackColor="#1C1C1C" TintOpacity="0.8"/>
+    <SolidColorBrush x:Key="PageBackground" Color="#1C1C1C"/>
+    <SolidColorBrush x:Key="PageOverBackground" Color="#0D0D0D"/>
+    <SolidColorBrush x:Key="CardBackground" Color="#282828"/>
+    <SolidColorBrush x:Key="CardBackgroundOver" Color="#393939"/>
+    <SolidColorBrush x:Key="PointerOverMaskBackground" Color="White" Opacity="0.05"/>
+
+    <SolidColorBrush x:Key="ImportantTextColor" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="NormalTextColor" Color="#E2E2E5"/>
+    <SolidColorBrush x:Key="TipTextColor" Color="#828492"/>
+    <SolidColorBrush x:Key="MaskTextColor" Color="#3D4469"/>
+
+    <SolidColorBrush x:Key="LineColor" Color="#3F4567"/>
+    <SolidColorBrush x:Key="LineColorOver" Color="#57608F"/>
+
+    <SolidColorBrush x:Key="ProgressColor" Color="#000000" Opacity="0.45"/>
+    <SolidColorBrush x:Key="ScreenMaskColor" Color="Black" Opacity="0.3"/>
+
+    <SolidColorBrush x:Key="PrimaryColorOpacity" Color="#ED5B8C" Opacity="0.1"/>
+    <SolidColorBrush x:Key="PrimaryColor" Color="#ED5B8C"/>
+    <SolidColorBrush x:Key="PrimaryColorOver" Color="#DB356D"/>
+    <SolidColorBrush x:Key="SecondaryColorOpacity" Color="#00A1D6" Opacity="0.2"/>
+    <SolidColorBrush x:Key="SecondaryColor" Color="#00A1D6"/>
+    <SolidColorBrush x:Key="SecondaryColorOver" Color="#0E78CB"/>
+    
+    <SolidColorBrush x:Key="SuccessColorOpacity" Color="#99B42D" Opacity="0.2"/>
+    <SolidColorBrush x:Key="SuccessColor" Color="#ADC744"/>
+    <SolidColorBrush x:Key="SuccessColorOver" Color="#A1BD2F"/>
+    <SolidColorBrush x:Key="ErrorColor" Color="#F63340"/>
+    <SolidColorBrush x:Key="ErrorColorOpacity" Color="#F63340" Opacity="0.2"/>
+    <SolidColorBrush x:Key="ErrorColorOver" Color="#E32528"/>
+
+</ResourceDictionary>

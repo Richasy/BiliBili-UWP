@@ -1,0 +1,56 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BiliBili_UWP.Template">
+
+    <Style x:Key="BasicIconTextStyle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource Icon}"/>
+    </Style>
+
+    <Style x:Key="BasicTextStyle" TargetType="TextBlock">
+        <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+    </Style>
+
+    <Style x:Key="AppLogoStyle" TargetType="TextBlock" BasedOn="{StaticResource BasicIconTextStyle}">
+        <Setter Property="FontSize" Value="30"/>
+        <Setter Property="Foreground" Value="{ThemeResource PrimaryColor}"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    
+    <Style x:Key="SideMenuIconStyle" TargetType="TextBlock" BasedOn="{StaticResource BasicIconTextStyle}">
+        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+
+    <Style x:Key="HeaderTextStyle" TargetType="TextBlock" BasedOn="{StaticResource BasicTextStyle}">
+        <Setter Property="FontSize" Value="30"/>
+        <Setter Property="Foreground" Value="{ThemeResource ImportantTextColor}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="MaxLines" Value="2"/>
+    </Style>
+    
+    <Style x:Key="TitleTextStyle" TargetType="TextBlock" BasedOn="{StaticResource HeaderTextStyle}">
+        <Setter Property="FontSize" Value="20"/>
+    </Style>
+    <Style x:Key="TipTextStyle" TargetType="TextBlock" BasedOn="{StaticResource BasicTextStyle}">
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="Foreground" Value="{ThemeResource TipTextColor}"/>
+    </Style>
+    <Style x:Key="TipWrapTextStyle" TargetType="TextBlock" BasedOn="{StaticResource TipTextStyle}">
+        <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+    <Style x:Key="SmallTipTextStyle" TargetType="TextBlock" BasedOn="{StaticResource TipTextStyle}">
+        <Setter Property="FontSize" Value="12"/>
+    </Style>
+    <Style x:Key="BodyTextStyle" TargetType="TextBlock" BasedOn="{StaticResource TipTextStyle}">
+        <Setter Property="Foreground" Value="{ThemeResource NormalTextColor}"/>
+    </Style>
+    <Style x:Key="BodyWrapTextStyle" TargetType="TextBlock" BasedOn="{StaticResource BodyTextStyle}">
+        <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+    <Style x:Key="CaptionTextStyle" TargetType="TextBlock" BasedOn="{StaticResource TipTextStyle}">
+        <Setter Property="Foreground" Value="{ThemeResource ImportantTextColor}"/>
+    </Style>
+</ResourceDictionary>

@@ -1,0 +1,23 @@
+﻿<Application
+    x:Class="BiliBili_UWP.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BiliBili_UWP">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+                <ResourceDictionary Source="ms-appx:///Template/Fonts.xaml"/>
+                <ResourceDictionary Source="ms-appx:///Template/Text.xaml"/>
+                <ResourceDictionary Source="ms-appx:///Template/Buttons.xaml"/>
+                <ResourceDictionary Source="ms-appx:///Template/Views.xaml"/>
+                <ResourceDictionary Source="ms-appx:///Template/Others.xaml"/>
+                <ResourceDictionary Source="ms-appx:///Template/Inputs.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Light" Source="ms-appx:///Theme/Light.xaml"/>
+                <ResourceDictionary x:Key="Dark" Source="ms-appx:///Theme/Dark.xaml"/>
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

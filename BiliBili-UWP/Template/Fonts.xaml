@@ -1,0 +1,6 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BiliBili_UWP.Template">
+    <FontFamily x:Key="Icon">/Assets/Fonts/Richasy_BiliBili.ttf#Richasy_BiliBili</FontFamily>
+</ResourceDictionary>
