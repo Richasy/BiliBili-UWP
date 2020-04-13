@@ -9,6 +9,10 @@ namespace BiliBili_Lib.Enums
     public enum Settings
     {
         LocalVersion,
-        Theme
+        Theme,
+        AccessToken,
+        RefreshToken,
+        UserId,
+        TokenExpiry
     }
 }

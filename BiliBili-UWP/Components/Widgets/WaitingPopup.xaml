@@ -41,7 +41,6 @@
                 </DoubleAnimation.EasingFunction>
             </DoubleAnimation>
         </Storyboard>
-
         <Storyboard x:Name="PopupOut">
             <DoubleAnimation From="1"
                              To="0"
@@ -81,7 +80,7 @@
               Opacity="0"
               VerticalAlignment="Center" HorizontalAlignment="Center"
               Background="{ThemeResource PopupBackground}"
-               CornerRadius="10"
+              CornerRadius="10"
               Padding="15,10"
               MinWidth="150"
               MinHeight="150"

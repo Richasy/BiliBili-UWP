@@ -1,0 +1,126 @@
+﻿<UserControl
+    x:Class="BiliBili_UWP.Components.Account.LoginPopup"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BiliBili_UWP.Components.Account"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <UserControl.Resources>
+        <Storyboard x:Name="PopupIn">
+            <DoubleAnimation From="0"
+                             To="1"
+                             Duration="00:00:00.5"
+                             Storyboard.TargetName="PopupContainer"
+                             Storyboard.TargetProperty="Opacity"
+                             >
+                <DoubleAnimation.EasingFunction>
+                    <PowerEase EasingMode="EaseOut"></PowerEase>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation From="0"
+                             To="1"
+                             Duration="00:00:00.5"
+                             Storyboard.TargetName="PopupBackground"
+                             Storyboard.TargetProperty="Opacity"
+                             >
+                <DoubleAnimation.EasingFunction>
+                    <PowerEase EasingMode="EaseOut"></PowerEase>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation From="-20"
+                             To="0"
+                             Duration="00:00:00.5"
+                             Storyboard.TargetName="PopupContainer"
+                             Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+                             >
+                <DoubleAnimation.EasingFunction>
+                    <PowerEase EasingMode="EaseOut"></PowerEase>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+
+        <Storyboard x:Name="PopupOut">
+            <DoubleAnimation From="1"
+                             To="0"
+                             Duration="00:00:00.5"
+                             Storyboard.TargetName="PopupContainer"
+                             Storyboard.TargetProperty="Opacity"
+                             >
+                <DoubleAnimation.EasingFunction>
+                    <PowerEase EasingMode="EaseOut"></PowerEase>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation From="1"
+                             To="0"
+                             Duration="00:00:00.5"
+                             Storyboard.TargetName="PopupBackground"
+                             Storyboard.TargetProperty="Opacity"
+                             >
+                <DoubleAnimation.EasingFunction>
+                    <PowerEase EasingMode="EaseOut"></PowerEase>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation From="0"
+                             To="20"
+                             Duration="00:00:00.5"
+                             Storyboard.TargetName="PopupContainer"
+                             Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+                             >
+                <DoubleAnimation.EasingFunction>
+                    <PowerEase EasingMode="EaseOut"></PowerEase>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+    </UserControl.Resources>
+
+    <Grid x:Name="PopupBackground"
+          Background="{ThemeResource ScreenMaskColor}">
+        <Viewbox MinWidth="350" MaxWidth="450" StretchDirection="Both" x:Name="PopupContainer" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Viewbox.RenderTransform>
+                <TranslateTransform Y="-20"></TranslateTransform>
+            </Viewbox.RenderTransform>
+            <Grid Padding="40,25" Background="{ThemeResource PageBackground}" CornerRadius="5" Width="450" MinHeight="520"
+              >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBlock Style="{StaticResource BasicIconTextStyle}" FontSize="40" HorizontalAlignment="Left"
+                   Foreground="{ThemeResource PrimaryColor}" Text="&#xE903;"/>
+                <TextBlock Style="{StaticResource HeaderTextStyle}" Text="登录" Grid.Row="1" Margin="0,20,0,0"/>
+                <widgets:BannerBlock x:Name="MessageBanner" Color="ErrorColor" Visibility="Collapsed" Grid.Row="2" Margin="0,15,0,0"/>
+                <StackPanel Grid.Row="3" Margin="0,30,0,0">
+                    <widgets:IconInputBox PrefixIcon="&#xEA04;" InputType="Text" PlaceholderText="用户名/手机号" HeaderText="用户名" x:Name="UserNameInputBox"/>
+                    <widgets:IconInputBox PrefixIcon="&#xE993;" PlaceholderText="密码" HeaderText="密码" InputType="Password" x:Name="PasswordInputBox"
+                                  Margin="0,15,0,0"/>
+                    <widgets:CaptchaBlock x:Name="CaptchaBlock" Margin="0,15,0,0" Visibility="Collapsed"/>
+                    <Button HorizontalAlignment="Stretch" Style="{StaticResource PrimaryButtonStyle}" Padding="20,14"
+                    Content="登录" x:Name="LoginButton" Click="LoginButton_Click" Margin="0,40,0,0"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Grid.Row="4" Margin="0,30,0,0">
+                    <TextBlock Style="{StaticResource TipTextStyle}" Text="不想写用户密码？" VerticalAlignment="Center"/>
+                    <HyperlinkButton Foreground="{ThemeResource ImportantTextColor}" FontWeight="Bold" FontFamily="{CustomResource Basic}"
+                             VerticalAlignment="Center" FontSize="15" x:Name="WebButton" Content="网页扫码登录" Click="WebButton_Click"/>
+                </StackPanel>
+                <Button Style="{StaticResource PrimaryGhostCircleButtonStyle}" Content="&#xEA15;" VerticalAlignment="Top"
+                        HorizontalAlignment="Right" x:Name="CloseButton" Click="CloseButton_Click"/>
+            </Grid>
+        </Viewbox>
+        <Grid x:Name="WebContainer" Visibility="Collapsed" Background="{ThemeResource ScreenMaskColor}">
+            <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                <WebView x:Name="BackupWebView" NavigationStarting="BackupWebView_NavigationStarting"  NavigationCompleted="BackupWebView_NavigationCompleted"
+                 VerticalAlignment="Center" HorizontalAlignment="Center"
+                 Width="400" Height="360" DefaultBackgroundColor="Beige"/>
+                <Button Style="{StaticResource DefaultGhostCircleButtonStyle}" Content="&#xEA15;" VerticalAlignment="Top"
+                        HorizontalAlignment="Right" x:Name="WebCloseButton" Click="WebCloseButton_Click"/>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

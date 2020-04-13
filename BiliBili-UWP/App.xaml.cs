@@ -3,6 +3,7 @@ using BiliBili_Lib.Tools;
 using BiliBili_UWP.Components.Widgets;
 using BiliBili_UWP.Models.Core;
 using BiliBili_UWP.Models.UI;
+using BiliBili_UWP.Models.UI.Others;
 using Microsoft.Toolkit.Uwp.Helpers;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Windows.UI.Xaml.Resources;
 
 namespace BiliBili_UWP
 {
@@ -39,11 +41,12 @@ namespace BiliBili_UWP
         public App()
         {
             this.InitializeComponent();
-            
+            CustomXamlResourceLoader.Current = new CustomResourceLoader();   
             this.Suspending += OnSuspending;
             UnhandledException += OnUnhandleException;
             string theme = AppTool.GetLocalSetting(Settings.Theme, "Light");
-            RequestedTheme = theme == "Light" ? ApplicationTheme.Light : ApplicationTheme.Dark;
+            //RequestedTheme = theme == "Light" ? ApplicationTheme.Light : ApplicationTheme.Dark;
+            RequestedTheme = ApplicationTheme.Dark;
         }
         private void OnUnhandleException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
         {

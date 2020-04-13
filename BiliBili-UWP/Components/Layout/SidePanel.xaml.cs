@@ -24,16 +24,52 @@ namespace BiliBili_UWP.Components.Layout
     public sealed partial class SidePanel : UserControl
     {
         private ObservableCollection<SideMenuItem> MenuItemCollection = new ObservableCollection<SideMenuItem>();
-        private ObservableCollection<Region> RegionCollection = App.BiliViewModel.RegionCollection;
-        private bool _isPaneOpen=true;
+        private ObservableCollection<RegionContainer> RegionCollection = App.BiliViewModel.RegionCollection;
         public SidePanel()
         {
             this.InitializeComponent();
-            var list = SideMenuItem.GetSideMenuItems(true);
+            var list = SideMenuItem.GetSideMenuItems(App.BiliViewModel.IsLogin);
             list.ForEach(p => MenuItemCollection.Add(p));
+            App.AppViewModel.SelectedSideMenuItem = list.Where(p=>p.IsSelected).FirstOrDefault();
+            App.BiliViewModel.IsLoginChanged -= IsLoginChanged;
+            App.BiliViewModel.IsLoginChanged += IsLoginChanged;
         }
 
-        public event EventHandler<bool> PaneButtonClick;
+        public bool IsWide
+        {
+            get { return (bool)GetValue(IsWideProperty); }
+            set { SetValue(IsWideProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for IsWide.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty IsWideProperty =
+            DependencyProperty.Register("IsWide", typeof(bool), typeof(SidePanel), new PropertyMetadata(true,new PropertyChangedCallback(IsWide_Changed)));
+
+        private static void IsWide_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if(e.NewValue is bool iswide)
+            {
+                var instance = d as SidePanel;
+                if (iswide)
+                    VisualStateManager.GoToState(instance, "WideState", true);
+                else
+                    VisualStateManager.GoToState(instance, "NarrowState", true);
+            }
+        }
+
+        private void IsLoginChanged(object sender, bool e)
+        {
+
+            SideMenuListView.SelectedIndex = -1;
+            var selectItem = MenuItemCollection.Where(p => p.IsSelected).FirstOrDefault();
+            var type = selectItem == null ? SideMenuItemType.Line : selectItem.Type;
+            var list = SideMenuItem.GetSideMenuItems(e, type);
+            MenuItemCollection.Clear();
+            list.ForEach(p => MenuItemCollection.Add(p));
+            var select = MenuItemCollection.Where(p => p.IsSelected).FirstOrDefault();
+            SideMenuListView.SelectedItem = App.AppViewModel.SelectedSideMenuItem = select;
+        }
+
         public event EventHandler<Region> RegionSelected;
         public event EventHandler<SideMenuItem> SideMenuItemClick;
 
@@ -41,7 +77,7 @@ namespace BiliBili_UWP.Components.Layout
         private void SideMenuListView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var item = e.ClickedItem as SideMenuItem;
-            if(item.Type!=SideMenuItemType.Line && item != App.AppViewModel.SelectedSideMenuItem)
+            if (item.Type != SideMenuItemType.Line && item != App.AppViewModel.SelectedSideMenuItem)
             {
                 SetSelectedItem(item.Type);
                 App.AppViewModel.SelectedSideMenuItem = item;
@@ -51,16 +87,21 @@ namespace BiliBili_UWP.Components.Layout
 
         private void PaneButton_Click(object sender, RoutedEventArgs e)
         {
-            _isPaneOpen = !_isPaneOpen;
-            if (_isPaneOpen)
-                VisualStateManager.GoToState(this, "WideState", true);
-            else
-                VisualStateManager.GoToState(this, "NarrowState", true);
-            PaneButtonClick?.Invoke(this, _isPaneOpen);
+            IsWide = !IsWide;
         }
 
         public void SetSelectedItem(SideMenuItemType type)
         {
+            if (type == SideMenuItemType.Line)
+            {
+                SideMenuListView.SelectedIndex = -1;
+                SideMenuListView.SelectedItem = null;
+                foreach (var item in MenuItemCollection)
+                {
+                    item.IsSelected = false;
+                }
+                return;
+            }
             foreach (var item in MenuItemCollection)
             {
                 item.IsSelected = item.Type == type;

@@ -48,7 +48,7 @@ namespace BiliBili_Lib.Tools
         /// <returns></returns>
         public static int DateToTimeStamp(DateTime date)
         {
-            TimeSpan ts = date - new DateTime(1970, 1, 1, 0, 0, 0, 0);
+            TimeSpan ts = date - new DateTime(1970, 1, 1, 8, 0, 0, 0);
             int seconds = Convert.ToInt32(ts.TotalSeconds);
             return seconds;
         }
@@ -79,6 +79,46 @@ namespace BiliBili_Lib.Tools
 
         }
         /// <summary>
+        /// 获取当前时间戳（秒）
+        /// </summary>
+        /// <returns></returns>
+        public static int GetNowSeconds()
+        {
+            return DateToTimeStamp(DateTime.Now);
+        }
+        /// <summary>
+        /// 获取当前时间戳（毫秒）
+        /// </summary>
+        /// <returns></returns>
+        public static long GetNowMilliSeconds()
+        {
+            TimeSpan ts = DateTime.Now - new DateTime(1970, 1, 1, 8, 0, 0, 0);
+            int seconds = Convert.ToInt32(ts.TotalMilliseconds);
+            return seconds;
+        }
+        /// <summary>
+        /// 获取友好的时间表示
+        /// </summary>
+        /// <param name="seconds">秒</param>
+        /// <returns></returns>
+        public static string GetReadDateString(int seconds)
+        {
+            var date = TimeStampToDate(seconds);
+            var span = DateTime.Now - date;
+            if (span.TotalSeconds < 60)
+                return "刚刚";
+            else if (span.TotalMinutes < 60)
+                return span.Minutes + "分钟前";
+            else if (span.TotalHours < 24)
+                return span.Hours + "小时前";
+            else if (span.TotalDays < 2)
+                return "昨天";
+            else if (span.TotalDays < 30)
+                return span.Days + "天前";
+            else
+                return date.ToString("MM-dd");
+        }
+        /// <summary>
         /// 获取数字的缩写
         /// </summary>
         /// <param name="number">数字</param>
@@ -86,12 +126,10 @@ namespace BiliBili_Lib.Tools
         public static string GetNumberAbbreviation(double number)
         {
             string result = string.Empty;
-            if (number < 1000)
+            if (number < 10000)
                 result = number.ToString();
-            if (number < 1000000)
-                result = Math.Round(number / 1000.0, 1).ToString() + "K";
             else
-                result = Math.Round(number / 1000000, 1).ToString() + "M";
+                result = Math.Round(number / 10000.0, 1).ToString() + "万";
             return result;
         }
     }

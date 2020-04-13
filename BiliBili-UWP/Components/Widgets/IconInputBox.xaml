@@ -1,0 +1,59 @@
+﻿<UserControl
+    x:Class="BiliBili_UWP.Components.Widgets.IconInputBox"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BiliBili_UWP.Components.Widgets"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <Grid>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="Common">
+                <VisualState x:Name="Normal"/>
+                <VisualState x:Name="PointerOver">
+                    <VisualState.Setters>
+                        <Setter Target="Container.BorderBrush" Value="{ThemeResource LineColorOver}" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="Focus">
+                    <VisualState.Setters>
+                        <Setter Target="IconBlock.Foreground" Value="{ThemeResource ImportantTextColor}" />
+                        <Setter Target="Container.BorderBrush" Value="{ThemeResource PrimaryColor}" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="Disabled">
+                    <VisualState.StateTriggers>
+                        <StateTrigger IsActive="{x:Bind IsEnabled.Equals(x:False),Mode=OneWay}"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="InputTextBox.IsEnabled" Value="False" />
+                        <Setter Target="InputPasswordBox.IsEnabled" Value="False" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+        <TextBlock Style="{StaticResource TipTextStyle}" HorizontalAlignment="Left" Margin="0,0,0,10" Visibility="Collapsed"
+                   x:Name="HeaderBlock" Text="{x:Bind HeaderText,Mode=OneWay}"/>
+        <Grid BorderBrush="{ThemeResource LineColor}" BorderThickness="1" CornerRadius="4" x:Name="Container"
+          Padding="{x:Bind InputPadding,Mode=OneWay}" Grid.Row="1" PointerEntered="Container_PointerEntered" PointerExited="Container_PointerExited">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Style="{StaticResource BasicIconTextStyle}" VerticalAlignment="Center"
+                   FontSize="15" x:Name="IconBlock" Foreground="{ThemeResource TipTextColor}" Text="{x:Bind PrefixIcon,Mode=OneWay}" Visibility="Collapsed" Margin="0,0,15,0"/>
+            <ProgressRing x:Name="LoadingRing" Width="25" Height="25" VerticalAlignment="Center" Foreground="{ThemeResource PrimaryColor}" Margin="0,0,15,0" Visibility="Collapsed"/>
+            <TextBox x:Name="InputTextBox" Style="{StaticResource TransparentTextBoxStyle}" VerticalAlignment="Center" Grid.Column="1"
+                 HorizontalAlignment="Stretch" Padding="0,7,0,0" GotFocus="InputTextBox_GotFocus" LostFocus="InputPasswordBox_LostFocus" TextChanged="InputTextBox_TextChanged" PlaceholderText="{x:Bind PlaceholderText,Mode=OneWay}"/>
+            <PasswordBox Style="{StaticResource TransparentPasswordBoxStyle}" x:Name="InputPasswordBox" LostFocus="InputPasswordBox_LostFocus" VerticalAlignment="Center"
+                     Grid.Column="1" HorizontalAlignment="Stretch" Padding="0,7,0,0" GotFocus="InputTextBox_GotFocus" PlaceholderText="{x:Bind PlaceholderText,Mode=OneWay}" PasswordChanged="PasswordTextBox_PasswordChanged" Visibility="Collapsed"/>
+        </Grid>
+    </Grid>
+</UserControl>

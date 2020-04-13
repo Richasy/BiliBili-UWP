@@ -1,0 +1,41 @@
+﻿<UserControl
+    x:Class="BiliBili_UWP.Components.Controls.SubscribeChannelPanel"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BiliBili_UWP.Components.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:channels="using:BiliBili_Lib.Models.BiliBili"
+    xmlns:converter="using:BiliBili_UWP.Models.UI.Converter"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <UserControl.Resources>
+        <converter:ChannelCoverConverter x:Key="ConverConverter"/>
+        <DataTemplate x:DataType="channels:ChannelBase" x:Key="ChannelItemTemplate">
+            <controls:ImageEx DecodePixelWidth="40" Width="40" Height="40" CornerRadius="6" Stretch="UniformToFill"
+                              Source="{x:Bind cover,Converter={StaticResource ConverConverter}}" ToolTipService.ToolTip="{x:Bind title}"/>
+        </DataTemplate>
+    </UserControl.Resources>
+    <StackPanel>
+        <TextBlock Text="订阅频道" Style="{StaticResource SmallTipTextStyle}" Margin="0,0,0,5"/>
+        <StackPanel Orientation="Horizontal">
+            <Grid>
+                <ListView ItemTemplate="{StaticResource ChannelItemTemplate}"
+                              ItemContainerStyle="{StaticResource TransparentListViewContainerStyle}"
+                              Style="{StaticResource BasicListView}"
+                              ItemsPanel="{StaticResource HorizontalListViewItemsPanel}"
+                              IsItemClickEnabled="True" ItemsSource="{x:Bind channelVM.MySubscribeChannelCollection}"
+                              SelectionMode="None" ItemClick="ChannelListView_ItemClick"
+                              x:Name="ChannelListView" VerticalAlignment="Center"/>
+                <TextBlock Style="{StaticResource TipTextStyle}" Text="暂无订阅的频道" FontWeight="Bold" VerticalAlignment="Center"
+                           x:Name="HolderText"/>
+            </Grid>
+            <TextBlock Text="···" Style="{StaticResource SmallTipTextStyle}" x:Name="MoreSign" Margin="5,0,0,0"
+                       Visibility="Collapsed" VerticalAlignment="Center"/>
+            <Button Style="{StaticResource DefaultCircleButtonStyle}" CornerRadius="5" Margin="10,0,0,0" Content="&#xE9D0;"
+                            x:Name="SearchChannelButton" Click="SearchChannelButton_Click"  VerticalAlignment="Center"/>
+        </StackPanel>
+    </StackPanel>
+</UserControl>

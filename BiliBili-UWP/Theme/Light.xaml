@@ -3,16 +3,18 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:BiliBili_UWP.Theme">
 
-    <AcrylicBrush x:Key="SideBackground" BackgroundSource="HostBackdrop" TintColor="White" FallbackColor="#f9fafe" TintOpacity="0.7"/>
+    <AcrylicBrush x:Key="SideBackground" BackgroundSource="HostBackdrop" TintColor="White" FallbackColor="#f9fafe" TintOpacity="0.8"/>
+    <AcrylicBrush x:Key="PaneBackground" BackgroundSource="Backdrop" TintColor="White" FallbackColor="#f9fafe" TintOpacity="0.8"/>
+    <AcrylicBrush x:Key="MaskAcrylicBackground" BackgroundSource="Backdrop" TintColor="White" FallbackColor="#f9fafe" TintOpacity="0.4"/>
     <SolidColorBrush x:Key="PopupBackground" Color="#f2f7fd"/>
     <SolidColorBrush x:Key="PageBackground" Color="#F1F6FA"/>
-    <SolidColorBrush x:Key="PageOverBackground" Color="#EAF1F7"/>
+    <SolidColorBrush x:Key="PageOverBackground" Color="#DEE5EB"/>
     <SolidColorBrush x:Key="CardBackground" Color="White"/>
     <SolidColorBrush x:Key="CardBackgroundOver" Color="#DAE1E8"/>
     <SolidColorBrush x:Key="PointerOverMaskBackground" Color="Gray" Opacity="0.2"/>
 
     <SolidColorBrush x:Key="ImportantTextColor" Color="#000000"/>
-    <SolidColorBrush x:Key="NormalTextColor" Color="#3F4567"/>
+    <SolidColorBrush x:Key="NormalTextColor" Color="#2E2F33"/>
     <SolidColorBrush x:Key="TipTextColor" Color="#999AA1"/>
     <SolidColorBrush x:Key="MaskTextColor" Color="#d3dbe8"/>
 

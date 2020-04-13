@@ -18,7 +18,7 @@
         <Thickness x:Key="ContainerPadding">35,0</Thickness>
         <converter:SideMenuSignColorConverter x:Key="SignColorConverter"/>
         <converter:SideMenuExtraVisibilityConverter x:Key="ExtraVisibleConverter"/>
-        <DataTemplate x:DataType="bilibili:Region" x:Key="RegionItemTemplate">
+        <DataTemplate x:DataType="bilibili:RegionContainer" x:Key="RegionItemTemplate">
             <StackPanel Padding="20,10">
                 <controls:ImageEx Source="{x:Bind logo}" Width="45" Height="45" HorizontalAlignment="Center"/>
                 <TextBlock Style="{StaticResource BodyTextStyle}" Width="60" TextAlignment="Center" Text="{x:Bind name}" HorizontalAlignment="Center" Margin="0,8,0,0"/>
@@ -32,10 +32,11 @@
                     <ColumnDefinition Width="1*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <Border Width="5" Height="25" CornerRadius="0,2,2,0" VerticalAlignment="Center" Background="{x:Bind IsSelected,Converter={StaticResource SignColorConverter},Mode=OneWay}"/>
+                <Border Width="5" Height="25" CornerRadius="0,2,2,0" VerticalAlignment="Center" x:Name="ItemSign"
+                        Background="{x:Bind IsSelected,Converter={StaticResource SignColorConverter},Mode=OneWay}"/>
                 <StackPanel Orientation="Horizontal" Grid.Column="2" VerticalAlignment="Center">
                     <TextBlock Style="{StaticResource SideMenuIconStyle}" Margin="0,0,15,0" Text="{x:Bind Icon}"/>
-                    <TextBlock Style="{StaticResource CaptionTextStyle}" Text="{x:Bind Name}"/>
+                    <TextBlock Style="{StaticResource CaptionTextStyle}" FontSize="14" Text="{x:Bind Name}"/>
                 </StackPanel>
                 <Border Grid.Column="3" VerticalAlignment="Center" Padding="5,3" CornerRadius="2" Background="{ThemeResource PrimaryColorOpacity}"
                         Visibility="{x:Bind Unread,Converter={StaticResource ExtraVisibleConverter},Mode=OneWay}">
@@ -46,7 +47,7 @@
         </DataTemplate>
         <DataTemplate x:Name="WideLineTemplate" x:DataType="ui:SideMenuItem">
             <ListViewItem IsEnabled="False" IsTabStop="False" AllowFocusOnInteraction="False">
-                <Border BorderBrush="{ThemeResource LineColorOver}" BorderThickness="0,1,0,0" Margin="35,15"/>
+                <Border BorderBrush="{ThemeResource LineColorOver}" BorderThickness="0,1,0,0" Margin="35,0"/>
             </ListViewItem>
         </DataTemplate>
         <DataTemplate x:Name="DefaultNarrowSideItemTemplate" x:DataType="ui:SideMenuItem">
@@ -55,16 +56,17 @@
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="1*" />
                 </Grid.ColumnDefinitions>
-                <Border Width="5" Height="25" CornerRadius="0,2,2,0" VerticalAlignment="Center" Background="{x:Bind IsSelected,Converter={StaticResource SignColorConverter},Mode=OneWay}"/>
+                <Border Width="5" Height="25" CornerRadius="0,2,2,0" VerticalAlignment="Center" x:Name="ItemSign"
+                        Background="{x:Bind IsSelected,Converter={StaticResource SignColorConverter},Mode=OneWay}"/>
                 <TextBlock Style="{StaticResource SideMenuIconStyle}" FontSize="20" Text="{x:Bind Icon}" Grid.ColumnSpan="2"
-                           VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                           VerticalAlignment="Center" HorizontalAlignment="Center" ToolTipService.ToolTip="{x:Bind Name}"/>
                 <Ellipse Visibility="{x:Bind Unread,Converter={StaticResource ExtraVisibleConverter},Mode=OneWay}" Grid.RowSpan="2" HorizontalAlignment="Center"
                          VerticalAlignment="Center" Margin="25,-15,0,0"/>
             </Grid>
         </DataTemplate>
         <DataTemplate x:Name="NarrowLineTemplate" x:DataType="ui:SideMenuItem">
             <ListViewItem IsEnabled="False" IsTabStop="False" AllowFocusOnInteraction="False">
-                <Border BorderBrush="{ThemeResource LineColorOver}" BorderThickness="0,1,0,0" Margin="15,10"/>
+                <Border BorderBrush="{ThemeResource LineColorOver}" BorderThickness="0,1,0,0" Margin="15,5"/>
             </ListViewItem>
         </DataTemplate>
         <others:SideMenuItemTemplateSelector DefaultTemplate="{StaticResource DefaultWideSideItemTemplate}" LineTemplate="{StaticResource WideLineTemplate}"
@@ -75,6 +77,7 @@
             <GridView ItemTemplate="{StaticResource RegionItemTemplate}"
                       ItemContainerStyle="{StaticResource BasicGridViewItemContainerStyle}"
                       Style="{StaticResource BasicGridView}"
+                      SelectionMode="None"
                       IsItemClickEnabled="True"
                       x:Name="RegionGridView"
                       ItemsSource="{x:Bind RegionCollection}"
@@ -118,7 +121,7 @@
         <RelativePanel Padding="{StaticResource ContainerPadding}" x:Name="Header">
             <TextBlock Style="{StaticResource AppLogoStyle}" x:Name="AppLogo" Text="&#xE902;" RelativePanel.AlignLeftWithPanel="True"/>
             <Button Style="{StaticResource DefaultCircleButtonStyle}" Content="&#xE900;" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True"
-                    x:Name="RegionButton" Flyout="{StaticResource RegionFlyout}"/>
+                    x:Name="RegionButton" Flyout="{StaticResource RegionFlyout}" FontSize="20"/>
         </RelativePanel>
         <Grid Grid.Row="1" x:Name="AccountContainer" Padding="{StaticResource ContainerPadding}" Margin="0,20,0,0">
             <account:SlimAccountPanel x:Name="AccountPanel"/>
@@ -126,7 +129,8 @@
         <ListView Style="{StaticResource BasicListView}"
                   ItemContainerStyle="{StaticResource SideMenuListViewItemContainerStyle}"
                   IsItemClickEnabled="True"
-                  Grid.Row="2"
+                  Grid.Row="2" others:IndicatorService.Name="ItemSign"
+                  Margin="0,15,0,15" others:IndicatorService.IsScaleEnabled="True"
                   ItemsSource="{x:Bind MenuItemCollection}"
                   x:Name="SideMenuListView"
                   Loaded="SideMenuListView_Loaded"

@@ -119,14 +119,56 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Components\Account\LoginPopup.xaml.cs">
+      <DependentUpon>LoginPopup.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Components\Account\SlimAccountPanel.xaml.cs">
       <DependentUpon>SlimAccountPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Controls\AppSearchBox.xaml.cs">
+      <DependentUpon>AppSearchBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Controls\ChannelVideoCard.xaml.cs">
+      <DependentUpon>ChannelVideoCard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Controls\DynamicContentBlock.xaml.cs">
+      <DependentUpon>DynamicContentBlock.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Controls\RecommendVideoCard.xaml.cs">
+      <DependentUpon>RecommendVideoCard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Controls\ScanChannelPanel.xaml.cs">
+      <DependentUpon>ScanChannelPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Controls\SubscribeChannelPanel.xaml.cs">
+      <DependentUpon>SubscribeChannelPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Controls\TopicCard.xaml.cs">
+      <DependentUpon>TopicCard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Layout\PagePanel.xaml.cs">
+      <DependentUpon>PagePanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Components\Layout\SidePanel.xaml.cs">
       <DependentUpon>SidePanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Components\Widgets\AsyncButton.xaml.cs">
       <DependentUpon>AsyncButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Widgets\BannerBlock.xaml.cs">
+      <DependentUpon>BannerBlock.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Widgets\CaptchaBlock.xaml.cs">
+      <DependentUpon>CaptchaBlock.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Widgets\IconInputBox.xaml.cs">
+      <DependentUpon>IconInputBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Widgets\IconTextBlock.xaml.cs">
+      <DependentUpon>IconTextBlock.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Widgets\LevelBlock.xaml.cs">
+      <DependentUpon>LevelBlock.xaml</DependentUpon>
     </Compile>
     <Compile Include="Components\Widgets\TipPopup.xaml.cs">
       <DependentUpon>TipPopup.xaml</DependentUpon>
@@ -137,18 +179,43 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\Core\BiliViewModel.Account.cs" />
     <Compile Include="Models\Core\AppViewModel.cs" />
-    <Compile Include="Models\Core\BiliViewModel.cs" />
+    <Compile Include="Models\Core\BiliViewModel.Main.cs" />
+    <Compile Include="Models\Core\BiliViewModel.Channel.cs" />
     <Compile Include="Models\Enums\ColorType.cs" />
+    <Compile Include="Models\Enums\InputBoxType.cs" />
     <Compile Include="Models\Enums\SideMenuGroupType.cs" />
     <Compile Include="Models\Enums\SideMenuItemType.cs" />
+    <Compile Include="Models\UI\Converter\ChannelCoverConverter.cs" />
+    <Compile Include="Models\UI\Converter\ChannelHeaderMaskConverter.cs" />
+    <Compile Include="Models\UI\Converter\CollectionCountVisibilityConverter.cs" />
+    <Compile Include="Models\UI\Converter\IntVisibilityConverter.cs" />
     <Compile Include="Models\UI\Converter\SideMenuExtraVisibilityConverter.cs" />
     <Compile Include="Models\UI\Converter\SideMenuSignColorConverter.cs" />
+    <Compile Include="Models\UI\IconItem.cs" />
+    <Compile Include="Models\UI\Interface\IAppPopup.cs" />
+    <Compile Include="Models\UI\Interface\IRefreshPage.cs" />
+    <Compile Include="Models\UI\Others\CustomResourceLoader.cs" />
+    <Compile Include="Models\UI\Others\IndicatorHelper.cs" />
     <Compile Include="Models\UI\Others\NotifyPropertyBase.cs" />
-    <Compile Include="Models\UI\Others\TextBlockService.cs" />
     <Compile Include="Models\UI\Others\SideMenuItemTemplateSelector.cs" />
+    <Compile Include="Models\UI\Others\VisualTreeExtension.cs" />
     <Compile Include="Models\UI\SideMenuItem.cs" />
+    <Compile Include="Models\UI\StaticString.cs" />
     <Compile Include="Models\UI\UIHelper.cs" />
+    <Compile Include="Pages\Main\HomePage.xaml.cs">
+      <DependentUpon>HomePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Sub\Channel\ChannelDetailPage.xaml.cs">
+      <DependentUpon>ChannelDetailPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Sub\Channel\ChannelListPage.xaml.cs">
+      <DependentUpon>ChannelListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Sub\Channel\TagDetailPage.xaml.cs">
+      <DependentUpon>TagDetailPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -157,6 +224,72 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\bilibili logo.png" />
+    <Content Include="Assets\captcha_refresh.png" />
+    <Content Include="Assets\Level\level_0.png" />
+    <Content Include="Assets\Level\level_0.svg" />
+    <Content Include="Assets\Level\level_1.png" />
+    <Content Include="Assets\Level\level_1.svg" />
+    <Content Include="Assets\Level\level_2.png" />
+    <Content Include="Assets\Level\level_2.svg" />
+    <Content Include="Assets\Level\level_3.png" />
+    <Content Include="Assets\Level\level_3.svg" />
+    <Content Include="Assets\Level\level_4.png" />
+    <Content Include="Assets\Level\level_4.svg" />
+    <Content Include="Assets\Level\level_5.png" />
+    <Content Include="Assets\Level\level_5.svg" />
+    <Content Include="Assets\Level\level_6.png" />
+    <Content Include="Assets\Level\level_6.svg" />
+    <Content Include="Assets\Logo\LargeTile.scale-100.png" />
+    <Content Include="Assets\Logo\LargeTile.scale-125.png" />
+    <Content Include="Assets\Logo\LargeTile.scale-150.png" />
+    <Content Include="Assets\Logo\LargeTile.scale-200.png" />
+    <Content Include="Assets\Logo\LargeTile.scale-400.png" />
+    <Content Include="Assets\Logo\SmallTile.scale-100.png" />
+    <Content Include="Assets\Logo\SmallTile.scale-125.png" />
+    <Content Include="Assets\Logo\SmallTile.scale-150.png" />
+    <Content Include="Assets\Logo\SmallTile.scale-200.png" />
+    <Content Include="Assets\Logo\SmallTile.scale-400.png" />
+    <Content Include="Assets\Logo\SplashScreen.scale-100.png" />
+    <Content Include="Assets\Logo\SplashScreen.scale-125.png" />
+    <Content Include="Assets\Logo\SplashScreen.scale-150.png" />
+    <Content Include="Assets\Logo\SplashScreen.scale-200.png" />
+    <Content Include="Assets\Logo\SplashScreen.scale-400.png" />
+    <Content Include="Assets\Logo\Square150x150Logo.scale-100.png" />
+    <Content Include="Assets\Logo\Square150x150Logo.scale-125.png" />
+    <Content Include="Assets\Logo\Square150x150Logo.scale-150.png" />
+    <Content Include="Assets\Logo\Square150x150Logo.scale-200.png" />
+    <Content Include="Assets\Logo\Square150x150Logo.scale-400.png" />
+    <Content Include="Assets\Logo\Square44x44Logo.altform-lightunplated_targetsize-16.png" />
+    <Content Include="Assets\Logo\Square44x44Logo.altform-lightunplated_targetsize-24.png" />
+    <Content Include="Assets\Logo\Square44x44Logo.altform-lightunplated_targetsize-256.png" />
+    <Content Include="Assets\Logo\Square44x44Logo.altform-lightunplated_targetsize-32.png" />
+    <Content Include="Assets\Logo\Square44x44Logo.altform-lightunplated_targetsize-48.png" />
+    <Content Include="Assets\Logo\Square44x44Logo.altform-unplated_targetsize-16.png" />
+    <Content Include="Assets\Logo\Square44x44Logo.altform-unplated_targetsize-24.png" />
+    <Content Include="Assets\Logo\Square44x44Logo.altform-unplated_targetsize-256.png" />
+    <Content Include="Assets\Logo\Square44x44Logo.altform-unplated_targetsize-32.png" />
+    <Content Include="Assets\Logo\Square44x44Logo.altform-unplated_targetsize-48.png" />
+    <Content Include="Assets\Logo\Square44x44Logo.scale-100.png" />
+    <Content Include="Assets\Logo\Square44x44Logo.scale-125.png" />
+    <Content Include="Assets\Logo\Square44x44Logo.scale-150.png" />
+    <Content Include="Assets\Logo\Square44x44Logo.scale-200.png" />
+    <Content Include="Assets\Logo\Square44x44Logo.scale-400.png" />
+    <Content Include="Assets\Logo\Square44x44Logo.targetsize-16.png" />
+    <Content Include="Assets\Logo\Square44x44Logo.targetsize-24.png" />
+    <Content Include="Assets\Logo\Square44x44Logo.targetsize-256.png" />
+    <Content Include="Assets\Logo\Square44x44Logo.targetsize-32.png" />
+    <Content Include="Assets\Logo\Square44x44Logo.targetsize-48.png" />
+    <Content Include="Assets\Logo\StoreLogo.scale-100.png" />
+    <Content Include="Assets\Logo\StoreLogo.scale-125.png" />
+    <Content Include="Assets\Logo\StoreLogo.scale-150.png" />
+    <Content Include="Assets\Logo\StoreLogo.scale-200.png" />
+    <Content Include="Assets\Logo\StoreLogo.scale-400.png" />
+    <Content Include="Assets\Logo\Wide310x150Logo.scale-100.png" />
+    <Content Include="Assets\Logo\Wide310x150Logo.scale-125.png" />
+    <Content Include="Assets\Logo\Wide310x150Logo.scale-150.png" />
+    <Content Include="Assets\Logo\Wide310x150Logo.scale-200.png" />
+    <Content Include="Assets\Logo\Wide310x150Logo.scale-400.png" />
     <Content Include="Others\Update.txt" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
@@ -172,7 +305,43 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Components\Account\LoginPopup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Components\Account\SlimAccountPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\Controls\AppSearchBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\Controls\ChannelVideoCard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\Controls\DynamicContentBlock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\Controls\RecommendVideoCard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\Controls\ScanChannelPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\Controls\SubscribeChannelPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\Controls\TopicCard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\Layout\PagePanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -181,6 +350,26 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Components\Widgets\AsyncButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\Widgets\BannerBlock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\Widgets\CaptchaBlock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\Widgets\IconInputBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\Widgets\IconTextBlock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\Widgets\LevelBlock.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -195,6 +384,22 @@
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\Main\HomePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Sub\Channel\ChannelDetailPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Sub\Channel\ChannelListPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Sub\Channel\TagDetailPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Template\Buttons.xaml">
       <SubType>Designer</SubType>
@@ -236,6 +441,9 @@
     <PackageReference Include="Microsoft.Toolkit.Uwp.Connectivity">
       <Version>6.0.0</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Uwp.UI">
+      <Version>6.0.0</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Animations">
       <Version>6.0.0</Version>
     </PackageReference>
@@ -257,9 +465,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Assets\Logo\" />
     <Folder Include="Dialogs\" />
-    <Folder Include="Pages\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Fonts\Richasy_BiliBili.ttf" />

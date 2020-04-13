@@ -21,7 +21,8 @@ namespace BiliBili_UWP.Models.Core
         public double StateChangeWidth = 1000;
         public SideMenuItem SelectedSideMenuItem { get; set; }
         public Type CurrentPageType { get; set; }
-        public SidePanel CurrentSidePanel; 
+        public SidePanel CurrentSidePanel;
+        public PagePanel CurrentPagePanel;
         public List<Tuple<Guid, Action<Size>>> WindowsSizeChangedNotify { get; set; } = new List<Tuple<Guid, Action<Size>>>();
         public AppViewModel()
         {
@@ -53,6 +54,17 @@ namespace BiliBili_UWP.Models.Core
                 //_updatePopup.ShowPopup();
                 AppTool.WriteLocalSetting(Settings.LocalVersion, nowVersion);
             }
+        }
+        /// <summary>
+        /// 播放视频
+        /// </summary>
+        /// <param name="aid">AV号</param>
+        public async void PlayVideo(int aid)
+        {
+            //if (CurrentPagePanel.IsSubPageOpen)
+            //    CurrentPagePanel.IsSubPageOpen = false;
+            var url = new Uri($"https://www.bilibili.com/video/av{aid}");
+            await Windows.System.Launcher.LaunchUriAsync(url);
         }
     }
 }

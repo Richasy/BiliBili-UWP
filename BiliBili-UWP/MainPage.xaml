@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:layout="using:BiliBili_UWP.Components.Layout"
     mc:Ignorable="d"
+    SizeChanged="Page_SizeChanged"
     Background="{ThemeResource PageBackground}">
 
     <Grid>
@@ -14,14 +15,14 @@
                    IsPaneOpen="True" x:Name="AppSplitView">
             <SplitView.Pane>
                 <Grid Padding="0,35,0,20" Background="{ThemeResource SideBackground}">
-                    <layout:SidePanel PaneButtonClick="SidePanel_PaneButtonClick"
+                    <layout:SidePanel IsWide="{x:Bind AppSplitView.IsPaneOpen,Mode=TwoWay}"
                                       SideMenuItemClick="SidePanel_SideMenuItemClick"
                                       x:Name="SidePanel" HorizontalAlignment="Left"
                                       RegionSelected="SidePanel_RegionSelected"/>
                 </Grid>
             </SplitView.Pane>
             <SplitView.Content>
-                <Frame x:Name="MainFrame"/>
+                <layout:PagePanel x:Name="PagePanel" IsDefault="True"/>
             </SplitView.Content>
         </SplitView>
         <Grid Background="{ThemeResource PageBackground}" Opacity="0.01" x:Name="TitleContainer" Height="30" VerticalAlignment="Top"/>

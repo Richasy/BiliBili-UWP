@@ -26,5 +26,6 @@ namespace BiliBili_UWP.Models.Enums
         NormalTextColor,
         PageBackground,
         CardBackgroundOver,
+        TipTextColor,
     }
 }

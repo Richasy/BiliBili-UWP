@@ -120,9 +120,29 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Enums\LoginResultType.cs" />
     <Compile Include="Enums\Settings.cs" />
+    <Compile Include="Models\BiliBili\Account.cs" />
+    <Compile Include="Models\BiliBili\AV.cs" />
+    <Compile Include="Models\BiliBili\Channel.cs" />
+    <Compile Include="Models\BiliBili\Dynamic\DocumentDynamic.cs" />
+    <Compile Include="Models\BiliBili\Dynamic\ImageDynamic.cs" />
+    <Compile Include="Models\BiliBili\Dynamic\TextDynamic.cs" />
+    <Compile Include="Models\BiliBili\Topic.cs" />
+    <Compile Include="Models\BiliBili\Login.cs" />
+    <Compile Include="Models\BiliBili\Others.cs" />
     <Compile Include="Models\BiliBili\Region.cs" />
+    <Compile Include="Models\BiliBili\Video.cs" />
+    <Compile Include="Models\Interface\IAlphaBackground.cs" />
+    <Compile Include="Models\Others\Api.cs" />
     <Compile Include="Models\Others\ApiKeyInfo.cs" />
+    <Compile Include="Models\Others\Secure.cs" />
+    <Compile Include="Models\Others\TokenPackage.cs" />
+    <Compile Include="Models\Others\WebClient.cs" />
+    <Compile Include="Service\AccountService.cs" />
+    <Compile Include="Service\BiliBiliClient.cs" />
+    <Compile Include="Service\ChannelService.cs" />
+    <Compile Include="Service\TopicService.cs" />
     <Compile Include="Tools\AppTool.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools\BiliTool.cs" />

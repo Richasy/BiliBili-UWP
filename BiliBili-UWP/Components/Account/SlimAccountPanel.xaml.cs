@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BiliBili_Lib.Tools;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,6 +12,7 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
 //https://go.microsoft.com/fwlink/?LinkId=234236 上介绍了“用户控件”项模板
@@ -22,24 +24,39 @@ namespace BiliBili_UWP.Components.Account
         public SlimAccountPanel()
         {
             this.InitializeComponent();
+            App.BiliViewModel.IsLoginChanged -= LoginStatusChanged;
+            App.BiliViewModel.IsLoginChanged += LoginStatusChanged;
         }
 
-        public bool IsLogin
+        private void LoginStatusChanged(object sender, bool e)
         {
-            get { return (bool)GetValue(IsLoginProperty); }
-            set { SetValue(IsLoginProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for IsLogin.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty IsLoginProperty =
-            DependencyProperty.Register("IsLogin", typeof(bool), typeof(SlimAccountPanel), new PropertyMetadata(false,new PropertyChangedCallback(IsLogin_Changed)));
-
-        private static void IsLogin_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if(e.NewValue!=e.OldValue)
+            CheckElementStatus();
+            if (e)
             {
-                var instance = d as SlimAccountPanel;
-                instance.CheckElementStatus();
+                var me = App.BiliViewModel._client.Account.Me;
+                if (me != null)
+                {
+                    UserAvatar.ProfilePicture = new BitmapImage(new Uri(me.face)) { DecodePixelWidth = 55 };
+                    UserAvatarNarrrow.ProfilePicture = new BitmapImage(new Uri(me.face)) { DecodePixelWidth = 55 };
+                    UserNameBlock.Text = me.name;
+                    LevelBlock.Level = me.level;
+                    DynamicBlock.Text = AppTool.GetNumberAbbreviation(me.dynamic);
+                    FollowBlock.Text = AppTool.GetNumberAbbreviation(me.following);
+                    FanBlock.Text = AppTool.GetNumberAbbreviation(me.follower);
+                    if (me.pendant!=null && !string.IsNullOrEmpty(me.pendant.image))
+                    {
+                        PendantImage.Visibility = Visibility.Visible;
+                        PendantImage.Source = new BitmapImage(new Uri(me.pendant.image));
+                    }
+                    else
+                    {
+                        PendantImage.Visibility = Visibility.Visible;
+                    }
+                }
+            }
+            else
+            {
+                UserAvatarNarrrow.ProfilePicture = null;
             }
         }
 
@@ -73,7 +90,7 @@ namespace BiliBili_UWP.Components.Account
             else
             {
                 UserAvatarNarrrow.Visibility = Visibility.Collapsed;
-                if (IsLogin)
+                if (App.BiliViewModel.IsLogin)
                 {
                     DetailContainer.Visibility = Visibility.Visible;
                     LoginButton.Visibility = Visibility.Collapsed;
@@ -88,7 +105,7 @@ namespace BiliBili_UWP.Components.Account
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
-
+            App.BiliViewModel.ShowLoginPopup();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BiliBili_UWP.Models.UI.Interface;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,21 +12,22 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
+using BiliBili_UWP.Models.UI;
 
 //https://go.microsoft.com/fwlink/?LinkId=234236 上介绍了“用户控件”项模板
 
 namespace BiliBili_UWP.Components.Widgets
 {
-    public sealed partial class WaitingPopup : UserControl
+    public sealed partial class WaitingPopup : UserControl,IAppPopup
     {
-        private Popup _popup = null;
-        Guid _popupId = Guid.NewGuid();
+        public Popup _popup { get; set; }
+        public Guid _popupId { get; set; }
         public WaitingPopup()
         {
             this.InitializeComponent();
-            _popup = new Popup();
-            _popup.Child = this;
+            UIHelper.PopupInit(this);
         }
         public WaitingPopup(string content) : this()
         {
@@ -33,23 +35,16 @@ namespace BiliBili_UWP.Components.Widgets
         }
         public void ShowPopup()
         {
-            this.Width = Window.Current.Bounds.Width;
-            this.Height = Window.Current.Bounds.Height;
-            App.AppViewModel.WindowsSizeChangedNotify.Add(new Tuple<Guid, Action<Size>>(_popupId, (rect) =>
-            {
-                this.Width = rect.Width;
-                this.Height = rect.Height;
-            }));
-            _popup.IsOpen = true;
+            UIHelper.PopupShow(this);
             PopupIn.Begin();
         }
         public void HidePopup()
         {
             PopupOut.Begin();
-            PopupOut.Completed += PopupOutCompleted;
+            PopupOut.Completed += PopupOut_Completed;
         }
 
-        private void PopupOutCompleted(object sender, object e)
+        private void PopupOut_Completed(object sender, object e)
         {
             App.AppViewModel.WindowsSizeChangedNotify.RemoveAll(p => p.Item1 == _popupId);
             _popup.IsOpen = false;

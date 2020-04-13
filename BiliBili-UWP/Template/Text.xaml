@@ -9,6 +9,7 @@
 
     <Style x:Key="BasicTextStyle" TargetType="TextBlock">
         <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+        <Setter Property="FontFamily" Value="{CustomResource Basic}" />
     </Style>
 
     <Style x:Key="AppLogoStyle" TargetType="TextBlock" BasedOn="{StaticResource BasicIconTextStyle}">
@@ -33,6 +34,7 @@
     
     <Style x:Key="TitleTextStyle" TargetType="TextBlock" BasedOn="{StaticResource HeaderTextStyle}">
         <Setter Property="FontSize" Value="20"/>
+        <Setter Property="Foreground" Value="{ThemeResource TipTextColor}" />
     </Style>
     <Style x:Key="TipTextStyle" TargetType="TextBlock" BasedOn="{StaticResource BasicTextStyle}">
         <Setter Property="FontSize" Value="15"/>

@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
     xmlns:other="using:BiliBili_UWP.Models.UI.Others"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -18,24 +19,26 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <PersonPicture x:Name="UserAvatar" Style="{StaticResource BasicPersonPictureStyle}" Width="55" HorizontalAlignment="Center"/>
-            <StackPanel Grid.Row="1" Margin="0,10,0,0">
-                <TextBlock Text="云之幻" x:Name="UserNameBlock" Style="{StaticResource CaptionTextStyle}" FontWeight="Bold"
-                           HorizontalAlignment="Center" TextAlignment="Center" other:TextBlockService.IsAutoTrim="True" MaxWidth="200"/>
-                <TextBlock Text="普通用户" x:Name="AccountTypeBlock" Style="{StaticResource SmallTipTextStyle}"
-                           HorizontalAlignment="Center" TextAlignment="Center" Margin="0,5,0,0"/>
+            <Grid HorizontalAlignment="Center">
+                <PersonPicture x:Name="UserAvatar" Style="{StaticResource BasicPersonPictureStyle}" Width="55"/>
+                <controls:ImageEx Width="100" Stretch="Uniform" DecodePixelWidth="100" x:Name="PendantImage"/>
+            </Grid>
+            <StackPanel Grid.Row="1" Margin="0,0,0,0">
+                <TextBlock Text="--" x:Name="UserNameBlock" Style="{StaticResource CaptionTextStyle}" FontWeight="Bold"
+                           HorizontalAlignment="Center" TextAlignment="Center" MaxWidth="200"/>
+                <widgets:LevelBlock x:Name="LevelBlock" HorizontalAlignment="Center" Margin="0,5,0,0"/>
             </StackPanel>
             <RelativePanel Width="200" HorizontalAlignment="Center" Grid.Row="2" Margin="0,15,0,0">
-                <StackPanel RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True">
-                    <TextBlock Style="{StaticResource CaptionTextStyle}" Text="100" x:Name="FollowBlock" HorizontalAlignment="Center"/>
-                    <TextBlock Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource NormalTextColor}" Text="关注" HorizontalAlignment="Center"/>
-                </StackPanel>
-                <StackPanel RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True">
-                    <TextBlock Style="{StaticResource CaptionTextStyle}" Text="222" x:Name="DynamicBlock" HorizontalAlignment="Center"/>
+                <StackPanel RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" >
+                    <TextBlock Style="{StaticResource CaptionTextStyle}" Text="--" x:Name="DynamicBlock" HorizontalAlignment="Center"/>
                     <TextBlock Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource NormalTextColor}" Text="动态" HorizontalAlignment="Center"/>
                 </StackPanel>
+                <StackPanel RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True">
+                    <TextBlock Style="{StaticResource CaptionTextStyle}" Text="--" x:Name="FollowBlock" HorizontalAlignment="Center"/>
+                    <TextBlock Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource NormalTextColor}" Text="关注" HorizontalAlignment="Center"/>
+                </StackPanel>
                 <StackPanel RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True">
-                    <TextBlock Style="{StaticResource CaptionTextStyle}" Text="6.6K" x:Name="FanBlock" HorizontalAlignment="Center"/>
+                    <TextBlock Style="{StaticResource CaptionTextStyle}" Text="--" x:Name="FanBlock" HorizontalAlignment="Center"/>
                     <TextBlock Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource NormalTextColor}" Text="粉丝" HorizontalAlignment="Center"/>
                 </StackPanel>
             </RelativePanel>

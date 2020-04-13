@@ -1,0 +1,70 @@
+﻿<UserControl
+    x:Class="BiliBili_UWP.Components.Controls.DynamicContentBlock"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BiliBili_UWP.Components.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:bilibili="using:BiliBili_Lib.Models.BiliBili"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <UserControl.Resources>
+        <DataTemplate x:DataType="bilibili:AV" x:Name="VideoTemplate">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <controls:ImageEx Source="{x:Bind pic}" CornerRadius="4" DecodePixelWidth="300"
+                                  Stretch="UniformToFill"/>
+                <Border Width="60" Height="60" CornerRadius="30" Background="{ThemeResource MaskAcrylicBackground}" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <TextBlock Text="&#xE9BE;" FontFamily="{StaticResource Icon}" VerticalAlignment="Center" HorizontalAlignment="Center"
+                           Foreground="{ThemeResource PrimaryColor}" FontSize="25" Margin="0,0,-5,0"/>
+                </Border>
+                <Grid Grid.Row="1" Margin="0,5,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="{x:Bind title}" ToolTipService.ToolTip="{x:Bind title}" Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource NormalTextColor}"/>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="10,0,0,0" Grid.Column="1">
+                        <widgets:IconTextBlock Icon="&#xEA32;" FontSize="10" GutterWidth="5" Text="{x:Bind stat.play_abbr}" IconForeground="{ThemeResource TipTextColor}" TextForeground="{ThemeResource TipTextColor}"/>
+                        <widgets:IconTextBlock Icon="&#xEA27;" FontSize="10" GutterWidth="5" Margin="10,0,0,0" Text="{x:Bind stat.danmaku_abbr}" IconForeground="{ThemeResource TipTextColor}" TextForeground="{ThemeResource TipTextColor}"/>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:DataType="bilibili:ImageDynamic" x:Name="ImageTemplate">
+            <Grid>
+                <ItemsControl ItemsSource="{x:Bind pictures}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <controls:WrapPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <controls:ImageEx Width="{Binding render_width}" CornerRadius="5" Margin="2" DecodePixelWidth="{Binding picture_width}"
+                                              Source="{Binding img_src}" Height="{Binding render_width}" Stretch="UniformToFill"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:DataType="bilibili:DocumentDynamic" x:Name="DocumentTemplate">
+            <StackPanel>
+                <controls:ImageEx HorizontalAlignment="Stretch" Source="{x:Bind banner_url}" Stretch="UniformToFill" CornerRadius="4" DecodePixelWidth="300" MaxHeight="150"/>
+                <TextBlock Style="{StaticResource SmallTipTextStyle}" ToolTipService.ToolTip="{x:Bind title}" Margin="0,5" Grid.Row="1"
+                           Text="{x:Bind title}" Foreground="{ThemeResource ImportantTextColor}" FontWeight="Bold"/>
+                <TextBlock Style="{StaticResource SmallTipTextStyle}" TextWrapping="Wrap" Margin="0,0,0,0" Grid.Row="1"
+                           Text="{x:Bind summary}" MaxLines="3" FontSize="10"/>
+            </StackPanel>
+        </DataTemplate>
+    </UserControl.Resources>
+    <Grid>
+        <ContentControl x:Name="MainContentControl" Tapped="MainContentControl_Tapped"/>
+    </Grid>
+</UserControl>

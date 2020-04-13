@@ -1,0 +1,87 @@
+﻿<UserControl
+    x:Class="BiliBili_UWP.Components.Controls.TopicCard"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BiliBili_UWP.Components.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
+    xmlns:bilibili="using:BiliBili_Lib.Models.BiliBili"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <UserControl.Resources>
+        <DataTemplate x:DataType="bilibili:TopicDetail" x:Key="TagItemTemplate">
+            <Border CornerRadius="2" Background="{ThemeResource SecondaryColorOpacity}" Padding="8,5,8,3" Margin="0,0,5,5"
+                    Tapped="Tag_Tapped">
+                <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="10" Foreground="{ThemeResource SecondaryColorOver}"
+                           Text="{x:Bind topic_name}"/>
+            </Border>
+        </DataTemplate>
+    </UserControl.Resources>
+    <Grid Background="{ThemeResource CardBackground}" CornerRadius="4" Padding="10,10,10,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Horizontal">
+                <PersonPicture Width="30" Height="30" Style="{StaticResource BasicPersonPictureStyle}" x:Name="UserAvatar"
+                           VerticalAlignment="Center"/>
+                <StackPanel VerticalAlignment="Center" Margin="10,0,0,0">
+                    <TextBlock x:Name="UserNameBlock" Style="{StaticResource SmallTipTextStyle}" FontSize="12" FontWeight="Bold"
+                           Foreground="{ThemeResource ImportantTextColor}"/>
+                    <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="10" x:Name="TipBlock" Margin="0,5,0,0"/>
+                </StackPanel>
+            </StackPanel>
+            <widgets:AsyncButton x:Name="FollowButton" Grid.Column="1" VerticalAlignment="Center" Style="{StaticResource DefaultAsyncButtonStyle}"
+                                 Padding="0,0,4,0" FontSize="10" Icon="&#xE9C0;" Click="FollowButton_Click" Text="关注" BorderBrush="{ThemeResource LineColor}" BorderThickness="1"/>
+            <Button Style="{StaticResource TransparentButtonStyle}" VerticalAlignment="Center" Grid.Column="2"
+                    Content="&#xE9A9;" FontFamily="{StaticResource Icon}"/>
+        </Grid>
+        <TextBlock x:Name="DescriptionBlock" IsTextSelectionEnabled="True" LineHeight="18" Style="{StaticResource BodyWrapTextStyle}" FontSize="12" Margin="0,10,0,5" Grid.Row="1"/>
+        <ItemsControl ItemTemplate="{StaticResource TagItemTemplate}" x:Name="TagList" Grid.Row="2" Margin="0,0,0,5"
+                      >
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <controls:WrapPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
+        <local:DynamicContentBlock Grid.Row="3" x:Name="MainDisplay"/>
+        <Grid Grid.Row="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <Button Style="{StaticResource TransparentButtonStyle}" Padding="0,10" x:Name="RepostButton" Click="RepostButton_Click" HorizontalAlignment="Stretch">
+                <TextBlock Style="{StaticResource SmallTipTextStyle}" HorizontalAlignment="Center">
+                    <Run Text="&#xE962;" FontFamily="{StaticResource Icon}" x:Name="RepostIcon"/>
+                    <Run x:Name="RepostBlock"/>
+                </TextBlock>
+            </Button>
+            <Button Style="{StaticResource TransparentButtonStyle}" Padding="0,10" Grid.Column="1" x:Name="CommentButton" Click="CommentButton_Click"  HorizontalAlignment="Stretch">
+                <TextBlock Style="{StaticResource SmallTipTextStyle}" HorizontalAlignment="Center">
+                    <Run Text="&#xE99E;" FontFamily="{StaticResource Icon}"/>
+                    <Run x:Name="CommentBlock"/>
+                </TextBlock>
+            </Button>
+            <Button Style="{StaticResource TransparentButtonStyle}" Padding="0,10" Grid.Column="2" x:Name="LikeButton" Click="LikeButton_Click"  HorizontalAlignment="Stretch">
+                <TextBlock Style="{StaticResource SmallTipTextStyle}" HorizontalAlignment="Center">
+                    <Run Text="&#xE9F0;" FontFamily="{StaticResource Icon}" x:Name="LikeIcon"/>
+                    <Run x:Name="LikeBlock"/>
+                </TextBlock>
+            </Button>
+        </Grid>
+    </Grid>
+</UserControl>

@@ -404,7 +404,7 @@
         </Setter>
     </Style>
     <Style x:Key="BasicGridView" TargetType="GridView">
-        <Setter Property="Padding" Value="0,0,0,10"/>
+        <Setter Property="Padding" Value="0" />
         <Setter Property="IsTabStop" Value="False"/>
         <Setter Property="TabNavigation" Value="Once"/>
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
@@ -513,7 +513,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="GridViewItem">
-                    <ListViewItemPresenter x:Name="Root" CheckBrush="{ThemeResource GridViewItemCheckBrush}" ContentMargin="{TemplateBinding Padding}" CheckBoxBrush="{ThemeResource GridViewItemCheckBoxBrush}" ContentTransitions="{TemplateBinding ContentTransitions}" CheckMode="{ThemeResource GridViewItemCheckMode}" DragOpacity="{ThemeResource ListViewItemDragThemeOpacity}" DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}" DragBackground="{ThemeResource GridViewItemDragBackground}" DragForeground="{ThemeResource GridViewItemDragForeground}" FocusBorderBrush="{ThemeResource GridViewItemFocusBorderBrush}" FocusVisualMargin="{TemplateBinding FocusVisualMargin}" FocusSecondaryBorderBrush="{ThemeResource GridViewItemFocusSecondaryBorderBrush}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Control.IsTemplateFocusTarget="True" PressedBackground="Transparent" PlaceholderBackground="{ThemeResource GridViewItemPlaceholderBackground}" PointerOverForeground="{ThemeResource GridViewItemForegroundPointerOver}" PointerOverBackground="Transparent" RevealBorderThickness="{ThemeResource GridViewItemRevealBorderThemeThickness}" ReorderHintOffset="{ThemeResource GridViewItemReorderHintThemeOffset}" RevealBorderBrush="{ThemeResource GridViewItemRevealBorderBrush}" RevealBackground="Transparent" SelectedForeground="{ThemeResource GridViewItemForegroundSelected}" SelectionCheckMarkVisualEnabled="{ThemeResource GridViewItemSelectionCheckMarkVisualEnabled}" SelectedBackground="{TemplateBinding Background}" SelectedPressedBackground="{TemplateBinding Background}" SelectedPointerOverBackground="{TemplateBinding Background}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}">
+                    <ListViewItemPresenter x:Name="Root" CheckBrush="{ThemeResource GridViewItemCheckBrush}" ContentMargin="{TemplateBinding Padding}" CheckBoxBrush="{ThemeResource GridViewItemCheckBoxBrush}" ContentTransitions="{TemplateBinding ContentTransitions}" CheckMode="{ThemeResource GridViewItemCheckMode}" DragOpacity="{ThemeResource ListViewItemDragThemeOpacity}" DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}" DragBackground="{ThemeResource GridViewItemDragBackground}" DragForeground="{ThemeResource GridViewItemDragForeground}" FocusBorderBrush="{ThemeResource GridViewItemFocusBorderBrush}" FocusVisualMargin="{TemplateBinding FocusVisualMargin}" FocusSecondaryBorderBrush="{ThemeResource GridViewItemFocusSecondaryBorderBrush}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Control.IsTemplateFocusTarget="True" PressedBackground="{ThemeResource CardBackgroundOver}" PlaceholderBackground="{ThemeResource GridViewItemPlaceholderBackground}" PointerOverForeground="{ThemeResource GridViewItemForegroundPointerOver}" PointerOverBackground="{ThemeResource CardBackground}" RevealBorderThickness="0" ReorderHintOffset="{ThemeResource GridViewItemReorderHintThemeOffset}" RevealBorderBrush="{ThemeResource GridViewItemRevealBorderBrush}" RevealBackground="Transparent" SelectedForeground="{ThemeResource GridViewItemForegroundSelected}" SelectionCheckMarkVisualEnabled="{ThemeResource GridViewItemSelectionCheckMarkVisualEnabled}" SelectedBackground="{TemplateBinding Background}" SelectedPressedBackground="{TemplateBinding Background}" SelectedPointerOverBackground="{TemplateBinding Background}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}">
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
                                 <VisualState x:Name="Normal"/>
@@ -663,7 +663,7 @@
                                 </VisualState>
                                 <VisualState x:Name="Pressed">
                                     <VisualState.Setters>
-                                        <Setter Target="LayoutRoot.Background" Value="{ThemeResource PrimaryColor}"/>
+                                        <Setter Target="LayoutRoot.Background" Value="{ThemeResource CardBackgroundOver}"/>
                                         <Setter Target="LayoutRoot.BorderBrush" Value="{ThemeResource ComboBoxItemRevealBorderBrushPressed}"/>
                                         <Setter Target="ContentPresenter.Foreground" Value="White"/>
                                         <Setter Target="LayoutRoot.(RevealBrush.State)" Value="Pressed"/>
@@ -674,7 +674,7 @@
                                 </VisualState>
                                 <VisualState x:Name="Selected">
                                     <VisualState.Setters>
-                                        <Setter Target="LayoutRoot.Background" Value="{ThemeResource PrimaryColor}"/>
+                                        <Setter Target="LayoutRoot.Background" Value="{ThemeResource CardBackground}"/>
                                         <Setter Target="LayoutRoot.BorderBrush" Value="{ThemeResource ComboBoxItemRevealBorderBrushSelected}"/>
                                         <Setter Target="ContentPresenter.Foreground" Value="White"/>
                                     </VisualState.Setters>
@@ -684,7 +684,7 @@
                                 </VisualState>
                                 <VisualState x:Name="SelectedUnfocused">
                                     <VisualState.Setters>
-                                        <Setter Target="LayoutRoot.Background" Value="{ThemeResource PrimaryColor}"/>
+                                        <Setter Target="LayoutRoot.Background" Value="{ThemeResource CardBackground}"/>
                                         <Setter Target="LayoutRoot.BorderBrush" Value="{ThemeResource ComboBoxItemRevealBorderBrushSelectedUnfocused}"/>
                                         <Setter Target="ContentPresenter.Foreground" Value="White"/>
                                     </VisualState.Setters>
@@ -698,7 +698,7 @@
                                 </VisualState>
                                 <VisualState x:Name="SelectedPointerOver">
                                     <VisualState.Setters>
-                                        <Setter Target="LayoutRoot.Background" Value="{ThemeResource PrimaryColorOver}"/>
+                                        <Setter Target="LayoutRoot.Background" Value="{ThemeResource CardBackgroundOver}"/>
                                         <Setter Target="LayoutRoot.BorderBrush" Value="{ThemeResource ComboBoxItemRevealBorderBrushSelectedPointerOver}"/>
                                         <Setter Target="ContentPresenter.Foreground" Value="White"/>
                                         <Setter Target="LayoutRoot.(RevealBrush.State)" Value="PointerOver"/>

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BiliBili_UWP.Models.UI
 {
-    public class SideMenuItem:NotifyPropertyBase
+    public class SideMenuItem : NotifyPropertyBase
     {
         public string Name { get; set; }
         public string Icon { get; set; }
@@ -96,7 +96,7 @@ namespace BiliBili_UWP.Models.UI
         /// <param name="isLogin">是否登录</param>
         /// <param name="selected">选中项</param>
         /// <returns></returns>
-        public static List<SideMenuItem> GetSideMenuItems(bool isLogin,SideMenuItemType selected = SideMenuItemType.Home)
+        public static List<SideMenuItem> GetSideMenuItems(bool isLogin, SideMenuItemType selected = SideMenuItemType.Home)
         {
             var list = new List<SideMenuItem>
             {
@@ -120,7 +120,8 @@ namespace BiliBili_UWP.Models.UI
                     new SideMenuItem(SideMenuItemType.ViewLater)
                 });
             }
-            list.ForEach(p => p.IsSelected = p.Type == selected);
+            if (selected != SideMenuItemType.Line)
+                list.ForEach(p => p.IsSelected = p.Type == selected);
             return list;
         }
 

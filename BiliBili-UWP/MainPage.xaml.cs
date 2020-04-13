@@ -44,7 +44,10 @@ namespace BiliBili_UWP
             App.AppViewModel.CheckAppUpdate();
             var popup = new WaitingPopup("正在初始化");
             popup.ShowPopup();
+            await App.BiliViewModel.AutoLoginAsync();
             await App.BiliViewModel.GetRegionsAsync();
+            
+            PagePanel.NavigateToPage(Models.Enums.SideMenuItemType.Home);
             popup.HidePopup();
             _isInit = true;
         }
@@ -56,12 +59,28 @@ namespace BiliBili_UWP
 
         private void SidePanel_SideMenuItemClick(object sender, Models.UI.SideMenuItem e)
         {
-
+            PagePanel.NavigateToPage(e.Type);
         }
 
         private void SidePanel_RegionSelected(object sender, BiliBili_Lib.Models.BiliBili.Region e)
         {
+            SidePanel.SetSelectedItem(Models.Enums.SideMenuItemType.Line);
+            App.AppViewModel.SelectedSideMenuItem = null;
+        }
 
+        private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            double width = e.NewSize.Width;
+            if (width < 1000)
+            {
+                AppSplitView.IsPaneOpen = false;
+                AppSplitView.DisplayMode = SplitViewDisplayMode.CompactOverlay;
+            }
+            else
+            {
+                AppSplitView.IsPaneOpen = true;
+                AppSplitView.DisplayMode = SplitViewDisplayMode.CompactInline;
+            }
         }
     }
 }

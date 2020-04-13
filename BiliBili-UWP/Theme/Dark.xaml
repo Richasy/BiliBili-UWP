@@ -4,7 +4,9 @@
     xmlns:local="using:BiliBili_UWP.Theme">
 
     <AcrylicBrush x:Key="SideBackground" BackgroundSource="HostBackdrop" TintColor="#282828" FallbackColor="#282828" TintOpacity="0.7"/>
+    <AcrylicBrush x:Key="PaneBackground" BackgroundSource="HostBackdrop" TintColor="#282828" FallbackColor="#282828" TintOpacity="0.9"/>
     <AcrylicBrush x:Key="PopupBackground" BackgroundSource="Backdrop" TintColor="#1C1C1C" FallbackColor="#1C1C1C" TintOpacity="0.8"/>
+    <AcrylicBrush x:Key="MaskAcrylicBackground" BackgroundSource="Backdrop" TintColor="#282828" FallbackColor="#282828" TintOpacity="0.4"/>
     <SolidColorBrush x:Key="PageBackground" Color="#1C1C1C"/>
     <SolidColorBrush x:Key="PageOverBackground" Color="#0D0D0D"/>
     <SolidColorBrush x:Key="CardBackground" Color="#282828"/>

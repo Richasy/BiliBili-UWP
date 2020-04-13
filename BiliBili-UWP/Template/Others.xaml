@@ -571,7 +571,7 @@
                         <TextBlock x:Name="InitialsTextBlock" AutomationProperties.AccessibilityView="Raw" FontWeight="{TemplateBinding FontWeight}" FontFamily="{TemplateBinding FontFamily}" Foreground="{TemplateBinding Foreground}" FontSize="36" HorizontalAlignment="Center" IsTextScaleFactorEnabled="False" TextLineBounds="Tight" VerticalAlignment="Center"/>
                         <Ellipse x:Name="PersonPictureEllipse" FlowDirection="LeftToRight" Height="{TemplateBinding Height}" Width="{TemplateBinding Width}" x:DeferLoadStrategy="Lazy"/>
                         <Grid x:Name="BadgeGrid" HorizontalAlignment="Right" VerticalAlignment="Bottom" Visibility="Collapsed">
-                            <Ellipse x:Name="BadgingBackgroundEllipse" Fill="{ThemeResource PinkPurpleGradient}" StrokeThickness="0" Stroke="{ThemeResource LineColor}" x:DeferLoadStrategy="Lazy"/>
+                            <Ellipse x:Name="BadgingBackgroundEllipse" Fill="{ThemeResource ErrorColor}" StrokeThickness="0" Stroke="{ThemeResource LineColor}" x:DeferLoadStrategy="Lazy"/>
                             <Ellipse x:Name="BadgingEllipse" FlowDirection="LeftToRight" Opacity="0" x:DeferLoadStrategy="Lazy"/>
                             <TextBlock x:Name="BadgeNumberTextBlock" AutomationProperties.AccessibilityView="Raw" FontWeight="{TemplateBinding FontWeight}" FontFamily="{TemplateBinding FontFamily}" Foreground="{ThemeResource NormalTextColor}" HorizontalAlignment="Center" IsTextScaleFactorEnabled="False" TextLineBounds="Tight" VerticalAlignment="Center" x:DeferLoadStrategy="Lazy"/>
                             <FontIcon x:Name="BadgeGlyphIcon" AutomationProperties.AccessibilityView="Raw" FontWeight="{TemplateBinding FontWeight}" FontFamily="{ThemeResource SymbolThemeFontFamily}" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" x:DeferLoadStrategy="Lazy"/>
@@ -591,6 +591,7 @@
     <DataTemplate x:Key="DialogTitle">
         <TextBlock Style="{StaticResource HeaderTextStyle}"
                    FontSize="20"
+                   FontFamily="{CustomResource Basic}"
                    Text="{Binding}"
                    />
     </DataTemplate>
@@ -613,7 +614,7 @@
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="HorizontalContentAlignment" Value="Left"/>
         <Setter Property="VerticalContentAlignment" Value="Top"/>
-        
+        <Setter Property="FontFamily" Value="{CustomResource Basic}"/>
         <Setter Property="FontSize" Value="15"/>
         <Setter Property="MinHeight" Value="0"/>
         <Setter Property="CornerRadius" Value="3" />
@@ -977,7 +978,7 @@
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
         <Setter Property="HorizontalAlignment" Value="Left"/>
         <Setter Property="VerticalAlignment" Value="Top"/>
-        
+        <Setter Property="FontFamily" Value="{CustomResource Basic}"/>
         <Setter Property="FontSize" Value="15"/>
         <Setter Property="CornerRadius" Value="4" />
         <Setter Property="ItemsPanel">

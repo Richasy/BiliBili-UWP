@@ -13,6 +13,7 @@
         <Setter Property="Foreground" Value="{ThemeResource NormalTextColor}"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="SelectionHighlightColor" Value="{ThemeResource TextControlSelectionHighlightColor}"/>
+        <Setter Property="FontFamily" Value="{CustomResource Basic}"/>
         <Setter Property="BorderBrush" Value="Transparent"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="FontSize" Value="15"/>
@@ -70,7 +71,7 @@
                                                         </VisualState>
                                                     </VisualStateGroup>
                                                 </VisualStateManager.VisualStateGroups>
-                                                <TextBlock x:Name="GlyphElement" AutomationProperties.AccessibilityView="Raw" FontStyle="Normal" FontFamily="{ThemeResource Icon}" Foreground="{ThemeResource TipTextColor}" FontSize="12" HorizontalAlignment="Center" Text="&#xE98D;" VerticalAlignment="Center"/>
+                                                <TextBlock x:Name="GlyphElement" AutomationProperties.AccessibilityView="Raw" FontStyle="Normal" FontFamily="{ThemeResource Icon}" Foreground="{ThemeResource TipTextColor}" FontSize="12" HorizontalAlignment="Center" Text="&#xE963;" VerticalAlignment="Center"/>
                                             </Grid>
                                         </ControlTemplate>
                                     </Setter.Value>
@@ -146,14 +147,15 @@
     <Style TargetType="TextBox" x:Key="SearchSuggestBoxTextBoxStyle">
         <Setter Property="MinWidth" Value="0" />
         <Setter Property="MinHeight" Value="0" />
-        <Setter Property="Foreground" Value="{ThemeResource ImportantTextColor}" />
-        <Setter Property="Background" Value="Transparent" />
-        <Setter Property="BorderBrush" Value="{ThemeResource LineColor}" />
+        <Setter Property="Foreground" Value="{ThemeResource NormalTextColor}" />
+        <Setter Property="Background" Value="{ThemeResource PageOverBackground}" />
         <Setter Property="SelectionHighlightColor" Value="{ThemeResource TextControlSelectionHighlightColor}" />
-        <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="PlaceholderForeground" Value="{ThemeResource TipTextColor}" />
-        <Setter Property="FontSize" Value="15" />
-        <Setter Property="CornerRadius" Value="4" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="PlaceholderForeground" Value="Transparent" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontFamily" Value="{CustomResource Basic}"/>
+        <Setter Property="CornerRadius" Value="20" />
+        <Setter Property="Height" Value="40" />
         <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Auto" />
         <Setter Property="ScrollViewer.VerticalScrollMode" Value="Auto" />
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden" />
@@ -174,11 +176,10 @@
                                     <Setter.Value>
                                         <ControlTemplate TargetType="Button">
                                             <Grid x:Name="ButtonLayoutGrid"
-                                                  CornerRadius="{TemplateBinding CornerRadius}"
-                                                BorderBrush="{ThemeResource LineColor}"
-                                                BorderThickness="{TemplateBinding BorderThickness}"
-                                                  Padding="{TemplateBinding Padding}"
-                                                Background="Transparent">
+                                                  CornerRadius="15"
+                                                  Width="30" Height="30"
+                                                  Background="{ThemeResource PageBackground}"
+                                                  Padding="{TemplateBinding Padding}">
 
                                                 <VisualStateManager.VisualStateGroups>
                                                     <VisualStateGroup x:Name="CommonStates">
@@ -187,13 +188,7 @@
                                                         <VisualState x:Name="PointerOver">
                                                             <Storyboard>
                                                                 <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ButtonLayoutGrid" Storyboard.TargetProperty="Background">
-                                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource PrimaryColor}" />
-                                                                </ObjectAnimationUsingKeyFrames>
-                                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ButtonLayoutGrid" Storyboard.TargetProperty="BorderBrush">
-                                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="Transparent" />
-                                                                </ObjectAnimationUsingKeyFrames>
-                                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="GlyphElement" Storyboard.TargetProperty="Foreground">
-                                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="White" />
+                                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource CardBackground}" />
                                                                 </ObjectAnimationUsingKeyFrames>
                                                             </Storyboard>
                                                         </VisualState>
@@ -201,13 +196,7 @@
                                                         <VisualState x:Name="Pressed">
                                                             <Storyboard>
                                                                 <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ButtonLayoutGrid" Storyboard.TargetProperty="Background">
-                                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource PrimaryColorOver}" />
-                                                                </ObjectAnimationUsingKeyFrames>
-                                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ButtonLayoutGrid" Storyboard.TargetProperty="BorderBrush">
-                                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="Transparent" />
-                                                                </ObjectAnimationUsingKeyFrames>
-                                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="GlyphElement" Storyboard.TargetProperty="Foreground">
-                                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="White" />
+                                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource CardBackgroundOver}" />
                                                                 </ObjectAnimationUsingKeyFrames>
                                                             </Storyboard>
                                                         </VisualState>
@@ -223,12 +212,12 @@
                                                     </VisualStateGroup>
                                                 </VisualStateManager.VisualStateGroups>
                                                 <TextBlock x:Name="GlyphElement"
-                                                    Foreground="{ThemeResource TipTextColor}"
+                                                           Foreground="{TemplateBinding Foreground}"
                                                     VerticalAlignment="Center"
                                                     HorizontalAlignment="Center"
                                                     FontStyle="Normal"
                                                     FontSize="12"
-                                                    Text="&#xEA40;"
+                                                    Text="&#xEA15;"
                                                     FontFamily="{ThemeResource Icon}"
                                                     AutomationProperties.AccessibilityView="Raw" />
                                             </Grid>
@@ -388,7 +377,7 @@
                         </Grid.RowDefinitions>
                         <Border x:Name="BorderElement"
                             Grid.Row="1"
-                                Height="50"
+                                Height="{TemplateBinding Height}"
                                 CornerRadius="{TemplateBinding CornerRadius}"
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
@@ -423,13 +412,13 @@
                             AutomationProperties.AccessibilityView="Raw"
                             ZoomMode="Disabled" />
                         <TextBlock Style="{StaticResource SideMenuIconStyle}" Foreground="{ThemeResource NormalTextColor}"
-                   Text="&#xE9F9;" Grid.Row="1" Margin="20,0,0,0"/>
+                   Text="&#xE9D0;" Grid.Row="1" Margin="20,0,0,0" FontSize="{TemplateBinding FontSize}"/>
                         <ContentControl x:Name="PlaceholderTextContentPresenter"
                             Grid.Row="1"
                                             Grid.Column="1"
                                         VerticalContentAlignment="Center"
                             Foreground="{ThemeResource TextControlPlaceholderForeground}"
-                            Margin="{TemplateBinding BorderThickness}"
+                            Margin="0,0,5,0"
                             Padding="{TemplateBinding Padding}"
                             IsTabStop="False"
                             Grid.ColumnSpan="3"
@@ -474,6 +463,10 @@
     <Style TargetType="AutoSuggestBox" x:Key="BasicSearchBoxStyle">
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="Height" Value="40" />
+        <Setter Property="CornerRadius" Value="20" />
+        <Setter Property="Padding" Value="{ThemeResource TextControlThemePadding}" />
+        <Setter Property="FontFamily" Value="{CustomResource Basic}"/>
         <Setter Property="ItemContainerStyle" Value="{StaticResource BasicListViewContainerStyle}" />
         <Setter Property="TextBoxStyle" Value="{StaticResource SearchSuggestBoxTextBoxStyle}" />
         <Setter Property="UseSystemFocusVisuals" Value="{ThemeResource IsApplicationFocusVisualKindReveal}" />
@@ -504,10 +497,14 @@
                             PlaceholderText="{TemplateBinding PlaceholderText}"
                             Header="{TemplateBinding Header}"
                             Width="{TemplateBinding Width}"
+                                 Padding="{TemplateBinding Padding}"
+                                 FontSize="{TemplateBinding FontSize}"
                             Description="{TemplateBinding Description}"
                             ScrollViewer.BringIntoViewOnFocusChange="False"
                             Canvas.ZIndex="0"
                             Margin="0"
+                                 CornerRadius="{TemplateBinding CornerRadius}"
+                                 Height="{TemplateBinding Height}"
                             DesiredCandidateWindowAlignment="BottomEdge"
                             UseSystemFocusVisuals="{TemplateBinding UseSystemFocusVisuals}" />
 
@@ -543,6 +540,7 @@
         <Setter Property="Padding" Value="14,10"/>
         <Setter Property="SelectionHighlightColor" Value="{ThemeResource TextControlSelectionHighlightColor}"/>
         <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}"/>
+        <Setter Property="FontFamily" Value="{CustomResource Basic}"/>
         <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Auto"/>
         <Setter Property="ScrollViewer.VerticalScrollMode" Value="Auto"/>
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden"/>
@@ -617,6 +615,7 @@
         <Setter Property="PlaceholderForeground" Value="{ThemeResource TipTextColor}"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Padding" Value="0"/>
+        <Setter Property="FontFamily" Value="{CustomResource Basic}"/>
         <Setter Property="TextWrapping" Value="Wrap"/>
         <Setter Property="AcceptsReturn" Value="True"/>
         <Setter Property="SelectionHighlightColor" Value="{ThemeResource TextControlSelectionHighlightColor}"/>

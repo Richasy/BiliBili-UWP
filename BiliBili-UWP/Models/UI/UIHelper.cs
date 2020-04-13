@@ -1,16 +1,20 @@
 ﻿using BiliBili_Lib.Enums;
 using BiliBili_Lib.Tools;
 using BiliBili_UWP.Models.Enums;
+using BiliBili_UWP.Models.UI.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
+using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Animation;
 
 namespace BiliBili_UWP.Models.UI
 {
@@ -88,60 +92,60 @@ namespace BiliBili_UWP.Models.UI
             return (FontFamily)Application.Current.Resources[key];
         }
         /// <summary>
-        /// 获取当前控件的指定子控件
+        /// 设置预定义的字体资源
         /// </summary>
-        /// <typeparam name="T">控件类型</typeparam>
-        /// <param name="obj">父控件</param>
-        /// <param name="name">子控件名</param>
+        /// <param name="key">键</param>
         /// <returns></returns>
-        public static T GetChildObject<T>(DependencyObject obj, string name) where T : FrameworkElement
+        public static void SetFontFamily(string key,FontFamily font)
         {
-            DependencyObject child = null;
-            T grandChild = null;
-
-            for (int i = 0; i <= VisualTreeHelper.GetChildrenCount(obj) - 1; i++)
-            {
-                child = VisualTreeHelper.GetChild(obj, i);
-
-                if (child is T && (((T)child).Name == name | string.IsNullOrEmpty(name)))
-                {
-                    return (T)child;
-                }
-                else
-                {
-                    grandChild = GetChildObject<T>(child, name);
-                }
-                if (grandChild != null)
-                {
-                    return grandChild;
-                }
-            }
-            return null;
+            Application.Current.Resources.Add(key, font);
         }
-        /// <summary>
-        /// 获取子控件集合
-        /// </summary>
-        /// <typeparam name="T">子控件属性</typeparam>
-        /// <param name="obj">父控件</param>
-        /// <param name="name">子控件名字</param>
-        /// <returns></returns>
-        public static List<T> GetChildObjects<T>(DependencyObject obj, string name = "") where T : FrameworkElement
+        public static Storyboard GetPopupStoryboard(bool isPopin = true)
         {
-            DependencyObject child = null;
-            List<T> childList = new List<T>();
+            var board = new Storyboard();
+            var containerOpacityAni = new DoubleAnimation();
+            var backgroundOpacityAni = new DoubleAnimation();
+            var containerTransformAni = new DoubleAnimation();
 
-            for (int i = 0; i <= VisualTreeHelper.GetChildrenCount(obj) - 1; i++)
+            containerOpacityAni.From = isPopin ? 0f : 1f;
+            containerOpacityAni.To = isPopin ? 1f : 0f;
+            containerOpacityAni.Duration = new Duration(TimeSpan.FromSeconds(0.5));
+            Storyboard.SetTargetName(containerOpacityAni, "PopupContainer");
+            Storyboard.SetTargetProperty(containerOpacityAni, "Opacity");
+
+            backgroundOpacityAni.From = isPopin ? 0f : 1f;
+            backgroundOpacityAni.To = isPopin ? 1f : 0f;
+            backgroundOpacityAni.Duration = new Duration(TimeSpan.FromSeconds(0.5));
+            Storyboard.SetTargetName(backgroundOpacityAni, "PopupBackground");
+            Storyboard.SetTargetProperty(backgroundOpacityAni, "Opacity");
+
+            containerTransformAni.From = isPopin ? -20f : 0f;
+            containerTransformAni.To = isPopin ? 0f : -20f;
+            containerTransformAni.Duration = new Duration(TimeSpan.FromSeconds(0.5));
+            Storyboard.SetTargetName(containerTransformAni, "PopupContainer");
+            Storyboard.SetTargetProperty(containerTransformAni, "(UIElement.RenderTransform).(TranslateTransform.Y)");
+
+            board.Children.Add(containerOpacityAni);
+            board.Children.Add(backgroundOpacityAni);
+            board.Children.Add(containerTransformAni);
+            return board;
+        }
+        public static void PopupInit(IAppPopup popup)
+        {
+            popup._popup = new Popup();
+            popup._popupId = Guid.NewGuid();
+            popup._popup.Child = popup as UIElement;
+        }
+        public static void PopupShow(IAppPopup popup)
+        {
+            App.AppViewModel.WindowsSizeChangedNotify.Add(new Tuple<Guid, Action<Size>>(popup._popupId, (rect) =>
             {
-                child = VisualTreeHelper.GetChild(obj, i);
-
-                if (child is T && (((T)child).Name == name || string.IsNullOrEmpty(name)))
-                {
-                    childList.Add((T)child);
-                }
-
-                childList.AddRange(GetChildObjects<T>(child, ""));
-            }
-            return childList;
+                popup.Width = rect.Width;
+                popup.Height = rect.Height;
+            }));
+            popup.Width = Window.Current.Bounds.Width;
+            popup.Height = Window.Current.Bounds.Height;
+            popup._popup.IsOpen = true;
         }
     }
 }
