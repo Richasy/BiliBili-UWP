@@ -185,7 +185,10 @@ namespace BiliBili_UWP.Pages.Sub
         {
             var tab = TabCollection.Where(p => p.name == "番剧").FirstOrDefault();
             if (!isClear && tab.total <= AnimeCollection.Count)
+            {
+                AnimeHolderBlock.Visibility = AnimeCollection.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
                 return;
+            }
             if (isClear)
             {
                 animePage = 1;
@@ -214,7 +217,10 @@ namespace BiliBili_UWP.Pages.Sub
         {
             var tab = TabCollection.Where(p => p.name == "用户").FirstOrDefault();
             if (!isClear && tab.total <= UserCollection.Count)
+            {
+                UserHolderBlock.Visibility = UserCollection.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
                 return;
+            }
             if (isClear)
             {
                 userPage = 1;
@@ -244,7 +250,10 @@ namespace BiliBili_UWP.Pages.Sub
         {
             var tab = TabCollection.Where(p => p.name == "影视").FirstOrDefault();
             if (!isClear && tab.total <= MovieCollection.Count)
+            {
+                MovieHolderBlock.Visibility = MovieCollection.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
                 return;
+            }
             if (isClear)
             {
                 moviePage = 1;
@@ -270,7 +279,10 @@ namespace BiliBili_UWP.Pages.Sub
         {
             var tab = TabCollection.Where(p => p.name == "专栏").FirstOrDefault();
             if (!isClear && tab.total <= DocumentCollection.Count)
+            {
+                DocumentHolderBlock.Visibility = DocumentCollection.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
                 return;
+            }
             if (isClear)
             {
                 documentPage = 1;
@@ -317,6 +329,8 @@ namespace BiliBili_UWP.Pages.Sub
                     {
                         await RefreshAnime();
                     }
+                    else if (AnimeCollection.Count == 0)
+                        AnimeHolderBlock.Visibility = Visibility.Visible;
                 }
                 else if (_currentTab == "用户")
                 {
@@ -325,6 +339,8 @@ namespace BiliBili_UWP.Pages.Sub
                     {
                         await RefreshUser();
                     }
+                    else if (UserCollection.Count == 0)
+                        UserHolderBlock.Visibility = Visibility.Visible;
                 }
                 else if (_currentTab == "影视")
                 {
@@ -333,6 +349,8 @@ namespace BiliBili_UWP.Pages.Sub
                     {
                         await RefreshMovie();
                     }
+                    else if (MovieCollection.Count == 0)
+                        MovieHolderBlock.Visibility = Visibility.Visible;
                 }
                 else if (_currentTab == "专栏")
                 {
@@ -341,6 +359,8 @@ namespace BiliBili_UWP.Pages.Sub
                     {
                         await RefreshDocument();
                     }
+                    else if(DocumentCollection.Count==0)
+                        DocumentHolderBlock.Visibility = Visibility.Visible;
                 }
             }
         }

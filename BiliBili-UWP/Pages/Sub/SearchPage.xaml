@@ -103,7 +103,7 @@
         </Grid>
         <Grid Grid.Row="1" x:Name="AnimeContainer"
               Margin="0,15,0,0" Visibility="Collapsed">
-            <ScrollViewer Style="{StaticResource BasicScrollViewer}" ViewChanged="ScrollViewer_ViewChanged" Margin="0,10,0,0">
+            <ScrollViewer Style="{StaticResource BasicScrollViewer}" ViewChanged="ScrollViewer_ViewChanged">
                 <Grid>
                     <ListView x:Name="AnimeListView"
                       ItemContainerStyle="{StaticResource TransparentListViewContainerStyle}"

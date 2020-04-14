@@ -20,7 +20,7 @@
                 </Grid.ColumnDefinitions>
                 <Grid>
                     <controls:ImageEx DecodePixelWidth="150" IsCacheEnabled="True" Source="{x:Bind render_cover}" CornerRadius="4"
-                                  VerticalAlignment="Stretch" Stretch="UniformToFill"/>
+                                  VerticalAlignment="Stretch" Stretch="UniformToFill" PlaceholderSource="ms-appx://Assets/img_holder.png"/>
                     <Border Padding="5,3" Background="{ThemeResource PopupBackground}" RequestedTheme="Dark" HorizontalAlignment="Left" VerticalAlignment="Bottom"
                     CornerRadius="3" Margin="5,0,0,5">
                         <TextBlock x:Name="DurationBlock" Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource ImportantTextColor}"
@@ -52,7 +52,7 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <controls:ImageEx Source="{x:Bind render_cover}" Height="140" IsCacheEnabled="True" Stretch="UniformToFill" VerticalAlignment="Stretch"
-                                  CornerRadius="4"/>
+                                  CornerRadius="4" PlaceholderSource="ms-appx://Assets/img_holder.png"/>
                 <Grid Grid.Column="1" Margin="10,0,0,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1*" />
@@ -90,7 +90,7 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <controls:ImageEx Source="{x:Bind render_cover}" Width="40" Height="40" VerticalAlignment="Center"
-                                  CornerRadius="20" IsCacheEnabled="True"/>
+                                  CornerRadius="20" IsCacheEnabled="True" PlaceholderSource="ms-appx://Assets/img_holder.png"/>
                 <StackPanel Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="{x:Bind title}" Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource ImportantTextColor}"/>
@@ -119,7 +119,7 @@
                 <TextBlock Style="{StaticResource SmallTipTextStyle}" Grid.Row="1"
                            Text="{x:Bind desc}" TextWrapping="Wrap" Margin="15,0,15,10" MaxLines="3" FontSize="10"/>
                 <controls:ImageEx Source="{x:Bind render_cover}" Visibility="{x:Bind image_urls.Count,Converter={StaticResource IntVisibilityConverter}}"
-                                  Grid.Row="2" MaxHeight="80" HorizontalAlignment="Stretch" Stretch="UniformToFill"/>
+                                  Grid.Row="2" MaxHeight="80" HorizontalAlignment="Stretch" Stretch="UniformToFill" PlaceholderSource="ms-appx://Assets/img_holder.png"/>
                 <StackPanel Orientation="Horizontal" Grid.Row="3" Margin="15,10">
                     <widgets:IconTextBlock Icon="&#xEA31;" Text="{x:Bind name}" FontSize="10" GutterWidth="5" IconForeground="{ThemeResource TipTextColor}"/>
                     <widgets:IconTextBlock Icon="&#xE963;" Text="{x:Bind view}" FontSize="10" GutterWidth="5" Margin="10,0,0,0" IconForeground="{ThemeResource TipTextColor}"/>
