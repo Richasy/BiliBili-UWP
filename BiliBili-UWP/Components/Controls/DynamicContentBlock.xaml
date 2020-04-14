@@ -18,8 +18,8 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <controls:ImageEx Source="{x:Bind pic}" CornerRadius="4" DecodePixelWidth="300"
-                                  Stretch="UniformToFill"/>
+                <controls:ImageEx Source="{x:Bind render_pic}" CornerRadius="4" DecodePixelWidth="300" MaxHeight="200"
+                                  Stretch="UniformToFill" PlaceholderSource="ms-appx:///Assets/img_holder.png"/>
                 <Border Width="60" Height="60" CornerRadius="30" Background="{ThemeResource MaskAcrylicBackground}" VerticalAlignment="Center" HorizontalAlignment="Center">
                     <TextBlock Text="&#xE9BE;" FontFamily="{StaticResource Icon}" VerticalAlignment="Center" HorizontalAlignment="Center"
                            Foreground="{ThemeResource PrimaryColor}" FontSize="25" Margin="0,0,-5,0"/>
@@ -37,18 +37,20 @@
                 </Grid>
             </Grid>
         </DataTemplate>
+        
         <DataTemplate x:DataType="bilibili:ImageDynamic" x:Name="ImageTemplate">
             <Grid>
                 <ItemsControl ItemsSource="{x:Bind pictures}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <controls:WrapPanel Orientation="Horizontal"/>
+                            <controls:WrapPanel/>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <controls:ImageEx Width="{Binding render_width}" CornerRadius="5" Margin="2" DecodePixelWidth="{Binding picture_width}"
-                                              Source="{Binding img_src}" Height="{Binding render_width}" Stretch="UniformToFill"/>
+                            <controls:ImageEx CornerRadius="5" Margin="2" Width="{Binding render_width}" Height="{Binding render_width}" DecodePixelWidth="{Binding picture_width}"
+                                              Source="{Binding render_src}"  Stretch="UniformToFill" Tapped="Image_Tapped"
+                                               IsCacheEnabled="True" PlaceholderSource="ms-appx:///Assets/img_holder.png"/>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
@@ -56,7 +58,7 @@
         </DataTemplate>
         <DataTemplate x:DataType="bilibili:DocumentDynamic" x:Name="DocumentTemplate">
             <StackPanel>
-                <controls:ImageEx HorizontalAlignment="Stretch" Source="{x:Bind banner_url}" Stretch="UniformToFill" CornerRadius="4" DecodePixelWidth="300" MaxHeight="150"/>
+                <controls:ImageEx HorizontalAlignment="Stretch" Source="{x:Bind render_banner_url}" Stretch="UniformToFill" CornerRadius="4" DecodePixelWidth="300" MaxHeight="150"/>
                 <TextBlock Style="{StaticResource SmallTipTextStyle}" ToolTipService.ToolTip="{x:Bind title}" Margin="0,5" Grid.Row="1"
                            Text="{x:Bind title}" Foreground="{ThemeResource ImportantTextColor}" FontWeight="Bold"/>
                 <TextBlock Style="{StaticResource SmallTipTextStyle}" TextWrapping="Wrap" Margin="0,0,0,0" Grid.Row="1"

@@ -32,6 +32,10 @@ namespace BiliBili_Lib.Models.BiliBili
         public string title { get; set; }
         public string tname { get; set; }
         public int videos { get; set; }
+        public string render_pic
+        {
+            get => pic + "@300w.jpg";
+        }
         public class Dimension
         {
             public int height { get; set; }

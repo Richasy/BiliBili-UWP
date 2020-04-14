@@ -14,6 +14,10 @@ namespace BiliBili_Lib.Models.BiliBili
         public string title { get; set; }
         public string summary { get; set; }
         public string banner_url { get; set; }
+        public string render_banner_url
+        {
+            get => banner_url + "@300w.jpg";
+        }
         public int template_id { get; set; }
         public int state { get; set; }
         public Author author { get; set; }

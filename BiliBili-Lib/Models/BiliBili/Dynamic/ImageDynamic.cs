@@ -16,6 +16,10 @@ namespace BiliBili_Lib.Models.BiliBili
         public object[] source { get; set; }
         public List<Picture> pictures { get; set; }
         public int pictures_count { get; set; }
+        public int render_count
+        {
+            get => pictures_count > 3 ? 3 : pictures_count;
+        }
         public int upload_time { get; set; }
         public string at_control { get; set; }
         public int reply { get; set; }
@@ -33,6 +37,10 @@ namespace BiliBili_Lib.Models.BiliBili
             public int img_height { get; set; }
             public int img_size { get; set; }
             public int render_width { get; set; }
+            public string render_src
+            {
+                get => img_src + "@200w.jpg";
+            }
         }
     }
 }

@@ -26,6 +26,8 @@ namespace BiliBili_UWP.Components.Layout
     public sealed partial class PagePanel : UserControl, INotifyPropertyChanged
     {
         public bool IsNavigationFromCode = false;
+        private List<Tuple<Type, object>> MainFrameHistoryList = new List<Tuple<Type, object>>();
+        private List<Tuple<Type, object>> SubFrameHistoryList = new List<Tuple<Type, object>>();
         public PagePanel()
         {
             this.InitializeComponent();
@@ -101,14 +103,29 @@ namespace BiliBili_UWP.Components.Layout
                 instance.HolderContainer.Visibility = isDefault ? Visibility.Visible : Visibility.Collapsed;
             }
         }
-        public void NavigateToPage(SideMenuItemType type, object parameter = null)
+        public void NavigateToPage(SideMenuItemType type, object parameter = null,bool isBack=false)
         {
             PageSplitView.IsPaneOpen = false;
+            var last = MainFrameHistoryList.LastOrDefault();
             var page = GetPageTypeFromMenuType(type);
+            bool isRepeat = false;
+            if (last != null && last.Item1 == page && last.Item2==parameter)
+                isRepeat = true;
             if (page != null)
             {
                 App.AppViewModel.CurrentPageType = page;
                 PageFrame.Navigate(page, parameter, new DrillInNavigationTransitionInfo());
+                if (!isBack)
+                {
+                    if (!isRepeat)
+                    {
+                        MainFrameHistoryList.Add(new Tuple<Type, object>(page, parameter));
+                    }
+                    if (MainFrameHistoryList.Count > 1)
+                    {
+                        BackButton.Visibility = Visibility.Visible;
+                    }
+                }
                 IsDefault = false;
             }
             else
@@ -152,6 +169,8 @@ namespace BiliBili_UWP.Components.Layout
                     break;
                 case SideMenuItemType.Help:
                     break;
+                case SideMenuItemType.Player:
+                    break;
                 default:
                     break;
             }
@@ -167,17 +186,20 @@ namespace BiliBili_UWP.Components.Layout
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            if (PageFrame.CanGoBack)
+            int c = MainFrameHistoryList.Count - 2;
+            var last = MainFrameHistoryList[c];
+            var previousType = last.Item1;
+            var menu = GetMenuTypeFromPageType(previousType);
+            if (menu != App.AppViewModel.SelectedSideMenuItem.Type)
             {
-                PageSplitView.IsPaneOpen = false;
-                var previousType = PageFrame.BackStack.Last().SourcePageType;
-                var menu = GetMenuTypeFromPageType(previousType);
-                if (menu != App.AppViewModel.SelectedSideMenuItem.Type)
-                {
-                    App.AppViewModel.CurrentSidePanel.SetSelectedItem(menu);
-                }
-                PageFrame.GoBack();
+                App.AppViewModel.CurrentSidePanel.SetSelectedItem(menu);
             }
+            MainFrameHistoryList.RemoveAt(MainFrameHistoryList.Count - 1);
+            if (MainFrameHistoryList.Count <= 1)
+            {
+                BackButton.Visibility = Visibility.Collapsed;
+            }
+            NavigateToPage(menu, last.Item2, true);
         }
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -227,15 +249,29 @@ namespace BiliBili_UWP.Components.Layout
             SubPageFrame.Visibility = Visibility.Visible;
         }
 
-        public void NavigateToSubPage(Type page, object parameter = null)
+        public void NavigateToSubPage(Type page, object parameter = null,bool isBack=false)
         {
             PageSplitView.IsPaneOpen = true;
+            var last = SubFrameHistoryList.LastOrDefault();
+            bool isRepeat = false;
+            if (last != null && last.Item1 == page && last.Item2 == parameter)
+                isRepeat = true;
             SubPageFrame.Navigate(page, parameter, new DrillInNavigationTransitionInfo());
+            if (!isBack)
+            {
+                if (!isRepeat)
+                {
+                    SubFrameHistoryList.Add(new Tuple<Type, object>(page, parameter));
+                }
+                if (SubFrameHistoryList.Count > 1)
+                {
+                    SubBackButton.Visibility = Visibility.Visible;
+                }
+            }
         }
 
         private void PageFrame_Navigated(object sender, NavigationEventArgs e)
         {
-            BackButton.Visibility = PageFrame.CanGoBack ? Visibility.Visible : Visibility.Collapsed;
             App.AppViewModel.CurrentPageType = e.SourcePageType;
         }
 
@@ -254,15 +290,15 @@ namespace BiliBili_UWP.Components.Layout
 
         private void SubBackButton_Click(object sender, RoutedEventArgs e)
         {
-            if (SubPageFrame.CanGoBack)
+            int c = SubFrameHistoryList.Count - 2;
+            var last = SubFrameHistoryList[c];
+            var previousType = last.Item1;
+            SubFrameHistoryList.RemoveAt(SubFrameHistoryList.Count - 1);
+            if (SubFrameHistoryList.Count <= 1)
             {
-                SubPageFrame.GoBack();
+                SubBackButton.Visibility = Visibility.Collapsed;
             }
-        }
-
-        private void SubPageFrame_Navigated(object sender, NavigationEventArgs e)
-        {
-            SubBackButton.Visibility = SubPageFrame.CanGoBack ? Visibility.Visible : Visibility.Collapsed;
+            NavigateToSubPage(previousType, last.Item2, true);
         }
     }
 }

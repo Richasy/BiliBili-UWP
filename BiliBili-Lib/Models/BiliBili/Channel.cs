@@ -14,6 +14,10 @@ namespace BiliBili_Lib.Models.BiliBili
         public string cover { get; set; }
         public string @goto { get; set; }
         public string param { get; set; }
+        public string render_cover
+        {
+            get => cover + "@60w.jpg";
+        }
 
         public override bool Equals(object obj)
         {
@@ -36,6 +40,10 @@ namespace BiliBili_Lib.Models.BiliBili
     public class ChannelView : ChannelBase, IAlphaBackground
     {
         public string background { get; set; }
+        public string render_background
+        {
+            get => background + "@150w.jpg";
+        }
         public string theme_color { get; set; }
         public int alpha { get; set; }
         public string desc { get; set; }

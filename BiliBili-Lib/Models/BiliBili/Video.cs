@@ -18,6 +18,10 @@ namespace BiliBili_Lib.Models.BiliBili
             get => _cover+ "@200w.jpg";
             set => _cover = value;
         }
+        public string render_cover
+        {
+            get => _cover + "@400w.jpg";
+        }
         public string param { get; set; }
         public string cover_left_text_1 { get; set; }
         public int cover_left_icon_1 { get; set; }

@@ -140,6 +140,9 @@
     <Compile Include="Components\Controls\ScanChannelPanel.xaml.cs">
       <DependentUpon>ScanChannelPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Components\Controls\SearchContentBlock.xaml.cs">
+      <DependentUpon>SearchContentBlock.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Components\Controls\SubscribeChannelPanel.xaml.cs">
       <DependentUpon>SubscribeChannelPanel.xaml</DependentUpon>
     </Compile>
@@ -176,6 +179,9 @@
     <Compile Include="Components\Widgets\WaitingPopup.xaml.cs">
       <DependentUpon>WaitingPopup.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\ShowImageDialog.xaml.cs">
+      <DependentUpon>ShowImageDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -193,6 +199,7 @@
     <Compile Include="Models\UI\Converter\IntVisibilityConverter.cs" />
     <Compile Include="Models\UI\Converter\SideMenuExtraVisibilityConverter.cs" />
     <Compile Include="Models\UI\Converter\SideMenuSignColorConverter.cs" />
+    <Compile Include="Models\UI\Converter\StringVisbilityConverter.cs" />
     <Compile Include="Models\UI\IconItem.cs" />
     <Compile Include="Models\UI\Interface\IAppPopup.cs" />
     <Compile Include="Models\UI\Interface\IRefreshPage.cs" />
@@ -216,6 +223,9 @@
     <Compile Include="Pages\Sub\Channel\TagDetailPage.xaml.cs">
       <DependentUpon>TagDetailPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\Sub\SearchPage.xaml.cs">
+      <DependentUpon>SearchPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -226,6 +236,7 @@
   <ItemGroup>
     <Content Include="Assets\bilibili logo.png" />
     <Content Include="Assets\captcha_refresh.png" />
+    <Content Include="Assets\img_holder.png" />
     <Content Include="Assets\Level\level_0.png" />
     <Content Include="Assets\Level\level_0.svg" />
     <Content Include="Assets\Level\level_1.png" />
@@ -333,6 +344,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Components\Controls\SearchContentBlock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Components\Controls\SubscribeChannelPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -381,6 +396,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Dialogs\ShowImageDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -401,7 +420,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\Sub\SearchPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Template\Buttons.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Template\Converters.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -465,7 +492,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Dialogs\" />
+    <Folder Include="Pages\Sub\Video\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Fonts\Richasy_BiliBili.ttf" />

@@ -10,12 +10,8 @@
     xmlns:controls1="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
     xmlns:others="using:BiliBili_UWP.Models.UI.Others"
-    xmlns:converter="using:BiliBili_UWP.Models.UI.Converter"
     mc:Ignorable="d">
     <Page.Resources>
-        <converter:ChannelCoverConverter x:Key="CoverConverter"/>
-        <converter:IntVisibilityConverter x:Key="IntVisibilityConverter"/>
-        <converter:SideMenuSignColorConverter x:Key="SignColorConverter"/>
         <DataTemplate x:DataType="bilibili:ChannelListItem" x:Name="DefaultChannelItemTemplate">
             <Grid Background="{ThemeResource CardBackground}" Padding="10,8" Margin="0,2" CornerRadius="4">
                 <Grid.ColumnDefinitions>
@@ -23,8 +19,8 @@
                     <ColumnDefinition Width="1*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <controls1:ImageEx VerticalAlignment="Center" Width="35" Height="35" CornerRadius="4" DecodePixelWidth="35"
-                                   Source="{x:Bind cover,Converter={StaticResource CoverConverter}}" Stretch="UniformToFill" Margin="0,0,10,0"/>
+                <controls1:ImageEx VerticalAlignment="Center" Width="35" Height="35" CornerRadius="4" DecodePixelWidth="35" IsCacheEnabled="True"
+                                   Source="{x:Bind render_cover,Converter={StaticResource ChannelCoverConverter}}" Stretch="UniformToFill" Margin="0,0,10,0"/>
                 <StackPanel VerticalAlignment="Center" Grid.Column="1" HorizontalAlignment="Left">
                     <TextBlock Style="{StaticResource CaptionTextStyle}" FontSize="12" FontWeight="Bold" Text="{x:Bind title}"/>
                     <TextBlock Style="{StaticResource SmallTipTextStyle}" Text="{x:Bind label}" FontSize="10" Margin="0,5,0,0"/>
@@ -41,8 +37,8 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <controls1:ImageEx VerticalAlignment="Center" Width="35" Height="35" CornerRadius="4" DecodePixelWidth="35"
-                                   Source="{x:Bind cover,Converter={StaticResource CoverConverter}}" Stretch="UniformToFill" Margin="0,0,10,0"/>
+                <controls1:ImageEx VerticalAlignment="Center" Width="35" Height="35" CornerRadius="4" DecodePixelWidth="35" IsCacheEnabled="True"
+                                   Source="{x:Bind render_cover,Converter={StaticResource ChannelCoverConverter}}" Stretch="UniformToFill" Margin="0,0,10,0"/>
                 
                 <StackPanel Orientation="Horizontal" Grid.Column="1">
                     <TextBlock Style="{StaticResource CaptionTextStyle}" FontSize="12" Text="{x:Bind name}" VerticalAlignment="Center"/>
@@ -66,7 +62,7 @@
                     </Border>
                     <Border Height="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" x:Name="ItemSign"
                             Grid.Row="1"
-                        Background="{Binding ElementName=TabContainer,Path=IsSelected,Converter={StaticResource SignColorConverter},Mode=OneWay}"/>
+                        Background="{Binding ElementName=TabContainer,Path=IsSelected,Converter={StaticResource SideMenuSignColorConverter},Mode=OneWay}"/>
                 </Grid>
             </ListViewItem>
         </DataTemplate>
@@ -76,8 +72,8 @@
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <controls1:ImageEx VerticalAlignment="Center" Width="35" Height="35" CornerRadius="4" DecodePixelWidth="35"
-                                   Source="{x:Bind cover,Converter={StaticResource CoverConverter}}" Stretch="UniformToFill"/>
+                <controls1:ImageEx VerticalAlignment="Center" Width="35" Height="35" CornerRadius="4" DecodePixelWidth="35" IsCacheEnabled="True"
+                                   Source="{x:Bind render_cover,Converter={StaticResource ChannelCoverConverter}}" Stretch="UniformToFill"/>
                 <StackPanel VerticalAlignment="Center" Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,0">
                     <TextBlock Style="{StaticResource CaptionTextStyle}" FontSize="12" FontWeight="Bold" Text="{x:Bind title}"/>
                     <TextBlock Style="{StaticResource SmallTipTextStyle}" Text="{x:Bind label}" FontSize="10" Margin="0,5,0,0"/>
@@ -98,7 +94,7 @@
             <RowDefinition Height="1*" />
         </Grid.RowDefinitions>
         <StackPanel>
-            <AutoSuggestBox Style="{StaticResource BasicSearchBoxStyle}" PlaceholderText="搜索频道" 
+            <AutoSuggestBox Style="{StaticResource BasicSearchBoxStyle}" PlaceholderText="搜索频道"  QuerySubmitted="ChannelSearchBox_QuerySubmitted"
                             x:Name="ChannelSearchBox" KeyUp="ChannelSearchBox_KeyUp" TextChanged="ChannelSearchBox_TextChanged"
                             ItemTemplate="{StaticResource SearchChannelItemTemplate}"/>
             <ProgressBar IsIndeterminate="True" HorizontalAlignment="Stretch" Margin="0,5,0,0" Foreground="{ThemeResource PrimaryColor}"
@@ -119,13 +115,13 @@
                   ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                   Grid.Row="1" Margin="0,10,0,0"/>
         <ScrollViewer Style="{StaticResource BasicScrollViewer}" Grid.Row="2"
-                      ViewChanged="ScrollViewer_ViewChanged" Margin="0,15,-15,0">
+                      ViewChanged="ScrollViewer_ViewChanged" Margin="0,15,0,0">
             <Grid>
                 <ListView x:Name="ChannelListView"
                       ItemContainerStyle="{StaticResource TransparentListViewContainerStyle}"
                       Style="{StaticResource BasicListView}"
                       IsItemClickEnabled="True"
-                      Margin="-5,0,10,0"
+                      Margin="0,0,0,0"
                       ItemClick="ChannelListView_ItemClick"
                       />
                 <TextBlock Text="没有相关的频道" Style="{StaticResource TipTextStyle}" Visibility="Collapsed"

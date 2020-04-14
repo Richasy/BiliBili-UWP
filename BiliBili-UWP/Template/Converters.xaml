@@ -1,0 +1,12 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BiliBili_UWP.Template"
+    xmlns:converter="using:BiliBili_UWP.Models.UI.Converter">
+    <converter:ChannelCoverConverter x:Key="ChannelCoverConverter"/>
+    <converter:IntVisibilityConverter x:Key="IntVisibilityConverter"/>
+    <converter:SideMenuSignColorConverter x:Key="SideMenuSignColorConverter"/>
+    <converter:StringVisbilityConverter x:Key="StringVisibilityConverter"/>
+    <converter:SideMenuExtraVisibilityConverter x:Key="SideMenuExtraVisibleConverter"/>
+    <converter:ChannelHeaderMaskConverter x:Key="ChannelHeaderMaskConverter"/>
+</ResourceDictionary>

@@ -43,8 +43,9 @@
                     <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="10" x:Name="TipBlock" Margin="0,5,0,0"/>
                 </StackPanel>
             </StackPanel>
-            <widgets:AsyncButton x:Name="FollowButton" Grid.Column="1" VerticalAlignment="Center" Style="{StaticResource DefaultAsyncButtonStyle}"
-                                 Padding="0,0,4,0" FontSize="10" Icon="&#xE9C0;" Click="FollowButton_Click" Text="关注" BorderBrush="{ThemeResource LineColor}" BorderThickness="1"/>
+            <widgets:AsyncButton
+                x:Name="FollowButton" Grid.Column="1" VerticalAlignment="Center" Style="{StaticResource DefaultAsyncButtonStyle}"
+                                 Padding="0,0,0,0" FontSize="10" Click="FollowButton_Click" Text="关注" BorderBrush="{ThemeResource LineColor}" BorderThickness="1"/>
             <Button Style="{StaticResource TransparentButtonStyle}" VerticalAlignment="Center" Grid.Column="2"
                     Content="&#xE9A9;" FontFamily="{StaticResource Icon}"/>
         </Grid>

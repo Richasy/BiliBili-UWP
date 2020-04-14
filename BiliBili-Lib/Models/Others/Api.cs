@@ -148,11 +148,27 @@ namespace BiliBili_Lib.Models.Others
         public const string CHANNEL_TAG_RECOMMEND = _appBase + "/x/channel/feed/index";
         #endregion
 
+        #region 应用 Application
+        /// <summary>
+        /// 热搜及其它搜索条目
+        /// </summary>
+        public const string APP_SEARCH_HOT = _appBase + "/x/v2/search/square";
+        /// <summary>
+        /// 综合搜索
+        /// </summary>
+        public const string APP_SEARCH_COMPLEX = _appBase + "/x/v2/search";
+        /// <summary>
+        /// 特殊类目搜索
+        /// </summary>
+        public const string APP_SEARCH_TYPE = _appBase + "/x/v2/search/type";
+        #endregion
+
         #region 视频 Video
         /// <summary>
         /// 推荐视频
         /// </summary>
         public const string VIDEO_RECOMMEND = _appBase + "/x/v2/feed/index";
+        
         #endregion
 
         #region 话题及动态 Topic Dynamic

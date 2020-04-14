@@ -49,6 +49,15 @@ namespace BiliBili_UWP.Components.Controls
                 instance.PlayCountBlock.Text = data.cover_left_text_1;
                 instance.DanmuCountBlock.Text = data.cover_left_text_2;
                 instance.DurationBlock.Text = data.cover_right_text;
+                if (!string.IsNullOrEmpty(data.rcmd_reason))
+                {
+                    instance.ReasonContainer.Visibility = Visibility.Visible;
+                    instance.ReasonBlock.Text = data.rcmd_reason;
+                }
+                else
+                {
+                    instance.ReasonContainer.Visibility = Visibility.Collapsed;
+                }
             }
         }
 

@@ -13,6 +13,7 @@ namespace BiliBili_Lib.Enums
         AccessToken,
         RefreshToken,
         UserId,
-        TokenExpiry
+        TokenExpiry,
+        SearchHistory
     }
 }

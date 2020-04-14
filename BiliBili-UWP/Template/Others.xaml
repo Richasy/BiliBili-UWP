@@ -602,7 +602,7 @@
         <Setter Property="Background" Value="{ThemeResource PageBackground}"/>
         <Setter Property="TitleTemplate" Value="{StaticResource DialogTitle}"/>
         <Setter Property="PrimaryButtonStyle" Value="{StaticResource PrimaryDialogButton}"/>
-        <Setter Property="SecondaryButtonStyle" Value="{StaticResource AlertDialogButton}"/>
+        <Setter Property="SecondaryButtonStyle" Value="{StaticResource DefaultDialogButton}"/>
         <Setter Property="CloseButtonStyle" Value="{StaticResource DefaultDialogButton}"/>
     </Style>
     <Style x:Key="BasicCheckBoxStyle" TargetType="CheckBox">

@@ -18,7 +18,7 @@
         </Grid.RowDefinitions>
         <Grid>
             <controls:ImageEx x:Name="VideoCover" HorizontalAlignment="Stretch" CornerRadius="4,4,0,0" Height="90"
-                          DecodePixelWidth="170" Stretch="UniformToFill"/>
+                          DecodePixelWidth="170" Stretch="UniformToFill" IsCacheEnabled="True" PlaceholderSource="ms-appx:///Assets/img_holder.png"/>
             <Border Padding="5,3" Background="{ThemeResource PopupBackground}" RequestedTheme="Dark" HorizontalAlignment="Left" VerticalAlignment="Bottom"
                     CornerRadius="3" Margin="5,0,0,5">
                 <TextBlock x:Name="DurationBlock" Style="{StaticResource SmallTipTextStyle}" FontSize="10" Foreground="{ThemeResource ImportantTextColor}"/>

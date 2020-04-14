@@ -21,6 +21,7 @@ namespace BiliBili_UWP.Models.Enums
         Settings,
         Help,
 
-        Line
+        Line,
+        Player
     }
 }

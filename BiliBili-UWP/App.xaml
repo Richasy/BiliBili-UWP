@@ -13,6 +13,7 @@
                 <ResourceDictionary Source="ms-appx:///Template/Views.xaml"/>
                 <ResourceDictionary Source="ms-appx:///Template/Others.xaml"/>
                 <ResourceDictionary Source="ms-appx:///Template/Inputs.xaml"/>
+                <ResourceDictionary Source="ms-appx:///Template/Converters.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <ResourceDictionary.ThemeDictionaries>
                 <ResourceDictionary x:Key="Light" Source="ms-appx:///Theme/Light.xaml"/>

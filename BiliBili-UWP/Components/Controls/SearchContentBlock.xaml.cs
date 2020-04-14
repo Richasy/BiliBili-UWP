@@ -1,5 +1,4 @@
 ﻿using BiliBili_Lib.Models.BiliBili;
-using BiliBili_UWP.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,19 +13,17 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using static BiliBili_Lib.Models.BiliBili.ImageDynamic;
 
-//https://go.microsoft.com/fwlink/?LinkId=234236 上介绍了“用户控件”项模板
+// The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
 namespace BiliBili_UWP.Components.Controls
 {
-    public sealed partial class DynamicContentBlock : UserControl
+    public sealed partial class SearchContentBlock : UserControl
     {
-        public DynamicContentBlock()
+        public SearchContentBlock()
         {
             this.InitializeComponent();
         }
-
         private string _cardType = "";
 
         public object Data
@@ -37,29 +34,34 @@ namespace BiliBili_UWP.Components.Controls
 
         // Using a DependencyProperty as the backing store for Data.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty DataProperty =
-            DependencyProperty.Register("Data", typeof(object), typeof(DynamicContentBlock), new PropertyMetadata(null,new PropertyChangedCallback(Data_Changed)));
+            DependencyProperty.Register("Data", typeof(object), typeof(SearchContentBlock), new PropertyMetadata(null, new PropertyChangedCallback(Data_Changed)));
 
         private static void Data_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if(e.NewValue != null)
+            if (e.NewValue != null)
             {
                 var data = e.NewValue;
-                var instance = d as DynamicContentBlock;
+                var instance = d as SearchContentBlock;
                 instance.MainContentControl.Content = data;
-                if (data is AV)
+                if (data is SearchVideo)
                 {
                     instance._cardType = "video";
                     instance.MainContentControl.ContentTemplate = instance.VideoTemplate;
                 }
-                else if (data is ImageDynamic)
+                else if(data is SearchAnime anime)
                 {
-                    instance._cardType = "image";
-                    var temp = data as ImageDynamic;
-                    double width = temp.pictures.Count < 3 ? 290 / temp.pictures_count : 100;
-                    temp.pictures.ForEach(p => { p.render_width = Convert.ToInt32(width); });
-                    instance.MainContentControl.ContentTemplate = instance.ImageTemplate;
+                    if (anime.season_type_name == "番剧")
+                        instance._cardType = "anime";
+                    else
+                        instance._cardType = "movie";
+                    instance.MainContentControl.ContentTemplate = instance.AnimeTemplate;
                 }
-                else if (data is DocumentDynamic)
+                else if(data is SearchUser)
+                {
+                    instance._cardType = "user";
+                    instance.MainContentControl.ContentTemplate = instance.UserTemplate;
+                }
+                else if(data is SearchDocument)
                 {
                     instance._cardType = "document";
                     instance.MainContentControl.ContentTemplate = instance.DocumentTemplate;
@@ -67,17 +69,9 @@ namespace BiliBili_UWP.Components.Controls
             }
         }
 
-        private void MainContentControl_Tapped(object sender, TappedRoutedEventArgs e)
+        private void FollowUserButton_Click(object sender, RoutedEventArgs e)
         {
-            if (_cardType == "video")
-                App.AppViewModel.PlayVideo((Data as AV).aid);
-        }
 
-        private async void Image_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            var data = (sender as FrameworkElement).DataContext as Picture;
-            var dialog = new ShowImageDialog(data.img_src);
-            await dialog.ShowAsync();
         }
     }
 }

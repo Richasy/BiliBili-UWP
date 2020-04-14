@@ -23,7 +23,7 @@
                                    FontSize="12"/>
         </DataTemplate>
         <DataTemplate x:DataType="bilibili:VideoChannel" x:Key="ChannelVideoItemTemplate">
-            <controls1:ChannelVideoCard Data="{Binding}" Width="158" Height="135"/>
+            <controls1:ChannelVideoCard Data="{Binding}"/>
         </DataTemplate>
         <DataTemplate x:DataType="bilibili:Topic" x:Key="TopicItemTemplate">
             <controls1:TopicCard Data="{Binding}" Margin="0,0,0,10"/>
@@ -79,7 +79,7 @@
                     </Grid.RowDefinitions>
                     <Grid x:Name="HeaderVideoContainer" Margin="0,0,0,15" HorizontalAlignment="Left">
                         <controls:ImageEx x:Name="HeaderVideoImage" CornerRadius="4" Height="150"
-                                          Stretch="UniformToFill"/>
+                                          Stretch="UniformToFill" IsCacheEnabled="True" PlaceholderSource="ms-appx:///Assets/img_holder.png"/>
                         <Grid VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Padding="10" Background="{ThemeResource MaskAcrylicBackground}"
                               CornerRadius="0,0,3,3">
                             <Grid.ColumnDefinitions>
@@ -94,15 +94,21 @@
                                              x:Name="RankButton" Click="RankButton_Click" Text="查看排行榜" FontSize="10" Margin="0,5,5,0" Background="{ThemeResource MaskAcrylicBackground}"/>
                     </Grid>
                     <GridView x:Name="VideoGridView" ItemContainerStyle="{StaticResource TransparentGridViewItemContainerStyle}" HorizontalAlignment="Center"
-                              Style="{StaticResource NoScrollGridView}" ItemsSource="{x:Bind VideoCollection}" Grid.Row="1" Padding="0,0,-8,0"
-                              ItemTemplate="{StaticResource ChannelVideoItemTemplate}" IsItemClickEnabled="True" ItemClick="VideoGridView_ItemClick"/>
+                              Style="{StaticResource NoScrollGridView}" ItemsSource="{x:Bind VideoCollection}" Grid.Row="1"
+                              ItemTemplate="{StaticResource ChannelVideoItemTemplate}" IsItemClickEnabled="True" ItemClick="VideoGridView_ItemClick">
+                        <GridView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <controls:UniformGrid Columns="2" Orientation="Horizontal" Padding="0,0,-8,0"/>
+                            </ItemsPanelTemplate>
+                        </GridView.ItemsPanel>
+                    </GridView>
                 </Grid>
             </ScrollViewer>
         </Grid>
 
 
         <Grid Grid.Row="3" x:Name="TopicContainer" Visibility="Collapsed">
-            <ScrollViewer Grid.Row="1" Margin="-10,15,-10,0" Style="{StaticResource BasicScrollViewer}" ViewChanged="ScrollViewer_ViewChanged">
+            <ScrollViewer Grid.Row="1" Margin="0,15,0,0" Style="{StaticResource BasicScrollViewer}" ViewChanged="ScrollViewer_ViewChanged">
                 <Grid>
                     <ListView ItemTemplate="{StaticResource TopicItemTemplate}"
                               ItemsSource="{x:Bind TopicCollection}"

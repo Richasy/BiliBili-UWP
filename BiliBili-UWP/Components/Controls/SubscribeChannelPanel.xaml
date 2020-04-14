@@ -7,15 +7,13 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:channels="using:BiliBili_Lib.Models.BiliBili"
-    xmlns:converter="using:BiliBili_UWP.Models.UI.Converter"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
     <UserControl.Resources>
-        <converter:ChannelCoverConverter x:Key="ConverConverter"/>
         <DataTemplate x:DataType="channels:ChannelBase" x:Key="ChannelItemTemplate">
             <controls:ImageEx DecodePixelWidth="40" Width="40" Height="40" CornerRadius="6" Stretch="UniformToFill"
-                              Source="{x:Bind cover,Converter={StaticResource ConverConverter}}" ToolTipService.ToolTip="{x:Bind title}"/>
+                              Source="{x:Bind render_cover,Converter={StaticResource ChannelCoverConverter}}" ToolTipService.ToolTip="{x:Bind title}"/>
         </DataTemplate>
     </UserControl.Resources>
     <StackPanel>

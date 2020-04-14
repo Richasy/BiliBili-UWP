@@ -18,10 +18,14 @@
         </Grid.RowDefinitions>
         <Grid>
             <controls:ImageEx x:Name="VideoCover" HorizontalAlignment="Stretch" CornerRadius="4,4,0,0" Height="110"
-                          DecodePixelWidth="195" Stretch="UniformToFill"/>
+                          DecodePixelWidth="195" Stretch="UniformToFill" IsCacheEnabled="True" PlaceholderSource="ms-appx:///Assets/img_holder.png"/>
             <Border Padding="8,3" Background="{ThemeResource PopupBackground}" RequestedTheme="Dark" HorizontalAlignment="Left" VerticalAlignment="Bottom"
                     CornerRadius="3" Margin="10,0,0,10">
                 <TextBlock x:Name="DurationBlock" Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource ImportantTextColor}"/>
+            </Border>
+            <Border Padding="8,3" Background="{ThemeResource PopupBackground}" HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                    CornerRadius="3" Margin="0,0,10,10" x:Name="ReasonContainer">
+                <TextBlock x:Name="ReasonBlock" Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource SecondaryColor}"/>
             </Border>
         </Grid>
         

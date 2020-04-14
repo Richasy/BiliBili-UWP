@@ -13,9 +13,10 @@
     d:DesignWidth="400">
 
     <SplitView x:Name="PageSplitView" PaneClosing="PageSplitView_PaneClosing" PaneOpening="PageSplitView_PaneOpening"
-               PanePlacement="Right" CompactPaneLength="0" IsPaneOpen="{x:Bind IsSubPageOpen,Mode=TwoWay}">
+               PanePlacement="Right" CompactPaneLength="0" IsPaneOpen="{x:Bind IsSubPageOpen,Mode=TwoWay}"
+               AllowFocusOnInteraction="True">
         <SplitView.Pane>
-            <Grid Padding="35,35,35,0" Background="{ThemeResource PaneBackground}">
+            <Grid Padding="25,35,25,0" Background="{ThemeResource PaneBackground}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="1*" />
@@ -37,8 +38,7 @@
                             Click="ClosePaneButton_Click" VerticalAlignment="Center"/>
                 </Grid>
                 <Grid Grid.Row="1" Margin="0,20,0,0">
-                    <Frame x:Name="SubPageFrame" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:FieldModifier="Public"
-                           Navigated="SubPageFrame_Navigated"/>
+                    <Frame x:Name="SubPageFrame" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:FieldModifier="Public"/>
                 </Grid>
             </Grid>
         </SplitView.Pane>

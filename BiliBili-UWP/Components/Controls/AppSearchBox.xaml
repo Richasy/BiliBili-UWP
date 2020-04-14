@@ -5,20 +5,34 @@
     xmlns:local="using:BiliBili_UWP.Components.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:bilibili="using:BiliBili_Lib.Models.BiliBili"
+    xmlns:converters="using:Microsoft.Toolkit.Uwp.UI.Converters"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
     <UserControl.Resources>
-        <Flyout FlyoutPresenterStyle="{StaticResource NoPaddingFlyoutStyle}" x:Key="BasicFlyout" Placement="Bottom">
-            <Grid x:Name="BasicContainer">
-                
-            </Grid>
-        </Flyout>
+        
+        <DataTemplate x:Name="HotSearchItemTemplate" x:DataType="bilibili:HotSearch">
+            <StackPanel Orientation="Horizontal" Padding="10">
+                <TextBlock Text="{x:Bind position}" Width="25" Style="{StaticResource SmallTipTextStyle}" VerticalAlignment="Center"/>
+                <TextBlock Text="{x:Bind show_name}" Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource ImportantTextColor}"
+                           VerticalAlignment="Center"/>
+                <controls:ImageEx Visibility="{x:Bind icon,Converter={StaticResource StringVisibilityConverter}}" Source="{x:Bind icon}"
+                       Height="13" Margin="5,0,0,0" VerticalAlignment="Center"/>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Name="HistoryItemTemplate" x:DataType="x:String">
+            <Border Padding="10,8">
+                <TextBlock Style="{StaticResource SmallTipTextStyle}" Text="{Binding}"/>
+            </Border>
+        </DataTemplate>
     </UserControl.Resources>
     <Grid>
         <AutoSuggestBox Style="{StaticResource BasicSearchBoxStyle}" x:Name="BiliSearchBox"
-                        GotFocus="BiliSearchBox_GotFocus" KeyDown="BiliSearchBox_KeyDown" CornerRadius="20"
+                        GotFocus="BiliSearchBox_GotFocus" KeyUp="BiliSearchBox_KeyUp" CornerRadius="20"
                         PlaceholderText="搜索视频" QuerySubmitted="BiliSearchBox_QuerySubmitted"
+                        TextChanged="BiliSearchBox_TextChanged" LostFocus="BiliSearchBox_LostFocus"
                         />
     </Grid>
 </UserControl>

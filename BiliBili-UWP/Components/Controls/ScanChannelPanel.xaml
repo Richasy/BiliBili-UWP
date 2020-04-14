@@ -13,7 +13,7 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
     <UserControl.Resources>
-        <converter:ChannelHeaderMaskConverter x:Key="MaskConverter"/>
+        
         <DataTemplate x:DataType="bilibili:ChannelView" x:Key="ChannelItemTemplate">
             <Grid Width="105" Height="110" Background="{ThemeResource CardBackground}" CornerRadius="4" Margin="3,0">
                 <Grid.RowDefinitions>
@@ -21,13 +21,13 @@
                     <RowDefinition Height="1*" />
                 </Grid.RowDefinitions>
                 <Grid>
-                    <controls:ImageEx Source="{x:Bind background}" Stretch="UniformToFill" DecodePixelWidth="105"
+                    <controls:ImageEx Source="{x:Bind render_background}" Stretch="UniformToFill" DecodePixelWidth="105"
                                       CornerRadius="4,4,0,0" Height="40"/>
-                    <Border Background="{Binding Converter={StaticResource MaskConverter}}" CornerRadius="4,4,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                    <Border Background="{Binding Converter={StaticResource ChannelHeaderMaskConverter}}" CornerRadius="4,4,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
                 </Grid>
                 <StackPanel Grid.RowSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0,20,0,0">
                     <controls:ImageEx HorizontalAlignment="Center" BorderBrush="{ThemeResource CardBackground}" BorderThickness="3"
-                                      Source="{x:Bind cover}" Width="35" Height="35" CornerRadius="20"/>
+                                      Source="{x:Bind render_cover}" Width="35" Height="35" CornerRadius="20"/>
                     <TextBlock HorizontalAlignment="Center" TextAlignment="Center" Style="{StaticResource CaptionTextStyle}" FontSize="13" Margin="0,5"
                                Text="{x:Bind title}" MaxWidth="85"/>
                     <TextBlock HorizontalAlignment="Center" TextAlignment="Center" Style="{StaticResource SmallTipTextStyle}"
