@@ -33,8 +33,7 @@ namespace BiliBili_UWP.Models.Core
             string _access = AppTool.GetLocalSetting(Settings.AccessToken, "");
             string _refresh = AppTool.GetLocalSetting(Settings.RefreshToken, "");
             int _expiry = Convert.ToInt32(AppTool.GetLocalSetting(Settings.TokenExpiry, "0"));
-            string _userId = AppTool.GetLocalSetting(Settings.UserId, "");
-            _client = new BiliBiliClient(_access, _refresh, _userId, _expiry);
+            _client = new BiliBiliClient(_access, _refresh, _expiry);
             _client.Account.TokenChanged += TokenChanged;
         }
 

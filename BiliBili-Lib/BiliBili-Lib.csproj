@@ -123,6 +123,7 @@
     <Compile Include="Enums\LoginResultType.cs" />
     <Compile Include="Enums\Settings.cs" />
     <Compile Include="Models\BiliBili\Account.cs" />
+    <Compile Include="Models\BiliBili\Anime.cs" />
     <Compile Include="Models\BiliBili\AV.cs" />
     <Compile Include="Models\BiliBili\Channel.cs" />
     <Compile Include="Models\BiliBili\Dynamic\DocumentDynamic.cs" />
@@ -134,6 +135,9 @@
     <Compile Include="Models\BiliBili\Others.cs" />
     <Compile Include="Models\BiliBili\Region.cs" />
     <Compile Include="Models\BiliBili\Video.cs" />
+    <Compile Include="Models\BiliBili\Video\VideoDetail.cs" />
+    <Compile Include="Models\BiliBili\Video\VideoPart.cs" />
+    <Compile Include="Models\BiliBili\Video\VideoPlay.cs" />
     <Compile Include="Models\Interface\IAlphaBackground.cs" />
     <Compile Include="Models\Others\Api.cs" />
     <Compile Include="Models\Others\ApiKeyInfo.cs" />
@@ -142,6 +146,7 @@
     <Compile Include="Models\Others\TokenPackage.cs" />
     <Compile Include="Models\Others\WebClient.cs" />
     <Compile Include="Service\AccountService.cs" />
+    <Compile Include="Service\AnimeService.cs" />
     <Compile Include="Service\BiliBiliClient.cs" />
     <Compile Include="Service\ChannelService.cs" />
     <Compile Include="Service\TopicService.cs" />

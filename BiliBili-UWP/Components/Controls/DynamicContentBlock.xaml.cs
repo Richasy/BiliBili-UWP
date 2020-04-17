@@ -70,7 +70,7 @@ namespace BiliBili_UWP.Components.Controls
         private void MainContentControl_Tapped(object sender, TappedRoutedEventArgs e)
         {
             if (_cardType == "video")
-                App.AppViewModel.PlayVideo((Data as AV).aid);
+                App.AppViewModel.PlayVideo((Data as AV).aid,sender);
         }
 
         private async void Image_Tapped(object sender, TappedRoutedEventArgs e)

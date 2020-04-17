@@ -19,6 +19,7 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
@@ -48,15 +49,17 @@ namespace BiliBili_UWP.Pages.Main
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
-            App.AppViewModel.CurrentPagePanel.IsStretch = true;
+            App.AppViewModel.CurrentPagePanel.ScrollToBottom=ScrollViewerBottomHandle;
             if (_isInit || e.NavigationMode == NavigationMode.Back)
+            {
                 return;
+            } 
             await Refresh();
             _isInit = true;
         }
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
-            App.AppViewModel.CurrentPagePanel.IsStretch = false;
+            App.AppViewModel.CurrentPagePanel.ScrollToBottom = null;
             base.OnNavigatingFrom(e);
         }
         public async Task Refresh()
@@ -64,7 +67,7 @@ namespace BiliBili_UWP.Pages.Main
             RecommendCollection.Clear();
             await channelVM.GetChannelSquareAsync();
             int i = 0;
-            while (i < 4)
+            while (i < 3)
             {
                 await LoadMoreRecommendVideo();
                 i++;
@@ -89,23 +92,20 @@ namespace BiliBili_UWP.Pages.Main
             RecommendVideoView.Visibility = RecommendCollection.Count == 0 ? Visibility.Collapsed : Visibility.Visible;
         }
 
-        private async void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
+        private async void ScrollViewerBottomHandle()
         {
             if (_isRecommendRequesting)
                 return;
             _isRecommendRequesting = true;
-            var ele = sender as ScrollViewer;
-            if (ele.ExtentHeight - ele.ViewportHeight - ele.VerticalOffset < 50)
-            {
-                await LoadMoreRecommendVideo();
-            }
+            await LoadMoreRecommendVideo();
             _isRecommendRequesting = false;
         }
 
         private void RecommendVideoView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var item = e.ClickedItem as VideoRecommend;
-            App.AppViewModel.PlayVideo(item.args.aid);
+            var container = RecommendVideoView.ContainerFromItem(item);
+            App.AppViewModel.PlayVideo(item.args.aid,container);
         }
     }
 }

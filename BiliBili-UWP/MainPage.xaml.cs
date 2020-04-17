@@ -7,6 +7,8 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.System;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -46,10 +48,37 @@ namespace BiliBili_UWP
             popup.ShowPopup();
             await App.BiliViewModel.AutoLoginAsync();
             await App.BiliViewModel.GetRegionsAsync();
-            
+            Window.Current.Dispatcher.AcceleratorKeyActivated += AccelertorKeyActivedHandle;
+
             PagePanel.NavigateToPage(Models.Enums.SideMenuItemType.Home);
             popup.HidePopup();
             _isInit = true;
+        }
+
+        private void AccelertorKeyActivedHandle(CoreDispatcher sender, AcceleratorKeyEventArgs args)
+        {
+            if (args.EventType.ToString().Contains("Down"))
+            {
+                var esc = Window.Current.CoreWindow.GetKeyState(VirtualKey.Escape);
+                var space= Window.Current.CoreWindow.GetKeyState(VirtualKey.Space);
+                var player = App.AppViewModel.CurrentVideoPlayer;
+                if (esc.HasFlag(CoreVirtualKeyStates.Down))
+                {
+                    if (player.MTC.IsFullWindow)
+                    {
+                        args.Handled = true;
+                        player.MTC.IsFullWindow = false;
+                    }
+                }
+                else if (space.HasFlag(CoreVirtualKeyStates.Down))
+                {
+                    if (player.IsFocus)
+                    {
+                        args.Handled = true;
+                        player.MTC.IsPlaying = !player.MTC.IsPlaying;
+                    }
+                }
+            }
         }
 
         private void SidePanel_PaneButtonClick(object sender, bool e)
@@ -66,6 +95,7 @@ namespace BiliBili_UWP
         {
             SidePanel.SetSelectedItem(Models.Enums.SideMenuItemType.Line);
             App.AppViewModel.SelectedSideMenuItem = null;
+            PagePanel.NavigateToRegion(e);
         }
 
         private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -81,6 +111,18 @@ namespace BiliBili_UWP
                 AppSplitView.IsPaneOpen = true;
                 AppSplitView.DisplayMode = SplitViewDisplayMode.CompactInline;
             }
+        }
+
+        public void InsertPlayer()
+        {
+            FullWindowContainer.Visibility = Visibility.Visible;
+            FullWindowContainer.Children.Add(App.AppViewModel.CurrentVideoPlayer);
+            App.AppViewModel.CurrentVideoPlayer.Focus(FocusState.Programmatic);
+        }
+        public void RemovePlayer()
+        {
+            FullWindowContainer.Visibility = Visibility.Collapsed;
+            FullWindowContainer.Children.Clear();
         }
     }
 }

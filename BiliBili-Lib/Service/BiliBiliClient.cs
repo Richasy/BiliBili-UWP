@@ -15,14 +15,16 @@ namespace BiliBili_Lib.Service
         public ChannelService Channel;
         public TopicService Topic;
         public VideoService Video;
-        public BiliBiliClient(string accessToken = "", string refreshToken = "", string userId = "", int expiry = 0)
+        public AnimeService Anime;
+        public BiliBiliClient(string accessToken = "", string refreshToken = "", int expiry = 0)
         {
             BiliTool._accessToken = accessToken;
-            var package = new TokenPackage(accessToken, refreshToken, userId, expiry);
+            var package = new TokenPackage(accessToken, refreshToken, expiry);
             Account = new AccountService(package);
             Channel = new ChannelService();
             Topic = new TopicService();
             Video = new VideoService();
+            Anime = new AnimeService();
         }
 
         /// <summary>

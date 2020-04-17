@@ -34,7 +34,6 @@ namespace BiliBili_Lib.Service
         {
             BiliTool._accessToken = _accessToken = p.AccessToken;
             _refreshToken = p.RefreshToken;
-            _userId = p.UserId;
             _expiry = Convert.ToInt32(p.Expiry);
         }
         /// <summary>
@@ -77,7 +76,7 @@ namespace BiliBili_Lib.Service
                 if (code == 0)
                 {
                     var data = JsonConvert.DeserializeObject<LoginResult>(jobj["data"].ToString());
-                    var package = new TokenPackage(data.token_info.access_token, data.token_info.refresh_token, data.token_info.mid.ToString(), AppTool.DateToTimeStamp(DateTime.Now.AddSeconds(data.token_info.expires_in)));
+                    var package = new TokenPackage(data.token_info.access_token, data.token_info.refresh_token, AppTool.DateToTimeStamp(DateTime.Now.AddSeconds(data.token_info.expires_in)));
                     InitToken(package);
                     TokenChanged?.Invoke(this, package);
                     result.Status = LoginResultType.Success;
@@ -132,12 +131,12 @@ namespace BiliBili_Lib.Service
         /// <param name="accessToken">令牌</param>
         /// <param name="mid">用户ID</param>
         /// <returns></returns>
-        public async Task<bool> SetLoginStatusAsync(string accessToken, string mid, string refreshToken = "", int expiry = 0)
+        public async Task<bool> SetLoginStatusAsync(string accessToken, string refreshToken = "", int expiry = 0)
         {
             try
             {
                 string refe = string.IsNullOrEmpty(refreshToken) ? accessToken : refreshToken;
-                var package = new TokenPackage(accessToken, refe, mid, AppTool.DateToTimeStamp(DateTime.Now.AddSeconds(expiry == 0 ? 7200 : expiry)));
+                var package = new TokenPackage(accessToken, refe, AppTool.DateToTimeStamp(DateTime.Now.AddSeconds(expiry == 0 ? 7200 : expiry)));
                 InitToken(package);
                 TokenChanged?.Invoke(this, package);
                 await SSO();
@@ -163,7 +162,7 @@ namespace BiliBili_Lib.Service
                 if (Convert.ToInt32(obj["code"]) == 0)
                 {
                     var data = JsonConvert.DeserializeObject<TokenInfo>(obj["data"].ToString());
-                    var package = new TokenPackage(data.access_token, data.refresh_token, data.mid.ToString(), AppTool.DateToTimeStamp(DateTime.Now.AddSeconds(data.expires_in)));
+                    var package = new TokenPackage(data.access_token, data.refresh_token, AppTool.DateToTimeStamp(DateTime.Now.AddSeconds(data.expires_in)));
                     InitToken(package);
                     TokenChanged?.Invoke(this, package);
                     await SSO();
@@ -224,6 +223,7 @@ namespace BiliBili_Lib.Service
             var url = BiliTool.UrlContact(Api.ACCOUNT_MINE, hasAccessKey: true);
             var data = await BiliTool.ConvertEntityFromWebAsync<Me>(url);
             Me = data;
+            BiliTool.mid = _userId = data.mid.ToString();
             return data;
         }
         /// <summary>

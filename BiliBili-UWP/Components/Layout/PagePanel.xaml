@@ -13,7 +13,7 @@
     d:DesignWidth="400">
 
     <SplitView x:Name="PageSplitView" PaneClosing="PageSplitView_PaneClosing" PaneOpening="PageSplitView_PaneOpening"
-               PanePlacement="Right" CompactPaneLength="0" IsPaneOpen="{x:Bind IsSubPageOpen,Mode=TwoWay}"
+               PanePlacement="Right" CompactPaneLength="0" OpenPaneLength="400" IsPaneOpen="{x:Bind IsSubPageOpen,Mode=TwoWay}"
                AllowFocusOnInteraction="True">
         <SplitView.Pane>
             <Grid Padding="25,35,25,0" Background="{ThemeResource PaneBackground}">
@@ -35,7 +35,7 @@
                     <Button Style="{StaticResource DefaultCircleButtonStyle}" x:Name="SubRefreshButton" Margin="0,0,20,0"
                             Click="SubRefreshButton_Click"  Grid.Column="2" VerticalAlignment="Center" Content="&#xE9CC;"/>
                     <Button Style="{StaticResource DefaultCircleButtonStyle}" Content="&#xEA15;" Grid.Column="3" x:Name="ClosePaneButton"
-                            Click="ClosePaneButton_Click" VerticalAlignment="Center"/>
+                            Click="ClosePaneButton_Click" VerticalAlignment="Center" Foreground="{ThemeResource ImportantTextColor}"/>
                 </Grid>
                 <Grid Grid.Row="1" Margin="0,20,0,0">
                     <Frame x:Name="SubPageFrame" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:FieldModifier="Public"/>
@@ -43,7 +43,7 @@
             </Grid>
         </SplitView.Pane>
         <SplitView.Content>
-            <Grid>
+            <Grid HorizontalAlignment="Stretch">
                 <Grid Padding="{x:Bind Padding,Mode=OneWay}" x:Name="Container" HorizontalAlignment="Stretch" Background="{ThemeResource PageBackground}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
@@ -64,14 +64,12 @@
                     </Grid>
                     <ProgressBar IsIndeterminate="True" Grid.Row="1" x:Name="LoadingBar" Foreground="{ThemeResource PrimaryColor}"
                      Visibility="Collapsed" HorizontalAlignment="Stretch"/>
-                    <ScrollViewer Margin="0,20,0,0" x:Name="PageScrollViewer" Style="{StaticResource BasicScrollViewer}" Padding="0,0,30,0" Grid.Row="2">
+                    <ScrollViewer Margin="0,20,0,0" x:Name="PageScrollViewer" Style="{StaticResource BasicScrollViewer}" Padding="0,0,30,0" Grid.Row="2"
+                                  ViewChanged="PageScrollViewer_ViewChanged">
                         <Grid x:Name="DisplayContainer">
                             <Frame x:Name="PageFrame" Navigated="PageFrame_Navigated" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:FieldModifier="Public"/>
                         </Grid>
                     </ScrollViewer>
-                    <Grid x:Name="NoScrollContainer" Grid.Row="2" Margin="0,20,0,0" Visibility="Collapsed">
-
-                    </Grid>
                     <Grid Grid.Row="2" Background="{ThemeResource PageBackground}" x:Name="HolderContainer"
               HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -83,6 +81,9 @@
                     </Grid>
 
                 </Grid>
+                <Button Style="{StaticResource DefaultCircleButtonStyle}" Opacity="0.5" Foreground="{ThemeResource ImportantTextColor}"
+                        x:Name="OpenPaneButton" Content="&#xE937;" Visibility="Collapsed" HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                        Margin="0,0,20,20" Click="OpenPaneButton_Click"/>
                 <Grid x:Name="MaskGrid" Background="{ThemeResource ScreenMaskColor}" Visibility="Collapsed"/>
             </Grid>
         </SplitView.Content>

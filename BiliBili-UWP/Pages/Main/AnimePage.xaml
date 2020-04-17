@@ -1,0 +1,94 @@
+﻿<Page
+    x:Class="BiliBili_UWP.Pages.Main.AnimePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BiliBili_UWP.Pages.Main"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
+    xmlns:controls="using:BiliBili_UWP.Components.Controls"
+    xmlns:bilibili="using:BiliBili_Lib.Models.BiliBili"
+    xmlns:controls1="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <DataTemplate x:DataType="bilibili:AnimeModuleItem" x:Key="BannerItemTemplate">
+            <Grid>
+                <controls1:ImageEx Source="{x:Bind cover,Converter={StaticResource CoverResolutionConverter},ConverterParameter=350}" 
+                                   Height="130" Stretch="UniformToFill" PlaceholderStretch="Uniform" CornerRadius="4"
+                                   IsCacheEnabled="True" PlaceholderSource="ms-appx:///Assets/img_holder.png"
+                                   x:Name="VideoCover"/>
+                <Border Background="{ThemeResource MaskAcrylicBackground}" CornerRadius="3" Padding="8,4" HorizontalAlignment="Left"
+                        VerticalAlignment="Bottom" Margin="5,0,0,5">
+                    <TextBlock Text="{x:Bind title}" Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource ImportantTextColor}"
+                               MaxWidth="270"/>
+                </Border>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:DataType="bilibili:AnimeModuleItem" x:Key="VideoCardItemTemplate">
+            <controls:DefaultVideoCard Width="150" Cover="{x:Bind cover}"
+                                       RightTopText="{x:Bind badge}"
+                                       Tip="{x:Bind desc}"
+                                       Title="{x:Bind title}"
+                                       BottomText="{x:Bind stat.follow_view}"
+                                       SectionVisibility="Collapsed"
+                                       />
+        </DataTemplate>
+        <DataTemplate x:DataType="bilibili:AnimeModuleItem" x:Key="RankItemTemplate">
+            <Grid Background="{ThemeResource CardBackground}" CornerRadius="4" Padding="10,12,10,5"
+                  Width="300">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="1*" />
+                </Grid.RowDefinitions>
+                <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="13" Margin="0,0,0,10"
+                           Text="{x:Bind title}" FontWeight="Bold"/>
+                <ItemsControl Grid.Row="1" MaxHeight="250" ItemsSource="{x:Bind cards}"
+                              ScrollViewer.VerticalScrollBarVisibility="Visible">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="bilibili:Card">
+                            <controls:DefaultVideoPanel Title="{x:Bind title}"
+                                                        Cover="{x:Bind cover}"
+                                                        Tip="{x:Bind badge}"
+                                                        BottomText="{x:Bind pts}"
+                                                        SectionVisibility="Collapsed"
+                                                        RightTopImage="{x:Bind render_sign}"
+                                                        Margin="0,0,0,8" Tapped="RankVideo_Tapped"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
+        </DataTemplate>
+    </Page.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Style="{StaticResource HeaderTextStyle}" x:Name="TitleBlock" Text="--" VerticalAlignment="Center"/>
+            <StackPanel Orientation="Horizontal" Grid.Column="1">
+                <widgets:AsyncButton Style="{StaticResource PrimaryAsyncButtonStyle}" Icon="&#xE926;" Text="索引" Margin="10,0,0,0"
+                                     x:Name="IndexButton" Click="IndexButton_Click"/>
+                <widgets:AsyncButton Style="{StaticResource DefaultAsyncButtonStyle}" Icon="&#xEA3B;" Text="时间表" Margin="10,0,0,0"
+                                     x:Name="TimelineButton" Click="TimelineButton_Click"/>
+                <widgets:AsyncButton Style="{StaticResource DefaultAsyncButtonStyle}" Icon="&#xE963;" Text="查看子区" Margin="10,0,0,0"
+                                     x:Name="SubRegionButton" Click="SubRegionButton_Click"/>
+            </StackPanel>
+        </Grid>
+        <controls:HorizontalScrollSectionPanel Title="事件" HoldText="事件暂无数据" x:Name="BannerContainer" ItemsSource="{x:Bind BannerCollection}"
+                                            ItemClick="BannerListView_ItemClick" ItemTemplate="{StaticResource BannerItemTemplate}"
+                                            Grid.Row="1" Margin="0,20,0,0"/>
+        <controls:HorizontalScrollSectionPanel Title="热播" HoldText="暂无热播" x:Name="HotContainer" ItemsSource="{x:Bind HotCollection}"
+                                                   ItemClick="HotContainer_ItemClick" ItemTemplate="{StaticResource VideoCardItemTemplate}"
+                                                   Grid.Row="2" Margin="0,20,0,0" RefreshButtonVisibility="Visible" RefreshButtonClick="HotContainer_RefreshButtonClick"/>
+        <controls:HorizontalScrollSectionPanel Title="榜单" HoldText="获取榜单数据失败" x:Name="RankContainer" ItemsSource="{x:Bind RankCollection}"
+                                            ItemTemplate="{StaticResource RankItemTemplate}" IsItemClickEnabled="False"
+                                            Grid.Row="3" Margin="0,20,0,0"/>
+    </Grid>
+</Page>

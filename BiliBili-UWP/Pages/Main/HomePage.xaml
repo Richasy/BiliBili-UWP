@@ -7,41 +7,42 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:bilibili="using:BiliBili_Lib.Models.BiliBili"
     xmlns:controls="using:BiliBili_UWP.Components.Controls"
+    xmlns:controls1="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:DataType="bilibili:VideoRecommend" x:Key="VideoItemTemplate">
-            <controls:RecommendVideoCard Data="{Binding}" Margin="3"/>
+            <controls:RecommendVideoCard Data="{Binding}" Margin="3" x:Name="VideoContainer"/>
         </DataTemplate>
     </Page.Resources>
-    <ScrollViewer Style="{StaticResource BasicScrollViewer}" ViewChanged="ScrollViewer_ViewChanged"
-                  Padding="0,0,20,0">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
         <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Style="{StaticResource HeaderTextStyle}" Text="首页 &amp; 频道" VerticalAlignment="Center"/>
+            <controls:SubscribeChannelPanel x:Name="SubscribePanel" Grid.Column="1" VerticalAlignment="Center"/>
+        </Grid>
+        <Grid Grid.Row="1" Margin="0,30,0,0">
+            <controls:ScanChannelPanel x:Name="ScanPanel"/>
+        </Grid>
+        <Grid Grid.Row="2" Margin="0,30,0,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-                <TextBlock Style="{StaticResource HeaderTextStyle}" Text="首页 &amp; 频道" VerticalAlignment="Center"/>
-                <controls:SubscribeChannelPanel x:Name="SubscribePanel" Grid.Column="1" VerticalAlignment="Center"/>
-            </Grid>
-            <Grid Grid.Row="1" Margin="0,30,0,0">
-                <controls:ScanChannelPanel x:Name="ScanPanel"/>
-            </Grid>
-            <Grid Grid.Row="2" Margin="0,30,0,0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <TextBlock Style="{StaticResource TitleTextStyle}" Text="推荐视频" Margin="0,0,0,15"/>
-                <Grid Grid.Row="1">
-                    <GridView x:Name="RecommendVideoView"
-                              HorizontalAlignment="Center"
+            <TextBlock Style="{StaticResource TitleTextStyle}" Text="推荐视频" Margin="0,0,0,15"/>
+            <Grid Grid.Row="1">
+                <controls1:AdaptiveGridView x:Name="RecommendVideoView"
+                              HorizontalAlignment="Stretch"
+                                                DesiredWidth="215"
+                                                ItemHeight="195"
                           ItemTemplate="{StaticResource VideoItemTemplate}"
                           ItemContainerStyle="{StaticResource TransparentGridViewItemContainerStyle}"
                           Style="{StaticResource NoScrollGridView}"
@@ -49,14 +50,12 @@
                               ItemClick="RecommendVideoView_ItemClick"
                           ItemsSource="{x:Bind RecommendCollection}"
                           />
-                    <TextBlock Style="{StaticResource TipTextStyle}" Text="无法加载推荐视频列表" FontWeight="Bold" VerticalAlignment="Center"
+                <TextBlock Style="{StaticResource TipTextStyle}" Text="无法加载推荐视频列表" FontWeight="Bold" VerticalAlignment="Center"
                            x:Name="HolderText" Visibility="Collapsed"/>
-                </Grid>
-                
-                <ProgressBar IsIndeterminate="True" Foreground="{ThemeResource PrimaryColor}" Grid.Row="2"
-                             x:Name="VideLoadingBar" Visibility="Collapsed"/>
             </Grid>
+
+            <ProgressBar IsIndeterminate="True" Foreground="{ThemeResource PrimaryColor}" Grid.Row="2"
+                             x:Name="VideLoadingBar" Visibility="Collapsed"/>
         </Grid>
-    </ScrollViewer>
-    
+    </Grid>
 </Page>

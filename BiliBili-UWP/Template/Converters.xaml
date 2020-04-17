@@ -9,4 +9,7 @@
     <converter:StringVisbilityConverter x:Key="StringVisibilityConverter"/>
     <converter:SideMenuExtraVisibilityConverter x:Key="SideMenuExtraVisibleConverter"/>
     <converter:ChannelHeaderMaskConverter x:Key="ChannelHeaderMaskConverter"/>
+    <converter:CoverResolutionConverter x:Key="CoverResolutionConverter"/>
+    <converter:NumberAbbrConverter x:Key="NumberAbbrConverter"/>
+    <converter:DurationConverter x:Key="DurationConverter"/>
 </ResourceDictionary>

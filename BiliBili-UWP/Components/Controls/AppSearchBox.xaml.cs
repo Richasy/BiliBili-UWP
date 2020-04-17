@@ -46,8 +46,11 @@ namespace BiliBili_UWP.Components.Controls
         }
         private void BiliSearchBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            BiliSearchBox.ItemsSource = HotSearchCollection;
-            BiliSearchBox.ItemTemplate = HotSearchItemTemplate;
+            if (BiliSearchBox.ItemsSource == null)
+            {
+                BiliSearchBox.ItemsSource = HotSearchCollection;
+                BiliSearchBox.ItemTemplate = HotSearchItemTemplate;
+            }
         }
 
         private void BiliSearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
@@ -78,7 +81,7 @@ namespace BiliBili_UWP.Components.Controls
                     SearchHistoryCollection.RemoveAt(0);
                 }
                 SearchHistoryCollection.Add(key);
-                string json = JsonConvert.SerializeObject(SearchHistoryCollection.ToList());
+                string json = JsonConvert.SerializeObject(SearchHistoryCollection.Distinct().ToList());
                 AppTool.WriteLocalSetting(Settings.SearchHistory, json);
                 App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Pages.Sub.SearchPage), key);
             }

@@ -53,7 +53,7 @@ namespace BiliBili_UWP.Models.UI
                     break;
                 case SideMenuItemType.Dynamic:
                     Name = "动态";
-                    Icon = "";
+                    Icon = "";
                     Group = SideMenuGroupType.Basic;
                     break;
                 case SideMenuItemType.MyFollow:

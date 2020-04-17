@@ -42,28 +42,15 @@ namespace BiliBili_UWP.Components.Controls
             if(e.NewValue!=null && e.NewValue is VideoRecommend data)
             {
                 var instance = d as RecommendVideoCard;
-                instance.VideoCover.Source = new BitmapImage(new Uri(data.cover));
-                instance.TitleBlock.Text = data.title;
-                ToolTipService.SetToolTip(instance.TitleBlock, data.title);
-                instance.UserNameBlock.Text = string.IsNullOrEmpty(data.args?.up_name) ? "--" : data.args.up_name;
-                instance.PlayCountBlock.Text = data.cover_left_text_1;
-                instance.DanmuCountBlock.Text = data.cover_left_text_2;
-                instance.DurationBlock.Text = data.cover_right_text;
-                if (!string.IsNullOrEmpty(data.rcmd_reason))
-                {
-                    instance.ReasonContainer.Visibility = Visibility.Visible;
-                    instance.ReasonBlock.Text = data.rcmd_reason;
-                }
-                else
-                {
-                    instance.ReasonContainer.Visibility = Visibility.Collapsed;
-                }
+                var card = instance.VideoCard;
+                card.Cover = data.cover;
+                card.Title = data.title;
+                card.Tip = string.IsNullOrEmpty(data.args?.up_name) ? "--" : data.args.up_name;
+                card.FirstSectionContent = data.cover_left_text_1;
+                card.SecondSectionContent = data.cover_left_text_2;
+                card.Duration = data.cover_right_text;
+                card.RightBottomText = data.rcmd_reason ?? "";
             }
-        }
-
-        private void MoreButton_Click(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

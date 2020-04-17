@@ -1,0 +1,95 @@
+﻿<Page
+    x:Class="BiliBili_UWP.Pages.Sub.Video.SubRegionPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BiliBili_UWP.Pages.Sub.Video"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:bilibili="using:BiliBili_Lib.Models.BiliBili"
+    xmlns:ui="using:BiliBili_UWP.Models.UI"
+    xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
+    xmlns:controls1="using:BiliBili_UWP.Components.Controls"
+    xmlns:others="using:BiliBili_UWP.Models.UI.Others"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <DataTemplate x:DataType="bilibili:Region" x:Key="TabItemTemplate">
+            <ListViewItem x:Name="TabContainer">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Border Padding="10,5">
+                        <TextBlock Text="{x:Bind name}" FontSize="12" FontFamily="{CustomResource Basic}" FontWeight="Bold"/>
+                    </Border>
+                    <Border Height="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" x:Name="ItemSign"
+                            Grid.Row="1" Background="{Binding ElementName=TabContainer,Path=IsSelected,Converter={StaticResource SideMenuSignColorConverter},Mode=OneWay}"/>
+                </Grid>
+            </ListViewItem>
+        </DataTemplate>
+        <DataTemplate x:DataType="ui:IconItem" x:Key="SortItemTemplate">
+            <widgets:IconTextBlock Icon="{x:Bind Icon}" Text="{x:Bind Name}" IconForeground="{ThemeResource PrimaryColor}"
+                                   FontSize="12"/>
+        </DataTemplate>
+        <DataTemplate x:DataType="bilibili:RegionVideo" x:Key="VideoItemTemplate">
+            <controls1:DefaultVideoPanel Title="{x:Bind title}"
+                                         Duration="{x:Bind duration,Converter={StaticResource DurationConverter}}"
+                                         Cover="{x:Bind cover}"
+                                         UserName="{x:Bind name}"
+                                         FirstSectionContent="{x:Bind play,Converter={StaticResource NumberAbbrConverter}}"
+                                         SecondSectionContent="{x:Bind danmaku,Converter={StaticResource NumberAbbrConverter}}"
+                                         Margin="0,0,0,10"
+                                         />
+        </DataTemplate>
+    </Page.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+        <ListView ItemsPanel="{StaticResource HorizontalListViewItemsPanel}"
+                  IsItemClickEnabled="True" x:Name="TabListView"
+                  ItemContainerStyle="{StaticResource TransparentListViewContainerStyle}"
+                  Style="{StaticResource BasicListView}"
+                  ItemTemplate="{StaticResource TabItemTemplate}"
+                  ItemsSource="{x:Bind TabCollection}"
+                  SelectionMode="Single"
+                  others:IndicatorService.Name="ItemSign"
+                  others:IndicatorService.IsScaleEnabled="True"
+                  ItemClick="TabListView_ItemClick"
+                  ScrollViewer.VerticalScrollMode="Disabled"
+                  ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                  Margin="0,10,0,0"/>
+        <Grid Grid.Row="1" x:Name="VideoContainer"
+                      Margin="0,15,0,0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid>
+                    <ComboBox Style="{StaticResource BasicComboBoxStyle}" ItemContainerStyle="{StaticResource BasicComboBoxItemContainerStyle}" HorizontalAlignment="Stretch"
+                              x:Name="VideoSortComboBox" ItemsSource="{x:Bind SortTypeSelectionList}" ItemTemplate="{StaticResource SortItemTemplate}" SelectionChanged="VideoSortComboBox_SelectionChanged"/>
+                </Grid>
+                <ScrollViewer Style="{StaticResource BasicScrollViewer}" ViewChanged="ScrollViewer_ViewChanged" Margin="0,10,0,0" Grid.Row="1">
+                    <Grid>
+                        <ListView x:Name="VideoListView"
+                      ItemContainerStyle="{StaticResource TransparentListViewContainerStyle}"
+                      Style="{StaticResource NoScrollListView}"
+                          ItemTemplate="{StaticResource VideoItemTemplate}"
+                      IsItemClickEnabled="True"
+                          Grid.Row="1"
+                      Margin="0,0,0,0"
+                      ItemClick="VideoListView_ItemClick"
+                      />
+                        <TextBlock Text="查找不到相关视频" Style="{StaticResource TipTextStyle}" Visibility="Collapsed" Margin="10,10,0,0"
+                           VerticalAlignment="Top" HorizontalAlignment="Left" Grid.Row="1" x:Name="VideoHolderBlock" FontWeight="Bold"/>
+                    </Grid>
+                </ScrollViewer>
+                <ProgressRing Style="{StaticResource BasicProgressRingStyle}" x:Name="LoadingRing"
+                      Grid.Row="2"/>
+            </Grid>
+        </Grid>
+    </Grid>
+</Page>

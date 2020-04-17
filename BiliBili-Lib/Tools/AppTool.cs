@@ -26,6 +26,7 @@ namespace BiliBili_Lib.Tools
         /// 读取本地设置
         /// </summary>
         /// <param name="key">设置名</param>
+        /// <param name="defaultValue">默认值</param>
         /// <returns></returns>
         public static string GetLocalSetting(Settings key, string defaultValue)
         {
@@ -41,6 +42,16 @@ namespace BiliBili_Lib.Tools
                 WriteLocalSetting(key, defaultValue);
                 return defaultValue;
             }
+        }
+        /// <summary>
+        /// 获取布尔值的设置
+        /// </summary>
+        /// <param name="key">设置名</param>
+        /// <param name="defaultValue">默认值</param>
+        /// <returns></returns>
+        public static bool GetBoolSetting(Settings key,bool defaultValue=true)
+        {
+            return Convert.ToBoolean(GetLocalSetting(key, defaultValue.ToString()));
         }
         /// <summary>
         /// 获取Unix时间戳
@@ -117,6 +128,19 @@ namespace BiliBili_Lib.Tools
                 return span.Days + "天前";
             else
                 return date.ToString("MM-dd");
+        }
+        /// <summary>
+        /// 将秒数转化为可读时间
+        /// </summary>
+        /// <param name="seconds">秒</param>
+        /// <returns></returns>
+        public static string GetReadDuration(int seconds)
+        {
+            var span = TimeSpan.FromSeconds(seconds);
+            string time = span.Minutes.ToString("00") + ":" + span.Seconds.ToString("00");
+            if (span.Hours > 0)
+                time = span.Hours.ToString() + ":" + time;
+            return time;
         }
         /// <summary>
         /// 获取数字的缩写

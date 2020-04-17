@@ -13,7 +13,6 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
     <UserControl.Resources>
-        
         <DataTemplate x:DataType="bilibili:ChannelView" x:Key="ChannelItemTemplate">
             <Grid Width="105" Height="110" Background="{ThemeResource CardBackground}" CornerRadius="4" Margin="3,0">
                 <Grid.RowDefinitions>
@@ -38,22 +37,8 @@
         
     </UserControl.Resources>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="1*" />
-        </Grid.RowDefinitions>
-        <TextBlock Style="{StaticResource TitleTextStyle}" Text="最近浏览" Margin="0,0,0,15"/>
-        <Grid Grid.Row="1">
-            <ListView ItemTemplate="{StaticResource ChannelItemTemplate}"
-                      ItemContainerStyle="{StaticResource TransparentListViewContainerStyle}"
-                      Style="{StaticResource BasicListView}" Padding="-4,0,0,15"
-                      ItemsPanel="{StaticResource HorizontalListViewItemsPanel}"
-                      IsItemClickEnabled="True" ItemsSource="{x:Bind channelVM.MyScanedChannelCollection}"
-                      SelectionMode="None" ItemClick="ChannelListView_ItemClick"
-                      ScrollViewer.VerticalScrollMode="Disabled"
-                      x:Name="ChannelListView" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
-            <TextBlock Style="{StaticResource TipTextStyle}" Text="暂无浏览的频道" FontWeight="Bold" VerticalAlignment="Center"
-                       x:Name="HolderText"/>
-        </Grid>
+        <local:HorizontalScrollSectionPanel Title="最近浏览" ItemsSource="{x:Bind channelVM.MyScanedChannelCollection}" HoldText="暂无浏览的频道"
+                                            ItemTemplate="{StaticResource ChannelItemTemplate}" ItemClick="ChannelListView_ItemClick"
+                                            x:Name="ScanPanel"/>
     </Grid>
 </UserControl>

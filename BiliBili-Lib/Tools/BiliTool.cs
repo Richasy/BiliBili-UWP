@@ -26,6 +26,7 @@ namespace BiliBili_Lib.Tools
         public const string BuildNumber = "5520400";
         public static string _accessToken = "";
         public static string sid = "";
+        public static string mid = "";
         /// <summary>
         /// 从网络获取文本
         /// </summary>

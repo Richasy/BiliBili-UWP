@@ -44,7 +44,7 @@ namespace BiliBili_UWP.Components.Account
                 JObject jObject = JObject.Parse(e);
                 if (jObject["access_token"] != null)
                 {
-                    var result = await App.BiliViewModel._client.Account.SetLoginStatusAsync(jObject["access_token"].ToString(),jObject["mid"].ToString(), jObject["refresh_token"].ToString(), Convert.ToInt32(jObject["expires_in"].ToString()));
+                    var result = await App.BiliViewModel._client.Account.SetLoginStatusAsync(jObject["access_token"].ToString(), jObject["refresh_token"].ToString(), Convert.ToInt32(jObject["expires_in"].ToString()));
                     if (result)
                     {
                         await App.BiliViewModel.GetMeAsync();
@@ -161,8 +161,7 @@ namespace BiliBili_UWP.Components.Account
             if (args.Uri.AbsoluteUri.Contains("access_key="))
             {
                 var access = Regex.Match(args.Uri.AbsoluteUri, "access_key=(.*?)&").Groups[1].Value;
-                var mid = Regex.Match(args.Uri.AbsoluteUri, "mid=(.*?)&").Groups[1].Value;
-                await App.BiliViewModel._client.Account.SetLoginStatusAsync(access, mid);
+                await App.BiliViewModel._client.Account.SetLoginStatusAsync(access);
                 await App.BiliViewModel.GetMeAsync();
                 HidePopup();
             }

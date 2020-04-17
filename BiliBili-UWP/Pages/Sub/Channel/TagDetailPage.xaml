@@ -18,7 +18,7 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <controls:ImageEx Source="{x:Bind render_cover}" IsCacheEnabled="True" CornerRadius="4,4,0,0" DecodePixelWidth="300"
-                                  Stretch="UniformToFill" PlaceholderSource="ms-appx:///Assets/img_holder.png"/>
+                                  Stretch="UniformToFill" PlaceholderSource="ms-appx:///Assets/img_holder_rect.png" x:Name="VideoCover"/>
                 <Border Width="60" Height="60" CornerRadius="30" Background="{ThemeResource MaskAcrylicBackground}" VerticalAlignment="Center" HorizontalAlignment="Center">
                     <TextBlock Text="&#xE9BE;" FontFamily="{StaticResource Icon}" VerticalAlignment="Center" HorizontalAlignment="Center"
                            Foreground="{ThemeResource PrimaryColor}" FontSize="25" Margin="0,0,-5,0"/>

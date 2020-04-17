@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BiliBili_Lib.Tools;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,25 +13,37 @@ namespace BiliBili_Lib.Models.BiliBili
         public string card_goto { get; set; }
         public int idx { get; set; }
         public string title { get; set; }
-        public string _cover;
-        public string cover
-        {
-            get => _cover+ "@200w.jpg";
-            set => _cover = value;
-        }
+        public string cover { get; set; }
         public string render_cover
         {
-            get => _cover + "@400w.jpg";
+            get => cover + "@400w.jpg";
         }
         public string param { get; set; }
         public string cover_left_text_1 { get; set; }
         public int cover_left_icon_1 { get; set; }
         public string cover_left_text_2 { get; set; }
         public int cover_left_icon_2 { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            return obj is VideoBase @base &&
+                   title == @base.title &&
+                   param == @base.param;
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = 1685139875;
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(title);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(param);
+            return hashCode;
+        }
+
         public string GetResolutionCover(string resolution)
         {
-            return _cover + $"@{resolution}w.jpg";
+            return cover + $"@{resolution}w.jpg";
         }
+
     }
 
     public class VideoRecommend : VideoBase
@@ -76,4 +89,37 @@ namespace BiliBili_Lib.Models.BiliBili
         public string name { get; set; }
     }
 
+    public class WebVideo
+    {
+        public string aid { get; set; }
+        public string bvid { get; set; }
+        public string typename { get; set; }
+        public string title { get; set; }
+        public string subtitle { get; set; }
+        public int play { get; set; }
+        public int review { get; set; }
+        public int video_review { get; set; }
+        public int favorites { get; set; }
+        public int mid { get; set; }
+        public string author { get; set; }
+        public string description { get; set; }
+        public string create { get; set; }
+        public string pic { get; set; }
+        public int coins { get; set; }
+        public string duration { get; set; }
+        public bool badgepay { get; set; }
+        public int pts { get; set; }
+        public string render_sign { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            return obj is WebVideo video &&
+                   aid == video.aid;
+        }
+
+        public override int GetHashCode()
+        {
+            return 1525766729 + EqualityComparer<string>.Default.GetHashCode(aid);
+        }
+    }
 }

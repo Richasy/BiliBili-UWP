@@ -75,6 +75,7 @@ namespace BiliBili_UWP
             // just ensure that the window is active
             if (rootFrame == null)
             {
+                SYEngine.Core.Initialize();
                 // Create a Frame to act as the navigation context and navigate to the first page
                 rootFrame = new Frame();
 

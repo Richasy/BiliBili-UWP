@@ -17,7 +17,7 @@
             <StackPanel Orientation="Horizontal" Padding="10">
                 <TextBlock Text="{x:Bind position}" Width="25" Style="{StaticResource SmallTipTextStyle}" VerticalAlignment="Center"/>
                 <TextBlock Text="{x:Bind show_name}" Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource ImportantTextColor}"
-                           VerticalAlignment="Center"/>
+                           VerticalAlignment="Center" FontSize="13"/>
                 <controls:ImageEx Visibility="{x:Bind icon,Converter={StaticResource StringVisibilityConverter}}" Source="{x:Bind icon}"
                        Height="13" Margin="5,0,0,0" VerticalAlignment="Center"/>
             </StackPanel>

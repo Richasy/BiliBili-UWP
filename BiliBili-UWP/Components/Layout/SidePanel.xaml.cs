@@ -28,6 +28,7 @@ namespace BiliBili_UWP.Components.Layout
         public SidePanel()
         {
             this.InitializeComponent();
+            App.AppViewModel.CurrentSidePanel = this;
             var list = SideMenuItem.GetSideMenuItems(App.BiliViewModel.IsLogin);
             list.ForEach(p => MenuItemCollection.Add(p));
             App.AppViewModel.SelectedSideMenuItem = list.Where(p=>p.IsSelected).FirstOrDefault();

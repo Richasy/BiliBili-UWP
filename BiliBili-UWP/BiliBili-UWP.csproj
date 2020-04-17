@@ -128,11 +128,17 @@
     <Compile Include="Components\Controls\AppSearchBox.xaml.cs">
       <DependentUpon>AppSearchBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Components\Controls\ChannelVideoCard.xaml.cs">
-      <DependentUpon>ChannelVideoCard.xaml</DependentUpon>
+    <Compile Include="Components\Controls\DefaultVideoCard.xaml.cs">
+      <DependentUpon>DefaultVideoCard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Controls\DefaultVideoPanel.xaml.cs">
+      <DependentUpon>DefaultVideoPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Components\Controls\DynamicContentBlock.xaml.cs">
       <DependentUpon>DynamicContentBlock.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Controls\HorizontalScrollSectionPanel.xaml.cs">
+      <DependentUpon>HorizontalScrollSectionPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Components\Controls\RecommendVideoCard.xaml.cs">
       <DependentUpon>RecommendVideoCard.xaml</DependentUpon>
@@ -148,6 +154,9 @@
     </Compile>
     <Compile Include="Components\Controls\TopicCard.xaml.cs">
       <DependentUpon>TopicCard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Controls\VideoPlayer.xaml.cs">
+      <DependentUpon>VideoPlayer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Components\Layout\PagePanel.xaml.cs">
       <DependentUpon>PagePanel.xaml</DependentUpon>
@@ -196,7 +205,10 @@
     <Compile Include="Models\UI\Converter\ChannelCoverConverter.cs" />
     <Compile Include="Models\UI\Converter\ChannelHeaderMaskConverter.cs" />
     <Compile Include="Models\UI\Converter\CollectionCountVisibilityConverter.cs" />
+    <Compile Include="Models\UI\Converter\CoverResolutionConverter.cs" />
+    <Compile Include="Models\UI\Converter\DurationConverter.cs" />
     <Compile Include="Models\UI\Converter\IntVisibilityConverter.cs" />
+    <Compile Include="Models\UI\Converter\NumberAbbrConverter.cs" />
     <Compile Include="Models\UI\Converter\SideMenuExtraVisibilityConverter.cs" />
     <Compile Include="Models\UI\Converter\SideMenuSignColorConverter.cs" />
     <Compile Include="Models\UI\Converter\StringVisbilityConverter.cs" />
@@ -204,15 +216,26 @@
     <Compile Include="Models\UI\Interface\IAppPopup.cs" />
     <Compile Include="Models\UI\Interface\IRefreshPage.cs" />
     <Compile Include="Models\UI\Others\CustomResourceLoader.cs" />
+    <Compile Include="Models\UI\Others\DanmakuMTC.cs" />
     <Compile Include="Models\UI\Others\IndicatorHelper.cs" />
     <Compile Include="Models\UI\Others\NotifyPropertyBase.cs" />
     <Compile Include="Models\UI\Others\SideMenuItemTemplateSelector.cs" />
+    <Compile Include="Models\UI\Others\VideoTransportControls.cs" />
     <Compile Include="Models\UI\Others\VisualTreeExtension.cs" />
     <Compile Include="Models\UI\SideMenuItem.cs" />
     <Compile Include="Models\UI\StaticString.cs" />
     <Compile Include="Models\UI\UIHelper.cs" />
     <Compile Include="Pages\Main\HomePage.xaml.cs">
       <DependentUpon>HomePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Main\AnimePage.xaml.cs">
+      <DependentUpon>AnimePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Main\PlayerPage.xaml.cs">
+      <DependentUpon>PlayerPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Main\RegionPage.xaml.cs">
+      <DependentUpon>RegionPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Sub\Channel\ChannelDetailPage.xaml.cs">
       <DependentUpon>ChannelDetailPage.xaml</DependentUpon>
@@ -226,6 +249,9 @@
     <Compile Include="Pages\Sub\SearchPage.xaml.cs">
       <DependentUpon>SearchPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\Sub\Video\SubRegionPage.xaml.cs">
+      <DependentUpon>SubRegionPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -237,6 +263,7 @@
     <Content Include="Assets\bilibili logo.png" />
     <Content Include="Assets\captcha_refresh.png" />
     <Content Include="Assets\img_holder.png" />
+    <Content Include="Assets\img_holder_rect.png" />
     <Content Include="Assets\Level\level_0.png" />
     <Content Include="Assets\Level\level_0.svg" />
     <Content Include="Assets\Level\level_1.png" />
@@ -301,6 +328,20 @@
     <Content Include="Assets\Logo\Wide310x150Logo.scale-150.png" />
     <Content Include="Assets\Logo\Wide310x150Logo.scale-200.png" />
     <Content Include="Assets\Logo\Wide310x150Logo.scale-400.png" />
+    <Content Include="Assets\Rank\ic_live_guard_1.png" />
+    <Content Include="Assets\Rank\ic_live_guard_2.png" />
+    <Content Include="Assets\Rank\ic_live_guard_3.png" />
+    <Content Include="Assets\Rank\ic_live_rank_1.png" />
+    <Content Include="Assets\Rank\ic_live_rank_10.png" />
+    <Content Include="Assets\Rank\ic_live_rank_2.png" />
+    <Content Include="Assets\Rank\ic_live_rank_3.png" />
+    <Content Include="Assets\Rank\ic_live_rank_4.png" />
+    <Content Include="Assets\Rank\ic_live_rank_5.png" />
+    <Content Include="Assets\Rank\ic_live_rank_6.png" />
+    <Content Include="Assets\Rank\ic_live_rank_7.png" />
+    <Content Include="Assets\Rank\ic_live_rank_8.png" />
+    <Content Include="Assets\Rank\ic_live_rank_9.png" />
+    <Content Include="Assets\Rank\ic_rank_seeds.png" />
     <Content Include="Others\Update.txt" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
@@ -328,11 +369,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Components\Controls\ChannelVideoCard.xaml">
+    <Page Include="Components\Controls\DefaultVideoCard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\Controls\DefaultVideoPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Components\Controls\DynamicContentBlock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\Controls\HorizontalScrollSectionPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -353,6 +402,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Components\Controls\TopicCard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\Controls\VideoPlayer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -408,6 +461,18 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\Main\AnimePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Main\PlayerPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Main\RegionPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\Sub\Channel\ChannelDetailPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -424,6 +489,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\Sub\Video\SubRegionPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Template\Buttons.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -437,6 +506,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Template\Inputs.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Template\Media.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -480,6 +553,12 @@
     <PackageReference Include="Microsoft.UI.Xaml">
       <Version>2.3.200213001</Version>
     </PackageReference>
+    <PackageReference Include="NSDanmaku">
+      <Version>1.4.3</Version>
+    </PackageReference>
+    <PackageReference Include="SYEngine.uwp">
+      <Version>1.0.7</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BiliBili-Lib\BiliBili-Lib.csproj">
@@ -492,7 +571,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Pages\Sub\Video\" />
+    <Folder Include="Components\Others\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Fonts\Richasy_BiliBili.ttf" />

@@ -51,6 +51,14 @@ namespace BiliBili_Lib.Models.Others
         /// </summary>
         public const string REGION_INDEX = _appBase + "/x/v2/region/index";
         /// <summary>
+        /// 分区初始加载
+        /// </summary>
+        public const string REGION_DYNAMIC_INIT = _appBase + "/x/v2/region/dynamic";
+        /// <summary>
+        /// 分区初始增量加载
+        /// </summary>
+        public const string REGION_DYNAMIC_REFRESH = _appBase + "/x/v2/region/dynamic/list";
+        /// <summary>
         /// 分区子项初始加载
         /// </summary>
         public const string REGION_DYNAMIC_CHILD_INIT = _appBase + "/x/v2/region/dynamic/child";
@@ -62,6 +70,10 @@ namespace BiliBili_Lib.Models.Others
         /// 分区子项按照一定规则排序后加载，分页
         /// </summary>
         public const string REGION_DYNAMIC_CHILD_SORT = _appBase + "/x/v2/region/show/child/list";
+        /// <summary>
+        /// 分区排行榜
+        /// </summary>
+        public const string REGION_RANK = _apiBase + "/x/web-interface/ranking/region";
         #endregion
 
         #region 账户 Account
@@ -168,7 +180,39 @@ namespace BiliBili_Lib.Models.Others
         /// 推荐视频
         /// </summary>
         public const string VIDEO_RECOMMEND = _appBase + "/x/v2/feed/index";
-        
+        /// <summary>
+        /// 视频分P列表
+        /// </summary>
+        public const string VIDEO_PART = _apiBase + "/x/player/pagelist";
+        /// <summary>
+        /// 视频详细信息
+        /// </summary>
+        public const string VIDEO_DETAIL_INFO = _apiBase + "/x/web-interface/view";
+        /// <summary>
+        /// 视频简易信息
+        /// </summary>
+        public const string VIDEO_SLIM_INFO = _apiBase + "/x/web-interface/archive/stat";
+        /// <summary>
+        /// 关联视频
+        /// </summary>
+        public const string VIDEO_RELATED = _apiBase + "/x/web-interface/archive/related";
+        /// <summary>
+        /// 获取播放地址
+        /// </summary>
+        public const string VIDEO_PLAY = _apiBase + "/x/player/playurl";
+        /// <summary>
+        /// 是否已点赞（视频）
+        /// </summary>
+        public const string VIDEO_IS_LIKE = _apiBase + "/x/web-interface/archive/has/like";
+        /// <summary>
+        /// 是否已投币（视频）
+        /// </summary>
+        public const string VIDEO_IS_COIN = _apiBase + "/x/web-interface/archive/coins";
+        /// <summary>
+        /// 是否已收藏（视频）
+        /// </summary>
+        public const string VIDEO_IS_FAVORITE = _apiBase + "/x/v2/fav/video/favoured";
+
         #endregion
 
         #region 话题及动态 Topic Dynamic
@@ -180,6 +224,21 @@ namespace BiliBili_Lib.Models.Others
         /// 点赞动态
         /// </summary>
         public const string DYNAMIC_LIKE = _vcBase + "/dynamic_like/v1/dynamic_like/thumb";
+        #endregion
+
+        #region 动漫 Anime
+        /// <summary>
+        /// 番剧综合信息
+        /// </summary>
+        public const string ANIME_JP_SQUARE = _apiBase + "/pgc/app/v2/page/bangumi/jp";
+        /// <summary>
+        /// 刷新动漫区块信息
+        /// </summary>
+        public const string ANIME_EXCHANGE = _apiBase + "/pgc/app/v2/page/exchange";
+        /// <summary>
+        /// 国创综合信息
+        /// </summary>
+        public const string ANIME_CHN_SQUARE = _apiBase + "/pgc/app/v2/page/bangumi/chn";
         #endregion
     }
 }

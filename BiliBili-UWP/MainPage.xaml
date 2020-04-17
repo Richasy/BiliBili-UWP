@@ -22,9 +22,10 @@
                 </Grid>
             </SplitView.Pane>
             <SplitView.Content>
-                <layout:PagePanel x:Name="PagePanel" IsDefault="True"/>
+                <layout:PagePanel x:Name="PagePanel" IsDefault="True" HorizontalAlignment="Stretch"/>
             </SplitView.Content>
         </SplitView>
+        <Grid x:Name="FullWindowContainer" Visibility="Collapsed"/>
         <Grid Background="{ThemeResource PageBackground}" Opacity="0.01" x:Name="TitleContainer" Height="30" VerticalAlignment="Top"/>
     </Grid>
 </Page>

@@ -119,7 +119,7 @@
             <Grid>
                 <ListView x:Name="ChannelListView"
                       ItemContainerStyle="{StaticResource TransparentListViewContainerStyle}"
-                      Style="{StaticResource BasicListView}"
+                      Style="{StaticResource NoScrollListView}"
                       IsItemClickEnabled="True"
                       Margin="0,0,0,0"
                       ItemClick="ChannelListView_ItemClick"

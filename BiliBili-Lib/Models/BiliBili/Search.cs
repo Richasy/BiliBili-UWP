@@ -66,10 +66,6 @@ namespace BiliBili_Lib.Models.BiliBili
         public string uri { get; set; }
         public string cover { get; set; }
         public int mid { get; set; }
-        public string render_cover
-        {
-            get => cover + "@150w.jpg";
-        }
         
     }
     public class SearchVideo : SearchBase
@@ -195,13 +191,12 @@ namespace BiliBili_Lib.Models.BiliBili
             public string param { get; set; }
             public string index { get; set; }
         }
-        public class Badge
-        {
-            public string text { get; set; }
-        }
+        
         
     }
-
-
+    public class Badge
+    {
+        public string text { get; set; }
+    }
 
 }

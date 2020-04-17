@@ -1,0 +1,40 @@
+﻿<UserControl
+    x:Class="BiliBili_UWP.Components.Controls.VideoPlayer"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BiliBili_UWP.Components.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:c="using:NSDanmaku.Controls"
+    xmlns:others="using:BiliBili_UWP.Models.UI.Others"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400"
+    GotFocus="UserControl_GotFocus"
+    LostFocus="UserControl_LostFocus"
+    SizeChanged="UserControl_SizeChanged"
+    PointerEntered="UserControl_PointerEntered"
+    PointerExited="UserControl_PointerExited">
+
+    <Grid>
+        <MediaPlayerElement x:Name="mediaElement"  AreTransportControlsEnabled="True" PointerMoved="mediaElement_PointerMoved">
+            <MediaPlayerElement.TransportControls>
+                <others:VideoTransportControls x:Name="VideoMTC"
+                                               IsCompactOverlayButtonVisible="True"
+                                               IsCompactOverlayEnabled="True"
+                                               FontSize="15" DanmakuLoaded="VideoMTC_DanmakuLoaded"
+                                               FullWindowChanged="VideoMTC_FullWindowChanged"
+                                               PlayButtonClick="VideoMTC_PlayButtonClick"
+                                               />
+            </MediaPlayerElement.TransportControls>
+        </MediaPlayerElement>
+        <ProgressBar IsIndeterminate="True" Foreground="{ThemeResource PrimaryColor}" Visibility="Collapsed"
+                     VerticalAlignment="Bottom" HorizontalAlignment="Stretch" x:Name="LoadingBar"/>
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="ErrorContainer" Visibility="Collapsed">
+            <TextBlock Style="{StaticResource BasicIconTextStyle}" FontSize="20" HorizontalAlignment="Center"
+                       Text="&#xE903;" Foreground="{ThemeResource TipTextColor}"/>
+            <TextBlock Text="嗨呀！加载失败了，就问你气不气？" Style="{StaticResource TipTextStyle}" HorizontalAlignment="Center"
+                       TextAlignment="Center" Margin="0,10,0,0"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

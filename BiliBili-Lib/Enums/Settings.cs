@@ -14,6 +14,11 @@ namespace BiliBili_Lib.Enums
         RefreshToken,
         UserId,
         TokenExpiry,
-        SearchHistory
+        SearchHistory,
+        FontFamily,
+        IsDanmakuOpen,
+        IsUseHevc,
+        IsAutoPlay,
+        MaxDanmuNumber
     }
 }

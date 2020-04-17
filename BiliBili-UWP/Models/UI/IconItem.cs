@@ -48,6 +48,18 @@ namespace BiliBili_UWP.Models.UI
                 new IconItem("","弹幕多","danmaku"),
             };
         }
+        public static List<IconItem> GetSubRegionSortItems()
+        {
+            return new List<IconItem>
+            {
+                new IconItem("","默认排序",""),
+                new IconItem("","播放最多","view"),
+                new IconItem("","最新视频","senddate"),
+                new IconItem("","弹幕最多","danmaku"),
+                new IconItem("","评论最多","reply"),
+                new IconItem("","收藏最多","favorite"),
+            };
+        }
         public static List<IconItem> GetSearchVideoDurationSortItems()
         {
             return new List<IconItem>

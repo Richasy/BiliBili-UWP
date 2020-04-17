@@ -13,36 +13,13 @@
     d:DesignWidth="400">
     <UserControl.Resources>
         <DataTemplate x:DataType="bilibili:SearchVideo" x:Name="VideoTemplate">
-            <Grid Background="{ThemeResource CardBackground}" Height="80">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="120" />
-                    <ColumnDefinition Width="1*" />
-                </Grid.ColumnDefinitions>
-                <Grid>
-                    <controls:ImageEx DecodePixelWidth="150" IsCacheEnabled="True" Source="{x:Bind render_cover}" CornerRadius="4"
-                                  VerticalAlignment="Stretch" Stretch="UniformToFill" PlaceholderSource="ms-appx://Assets/img_holder.png"/>
-                    <Border Padding="5,3" Background="{ThemeResource PopupBackground}" RequestedTheme="Dark" HorizontalAlignment="Left" VerticalAlignment="Bottom"
-                    CornerRadius="3" Margin="5,0,0,5">
-                        <TextBlock x:Name="DurationBlock" Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource ImportantTextColor}"
-                                   Text="{x:Bind duration}" FontSize="10"/>
-                    </Border>
-                </Grid>
-                <Grid Grid.Column="1" Margin="10,0,0,0" Padding="5,5,10,5">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="1*" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                    <TextBlock Text="{x:Bind title}" Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource ImportantTextColor}"
-                               TextWrapping="Wrap" ToolTipService.ToolTip="{x:Bind title}" MaxLines="2" FontWeight="Bold" LineHeight="18"/>
-                    <StackPanel Grid.Row="1" Margin="0,5,0,0">
-                        <widgets:IconTextBlock Icon="&#xEA31;" Text="{x:Bind author}" FontSize="10"/>
-                        <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-                            <widgets:IconTextBlock Icon="&#xEA32;" Text="{x:Bind render_play}" FontSize="10"/>
-                            <widgets:IconTextBlock Icon="&#xEA35;" Text="{x:Bind render_danmaku}" Margin="10,0,0,0" FontSize="10"/>
-                        </StackPanel>
-                    </StackPanel>
-                </Grid>
-            </Grid>
+            <local:DefaultVideoPanel Title="{x:Bind title}"
+                                         Duration="{x:Bind duration}"
+                                         Cover="{x:Bind cover}"
+                                         UserName="{x:Bind author}"
+                                         FirstSectionContent="{x:Bind play,Converter={StaticResource NumberAbbrConverter}}"
+                                         SecondSectionContent="{x:Bind danmaku,Converter={StaticResource NumberAbbrConverter}}"
+                                         />
         </DataTemplate>
         <DataTemplate x:DataType="bilibili:SearchAnime" x:Name="AnimeTemplate">
             <Grid Margin="0,5,0,0">
@@ -51,8 +28,8 @@
                     <ColumnDefinition Width="1*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <controls:ImageEx Source="{x:Bind render_cover}" Height="140" IsCacheEnabled="True" Stretch="UniformToFill" VerticalAlignment="Stretch"
-                                  CornerRadius="4" PlaceholderSource="ms-appx://Assets/img_holder.png"/>
+                <controls:ImageEx Source="{x:Bind cover,Converter={StaticResource CoverResolutionConverter},ConverterParameter=200}" Height="140" IsCacheEnabled="True" Stretch="UniformToFill" VerticalAlignment="Stretch"
+                                  CornerRadius="4" PlaceholderSource="ms-appx:///Assets/img_holder_rect.png" PlaceholderStretch="Uniform"/>
                 <Grid Grid.Column="1" Margin="10,0,0,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1*" />
@@ -61,9 +38,9 @@
                     <StackPanel>
                         <TextBlock Text="{x:Bind title}" FontWeight="Bold" Style="{StaticResource SmallTipTextStyle}" FontSize="13" Foreground="{ThemeResource ImportantTextColor}"
                                TextWrapping="Wrap" ToolTipService.ToolTip="{x:Bind title}"/>
-                        <TextBlock Text="{x:Bind styles}" Style="{StaticResource SmallTipTextStyle}" FontSize="10" Margin="0,5"/>
-                        <TextBlock Text="{x:Bind label}" Style="{StaticResource SmallTipTextStyle}" FontSize="10"/>
-                        <TextBlock Text="{x:Bind staff}" Margin="0,10,0,0" Style="{StaticResource SmallTipTextStyle}" MaxLines="2" FontSize="10"/>
+                        <TextBlock Text="{x:Bind styles}" Visibility="{x:Bind styles,Converter={StaticResource StringVisibilityConverter}}" Style="{StaticResource SmallTipTextStyle}" FontSize="10" Margin="0,5"/>
+                        <TextBlock Text="{x:Bind label}" Visibility="{x:Bind label,Converter={StaticResource StringVisibilityConverter}}" Style="{StaticResource SmallTipTextStyle}" FontSize="10"/>
+                        <TextBlock Text="{x:Bind staff}" Visibility="{x:Bind staff,Converter={StaticResource StringVisibilityConverter}}" Margin="0,10,0,0" Style="{StaticResource SmallTipTextStyle}" MaxLines="2" FontSize="10"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Grid.Row="1">
                         <widgets:AsyncButton Text="立即观看" Style="{StaticResource PrimaryAsyncButtonStyle}" Padding="2" FontSize="10" x:Name="WatchAnimeButton"/>
@@ -89,15 +66,15 @@
                     <ColumnDefinition Width="1*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <controls:ImageEx Source="{x:Bind render_cover}" Width="40" Height="40" VerticalAlignment="Center"
-                                  CornerRadius="20" IsCacheEnabled="True" PlaceholderSource="ms-appx://Assets/img_holder.png"/>
+                <controls:ImageEx Source="{x:Bind cover,Converter={StaticResource CoverResolutionConverter},ConverterParameter=60}" Width="40" Height="40" VerticalAlignment="Center"
+                                  CornerRadius="20" IsCacheEnabled="True" PlaceholderSource="ms-appx:///Assets/img_holder_rect.png"/>
                 <StackPanel Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="{x:Bind title}" Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource ImportantTextColor}"/>
                         <Image Source="{x:Bind render_level}" VerticalAlignment="Center" Height="8" Margin="5,0,0,0"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-                        <widgets:IconTextBlock Icon="&#xEA09;" GutterWidth="5" Text="{x:Bind fans}" FontSize="10"/>
+                        <widgets:IconTextBlock Icon="&#xEA09;" GutterWidth="5" Text="{x:Bind fans,Converter={StaticResource NumberAbbrConverter}}" FontSize="10"/>
                         <widgets:IconTextBlock Icon="&#xEA32;" GutterWidth="5" Text="{x:Bind archives}" Margin="10,0,0,0" FontSize="10"/>
                     </StackPanel>
                 </StackPanel>
@@ -115,11 +92,11 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <TextBlock Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource ImportantTextColor}"
-                           Text="{x:Bind title}" TextWrapping="Wrap" Margin="15,10"/>
+                           Text="{x:Bind title}" TextWrapping="Wrap" Margin="15,10,15,6" FontWeight="Bold"/>
                 <TextBlock Style="{StaticResource SmallTipTextStyle}" Grid.Row="1"
-                           Text="{x:Bind desc}" TextWrapping="Wrap" Margin="15,0,15,10" MaxLines="3" FontSize="10"/>
+                           Text="{x:Bind desc}" LineHeight="16" TextWrapping="Wrap" Margin="15,0,15,5" MaxLines="3" FontSize="10"/>
                 <controls:ImageEx Source="{x:Bind render_cover}" Visibility="{x:Bind image_urls.Count,Converter={StaticResource IntVisibilityConverter}}"
-                                  Grid.Row="2" MaxHeight="80" HorizontalAlignment="Stretch" Stretch="UniformToFill" PlaceholderSource="ms-appx://Assets/img_holder.png"/>
+                                  Grid.Row="2" MaxHeight="90" HorizontalAlignment="Stretch" Stretch="UniformToFill" PlaceholderSource="ms-appx:///Assets/img_holder.png"/>
                 <StackPanel Orientation="Horizontal" Grid.Row="3" Margin="15,10">
                     <widgets:IconTextBlock Icon="&#xEA31;" Text="{x:Bind name}" FontSize="10" GutterWidth="5" IconForeground="{ThemeResource TipTextColor}"/>
                     <widgets:IconTextBlock Icon="&#xE963;" Text="{x:Bind view}" FontSize="10" GutterWidth="5" Margin="10,0,0,0" IconForeground="{ThemeResource TipTextColor}"/>

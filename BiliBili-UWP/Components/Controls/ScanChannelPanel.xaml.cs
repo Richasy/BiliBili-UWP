@@ -31,8 +31,7 @@ namespace BiliBili_UWP.Components.Controls
 
         private void ChannelChanged(object sender, bool e)
         {
-            ChannelListView.Visibility = channelVM.MyScanedChannelCollection.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
-            HolderText.Visibility = channelVM.MyScanedChannelCollection.Count > 0 ? Visibility.Collapsed : Visibility.Visible;
+            ScanPanel.HolderVisibility = channelVM.MyScanedChannelCollection.Count > 0 ? Visibility.Collapsed : Visibility.Visible;
         }
 
         private void ChannelListView_ItemClick(object sender, ItemClickEventArgs e)
