@@ -17,7 +17,16 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WindowsXamlEnableOverview>true</WindowsXamlEnableOverview>
-    <AppxPackageSigningEnabled>false</AppxPackageSigningEnabled>
+    <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
+    <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
+    <PackageCertificateThumbprint>FFCD622119872D586A5E0C6A6845A6E818967891</PackageCertificateThumbprint>
+    <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
+    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxPackageDir>E:\Package\BiliBili\</AppxPackageDir>
+    <GenerateTestArtifacts>True</GenerateTestArtifacts>
+    <AppxBundle>Always</AppxBundle>
+    <AppxBundlePlatforms>x64</AppxBundlePlatforms>
+    <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -143,6 +152,12 @@
     <Compile Include="Components\Controls\RecommendVideoCard.xaml.cs">
       <DependentUpon>RecommendVideoCard.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Components\Controls\RenderTextBlock.xaml.cs">
+      <DependentUpon>RenderTextBlock.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Controls\ReplyMainBlock.xaml.cs">
+      <DependentUpon>ReplyMainBlock.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Components\Controls\ScanChannelPanel.xaml.cs">
       <DependentUpon>ScanChannelPanel.xaml</DependentUpon>
     </Compile>
@@ -157,6 +172,9 @@
     </Compile>
     <Compile Include="Components\Controls\VideoPlayer.xaml.cs">
       <DependentUpon>VideoPlayer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Controls\WebPopup.xaml.cs">
+      <DependentUpon>WebPopup.xaml</DependentUpon>
     </Compile>
     <Compile Include="Components\Layout\PagePanel.xaml.cs">
       <DependentUpon>PagePanel.xaml</DependentUpon>
@@ -173,6 +191,9 @@
     <Compile Include="Components\Widgets\CaptchaBlock.xaml.cs">
       <DependentUpon>CaptchaBlock.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Components\Widgets\CheckButton.xaml.cs">
+      <DependentUpon>CheckButton.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Components\Widgets\IconInputBox.xaml.cs">
       <DependentUpon>IconInputBox.xaml</DependentUpon>
     </Compile>
@@ -187,6 +208,9 @@
     </Compile>
     <Compile Include="Components\Widgets\WaitingPopup.xaml.cs">
       <DependentUpon>WaitingPopup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\ConfirmDialog.xaml.cs">
+      <DependentUpon>ConfirmDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\ShowImageDialog.xaml.cs">
       <DependentUpon>ShowImageDialog.xaml</DependentUpon>
@@ -207,6 +231,7 @@
     <Compile Include="Models\UI\Converter\CollectionCountVisibilityConverter.cs" />
     <Compile Include="Models\UI\Converter\CoverResolutionConverter.cs" />
     <Compile Include="Models\UI\Converter\DurationConverter.cs" />
+    <Compile Include="Models\UI\Converter\IntBoolConverter.cs" />
     <Compile Include="Models\UI\Converter\IntVisibilityConverter.cs" />
     <Compile Include="Models\UI\Converter\NumberAbbrConverter.cs" />
     <Compile Include="Models\UI\Converter\SideMenuExtraVisibilityConverter.cs" />
@@ -216,26 +241,42 @@
     <Compile Include="Models\UI\Interface\IAppPopup.cs" />
     <Compile Include="Models\UI\Interface\IRefreshPage.cs" />
     <Compile Include="Models\UI\Others\CustomResourceLoader.cs" />
-    <Compile Include="Models\UI\Others\DanmakuMTC.cs" />
     <Compile Include="Models\UI\Others\IndicatorHelper.cs" />
     <Compile Include="Models\UI\Others\NotifyPropertyBase.cs" />
+    <Compile Include="Models\UI\Others\SearchItemTemplateSelector.cs" />
+    <Compile Include="Models\UI\Converter\SelectedBackgroundConverter.cs" />
     <Compile Include="Models\UI\Others\SideMenuItemTemplateSelector.cs" />
     <Compile Include="Models\UI\Others\VideoTransportControls.cs" />
     <Compile Include="Models\UI\Others\VisualTreeExtension.cs" />
     <Compile Include="Models\UI\SideMenuItem.cs" />
     <Compile Include="Models\UI\StaticString.cs" />
     <Compile Include="Models\UI\UIHelper.cs" />
+    <Compile Include="Pages\Main\DynamicPage.xaml.cs">
+      <DependentUpon>DynamicPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Main\FavoritePage.xaml.cs">
+      <DependentUpon>FavoritePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Main\HistoryPage.xaml.cs">
+      <DependentUpon>HistoryPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Main\HomePage.xaml.cs">
       <DependentUpon>HomePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Main\AnimePage.xaml.cs">
       <DependentUpon>AnimePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\Main\MiniPlayerPage.xaml.cs">
+      <DependentUpon>MiniPlayerPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Main\PlayerPage.xaml.cs">
       <DependentUpon>PlayerPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Main\RegionPage.xaml.cs">
       <DependentUpon>RegionPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Sub\Account\FavoritePage.xaml.cs">
+      <DependentUpon>FavoritePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Sub\Channel\ChannelDetailPage.xaml.cs">
       <DependentUpon>ChannelDetailPage.xaml</DependentUpon>
@@ -245,6 +286,9 @@
     </Compile>
     <Compile Include="Pages\Sub\Channel\TagDetailPage.xaml.cs">
       <DependentUpon>TagDetailPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Sub\ReplyPage.xaml.cs">
+      <DependentUpon>ReplyPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Sub\SearchPage.xaml.cs">
       <DependentUpon>SearchPage.xaml</DependentUpon>
@@ -389,6 +433,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Components\Controls\RenderTextBlock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\Controls\ReplyMainBlock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Components\Controls\ScanChannelPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -406,6 +458,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Components\Controls\VideoPlayer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\Controls\WebPopup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -429,6 +485,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Components\Widgets\CheckButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Components\Widgets\IconInputBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -449,6 +509,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Dialogs\ConfirmDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Dialogs\ShowImageDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -456,6 +520,18 @@
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\Main\DynamicPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Main\FavoritePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Main\HistoryPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\Main\HomePage.xaml">
       <SubType>Designer</SubType>
@@ -465,11 +541,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\Main\MiniPlayerPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\Main\PlayerPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\Main\RegionPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Sub\Account\FavoritePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -482,6 +566,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\Sub\Channel\TagDetailPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Sub\ReplyPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -559,6 +647,9 @@
     <PackageReference Include="SYEngine.uwp">
       <Version>1.0.7</Version>
     </PackageReference>
+    <PackageReference Include="System.Reactive">
+      <Version>4.4.1</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BiliBili-Lib\BiliBili-Lib.csproj">
@@ -575,6 +666,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Fonts\Richasy_BiliBili.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="BiliBili-UWP_TemporaryKey.pfx" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

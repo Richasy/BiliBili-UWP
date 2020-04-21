@@ -1,5 +1,8 @@
 ﻿using BiliBili_Lib.Enums;
+using BiliBili_Lib.Models;
 using BiliBili_Lib.Models.BiliBili;
+using BiliBili_Lib.Models.BiliBili.Favorites;
+using BiliBili_Lib.Models.BiliBili.Video;
 using BiliBili_Lib.Models.Others;
 using BiliBili_Lib.Tools;
 using Newtonsoft.Json;
@@ -263,6 +266,120 @@ namespace BiliBili_Lib.Service
                 return jobj["code"].ToString() == "0";
             }
             return false;
+        }
+
+        /// <summary>
+        /// 获取观看的历史记录
+        /// </summary>
+        /// <param name="page">页码</param>
+        /// <returns></returns>
+        public async Task<List<VideoDetail>> GetVideoHistoryAsync(int page = 1)
+        {
+            string url = Api.ACCOUNT_HISTORY + $"?pn={page}&ps=40";
+            var data = await BiliTool.ConvertEntityFromWebAsync<List<VideoDetail>>(url);
+            return data;
+        }
+
+        /// <summary>
+        /// 清空观看历史记录
+        /// </summary>
+        /// <returns></returns>
+        public async Task<bool> ClearHistoryAsync()
+        {
+            string url = BiliTool.UrlContact(Api.ACCOUNT_HISTORY_CLEAR, null, true);
+            string content = await BiliTool.PostContentToWebAsync(url, "");
+            return content != null;
+        }
+
+        /// <summary>
+        /// 获取我收藏的播单(最多20个)
+        /// </summary>
+        /// <returns>Item1: 我创建的；Item2: 我收藏的</returns>
+        public async Task<Tuple<List<FavoriteItem>, List<FavoriteItem>>> GetMyFavoritesAsync()
+        {
+            string url = BiliTool.UrlContact(Api.ACCOUNT_MEDIALIST, null, true);
+            string response = await BiliTool.GetTextFromWebAsync(url);
+            try
+            {
+                var jarr = JArray.Parse(response);
+                bool hasMy = jarr[0]["mediaListResponse"] != null;
+                bool hasOther = jarr[1]["mediaListResponse"] != null;
+                var myList = new List<FavoriteItem>();
+                var otherList = new List<FavoriteItem>();
+                if (hasMy)
+                {
+                    myList = JsonConvert.DeserializeObject<List<FavoriteItem>>(jarr[0].SelectToken("mediaListResponse.list").ToString());
+                }
+                if (hasOther)
+                {
+                    otherList = JsonConvert.DeserializeObject<List<FavoriteItem>>(jarr[1].SelectToken("mediaListResponse.list").ToString());
+                }
+                return new Tuple<List<FavoriteItem>, List<FavoriteItem>>(myList, otherList);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// 获取我正在追的动漫
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<FavoriteAnime>> GetMyFavoriteAnimeAsync()
+        {
+            var param = new Dictionary<string, string>();
+            param.Add("ps", "20");
+            param.Add("pn", "1");
+            param.Add("status", "2");
+            string url = BiliTool.UrlContact(Api.ACCOUNT_FAVOROTE_ANIME, param, true);
+            var response = await BiliTool.ConvertEntityFromWebAsync<List<FavoriteAnime>>(url, "result.follow_list");
+            return response;
+        }
+
+        /// <summary>
+        /// 获取我正在追的影视剧
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<FavoriteAnime>> GetMyFavoriteCinemaAsync()
+        {
+            var param = new Dictionary<string, string>();
+            param.Add("ps", "20");
+            param.Add("pn", "1");
+            param.Add("status", "2");
+            string url = BiliTool.UrlContact(Api.ACCOUNT_FAVOROTE_CINEMA, param, true);
+            var response = await BiliTool.ConvertEntityFromWebAsync<List<FavoriteAnime>>(url, "result.follow_list");
+            return response;
+        }
+
+        /// <summary>
+        /// 获取收藏夹的视频索引
+        /// </summary>
+        /// <param name="id">收藏夹Id</param>
+        /// <returns></returns>
+        public async Task<List<FavoriteId>> GetFavoriteIdsAsync(int id)
+        {
+            var param = new Dictionary<string, string>();
+            param.Add("pn", "1");
+            param.Add("media_id", id.ToString());
+            string url = BiliTool.UrlContact(Api.ACCOUNT_FAVORITE_IDS, param, true);
+            var response = await BiliTool.ConvertEntityFromWebAsync<List<FavoriteId>>(url);
+            return response;
+        }
+
+        /// <summary>
+        /// 根据传入的id列表获取视频信息
+        /// </summary>
+        /// <param name="ids">Id列表</param>
+        /// <returns></returns>
+        public async Task<List<FavoriteVideo>> GetFavoriteVideosAsync(IEnumerable<FavoriteId> ids)
+        {
+            var items = ids.Select(p => p.id + ":" + p.type);
+            var param = new Dictionary<string, string>();
+            param.Add("resources", string.Join(",", items));
+            string url = BiliTool.UrlContact(Api.ACCOUNT_FAVORITE_INFO, param, true);
+            var response = await BiliTool.ConvertEntityFromWebAsync<List<FavoriteVideo>>(url);
+            return response;
         }
     }
 }

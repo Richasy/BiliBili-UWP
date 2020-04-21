@@ -1,6 +1,8 @@
 ﻿using BiliBili_Lib.Models.BiliBili;
 using BiliBili_Lib.Models.Others;
 using BiliBili_Lib.Tools;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -79,7 +81,7 @@ namespace BiliBili_Lib.Service
         /// <param name="order">排序方式（default,view,new,danmaku）</param>
         /// <param name="pn">页码</param>
         /// <returns></returns>
-        public async Task<SearchResult> GetComplexSearchResult(string keyword, string order = "default", int pn = 1,string region="",string duration="")
+        public async Task<SearchResult> GetComplexSearchResult(string keyword, string order = "default", int pn = 1, string region = "", string duration = "")
         {
             var param = new Dictionary<string, string>();
             param.Add("highlight", "0");
@@ -105,9 +107,9 @@ namespace BiliBili_Lib.Service
         /// <param name="pn">页码</param>
         /// <param name="param">可选参数</param>
         /// <returns></returns>
-        public async Task<T> SearchTypeItems<T>(string keyword,int type, string order, int pn = 1,Dictionary<string,string> param=null) where T: class
+        public async Task<T> SearchTypeItems<T>(string keyword, int type, string order, int pn = 1, Dictionary<string, string> param = null) where T : class
         {
-            if(param==null)
+            if (param == null)
                 param = new Dictionary<string, string>();
             param.Add("highlight", "0");
             param.Add("keyword", Uri.EscapeDataString(keyword));
@@ -116,8 +118,113 @@ namespace BiliBili_Lib.Service
             param.Add("order", order);
             param.Add("type", type.ToString());
             string url = BiliTool.UrlContact(Api.APP_SEARCH_TYPE, param, true);
-            var result = await BiliTool.ConvertEntityFromWebAsync<T>(url,"data.items");
+            var result = await BiliTool.ConvertEntityFromWebAsync<T>(url, "data.items");
             return result;
+        }
+        /// <summary>
+        /// 获取搜索建议
+        /// </summary>
+        /// <param name="keyword">关键词</param>
+        /// <returns></returns>
+        public async Task<List<SearchSuggestion>> GetSearchSuggestionAsync(string keyword)
+        {
+            var param = new Dictionary<string, string>();
+            param.Add("suggest_type", "accurate");
+            param.Add("sub_type", "tag");
+            param.Add("main_ver", "v1");
+            param.Add("term", keyword);
+            string url = BiliTool.UrlContact(Api.APP_SEARCH_SUGGEST, param);
+            var result = await BiliTool.ConvertEntityFromWebAsync<List<SearchSuggestion>>(url, "result.tag");
+            return result;
+        }
+        /// <summary>
+        /// 获取评论列表
+        /// </summary>
+        /// <param name="oid">源ID</param>
+        /// <param name="next">下一页偏移值</param>
+        /// <param name="mode">排序方式：3-按热度，2-按时间</param>
+        /// <returns>Item1：下一次偏移值，Item2：评论总数，Item3：评论列表，Item4: 是否到了结尾，Item5: 置顶回复</returns>
+        public async Task<Tuple<int, int, List<Reply>, bool,Reply>> GetReplyAsync(string oid, int next, int mode, string type = "1")
+        {
+            var param = new Dictionary<string, string>();
+            param.Add("oid", oid);
+            param.Add("next", next.ToString());
+            param.Add("prev", "0");
+            param.Add("type", type);
+            param.Add("mode", mode.ToString());
+            param.Add("ps", "30");
+            param.Add("plat", "3");
+            var url = BiliTool.UrlContact(Api.REPLY_LIST, param, true);
+            string response = await BiliTool.GetTextFromWebAsync(url);
+            if (!string.IsNullOrEmpty(response))
+            {
+                try
+                {
+                    var jobj = JObject.Parse(response);
+                    int ne = Convert.ToInt32(jobj["cursor"]["next"].ToString());
+                    int all = Convert.ToInt32(jobj["cursor"]["all_count"].ToString());
+                    bool isEnd = Convert.ToBoolean(jobj["cursor"]["is_end"].ToString());
+                    Reply top = null;
+                    if (jobj["top"]["upper"].Type != JTokenType.Null)
+                    {
+                        top = JsonConvert.DeserializeObject<Reply>(jobj["top"]["upper"].ToString());
+                    }
+                    var replies = JsonConvert.DeserializeObject<List<Reply>>(jobj["replies"].ToString());
+                    return new Tuple<int, int, List<Reply>, bool,Reply>(ne, all, replies, isEnd,top);
+                }
+                catch (Exception)
+                {
+                    return null;
+                }
+            }
+            else
+                return null;
+        }
+        /// <summary>
+        /// 点赞/取消点赞评论
+        /// </summary>
+        /// <param name="isLike">是否点赞</param>
+        /// <param name="oid">源ID</param>
+        /// <param name="rpid">评论ID</param>
+        /// <param name="type">类型</param>
+        /// <returns></returns>
+        public async Task<bool> LikeReplyAsync(bool isLike, string oid, string rpid, string type = "1")
+        {
+            string like = isLike ? "1" : "0";
+            var param = new Dictionary<string, string>();
+            param.Add("oid", oid);
+            param.Add("rpid", rpid);
+            param.Add("type", type);
+            param.Add("action", like);
+            var data = BiliTool.UrlContact("", param, true);
+            string response = await BiliTool.PostContentToWebAsync(Api.REPLY_LIKE, data);
+            var jobj = JObject.Parse(response);
+            return jobj["code"].ToString() == "0";
+        }
+
+        /// <summary>
+        /// 获取Emoji表情列表
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<EmojiContainer>> GetTotalEmojiAsync()
+        {
+            string response = await BiliTool.GetTextFromWebAsync(Api.APP_EMOJI);
+            var list = new List<EmojiContainer>();
+            if (!string.IsNullOrEmpty(response))
+            {
+                var jobj = JObject.Parse(response);
+                if (jobj.ContainsKey("vip"))
+                {
+                    var vips = JsonConvert.DeserializeObject<List<EmojiContainer>>(jobj["vip"].ToString());
+                    list = list.Concat(vips).ToList();
+                }
+                if (jobj.ContainsKey("free"))
+                {
+                    var frees = JsonConvert.DeserializeObject<List<EmojiContainer>>(jobj["free"].ToString());
+                    list = list.Concat(frees).ToList();
+                }
+            }
+            return list;
         }
     }
 }

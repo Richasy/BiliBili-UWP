@@ -31,7 +31,7 @@
                     <TextBlock Style="{StaticResource TitleTextStyle}" HorizontalAlignment="Left" Text="{x:Bind SubPageTitle,Mode=OneWay}"
                                VerticalAlignment="Center" Foreground="{ThemeResource ImportantTextColor}"/>
                     <Button Style="{StaticResource DefaultCircleButtonStyle}" x:Name="SubBackButton" Margin="20,0"
-                            Click="SubBackButton_Click"  Grid.Column="1" VerticalAlignment="Center" Content="&#xE933;"/>
+                            Click="SubBackButton_Click"  Grid.Column="1" VerticalAlignment="Center" Visibility="Collapsed" Content="&#xE933;"/>
                     <Button Style="{StaticResource DefaultCircleButtonStyle}" x:Name="SubRefreshButton" Margin="0,0,20,0"
                             Click="SubRefreshButton_Click"  Grid.Column="2" VerticalAlignment="Center" Content="&#xE9CC;"/>
                     <Button Style="{StaticResource DefaultCircleButtonStyle}" Content="&#xEA15;" Grid.Column="3" x:Name="ClosePaneButton"
@@ -65,7 +65,7 @@
                     <ProgressBar IsIndeterminate="True" Grid.Row="1" x:Name="LoadingBar" Foreground="{ThemeResource PrimaryColor}"
                      Visibility="Collapsed" HorizontalAlignment="Stretch"/>
                     <ScrollViewer Margin="0,20,0,0" x:Name="PageScrollViewer" Style="{StaticResource BasicScrollViewer}" Padding="0,0,30,0" Grid.Row="2"
-                                  ViewChanged="PageScrollViewer_ViewChanged">
+                                  ViewChanged="PageScrollViewer_ViewChanged" HorizontalScrollMode="Disabled">
                         <Grid x:Name="DisplayContainer">
                             <Frame x:Name="PageFrame" Navigated="PageFrame_Navigated" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:FieldModifier="Public"/>
                         </Grid>

@@ -1,0 +1,87 @@
+﻿<UserControl
+    x:Class="BiliBili_UWP.Components.Controls.ReplyMainBlock"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BiliBili_UWP.Components.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:bilibili="using:BiliBili_Lib.Models.BiliBili"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+        
+        <controls:ImageEx x:Name="UserAvatar" Width="30" Height="30" CornerRadius="15" Margin="0,0,10,0"
+                          VerticalAlignment="Top"/>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock x:Name="UserNameBlock" Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource NormalTextColor}"/>
+                        <Image x:Name="LevelImage" Height="8" VerticalAlignment="Center" Margin="8,0,0,0"/>
+                    </StackPanel>
+                    <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="10" x:Name="TimeBlock" Margin="0,5,0,0"/>
+                </StackPanel>
+                <Border BorderBrush="{ThemeResource PrimaryColor}" BorderThickness="1" Padding="5,3" CornerRadius="2"
+                        Visibility="{x:Bind TopBadgeVisibility,Mode=OneWay}" VerticalAlignment="Center" Grid.Column="1">
+                    <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="10" Foreground="{ThemeResource PrimaryColor}"
+                               Text="置顶"/>
+                </Border>
+            </Grid>
+            
+            <local:RenderTextBlock x:Name="ContentBlock" Margin="0,5,0,0" Grid.Row="1"/>
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal">
+                    <Button Style="{StaticResource TransparentButtonStyle}" x:Name="LikeButton" Click="LikeButton_Click"  HorizontalAlignment="Stretch">
+                        <TextBlock Style="{StaticResource SmallTipTextStyle}" HorizontalAlignment="Center" FontSize="10">
+                            <Run Text="&#xE9F0;" FontFamily="{StaticResource Icon}" x:Name="LikeIcon"/>
+                            <Run x:Name="LikeBlock"/>
+                        </TextBlock>
+                    </Button>
+                    <Button Style="{StaticResource TransparentButtonStyle}" Margin="0,0,0,0" x:Name="CommentButton" Click="CommentButton_Click"  HorizontalAlignment="Stretch"
+                            FontFamily="{StaticResource Icon}" Content="&#xE99E;" FontSize="10" Foreground="{ThemeResource TipTextColor}"/>
+                </StackPanel>
+            </Grid>
+            <StackPanel Grid.Row="3" Background="{ThemeResource CardBackgroundOver}" CornerRadius="3" Padding="10,10,10,10"
+                        x:Name="SubReplyContainer">
+                <ItemsControl x:Name="SubReplyItemsControl">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="bilibili:Reply">
+                            <Grid>
+                                <local:RenderTextBlock Text="{Binding render_content}" EmoteSource="{x:Bind content.emote}"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <Button Style="{StaticResource TransparentButtonStyle}" Padding="0" Visibility="Collapsed" x:Name="MoreReplyButton" Margin="0,5,0,0">
+                    <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="10" Foreground="{ThemeResource SecondaryColor}"
+                               >
+                        <Run x:Name="TotalReplyCount"/>
+                        <Run Text="&#xE934;" FontFamily="{StaticResource Icon}"/>
+                    </TextBlock>
+                </Button>
+            </StackPanel>
+            
+        </Grid>
+    </Grid>
+</UserControl>

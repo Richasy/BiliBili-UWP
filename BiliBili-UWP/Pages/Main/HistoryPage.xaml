@@ -1,0 +1,59 @@
+﻿<Page
+    x:Class="BiliBili_UWP.Pages.Main.HistoryPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BiliBili_UWP.Pages.Main"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
+    xmlns:controls1="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:bilibili="using:BiliBili_Lib.Models.BiliBili.Video"
+    xmlns:controls="using:BiliBili_UWP.Components.Controls"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <DataTemplate x:DataType="bilibili:VideoDetail" x:Key="VideoItemTemplate">
+            <controls:DefaultVideoCard Cover="{x:Bind pic}"
+                                       Title="{x:Bind title}"
+                                       Duration="{x:Bind duration,Converter={StaticResource DurationConverter}}"
+                                       Tip="{x:Bind owner.name}"
+                                       FirstSectionContent="{x:Bind stat.view,Converter={StaticResource NumberAbbrConverter}}"
+                                       SecondSectionContent="{x:Bind stat.danmaku,Converter={StaticResource NumberAbbrConverter}}"
+                                       Width="190"
+                                       />
+        </DataTemplate>
+    </Page.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid Margin="0,0,0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Style="{StaticResource TitleTextStyle}" Text="视频历史" VerticalAlignment="Center"/>
+            <widgets:AsyncButton Icon="&#xE9F5;" Text="清空记录" x:Name="ClearButton" CornerRadius="15" FontSize="10" BorderThickness="1"
+                                 Style="{StaticResource DefaultAsyncButtonStyle}" BorderBrush="{ThemeResource LineColor}" Grid.Column="1"
+                                 Click="ClearButton_Click"  Margin="20,0,0,0"/>
+        </Grid>
+        <Grid Grid.Row="1">
+            <controls1:AdaptiveGridView x:Name="HistoryVideoView"
+                              HorizontalAlignment="Stretch"
+                          DesiredWidth="215"
+                          ItemHeight="175"
+                          ItemTemplate="{StaticResource VideoItemTemplate}"
+                          ItemContainerStyle="{StaticResource TransparentGridViewItemContainerStyle}"
+                          Style="{StaticResource NoScrollGridView}"
+                          SelectionMode="None" IsItemClickEnabled="True"
+                          ItemClick="HistoryVideoView_ItemClick"
+                          ItemsSource="{x:Bind HistoryCollection}"
+                          />
+            <TextBlock Style="{StaticResource TipTextStyle}" Text="暂无视频观看历史记录" FontWeight="Bold" VerticalAlignment="Center"
+                           x:Name="HolderText" Visibility="Collapsed"/>
+        </Grid>
+
+        <ProgressBar IsIndeterminate="True" Foreground="{ThemeResource PrimaryColor}" Grid.Row="2"
+                             x:Name="VideoLoadingBar" Visibility="Collapsed"/>
+    </Grid>
+</Page>

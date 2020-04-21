@@ -75,7 +75,10 @@ namespace BiliBili_UWP.Pages.Main
         }
         public async Task Refresh()
         {
+            if (_isRecommendRequesting)
+                return;
             Reset();
+            _isRecommendRequesting = true;
             var square = await _regionService.GetRegionSquareAsync(_region.tid, ctime);
             var rank = await _regionService.GetRegionRankAsync(_region.tid);
             if (square.Item1 != null)
@@ -100,6 +103,7 @@ namespace BiliBili_UWP.Pages.Main
                 }
                 RankContainer.Visibility = Visibility.Visible;
             }
+            _isRecommendRequesting = false;
         }
 
         private void SubRegionButton_Click(object sender, RoutedEventArgs e)

@@ -18,7 +18,7 @@ namespace BiliBili_Lib.Models.BiliBili
         public int pictures_count { get; set; }
         public int render_count
         {
-            get => pictures_count > 3 ? 3 : pictures_count;
+            get => Convert.ToInt32(Math.Ceiling(pictures_count / 3.0));
         }
         public int upload_time { get; set; }
         public string at_control { get; set; }
@@ -36,11 +36,6 @@ namespace BiliBili_Lib.Models.BiliBili
             public int img_width { get; set; }
             public int img_height { get; set; }
             public int img_size { get; set; }
-            public int render_width { get; set; }
-            public string render_src
-            {
-                get => img_src + "@200w.jpg";
-            }
         }
     }
 }

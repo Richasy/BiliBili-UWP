@@ -18,7 +18,7 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <Grid Height="70" Width="112">
-            <controls:ImageEx Source="{x:Bind Cover,Mode=OneWay,Converter={StaticResource CoverResolutionConverter},ConverterParameter=110}" x:Name="VideoCover"
+            <controls:ImageEx Source="{x:Bind Cover,Mode=OneWay,Converter={StaticResource CoverResolutionConverter},ConverterParameter=200}" x:Name="VideoCover"
                                        CornerRadius="4" Stretch="UniformToFill" PlaceholderStretch="Uniform" PlaceholderSource="ms-appx:///Assets/img_holder_rect.png"/>
             <Border Padding="5,3" Background="{ThemeResource PopupBackground}" RequestedTheme="Dark" HorizontalAlignment="Left" VerticalAlignment="Bottom"
                     CornerRadius="3" Margin="5,0,0,5" Visibility="{x:Bind Duration,Mode=OneWay,Converter={StaticResource StringVisibilityConverter}}">

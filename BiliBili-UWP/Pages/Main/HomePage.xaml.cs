@@ -64,26 +64,21 @@ namespace BiliBili_UWP.Pages.Main
         }
         public async Task Refresh()
         {
-            RecommendCollection.Clear();
             await channelVM.GetChannelSquareAsync();
-            int i = 0;
-            while (i < 3)
-            {
-                await LoadMoreRecommendVideo();
-                i++;
-            }
+            ScanPanel.Visibility = App.BiliViewModel.IsLogin ? Visibility.Visible : Visibility.Collapsed;
+            await RefreshVideo();
         }
 
         private async Task LoadMoreRecommendVideo()
         {
             int idx = 0;
-            VideLoadingBar.Visibility = Visibility.Visible;
+            VideoLoadingBar.Visibility = Visibility.Visible;
             if (RecommendCollection.Count > 0)
                 idx = RecommendCollection.Last().idx;
             var data = await channelVM._client.GetRecommendVideoAsync(idx);
             data.ForEach(p => RecommendCollection.Add(p));
             CheckRecommendStatus();
-            VideLoadingBar.Visibility = Visibility.Collapsed;
+            VideoLoadingBar.Visibility = Visibility.Collapsed;
         }
 
         private void CheckRecommendStatus()
@@ -106,6 +101,22 @@ namespace BiliBili_UWP.Pages.Main
             var item = e.ClickedItem as VideoRecommend;
             var container = RecommendVideoView.ContainerFromItem(item);
             App.AppViewModel.PlayVideo(item.args.aid,container);
+        }
+
+        private async Task RefreshVideo()
+        {
+            RecommendCollection.Clear();
+            int i = 0;
+            while (i < 2)
+            {
+                await LoadMoreRecommendVideo();
+                i++;
+            }
+        }
+
+        private async void RefreshButton_Click(object sender, RoutedEventArgs e)
+        {
+            await RefreshVideo();
         }
     }
 }

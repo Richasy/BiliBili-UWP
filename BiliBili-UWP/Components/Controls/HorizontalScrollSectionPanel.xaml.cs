@@ -103,7 +103,7 @@ namespace BiliBili_UWP.Components.Controls
 
         private void ShowListView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            ItemClick?.Invoke(this, e);
+            ItemClick?.Invoke(sender, e);
         }
 
         private void RefreshButton_Click(object sender, RoutedEventArgs e)

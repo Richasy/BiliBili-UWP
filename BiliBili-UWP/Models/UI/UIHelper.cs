@@ -92,13 +92,13 @@ namespace BiliBili_UWP.Models.UI
             return (FontFamily)Application.Current.Resources[key];
         }
         /// <summary>
-        /// 设置预定义的字体资源
+        /// 获取预先定义的样式
         /// </summary>
         /// <param name="key">键</param>
         /// <returns></returns>
-        public static void SetFontFamily(string key,FontFamily font)
+        public static Style GetStyle(string key)
         {
-            Application.Current.Resources.Add(key, font);
+            return (Style)Application.Current.Resources[key];
         }
         public static Storyboard GetPopupStoryboard(bool isPopin = true)
         {
@@ -136,12 +136,13 @@ namespace BiliBili_UWP.Models.UI
             popup._popupId = Guid.NewGuid();
             popup._popup.Child = popup as UIElement;
         }
-        public static void PopupShow(IAppPopup popup)
+        public static void PopupShow(IAppPopup popup,Action changeAction=null)
         {
             App.AppViewModel.WindowsSizeChangedNotify.Add(new Tuple<Guid, Action<Size>>(popup._popupId, (rect) =>
             {
                 popup.Width = rect.Width;
                 popup.Height = rect.Height;
+                changeAction?.Invoke();
             }));
             popup.Width = Window.Current.Bounds.Width;
             popup.Height = Window.Current.Bounds.Height;

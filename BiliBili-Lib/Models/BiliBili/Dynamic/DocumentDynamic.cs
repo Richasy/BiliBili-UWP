@@ -14,10 +14,6 @@ namespace BiliBili_Lib.Models.BiliBili
         public string title { get; set; }
         public string summary { get; set; }
         public string banner_url { get; set; }
-        public string render_banner_url
-        {
-            get => banner_url + "@300w.jpg";
-        }
         public int template_id { get; set; }
         public int state { get; set; }
         public Author author { get; set; }
@@ -55,27 +51,6 @@ namespace BiliBili_Lib.Models.BiliBili
             public int id { get; set; }
             public int parent_id { get; set; }
             public string name { get; set; }
-        }
-
-        public class Author
-        {
-            public int mid { get; set; }
-            public string name { get; set; }
-            public string face { get; set; }
-            public Pendant pendant { get; set; }
-            public Vip vip { get; set; }
-        }
-
-        public class Stats
-        {
-            public int view { get; set; }
-            public int favorite { get; set; }
-            public int like { get; set; }
-            public int dislike { get; set; }
-            public int reply { get; set; }
-            public int share { get; set; }
-            public int coin { get; set; }
-            public int dynamic { get; set; }
         }
 
         public class DocumentList
@@ -116,5 +91,26 @@ namespace BiliBili_Lib.Models.BiliBili
             public string name { get; set; }
         }
 
+    }
+
+    public class Stats
+    {
+        public int view { get; set; }
+        public int favorite { get; set; }
+        public int like { get; set; }
+        public int dislike { get; set; }
+        public int reply { get; set; }
+        public int share { get; set; }
+        public int coin { get; set; }
+        public int dynamic { get; set; }
+        public int danmaku { get; set; }
+    }
+    public class Author
+    {
+        public int mid { get; set; }
+        public string name { get; set; }
+        public string face { get; set; }
+        public Pendant pendant { get; set; }
+        public Vip vip { get; set; }
     }
 }

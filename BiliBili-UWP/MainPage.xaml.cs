@@ -48,6 +48,7 @@ namespace BiliBili_UWP
             popup.ShowPopup();
             await App.BiliViewModel.AutoLoginAsync();
             await App.BiliViewModel.GetRegionsAsync();
+            await App.BiliViewModel.InitEmoji(true);
             Window.Current.Dispatcher.AcceleratorKeyActivated += AccelertorKeyActivedHandle;
 
             PagePanel.NavigateToPage(Models.Enums.SideMenuItemType.Home);
@@ -60,22 +61,33 @@ namespace BiliBili_UWP
             if (args.EventType.ToString().Contains("Down"))
             {
                 var esc = Window.Current.CoreWindow.GetKeyState(VirtualKey.Escape);
-                var space= Window.Current.CoreWindow.GetKeyState(VirtualKey.Space);
+                var space = Window.Current.CoreWindow.GetKeyState(VirtualKey.Space);
                 var player = App.AppViewModel.CurrentVideoPlayer;
                 if (esc.HasFlag(CoreVirtualKeyStates.Down))
                 {
-                    if (player.MTC.IsFullWindow)
+                    if (player != null)
                     {
-                        args.Handled = true;
-                        player.MTC.IsFullWindow = false;
+                        if (player.MTC.IsFullWindow)
+                        {
+                            args.Handled = true;
+                            player.MTC.IsFullWindow = false;
+                        }
+                        else if (player.MTC.IsCinema)
+                        {
+                            args.Handled = true;
+                            player.MTC.IsCinema = false;
+                        }
+                        player.Focus(FocusState.Programmatic);
                     }
+
                 }
                 else if (space.HasFlag(CoreVirtualKeyStates.Down))
                 {
-                    if (player.IsFocus)
+                    if (player != null && (player.IsFocus || player.MTC.IsFullWindow || player.MTC.IsCinema))
                     {
                         args.Handled = true;
                         player.MTC.IsPlaying = !player.MTC.IsPlaying;
+                        player.Focus(FocusState.Programmatic);
                     }
                 }
             }
@@ -116,7 +128,8 @@ namespace BiliBili_UWP
         public void InsertPlayer()
         {
             FullWindowContainer.Visibility = Visibility.Visible;
-            FullWindowContainer.Children.Add(App.AppViewModel.CurrentVideoPlayer);
+            if (FullWindowContainer.Children.Count == 0)
+                FullWindowContainer.Children.Add(App.AppViewModel.CurrentVideoPlayer);
             App.AppViewModel.CurrentVideoPlayer.Focus(FocusState.Programmatic);
         }
         public void RemovePlayer()

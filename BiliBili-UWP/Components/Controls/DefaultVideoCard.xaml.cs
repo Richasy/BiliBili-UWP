@@ -185,5 +185,17 @@ namespace BiliBili_UWP.Components.Controls
             DependencyProperty.Register("BottomText", typeof(string), typeof(DefaultVideoCard), new PropertyMetadata(""));
 
 
+        public int DecodePixelWidth
+        {
+            get { return (int)GetValue(DecodePixelWidthProperty); }
+            set { SetValue(DecodePixelWidthProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for DecodePixelWidth.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty DecodePixelWidthProperty =
+            DependencyProperty.Register("DecodePixelWidth", typeof(int), typeof(DefaultVideoCard), new PropertyMetadata(195));
+
+
+
     }
 }

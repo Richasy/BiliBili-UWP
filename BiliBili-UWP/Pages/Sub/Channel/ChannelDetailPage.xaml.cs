@@ -1,4 +1,5 @@
 ﻿using BiliBili_Lib.Models.BiliBili;
+using BiliBili_Lib.Tools;
 using BiliBili_UWP.Components.Widgets;
 using BiliBili_UWP.Models.UI;
 using BiliBili_UWP.Models.UI.Interface;
@@ -41,6 +42,7 @@ namespace BiliBili_UWP.Pages.Sub.Channel
         private string _topicOffset = "";
         private bool _isVideoRequesting = false;
         private bool _isTopicRequesting = false;
+        private VideoBase _header = null;
         public ChannelDetailPage()
         {
             this.InitializeComponent();
@@ -82,11 +84,11 @@ namespace BiliBili_UWP.Pages.Sub.Channel
                 _videoOffset = data.Item1;
                 if (data.Item2 != null)
                 {
-                    var header = data.Item2;
+                    _header = data.Item2;
                     HeaderVideoContainer.Visibility = Visibility.Visible;
-                    HeaderVideoImage.Source = new BitmapImage(new Uri(header.GetResolutionCover("400")));
-                    HeaderVideoTitle.Text = header.title;
-                    HeaderVideoPlayCount.Text = header.cover_left_text_1;
+                    HeaderVideoImage.Source = new BitmapImage(new Uri(_header.GetResolutionCover("400")));
+                    HeaderVideoTitle.Text = _header.title;
+                    HeaderVideoPlayCount.Text = _header.cover_left_text_1;
                 }
                 if (data.Item3 != null && data.Item3.Count > 0)
                 {
@@ -235,7 +237,9 @@ namespace BiliBili_UWP.Pages.Sub.Channel
 
         private void RankButton_Click(object sender, RoutedEventArgs e)
         {
-
+            string theme = App.Current.RequestedTheme == ApplicationTheme.Dark ? "282828" : "FFFFFF";
+            string url = $"https://www.bilibili.com/h5/channel/rank?id={_channelId}&theme=%23{theme}&navhide=1";
+            App.AppViewModel.ShowWebPopup(_detail.title + " 排行榜", url);
         }
 
         private async void SubscribeButton_Click(object sender, RoutedEventArgs e)
@@ -269,6 +273,14 @@ namespace BiliBili_UWP.Pages.Sub.Channel
                 if (result)
                     App.BiliViewModel._isChannelChanged = true;
                 SubscribeButton.IsLoading = false;
+            }
+        }
+
+        private void HeaderVideoContainer_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            if (_header != null)
+            {
+                App.AppViewModel.PlayVideo(Convert.ToInt32(_header.param));
             }
         }
     }

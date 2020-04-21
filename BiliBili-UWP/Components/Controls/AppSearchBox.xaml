@@ -8,6 +8,9 @@
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:bilibili="using:BiliBili_Lib.Models.BiliBili"
     xmlns:converters="using:Microsoft.Toolkit.Uwp.UI.Converters"
+    xmlns:others="using:BiliBili_UWP.Models.UI.Others"
+    PointerEntered="UserControl_PointerEntered"
+    PointerExited="UserControl_PointerExited"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -22,17 +25,32 @@
                        Height="13" Margin="5,0,0,0" VerticalAlignment="Center"/>
             </StackPanel>
         </DataTemplate>
-        <DataTemplate x:Name="HistoryItemTemplate" x:DataType="x:String">
-            <Border Padding="10,8">
-                <TextBlock Style="{StaticResource SmallTipTextStyle}" Text="{Binding}"/>
+        <DataTemplate x:Name="SuggestItemTemplate" x:DataType="bilibili:SearchSuggestion">
+            <Border Padding="10">
+                <TextBlock Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource NormalTextColor}" Text="{x:Bind name}"/>
             </Border>
         </DataTemplate>
+        <Flyout x:Name="HotSearchFlyout" FlyoutPresenterStyle="{StaticResource BasicFlyoutStyle}" Placement="BottomEdgeAlignedLeft">
+            <ListView ItemTemplate="{StaticResource HotSearchItemTemplate}"
+                      ItemContainerStyle="{StaticResource BasicListViewContainerStyle}"
+                      Style="{StaticResource BasicListView}"
+                      SelectionMode="None" Width="300"
+                      IsItemClickEnabled="True"
+                      ItemsSource="{x:Bind HotSearchCollection}"
+                      x:Name="HotSearchListView"
+                      ItemClick="HotSearchListView_ItemClick"
+                      />
+        </Flyout>
     </UserControl.Resources>
     <Grid>
         <AutoSuggestBox Style="{StaticResource BasicSearchBoxStyle}" x:Name="BiliSearchBox"
-                        GotFocus="BiliSearchBox_GotFocus" KeyUp="BiliSearchBox_KeyUp" CornerRadius="20"
-                        PlaceholderText="搜索视频" QuerySubmitted="BiliSearchBox_QuerySubmitted"
-                        TextChanged="BiliSearchBox_TextChanged" LostFocus="BiliSearchBox_LostFocus"
-                        />
+                        KeyUp="BiliSearchBox_KeyUp" CornerRadius="20"
+                        PlaceholderText="搜索" QuerySubmitted="BiliSearchBox_QuerySubmitted"
+                        ItemTemplate="{StaticResource SuggestItemTemplate}"
+                        TabIndex="99"/>
+        <Button Style="{StaticResource DefaultCircleButtonStyle}" HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="Collapsed"
+                Width="35" Height="35" Content="&#xEA20;" Margin="5,0,0,0" ToolTipService.ToolTip="热搜" x:Name="HotSearchButton" Click="HotSearchButton_Click"/>
+        <ProgressRing MaxWidth="15" MaxHeight="15" Foreground="{ThemeResource TipTextColor}"
+                      VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0" x:Name="LoadingRing"/>
     </Grid>
 </UserControl>

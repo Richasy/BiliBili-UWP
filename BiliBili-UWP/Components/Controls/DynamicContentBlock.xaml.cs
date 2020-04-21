@@ -27,7 +27,7 @@ namespace BiliBili_UWP.Components.Controls
             this.InitializeComponent();
         }
 
-        private string _cardType = "";
+        public string _cardType = "";
 
         public object Data
         {
@@ -37,16 +37,16 @@ namespace BiliBili_UWP.Components.Controls
 
         // Using a DependencyProperty as the backing store for Data.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty DataProperty =
-            DependencyProperty.Register("Data", typeof(object), typeof(DynamicContentBlock), new PropertyMetadata(null,new PropertyChangedCallback(Data_Changed)));
+            DependencyProperty.Register("Data", typeof(object), typeof(DynamicContentBlock), new PropertyMetadata(null, new PropertyChangedCallback(Data_Changed)));
 
         private static void Data_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if(e.NewValue != null)
+            if (e.NewValue != null)
             {
                 var data = e.NewValue;
                 var instance = d as DynamicContentBlock;
                 instance.MainContentControl.Content = data;
-                if (data is AV)
+                if (data is VideoDynamic)
                 {
                     instance._cardType = "video";
                     instance.MainContentControl.ContentTemplate = instance.VideoTemplate;
@@ -54,9 +54,6 @@ namespace BiliBili_UWP.Components.Controls
                 else if (data is ImageDynamic)
                 {
                     instance._cardType = "image";
-                    var temp = data as ImageDynamic;
-                    double width = temp.pictures.Count < 3 ? 290 / temp.pictures_count : 100;
-                    temp.pictures.ForEach(p => { p.render_width = Convert.ToInt32(width); });
                     instance.MainContentControl.ContentTemplate = instance.ImageTemplate;
                 }
                 else if (data is DocumentDynamic)
@@ -64,19 +61,69 @@ namespace BiliBili_UWP.Components.Controls
                     instance._cardType = "document";
                     instance.MainContentControl.ContentTemplate = instance.DocumentTemplate;
                 }
+                else if (data is RepostDynamic repost)
+                {
+                    instance._cardType = "repost";
+                    repost.render_origin = App.BiliViewModel.DynamicContentConvert(repost.item.orig_type, repost.origin);
+                    if (repost.item.orig_type == 512)
+                    {
+                        repost.origin_user.info = new RepostDynamic.OriginUserInfo();
+                        var anime = repost.render_origin as AnimeDynamic;
+                        repost.origin_user.info.face = anime.season.cover;
+                        repost.origin_user.info.uname = anime.season.title;
+                    }
+                    else if (repost.item.orig_type == 4303)
+                    {
+                        repost.origin_user.info = new RepostDynamic.OriginUserInfo();
+                        var da = repost.render_origin as CourseDynamic;
+                        repost.origin_user.info.face = da.up_info.avatar;
+                        repost.origin_user.info.uname = da.up_info.name;
+                    }
+                    instance.MainContentControl.ContentTemplate = instance.RepostTemplate;
+                }
+                else if(data is AnimeDynamic)
+                {
+                    instance._cardType = "anime";
+                    instance.MainContentControl.ContentTemplate = instance.AnimeTemplate;
+                }
+                else if (data is TextDynamic)
+                {
+                    instance._cardType = "text";
+                    instance.MainContentControl.ContentTemplate = instance.TextTemplate;
+                }
+                else if(data is ShortVideoDynamic)
+                {
+                    instance._cardType = "shortVideo";
+                    instance.MainContentControl.ContentTemplate = instance.ShortVideoTemplate;
+                }
+                else if (data is WebDynamic)
+                {
+                    instance._cardType = "web";
+                    instance.MainContentControl.ContentTemplate = instance.WebTemplate;
+                }
+                else if(data is CourseDynamic)
+                {
+                    instance._cardType = "course";
+                    instance.MainContentControl.ContentTemplate = instance.CourseTemplate;
+                }
             }
         }
 
         private void MainContentControl_Tapped(object sender, TappedRoutedEventArgs e)
         {
             if (_cardType == "video")
-                App.AppViewModel.PlayVideo((Data as AV).aid,sender);
+                App.AppViewModel.PlayVideo((Data as VideoDynamic).aid, sender);
+            else if (_cardType == "web")
+            {
+                var item = Data as WebDynamic;
+                App.AppViewModel.ShowWebPopup(item.sketch.title, item.sketch.target_url);
+            }
         }
 
         private async void Image_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            var data = (sender as FrameworkElement).DataContext as Picture;
-            var dialog = new ShowImageDialog(data.img_src);
+            var images = (Data as ImageDynamic).pictures.Select(p => p.img_src).ToList();
+            var dialog = new ShowImageDialog(images);
             await dialog.ShowAsync();
         }
     }

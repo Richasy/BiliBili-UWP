@@ -135,10 +135,13 @@ namespace BiliBili_UWP.Components.Layout
                     page = typeof(Pages.Main.AnimePage);
                     break;
                 case SideMenuItemType.Dynamic:
+                    page = typeof(Pages.Main.DynamicPage);
                     break;
-                case SideMenuItemType.MyFollow:
+                case SideMenuItemType.MyHistory:
+                    page = typeof(Pages.Main.HistoryPage);
                     break;
                 case SideMenuItemType.MyFavorite:
+                    page = typeof(Pages.Main.FavoritePage);
                     break;
                 case SideMenuItemType.MyDownload:
                     break;
@@ -150,6 +153,9 @@ namespace BiliBili_UWP.Components.Layout
                     break;
                 case SideMenuItemType.Player:
                     page = typeof(Pages.Main.PlayerPage);
+                    break;
+                case SideMenuItemType.MiniPlayer:
+                    page = typeof(Pages.Main.MiniPlayerPage);
                     break;
                 case SideMenuItemType.Region:
                     page = typeof(Pages.Main.RegionPage);
@@ -166,20 +172,33 @@ namespace BiliBili_UWP.Components.Layout
                 result = SideMenuItemType.Home;
             else if (type.Equals(typeof(Pages.Main.AnimePage)))
                 result = SideMenuItemType.Anime;
+            else if (type.Equals(typeof(Pages.Main.DynamicPage)))
+                result = SideMenuItemType.Dynamic;
             else if (type.Equals(typeof(Pages.Main.RegionPage)))
                 result = SideMenuItemType.Region;
             else if (type.Equals(typeof(Pages.Main.PlayerPage)))
                 result = SideMenuItemType.Player;
+            else if (type.Equals(typeof(Pages.Main.HistoryPage)))
+                result = SideMenuItemType.MyHistory;
+            else if (type.Equals(typeof(Pages.Main.FavoritePage)))
+                result = SideMenuItemType.MyFavorite;
             return result;
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
+            MainPageBack();   
+        }
+
+        public void MainPageBack()
+        {
+            if (MainFrameHistoryList.Count <= 1)
+                return;
             int c = MainFrameHistoryList.Count - 2;
             var last = MainFrameHistoryList[c];
             var previousType = last.Item1;
             var menu = GetMenuTypeFromPageType(previousType);
-            if (App.AppViewModel.SelectedSideMenuItem==null || menu != App.AppViewModel.SelectedSideMenuItem.Type)
+            if (App.AppViewModel.SelectedSideMenuItem == null || menu != App.AppViewModel.SelectedSideMenuItem.Type)
             {
                 App.AppViewModel.CurrentSidePanel.SetSelectedItem(menu);
             }
@@ -190,6 +209,7 @@ namespace BiliBili_UWP.Components.Layout
             }
             NavigateToPage(menu, last.Item2, true);
         }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void OnPropertyChanged([CallerMemberName]string propertyName = "")
@@ -221,7 +241,7 @@ namespace BiliBili_UWP.Components.Layout
         private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             var width = e.NewSize.Width;
-            PageSplitView.DisplayMode = width < 1000 ? SplitViewDisplayMode.CompactOverlay : SplitViewDisplayMode.CompactInline;
+            PageSplitView.DisplayMode = width < 1500 ? SplitViewDisplayMode.CompactOverlay : SplitViewDisplayMode.CompactInline;
             PageSplitView.OpenPaneLength = width < 600 ? width : 400;
         }
 
@@ -252,6 +272,10 @@ namespace BiliBili_UWP.Components.Layout
             {
                 if (!isRepeat)
                 {
+                    if (page.Equals(typeof(Pages.Sub.ReplyPage)))
+                    {
+                        SubFrameHistoryList.RemoveAll(p => p.Item1 == page);
+                    }
                     SubFrameHistoryList.Add(new Tuple<Type, object>(page, parameter));
                 }
                 if (SubFrameHistoryList.Count > 1)
@@ -281,6 +305,13 @@ namespace BiliBili_UWP.Components.Layout
 
         private void SubBackButton_Click(object sender, RoutedEventArgs e)
         {
+            SubPageBack();
+        }
+
+        public void SubPageBack()
+        {
+            if (SubFrameHistoryList.Count <= 1)
+                return;
             int c = SubFrameHistoryList.Count - 2;
             var last = SubFrameHistoryList[c];
             var previousType = last.Item1;

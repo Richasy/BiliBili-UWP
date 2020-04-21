@@ -12,4 +12,6 @@
     <converter:CoverResolutionConverter x:Key="CoverResolutionConverter"/>
     <converter:NumberAbbrConverter x:Key="NumberAbbrConverter"/>
     <converter:DurationConverter x:Key="DurationConverter"/>
+    <converter:IntBoolConverter x:Key="IntBoolConverter"/>
+    <converter:SelectedColorConverter x:Key="SelectedColorConverter"/>
 </ResourceDictionary>

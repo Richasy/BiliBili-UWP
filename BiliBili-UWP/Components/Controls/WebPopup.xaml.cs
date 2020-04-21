@@ -1,0 +1,62 @@
+﻿using BiliBili_UWP.Models.UI;
+using BiliBili_UWP.Models.UI.Interface;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.Foundation;
+using Windows.Foundation.Collections;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Data;
+using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Navigation;
+
+// The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
+
+namespace BiliBili_UWP.Components.Controls
+{
+    public sealed partial class WebPopup : UserControl, IAppPopup
+    {
+        public Popup _popup { get; set; }
+        public Guid _popupId { get; set; }
+        public WebPopup()
+        {
+            this.InitializeComponent();
+            UIHelper.PopupInit(this);
+        }
+        public void Init(string title,string url)
+        {
+            TitleBlock.Text = title;
+            PopWebView.Navigate(new Uri(url));
+        }
+        public void ShowPopup()
+        {
+            UIHelper.PopupShow(this,()=>
+            {
+                PopupContainer.Height = Window.Current.Bounds.Height * 0.8;
+            });
+            PopupContainer.Height = Window.Current.Bounds.Height * 0.8;
+            PopupIn.Begin();
+        }
+        public void HidePopup()
+        {
+            PopWebView.NavigateToString("");
+            PopupOut.Begin();
+            PopupOut.Completed -= PopupOut_Completed;
+            PopupOut.Completed += PopupOut_Completed;
+        }
+        private void PopupOut_Completed(object sender, object e)
+        {
+            App.AppViewModel.WindowsSizeChangedNotify.RemoveAll(p => p.Item1 == _popupId);
+            _popup.IsOpen = false;
+        }
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            HidePopup();
+        }
+    }
+}

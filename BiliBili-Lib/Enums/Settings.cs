@@ -19,6 +19,7 @@ namespace BiliBili_Lib.Enums
         IsDanmakuOpen,
         IsUseHevc,
         IsAutoPlay,
-        MaxDanmuNumber
+        MaxDanmuNumber,
+        IsInitEmoji
     }
 }

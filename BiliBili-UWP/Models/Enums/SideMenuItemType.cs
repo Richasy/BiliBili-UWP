@@ -13,7 +13,7 @@ namespace BiliBili_UWP.Models.Enums
         Anime,
         Dynamic,
 
-        MyFollow,
+        MyHistory,
         MyFavorite,
         MyDownload,
         ViewLater,
@@ -23,6 +23,7 @@ namespace BiliBili_UWP.Models.Enums
 
         Line,
         Player,
-        Region
+        Region,
+        MiniPlayer
     }
 }

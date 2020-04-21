@@ -15,9 +15,9 @@ namespace BiliBili_UWP.Models.UI.Converter
             if(value!=null && value is string url && !string.IsNullOrEmpty(url))
             {
                 string suffix = "";
-                if (parameter != null)
+                if (parameter != null && !url.Contains("w.jpg"))
                     suffix = $"@{parameter.ToString()}w.jpg";
-                return new BitmapImage(new Uri(url + suffix));
+                return url + suffix;
             }
             return null;
         }

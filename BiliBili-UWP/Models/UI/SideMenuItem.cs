@@ -56,9 +56,9 @@ namespace BiliBili_UWP.Models.UI
                     Icon = "";
                     Group = SideMenuGroupType.Basic;
                     break;
-                case SideMenuItemType.MyFollow:
-                    Name = "我的关注";
-                    Icon = "";
+                case SideMenuItemType.MyHistory:
+                    Name = "历史记录";
+                    Icon = "";
                     Group = SideMenuGroupType.My;
                     break;
                 case SideMenuItemType.MyFavorite:
@@ -114,7 +114,7 @@ namespace BiliBili_UWP.Models.UI
                 list.InsertRange(5, new List<SideMenuItem>
                 {
                     new SideMenuItem(SideMenuItemType.Line),
-                    new SideMenuItem(SideMenuItemType.MyFollow),
+                    new SideMenuItem(SideMenuItemType.MyHistory),
                     new SideMenuItem(SideMenuItemType.MyFavorite),
                     new SideMenuItem(SideMenuItemType.MyDownload),
                     new SideMenuItem(SideMenuItemType.ViewLater)

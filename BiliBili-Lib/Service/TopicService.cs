@@ -19,7 +19,7 @@ namespace BiliBili_Lib.Service
         /// <param name="topicId">话题ID</param>
         /// <param name="topicName">话题名</param>
         /// <param name="offset">偏移值，初次不需要，每次请求会返回下一次请求的偏移值</param>
-        /// <returns>Item1:下次偏移值;Item3:视频列表</returns>
+        /// <returns>Item1:下次偏移值;Item2:视频列表</returns>
         public async Task<Tuple<string, List<Topic>>> GetTopicAsync(int topicId, string topicName, string offset = "")
         {
             var param = new Dictionary<string, string>();
@@ -34,6 +34,55 @@ namespace BiliBili_Lib.Service
             {
                 var jobj = JObject.Parse(data);
                 string nextOffset = jobj["offset"].ToString();
+                var topics = JsonConvert.DeserializeObject<List<Topic>>(jobj["cards"].ToString());
+                topics.RemoveAll(p => p == null || p.card == null || p.card.Length < 10);
+                return new Tuple<string, List<Topic>>(nextOffset, topics);
+            }
+            return null;
+        }
+        /// <summary>
+        /// 获取新动态
+        /// </summary>
+        /// <returns>Item1:下次偏移值;Item2:视频列表</returns>
+        public async Task<Tuple<string, List<Topic>>> GetNewDynamicAsync()
+        {
+            var param = new Dictionary<string, string>();
+            param.Add("cold_start", "1");
+            param.Add("qn", "32");
+            param.Add("rsp_type", "2");
+            param.Add("type_list", "268435455");
+            param.Add("uid", BiliTool.mid);
+            string url = BiliTool.UrlContact(Api.DYNAMIC_NEW, param, true);
+            var data = await BiliTool.GetTextFromWebAsync(url);
+            if (!string.IsNullOrEmpty(data))
+            {
+                var jobj = JObject.Parse(data);
+                string nextOffset = jobj["history_offset"].ToString();
+                var topics = JsonConvert.DeserializeObject<List<Topic>>(jobj["cards"].ToString());
+                topics.RemoveAll(p => p == null || p.card == null || p.card.Length < 10);
+                return new Tuple<string, List<Topic>>(nextOffset, topics);
+            }
+            return null;
+        }
+        /// <summary>
+        /// 获取历史动态
+        /// </summary>
+        /// <param name="offset">偏移值，初次不需要，每次请求会返回下一次请求的偏移值</param>
+        /// <returns>Item1:下次偏移值;Item2:动态列表</returns>
+        public async Task<Tuple<string, List<Topic>>> GetHistoryDynamicAsync(string offset)
+        {
+            var param = new Dictionary<string, string>();
+            param.Add("qn", "32");
+            param.Add("uid", BiliTool.mid);
+            param.Add("offset_dynamic_id", offset);
+            param.Add("rsp_type", "2");
+            param.Add("type_list", "268435455");
+            string url = BiliTool.UrlContact(Api.DYNAMIC_HISTORY, param, true);
+            var data = await BiliTool.GetTextFromWebAsync(url);
+            if (!string.IsNullOrEmpty(data))
+            {
+                var jobj = JObject.Parse(data);
+                string nextOffset = jobj["next_offset"].ToString();
                 var topics = JsonConvert.DeserializeObject<List<Topic>>(jobj["cards"].ToString());
                 topics.RemoveAll(p => p == null || p.card == null || p.card.Length < 10);
                 return new Tuple<string, List<Topic>>(nextOffset, topics);
@@ -67,5 +116,6 @@ namespace BiliBili_Lib.Service
             }
             return false;
         }
+
     }
 }

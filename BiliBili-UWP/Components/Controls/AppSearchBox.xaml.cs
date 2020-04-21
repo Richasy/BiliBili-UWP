@@ -7,7 +7,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -25,31 +27,49 @@ namespace BiliBili_UWP.Components.Controls
     public sealed partial class AppSearchBox : UserControl
     {
         private ObservableCollection<HotSearch> HotSearchCollection = new ObservableCollection<HotSearch>();
-        private ObservableCollection<string> SearchHistoryCollection = new ObservableCollection<string>();
+        private ObservableCollection<SearchSuggestion> SuggestionCollection = new ObservableCollection<SearchSuggestion>();
         public AppSearchBox()
         {
             this.InitializeComponent();
+            var changed = Observable.FromEventPattern<TypedEventHandler<AutoSuggestBox, AutoSuggestBoxTextChangedEventArgs>, AutoSuggestBox, AutoSuggestBoxTextChangedEventArgs>(
+                          handler => BiliSearchBox.TextChanged += handler,
+                          handler => BiliSearchBox.TextChanged -= handler);
+            var input = changed
+                        .DistinctUntilChanged(temp => temp.Sender.Text)
+                        .Throttle(TimeSpan.FromSeconds(0.4));
+
+            var notUserInput = input
+                               .ObserveOnDispatcher()
+                               .Where(temp => temp.EventArgs.Reason != AutoSuggestionBoxTextChangeReason.UserInput)
+                               .Select(temp => Task.FromResult<List<SearchSuggestion>>(null));
+
+            var userInput = input
+                            .ObserveOnDispatcher()
+                            .Where(temp => temp.EventArgs.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+                            .Where(temp => !string.IsNullOrEmpty(temp.Sender.Text))
+                            .Select((temp) => {
+                                LoadingRing.IsActive = true;
+                                return App.BiliViewModel._client.GetSearchSuggestionAsync(temp.Sender.Text);
+                            });
+            var merge = Observable.Merge(notUserInput, userInput).Switch();
+            merge.ObserveOnDispatcher().Subscribe(suggestions =>
+            {
+                if (suggestions != null)
+                {
+                    BiliSearchBox.ItemsSource = suggestions;
+                }
+                LoadingRing.IsActive = false;
+            });
             Init();
         }
         public async void Init()
         {
             HotSearchCollection.Clear();
-            SearchHistoryCollection.Clear();
+            SuggestionCollection.Clear();
             var hotSearch = await App.BiliViewModel._client.GetHotSearchAsync();
             if(hotSearch!=null && hotSearch.Count > 0)
             {
                 hotSearch.ForEach(p => HotSearchCollection.Add(p));
-            }
-            string searchHistoryString = AppTool.GetLocalSetting(Settings.SearchHistory, "[]");
-            var historyList = JsonConvert.DeserializeObject<List<string>>(searchHistoryString);
-            historyList.ForEach(p => SearchHistoryCollection.Add(p));
-        }
-        private void BiliSearchBox_GotFocus(object sender, RoutedEventArgs e)
-        {
-            if (BiliSearchBox.ItemsSource == null)
-            {
-                BiliSearchBox.ItemsSource = HotSearchCollection;
-                BiliSearchBox.ItemTemplate = HotSearchItemTemplate;
             }
         }
 
@@ -58,15 +78,7 @@ namespace BiliBili_UWP.Components.Controls
             if (args.ChosenSuggestion != null)
             {
                 BiliSearchBox.ItemsSource = null;
-                string key = string.Empty;
-                if(args.ChosenSuggestion is HotSearch hot)
-                {
-                    key = hot.keyword;
-                }
-                else
-                {
-                    key = args.ChosenSuggestion.ToString();
-                }
+                string key = key = args.ChosenSuggestion.ToString();
                 App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Pages.Sub.SearchPage), key);
             }
         }
@@ -76,35 +88,30 @@ namespace BiliBili_UWP.Components.Controls
             if (e.Key==Windows.System.VirtualKey.Enter && !string.IsNullOrEmpty(BiliSearchBox.Text))
             {
                 string key = BiliSearchBox.Text;
-                if (SearchHistoryCollection.Count > 20)
-                {
-                    SearchHistoryCollection.RemoveAt(0);
-                }
-                SearchHistoryCollection.Add(key);
-                string json = JsonConvert.SerializeObject(SearchHistoryCollection.Distinct().ToList());
-                AppTool.WriteLocalSetting(Settings.SearchHistory, json);
                 App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Pages.Sub.SearchPage), key);
             }
         }
 
-        private void BiliSearchBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        private void HotSearchButton_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrEmpty(sender.Text))
-            {
-                BiliSearchBox.ItemsSource = HotSearchCollection;
-                BiliSearchBox.ItemTemplate = HotSearchItemTemplate;
-            }
-            else
-            {
-                BiliSearchBox.ItemTemplate = HistoryItemTemplate;
-                var match = SearchHistoryCollection.Where(p => p.Equals(sender.Text, StringComparison.OrdinalIgnoreCase));
-                BiliSearchBox.ItemsSource = match;
-            }
+            HotSearchFlyout.ShowAt(BiliSearchBox);
         }
 
-        private void BiliSearchBox_LostFocus(object sender, RoutedEventArgs e)
+        private void HotSearchListView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            BiliSearchBox.ItemsSource = null;
+            var hot = e.ClickedItem as HotSearch;
+            string key = hot.keyword;
+            App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Pages.Sub.SearchPage), key);
+        }
+
+        private void UserControl_PointerEntered(object sender, PointerRoutedEventArgs e)
+        {
+            HotSearchButton.Visibility = Visibility.Visible;
+        }
+
+        private void UserControl_PointerExited(object sender, PointerRoutedEventArgs e)
+        {
+            HotSearchButton.Visibility = Visibility.Collapsed;
         }
     }
 }

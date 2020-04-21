@@ -1,0 +1,17 @@
+﻿<ContentDialog
+    x:Class="BiliBili_UWP.Dialogs.ConfirmDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BiliBili_UWP.Dialogs"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Style="{StaticResource BasicDialogStyle}"
+    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
+    SecondaryButtonClick="ContentDialog_SecondaryButtonClick">
+
+    <Grid>
+        <TextBlock Style="{StaticResource BodyWrapTextStyle}" FontSize="14"
+                   x:Name="DisplayBlock"/>
+    </Grid>
+</ContentDialog>

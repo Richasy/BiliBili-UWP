@@ -12,12 +12,12 @@
         <Setter Property="IsTextScaleFactorEnabled" Value="False" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="MediaTransportControls">
+                <ControlTemplate TargetType="control:VideoTransportControls">
                     <Grid x:Name="RootGrid" Background="Transparent">
 
                         <Grid.Resources>
                             <!-- New AppBar button style 48x48 pixels in size -->
-                            <Style x:Key="AppBarButtonStyle" TargetType="AppBarButton" BasedOn="{StaticResource AppBarButtonRevealStyle}">
+                            <Style x:Key="AppBarButtonStyle" TargetType="AppBarButton" BasedOn="{StaticResource BasicAppBarButtonRevealStyle}">
                                 <Setter Property="Width" Value="{ThemeResource MTCMediaButtonWidth}" />
                                 <Setter Property="Height" Value="{ThemeResource MTCMediaButtonHeight}" />
                                 <Setter Property="AllowFocusOnInteraction" Value="True" />
@@ -39,8 +39,8 @@
                                 <Setter Property="VerticalAlignment" Value="Center" />
                                 <Setter Property="Foreground" Value="{ThemeResource NormalTextColor}" />
                                 <Setter Property="FontSize" Value="12" />
-                                <Setter Property="FontFamily" Value="{CustomResource Basic}" />
-                                <Setter Property="Style" Value="{ThemeResource CaptionTextStyle }" />
+                                <!--<Setter Property="FontFamily" Value="{CustomResource Basic}" />
+                                <Setter Property="Style" Value="{ThemeResource CaptionTextStyle }" />-->
                                 <Setter Property="IsTextScaleFactorEnabled" Value="False" />
                             </Style>
                             <!-- Style for Position slider used in Media Transport Controls -->
@@ -646,7 +646,7 @@
                                                                           HorizontalAlignment='Center'
                                                                           Margin="12,0">
                                                                 <AppBarButton.Icon>
-                                                                    <SymbolIcon x:Name="AudioMuteSymbol" Symbol="Volume" />
+                                                                    <FontIcon x:Name="AudioMuteSymbol" Glyph="&#xEA0F;" FontFamily="{StaticResource Icon}" />
                                                                 </AppBarButton.Icon>
                                                             </AppBarButton>
                                                             <Slider x:Name='VolumeSlider'
@@ -669,6 +669,15 @@
                                                 </AppBarButton.Flyout>
                                                 <AppBarButton.Icon>
                                                     <SymbolIcon x:Name="VolumeMuteSymbol" Symbol="Volume" />
+                                                </AppBarButton.Icon>
+                                            </AppBarButton>
+                                            <AppBarButton x:Name='SeparateButton'
+                                                    Style='{StaticResource AppBarButtonStyle}'
+                                                    MediaTransportControlsHelper.DropoutOrder='11'
+                                                    Visibility='{TemplateBinding SeparateButtonVisibility}'
+                                                          ToolTipService.ToolTip="打开新窗口">
+                                                <AppBarButton.Icon>
+                                                    <FontIcon Glyph="&#xE94B;" FontFamily="{StaticResource Icon}" />
                                                 </AppBarButton.Icon>
                                             </AppBarButton>
                                             <AppBarButton x:Name='CCSelectionButton'
@@ -779,17 +788,52 @@
                                                     <FontIcon Glyph="&#xEC15;" />
                                                 </AppBarButton.Icon>
                                             </AppBarButton>
-                                            <AppBarButton x:Name='CompactOverlayButton'
-                          Style='{StaticResource AppBarButtonStyle}'
-                          MediaTransportControlsHelper.DropoutOrder='24'
-                          Visibility='Collapsed'>
+                                            <AppBarButton x:Name="QualityButton" ToolTipService.ToolTip="分辨率"
+                                                          Style="{StaticResource AppBarButtonStyle}"
+                                                          MediaTransportControlsHelper.DropoutOrder="14">
                                                 <AppBarButton.Icon>
-                                                    <FontIcon Glyph="&#xE8B9;" />
+                                                    <FontIcon Glyph="&#xE9A6;" FontFamily="{StaticResource Icon}"/>
+                                                </AppBarButton.Icon>
+                                                <AppBarButton.Flyout>
+                                                    <Flyout FlyoutPresenterStyle="{StaticResource NoPaddingFlyoutStyle}">
+                                                        <ListView x:Name="QualityListView"
+                                                                  ItemsSource="{TemplateBinding QualityItemsSource}"
+                                                                  IsItemClickEnabled="True"
+                                                                  Style="{StaticResource BasicListView}"
+                                                                  Width="200"
+                                                                  ItemContainerStyle="{StaticResource BasicListViewContainerStyle}"
+                                                                  SelectedIndex="{TemplateBinding QualitySelectIndex}"
+                                                                  >
+                                                            <ListView.ItemTemplate>
+                                                                <DataTemplate>
+                                                                    <ListViewItem x:Name="QualityItem" Padding="10,6">
+                                                                        <RadioButton Style="{StaticResource BasicRadioButtonStyle}" IsChecked="{Binding ElementName=QualityItem,Path=IsSelected}"
+                                                                                     GroupName="Quality" Content="{Binding Item2}" IsEnabled="False"/>
+                                                                    </ListViewItem>
+                                                                </DataTemplate>
+                                                            </ListView.ItemTemplate>
+                                                        </ListView>
+                                                    </Flyout>
+                                                </AppBarButton.Flyout>
+                                            </AppBarButton>
+                                            <AppBarButton x:Name='CustomCompactOverlayButton'
+                          Style='{StaticResource AppBarButtonStyle}' ToolTipService.ToolTip="小窗播放"
+                          MediaTransportControlsHelper.DropoutOrder='24'
+                          Visibility="{TemplateBinding CompactOverlayButtonVisibility}">
+                                                <AppBarButton.Icon>
+                                                    <FontIcon Glyph="&#xEA41;" FontFamily="{StaticResource Icon}"/>
+                                                </AppBarButton.Icon>
+                                            </AppBarButton>
+                                            <AppBarButton x:Name='CinemaButton'
+                          Style='{StaticResource AppBarButtonStyle}' Visibility="{TemplateBinding CinemaButtonVisibility}"
+                          MediaTransportControlsHelper.DropoutOrder='23' ToolTipService.ToolTip="铺满应用">
+                                                <AppBarButton.Icon>
+                                                    <FontIcon Glyph="&#xE999;" FontFamily="{StaticResource Icon}"/>
                                                 </AppBarButton.Icon>
                                             </AppBarButton>
                                             <AppBarButton x:Name='CustomFullWindowButton'
-                          Style='{StaticResource AppBarButtonStyle}'
-                          MediaTransportControlsHelper.DropoutOrder='17'>
+                          Style='{StaticResource AppBarButtonStyle}' Visibility="{TemplateBinding FullWindowButtonVisibility}"
+                          MediaTransportControlsHelper.DropoutOrder='17' ToolTipService.ToolTip="全屏">
                                                 <AppBarButton.Icon>
                                                     <FontIcon FontFamily="{StaticResource Icon}" Glyph="&#xE99A;"/>
                                                 </AppBarButton.Icon>

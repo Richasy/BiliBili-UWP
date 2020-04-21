@@ -28,7 +28,7 @@ namespace BiliBili_Lib.Service
         /// <param name="rid">分区ID</param>
         /// <param name="ctime">偏移值</param>
         /// <returns></returns>
-        public async Task<Tuple<int,List<RegionVideo>>> GetSubRegionDefaultAsync(int rid,int ctime=0)
+        public async Task<Tuple<int, List<RegionVideo>>> GetSubRegionDefaultAsync(int rid, int ctime = 0)
         {
             var param = new Dictionary<string, string>();
             param.Add("rid", rid.ToString());
@@ -54,10 +54,10 @@ namespace BiliBili_Lib.Service
                 }
                 if (jobj.ContainsKey("new"))
                 {
-                    var news= JsonConvert.DeserializeObject<List<RegionVideo>>(jobj["new"].ToString());
+                    var news = JsonConvert.DeserializeObject<List<RegionVideo>>(jobj["new"].ToString());
                     news.ForEach(p => list.Add(p));
                 }
-                var result = new Tuple<int, List<RegionVideo>>(Convert.ToInt32(jobj["cbottom"]),list);
+                var result = new Tuple<int, List<RegionVideo>>(Convert.ToInt32(jobj["cbottom"]), list);
                 return result;
             }
             return null;
@@ -69,7 +69,7 @@ namespace BiliBili_Lib.Service
         /// <param name="order">排序方式</param>
         /// <param name="pn">页码</param>
         /// <returns></returns>
-        public async Task<List<RegionVideo>> GetSubRegionSortVideoAsync(int rid,string order,int pn=1)
+        public async Task<List<RegionVideo>> GetSubRegionSortVideoAsync(int rid, string order, int pn = 1)
         {
             var param = new Dictionary<string, string>();
             param.Add("rid", rid.ToString());
@@ -99,7 +99,7 @@ namespace BiliBili_Lib.Service
         /// <param name="rid">分区ID</param>
         /// <param name="ctime">偏移值</param>
         /// <returns></returns>
-        public async Task<Tuple<List<RegionBanner>,int,List<RegionVideo>>> GetRegionSquareAsync(int rid,int ctime=0)
+        public async Task<Tuple<List<RegionBanner>, int, List<RegionVideo>>> GetRegionSquareAsync(int rid, int ctime = 0)
         {
             var param = new Dictionary<string, string>();
             param.Add("rid", rid.ToString());
@@ -134,7 +134,7 @@ namespace BiliBili_Lib.Service
                     var news = JsonConvert.DeserializeObject<List<RegionVideo>>(jobj["new"].ToString());
                     news.ForEach(p => list.Add(p));
                 }
-                var result = new Tuple<List<RegionBanner>, int, List<RegionVideo>>(banner,Convert.ToInt32(jobj["cbottom"]), list);
+                var result = new Tuple<List<RegionBanner>, int, List<RegionVideo>>(banner, Convert.ToInt32(jobj["cbottom"]), list);
                 return result;
             }
             return null;
@@ -149,7 +149,7 @@ namespace BiliBili_Lib.Service
         {
             var param = new Dictionary<string, string>();
             param.Add("aid", aid.ToString());
-            string url = BiliTool.UrlContact(Api.VIDEO_PART,param,true);
+            string url = BiliTool.UrlContact(Api.VIDEO_PART, param, true);
             var parts = await BiliTool.ConvertEntityFromWebAsync<List<VideoPart>>(url);
             return parts;
         }
@@ -187,7 +187,7 @@ namespace BiliBili_Lib.Service
         /// <param name="cid">视频分Pid</param>
         /// <param name="qn">分辨率ID</param>
         /// <returns></returns>
-        public async Task<VideoPlayBase> GetVideoPlayAsync(int aid,int cid,int qn=64)
+        public async Task<VideoPlayBase> GetVideoPlayAsync(int aid, int cid, int qn = 64)
         {
             var param = new Dictionary<string, string>();
             param.Add("avid", aid.ToString());
@@ -205,7 +205,7 @@ namespace BiliBili_Lib.Service
                 {
                     return JsonConvert.DeserializeObject<VideoPlayDash>(data);
                 }
-                else if(jobj.ContainsKey("durl"))
+                else if (jobj.ContainsKey("durl"))
                 {
                     return JsonConvert.DeserializeObject<VideoPlayFlv>(data);
                 }
@@ -274,7 +274,7 @@ namespace BiliBili_Lib.Service
         /// <param name="aid">视频ID</param>
         /// <param name="type">检查类型</param>
         /// <returns></returns>
-        public async Task<bool> CheckVideoStatusAsync(int aid,string type="like")
+        public async Task<bool> CheckVideoStatusAsync(int aid, string type = "like")
         {
             var param = new Dictionary<string, string>();
             param.Add("aid", aid.ToString());
@@ -293,8 +293,8 @@ namespace BiliBili_Lib.Service
             }
             url = BiliTool.UrlContact(url, param, true);
             var content = await BiliTool.GetTextFromWebAsync(url);
-            if(type=="like")
-                return content=="1";
+            if (type == "like")
+                return content == "1";
             else
             {
                 var jobj = JObject.Parse(content);
@@ -304,6 +304,143 @@ namespace BiliBili_Lib.Service
                     return Convert.ToBoolean(jobj["favoured"]);
             }
             return false;
+        }
+
+        /// <summary>
+        /// 视频点赞/取消点赞
+        /// </summary>
+        /// <param name="aid">视频ID</param>
+        /// <param name="isLike">是否点赞</param>
+        /// <returns></returns>
+        public async Task<bool> LikeVideoAsync(int aid, bool isLike)
+        {
+            string is_like = isLike ? "0" : "1";
+            var param = new Dictionary<string, string>();
+            param.Add("aid", aid.ToString());
+            param.Add("like", is_like);
+            var result = await BiliTool.PostContentToWebAsync(Api.VIDEO_LIKE, BiliTool.UrlContact("", param, true));
+            if (!string.IsNullOrEmpty(result))
+            {
+                var jobj = JObject.Parse(result);
+                return jobj["code"].ToString() == "0";
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// 视频投币
+        /// </summary>
+        /// <param name="aid">视频ID</param>
+        /// <param name="coin">投币数量</param>
+        /// <param name="isLike">是否同时点赞</param>
+        /// <returns></returns>
+        public async Task<bool> GiveCoinToVideoAsync(int aid, int coin, bool isLike)
+        {
+            string is_like = isLike ? "1" : "0";
+            var param = new Dictionary<string, string>();
+            param.Add("aid", aid.ToString());
+            param.Add("select_like", is_like);
+            param.Add("multiply", coin.ToString());
+            var result = await BiliTool.PostContentToWebAsync(Api.VIDEO_COIN, BiliTool.UrlContact("", param, true));
+            if (!string.IsNullOrEmpty(result))
+            {
+                var jobj = JObject.Parse(result);
+                return jobj["code"].ToString() == "0";
+            }
+            return false;
+        }
+        /// <summary>
+        /// 获取收藏夹
+        /// </summary>
+        /// <param name="aid">视频ID</param>
+        /// <param name="uid">用户ID</param>
+        /// <returns></returns>
+        public async Task<List<FavoriteItem>> GetFavoritesAsync(int aid, int uid)
+        {
+            var param = new Dictionary<string, string>();
+            param.Add("up_mid", uid.ToString());
+            param.Add("rid", aid.ToString());
+            param.Add("ps", "100");
+            param.Add("pn", "1");
+            param.Add("type", "2");
+            string url = BiliTool.UrlContact(Api.ACCOUNT_FAVORITE_LIST, param, true);
+            return await BiliTool.ConvertEntityFromWebAsync<List<FavoriteItem>>(url, "data.list");
+        }
+        /// <summary>
+        /// 操作收藏夹
+        /// </summary>
+        /// <param name="aid">视频ID</param>
+        /// <param name="addIds">添加的收藏夹ID列表</param>
+        /// <param name="delIds">移出的收藏夹ID列表</param>
+        /// <returns></returns>
+        public async Task<bool> AddVideoToFavoriteAsync(int aid, List<string> addIds, List<string> delIds)
+        {
+            if (addIds.Count == 0 && delIds.Count == 0)
+                return false;
+            var param = new Dictionary<string, string>();
+            param.Add("rid", aid.ToString());
+            param.Add("type", "2");
+            if (addIds.Count > 0)
+                param.Add("add_media_ids", string.Join(',', addIds));
+            else if (delIds.Count > 0)
+                param.Add("del_media_ids", string.Join(',', delIds));
+            var result = await BiliTool.PostContentToWebAsync(Api.VIDEO_FAVORITE, BiliTool.UrlContact("", param, true));
+            if (!string.IsNullOrEmpty(result))
+            {
+                var jobj = JObject.Parse(result);
+                return jobj["code"].ToString() == "0";
+            }
+            return false;
+        }
+        /// <summary>
+        /// 一键三连
+        /// </summary>
+        /// <param name="aid">视频ID</param>
+        /// <returns></returns>
+        public async Task<bool> TripleVideoAsync(int aid)
+        {
+            var param = new Dictionary<string, string>();
+            param.Add("aid", aid.ToString());
+            var result = await BiliTool.PostContentToWebAsync(Api.VIDEO_TRIPLE, BiliTool.UrlContact("", param, true));
+            if (!string.IsNullOrEmpty(result))
+            {
+                var jobj = JObject.Parse(result);
+                return jobj["code"].ToString() == "0";
+            }
+            return false;
+        }
+        /// <summary>
+        /// 添加观看视频的历史记录
+        /// </summary>
+        /// <param name="aid">视频ID</param>
+        /// <returns></returns>
+        public async Task AddVideoHistoryAsync(int aid, int cid, int seconds = 0)
+        {
+            var param = new Dictionary<string, string>();
+            param.Add("aid", aid.ToString());
+            param.Add("cid", cid.ToString());
+            param.Add("progress", seconds.ToString());
+            param.Add("type", "3");
+            var data = BiliTool.UrlContact("", param, true);
+            await BiliTool.PostContentToWebAsync(Api.VIDEO_ADD_WATCH, data);
+        }
+
+        /// <summary>
+        /// 获取互动视频的节点信息
+        /// </summary>
+        /// <param name="aid">视频ID</param>
+        /// <param name="graphVersion">标识值</param>
+        /// <param name="edgeId">选项ID</param>
+        /// <returns></returns>
+        public async Task<InteractionVideo> GetInteractionVideoAsync(int aid, int graphVersion, int edgeId = 0)
+        {
+            var param = new Dictionary<string, string>();
+            param.Add("aid", aid.ToString());
+            param.Add("graph_version", graphVersion.ToString());
+            param.Add("edge_id", edgeId.ToString());
+            string url = BiliTool.UrlContact(Api.VIDEO_INTERACTION_EDGE, param, true);
+            var data = await BiliTool.ConvertEntityFromWebAsync<InteractionVideo>(url);
+            return data;
         }
     }
 }

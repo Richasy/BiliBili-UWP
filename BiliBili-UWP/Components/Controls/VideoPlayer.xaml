@@ -7,6 +7,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:c="using:NSDanmaku.Controls"
     xmlns:others="using:BiliBili_UWP.Models.UI.Others"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:bilibili="using:BiliBili_Lib.Models.BiliBili"
+    xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400"
@@ -16,24 +19,50 @@
     PointerEntered="UserControl_PointerEntered"
     PointerExited="UserControl_PointerExited">
 
-    <Grid>
-        <MediaPlayerElement x:Name="mediaElement"  AreTransportControlsEnabled="True" PointerMoved="mediaElement_PointerMoved">
+    <Grid Background="{ThemeResource PageBackground}">
+        <MediaPlayerElement x:Name="mediaElement"  AreTransportControlsEnabled="True" PointerMoved="mediaElement_PointerMoved"
+                            Background="{ThemeResource PageBackground}">
             <MediaPlayerElement.TransportControls>
                 <others:VideoTransportControls x:Name="VideoMTC"
-                                               IsCompactOverlayButtonVisible="True"
-                                               IsCompactOverlayEnabled="True"
                                                FontSize="15" DanmakuLoaded="VideoMTC_DanmakuLoaded"
                                                FullWindowChanged="VideoMTC_FullWindowChanged"
                                                PlayButtonClick="VideoMTC_PlayButtonClick"
+                                               CinemaChanged="VideoMTC_CinemaChanged"
+                                               QualityItemsSource="{x:Bind QualityCollection}"
+                                               QualityChanged="VideoMTC_QualityChanged"
+                                               CinemaButtonVisibility="{x:Bind CinemaButtonVisibility,Mode=OneWay}"
+                                               FullWindowButtonVisibility="{x:Bind FullWindowButtonVisibility,Mode=OneWay}"
+                                               CompactOverlayButtonVisibility="{x:Bind CompactOverlayButtonVisibility,Mode=OneWay}"
+                                               SeparateButtonVisibility="{x:Bind SeparateButtonVisibility,Mode=OneWay}"
+                                               CompactOverlayButtonClick="VideoMTC_CompactOverlayButtonClick"
+                                               SeparateButtonClick="VideoMTC_SeparateButtonClick"
+                                               Loaded="VideoMTC_Loaded"
                                                />
             </MediaPlayerElement.TransportControls>
         </MediaPlayerElement>
+        <ItemsControl x:Name="ChoiceItemsControl" ItemsSource="{x:Bind ChoiceCollection}" HorizontalAlignment="Center"
+                      Visibility="Collapsed" VerticalAlignment="Bottom" Margin="0,0,0,100" SizeChanged="ChoiceItemsControl_SizeChanged">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <ItemsWrapGrid Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="bilibili:Choice">
+                    <Grid Background="{ThemeResource MaskAcrylicBackground}" CornerRadius="4" HorizontalAlignment="Stretch"
+                              VerticalAlignment="Stretch" Padding="20,30" Tapped="Choice_Tapped" Margin="12">
+                        <TextBlock Text="{x:Bind option}" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                       FontSize="15" Foreground="{ThemeResource ImportantTextColor}" FontWeight="Bold"/>
+                    </Grid>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
         <ProgressBar IsIndeterminate="True" Foreground="{ThemeResource PrimaryColor}" Visibility="Collapsed"
                      VerticalAlignment="Bottom" HorizontalAlignment="Stretch" x:Name="LoadingBar"/>
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="ErrorContainer" Visibility="Collapsed">
             <TextBlock Style="{StaticResource BasicIconTextStyle}" FontSize="20" HorizontalAlignment="Center"
                        Text="&#xE903;" Foreground="{ThemeResource TipTextColor}"/>
-            <TextBlock Text="嗨呀！加载失败了，就问你气不气？" Style="{StaticResource TipTextStyle}" HorizontalAlignment="Center"
+            <TextBlock Text="嗨呀！加载失败了，就问你气不气？" HorizontalAlignment="Center"
                        TextAlignment="Center" Margin="0,10,0,0"/>
         </StackPanel>
     </Grid>

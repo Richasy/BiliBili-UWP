@@ -1,4 +1,5 @@
 ﻿using BiliBili_Lib.Enums;
+using BiliBili_Lib.Models.BiliBili.Video;
 using BiliBili_Lib.Tools;
 using BiliBili_UWP.Components.Controls;
 using BiliBili_UWP.Components.Layout;
@@ -12,11 +13,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
+using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.Storage;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
+using Windows.UI.WindowManagement;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Hosting;
 using Windows.UI.Xaml.Media.Animation;
 
 namespace BiliBili_UWP.Models.Core
@@ -29,6 +34,7 @@ namespace BiliBili_UWP.Models.Core
         public SidePanel CurrentSidePanel;
         public PagePanel CurrentPagePanel;
         public VideoPlayer CurrentVideoPlayer;
+        public WebPopup _webPopup;
 
         public List<Tuple<Guid, Action<Size>>> WindowsSizeChangedNotify { get; set; } = new List<Tuple<Guid, Action<Size>>>();
         public AppViewModel()
@@ -80,7 +86,10 @@ namespace BiliBili_UWP.Models.Core
             CurrentSidePanel.SetSelectedItem(Enums.SideMenuItemType.Line);
             CurrentPagePanel.NavigateToPage(Enums.SideMenuItemType.Player, aid);
         }
-
+        /// <summary>
+        /// 进入全屏模式
+        /// </summary>
+        /// <param name="isFull">是否为全屏模式</param>
         public void PlayVideoFullScreen(bool isFull)
         {
             if (isFull)
@@ -91,10 +100,89 @@ namespace BiliBili_UWP.Models.Core
             }
             else
             {
-                MainPage.Current.RemovePlayer();
                 ApplicationView.GetForCurrentView().ExitFullScreenMode();
-                PlayerPage.Current.InsertPlayer();
+                if (!CurrentVideoPlayer.MTC.IsCinema)
+                {
+                    MainPage.Current.RemovePlayer();
+                    PlayerPage.Current.InsertPlayer();
+                }
             }
+        }
+        /// <summary>
+        /// 进入影院模式
+        /// </summary>
+        /// <param name="isCinema">是否为影院模式</param>
+        public void PlayVideoCinema(bool isCinema)
+        {
+            if (isCinema)
+            {
+                PlayerPage.Current.RemovePlayer();
+                MainPage.Current.InsertPlayer();
+            }
+            else
+            {
+                if (!CurrentVideoPlayer.MTC.IsFullWindow)
+                {
+                    MainPage.Current.RemovePlayer();
+                    PlayerPage.Current.InsertPlayer();
+                }
+            }
+        }
+        /// <summary>
+        /// 进入小窗模式
+        /// </summary>
+        /// <param name="isCompact">是否为影院模式</param>
+        public async void PlayVideoCompactOverlay(bool isCompact)
+        {
+            if (isCompact)
+            {
+                PlayerPage.Current.RemovePlayer();
+                MainPage.Current.InsertPlayer();
+                await ApplicationView.GetForCurrentView().TryEnterViewModeAsync(ApplicationViewMode.CompactOverlay);
+            }
+            else
+            {
+                if (!CurrentVideoPlayer.MTC.IsCompactOverlay)
+                {
+                    MainPage.Current.RemovePlayer();
+                    PlayerPage.Current.InsertPlayer();
+                    await ApplicationView.GetForCurrentView().TryEnterViewModeAsync(ApplicationViewMode.Default);
+                }
+            }
+        }
+        /// <summary>
+        /// 在新窗口中播放视频
+        /// </summary>
+        /// <param name="video">视频ID</param>
+        /// <param name="cid">分片ID</param>
+        public async void PlayVideoSeparate(VideoDetail video,int cid)
+        {
+            CoreApplicationView newView = CoreApplication.CreateNewView();
+            int newViewId = 0;
+            await newView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                Frame frame = new Frame();
+                frame.Navigate(typeof(MiniPlayerPage), new Tuple<VideoDetail, int>(video, cid));
+                Window.Current.Content = frame;
+                // You have to activate the window in order to show it later.
+                Window.Current.Activate();
+                newViewId = ApplicationView.GetForCurrentView().Id;
+            });
+            bool viewShown = await ApplicationViewSwitcher.TryShowAsStandaloneAsync(newViewId);
+            if (CurrentPageType == typeof(PlayerPage))
+                CurrentPagePanel.MainPageBack();
+        }
+        /// <summary>
+        /// 显示网页弹出层
+        /// </summary>
+        /// <param name="title">标题</param>
+        /// <param name="url">地址</param>
+        public void ShowWebPopup(string title,string url)
+        {
+            if (_webPopup == null)
+                _webPopup = new WebPopup();
+            _webPopup.Init(title, url);
+            _webPopup.ShowPopup();
         }
     }
 }

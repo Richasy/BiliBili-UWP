@@ -14,6 +14,31 @@ namespace BiliBili_Lib.Models.BiliBili
         public TopicDisplay display { get; set; }
     }
 
+    public class TopicOrigin
+    {
+        public int uid { get; set; }
+        public int type { get; set; }
+        public long rid { get; set; }
+        public int acl { get; set; }
+        public int view { get; set; }
+        public int repost { get; set; }
+        public int like { get; set; }
+        public long dynamic_id { get; set; }
+        public int timestamp { get; set; }
+        public int pre_dy_id { get; set; }
+        public int orig_dy_id { get; set; }
+        public int uid_type { get; set; }
+        public int stype { get; set; }
+        public int r_type { get; set; }
+        public int inner_id { get; set; }
+        public int status { get; set; }
+        public string dynamic_id_str { get; set; }
+        public string pre_dy_id_str { get; set; }
+        public string orig_dy_id_str { get; set; }
+        public string rid_str { get; set; }
+        public string bvid { get; set; }
+    }
+
     public class TopicDescription
     {
         public int uid { get; set; }
@@ -23,11 +48,13 @@ namespace BiliBili_Lib.Models.BiliBili
         public int view { get; set; }
         public int repost { get; set; }
         public int like { get; set; }
+        public int comment { get; set; }
         public int is_liked { get; set; }
         public string dynamic_id { get; set; }
         public int timestamp { get; set; }
         public int orig_type { get; set; }
         public UserProfile user_profile { get; set; }
+        public TopicOrigin origin { get; set; }
         public int uid_type { get; set; }
         public int stype { get; set; }
         public int r_type { get; set; }
@@ -54,8 +81,13 @@ namespace BiliBili_Lib.Models.BiliBili
     public class TopicDisplay
     {
         public TopicInfo topic_info { get; set; }
+        public EmojiInfo emoji_info { get; set; }
         public string usr_action_txt { get; set; }
         public Relation relation { get; set; }
+    }
+    public class EmojiInfo
+    {
+        public List<Emote> emoji_details { get; set; }
     }
 
     public class TopicInfo

@@ -15,8 +15,15 @@
     PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
     SecondaryButtonClick="ContentDialog_SecondaryButtonClick">
 
-    <Grid Width="400">
-        <controls:ImageEx PlaceholderSource="ms-appx:///Assets/img_holder.png"
-                          x:Name="DisplayImage" IsCacheEnabled="True"/>
-    </Grid>
+
+    <FlipView ItemsSource="{x:Bind ImageCollection}" Width="400"
+                  SelectedValue="{x:Bind _source,Mode=TwoWay}" Background="{ThemeResource PageBackground}">
+        <FlipView.ItemTemplate>
+            <DataTemplate x:DataType="x:String">
+                <controls:ImageEx PlaceholderSource="ms-appx:///Assets/img_holder.png"
+                          x:Name="DisplayImage" Source="{x:Bind Converter={StaticResource CoverResolutionConverter},ConverterParameter=400}" IsCacheEnabled="True"/>
+            </DataTemplate>
+        </FlipView.ItemTemplate>
+    </FlipView>
+
 </ContentDialog>

@@ -1,8 +1,11 @@
 ﻿using BiliBili_Lib.Enums;
+using BiliBili_Lib.Models.BiliBili;
 using BiliBili_Lib.Models.BiliBili.Video;
 using BiliBili_Lib.Service;
 using BiliBili_Lib.Tools;
+using BiliBili_UWP.Components.Widgets;
 using BiliBili_UWP.Models.UI.Others;
+using Microsoft.Toolkit.Uwp.Helpers;
 using NSDanmaku.Helper;
 using NSDanmaku.Model;
 using SYEngine;
@@ -19,6 +22,7 @@ using Windows.Foundation.Collections;
 using Windows.Media.Core;
 using Windows.Media.Playback;
 using Windows.System;
+using Windows.System.Display;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -36,6 +40,7 @@ namespace BiliBili_UWP.Components.Controls
         private VideoPlayBase _playData = null;
         private VideoService _videoService = App.BiliViewModel._client.Video;
         private ObservableCollection<Tuple<int, string>> QualityCollection = new ObservableCollection<Tuple<int, string>>();
+        private ObservableCollection<Choice> ChoiceCollection = new ObservableCollection<Choice>();
         private DanmakuParse _danmakuParse = new DanmakuParse();
         private int _currentQn = 64;
         private MediaPlayer _player = new MediaPlayer();
@@ -51,8 +56,26 @@ namespace BiliBili_UWP.Components.Controls
         private int _maxDanmakuNumber = 0;
         public bool IsFocus = false;
         public VideoTransportControls MTC;
+        private DisplayRequest dispRequest = null;
+        private InteractionVideo _interaction = null;
+
+        private int _videoId = 0;
+        private int _partId = 0;
+
+        private VideoDetail _detail = null;
 
         public event EventHandler<bool> FullWindowChanged;
+        public event EventHandler<bool> CinemaChanged;
+        public event EventHandler<bool> CompactOverlayChanged;
+        public event RoutedEventHandler SeparateButtonClick;
+        public event EventHandler MTCLoaded;
+
+        private bool _isChoiceHandling = false;
+
+        public int CurrentProgress
+        {
+            get => Convert.ToInt32(_player.TimelineControllerPositionOffset.TotalSeconds);
+        }
 
         public VideoPlayer()
         {
@@ -63,7 +86,27 @@ namespace BiliBili_UWP.Components.Controls
             MTC = VideoMTC;
         }
 
-        public void Init()
+        public async Task Init(VideoDetail detail,int cid=0)
+        {
+            _detail = detail;
+            _videoId = detail.aid;
+            if (cid == 0)
+            {
+                if(detail!=null && detail.pages!=null)
+                    cid = detail.pages.First().cid;
+            }
+            if (detail.interaction != null)
+            {
+                await InitInteraction(cid, 0);
+            }
+            else
+            {
+                Reset();
+                await RefreshVideoSource(cid);
+            }
+        }
+
+        private void Reset()
         {
             ErrorContainer.Visibility = Visibility.Collapsed;
             bool isAutoPlay = AppTool.GetBoolSetting(Settings.IsAutoPlay);
@@ -82,30 +125,48 @@ namespace BiliBili_UWP.Components.Controls
                     _tempSource.Dispose();
                 }
             }
-            else
-            {
-                _player.MediaEnded += Media_Ended;
-                mediaElement.SetMediaPlayer(_player);
-            }
+            _player = new MediaPlayer();
+            _player.MediaEnded += Media_Ended;
+            mediaElement.SetMediaPlayer(_player);
             if (DanmakuControls != null)
                 DanmakuControls.ClearAll();
             _danmaTimer.Start();
         }
 
-        private void Media_Ended(MediaPlayer sender, object args)
+        private async void Media_Ended(MediaPlayer sender, object args)
         {
-            if (VideoMTC.IsFullWindow)
-                VideoMTC.IsFullWindow = false;
+            await DispatcherHelper.ExecuteOnUIThreadAsync(async() =>
+            {
+                VideoMTC.IsPlaying = false;
+                if (_detail.interaction != null)
+                {
+                    //互动视频
+                    if (ChoiceCollection.Count > 0)
+                    {
+                        if (ChoiceCollection.Count == 1)
+                            await InitInteraction(ChoiceCollection.First().cid, ChoiceCollection.First().id);
+                        else
+                            ChoiceItemsControl.Visibility = Visibility.Visible;
+                    }  
+                }
+                else
+                {
+                    if (VideoMTC.IsFullWindow)
+                        VideoMTC.IsFullWindow = false;
+                    else if (VideoMTC.IsCinema)
+                        VideoMTC.IsCinema = false;
+                }
+            });
         }
 
-        public async void RefreshVideoSource(int videoId, int partId)
+        public async Task RefreshVideoSource(int partId)
         {
-            Init();
             LoadingBar.Visibility = Visibility.Visible;
             var _mediaPlayer = mediaElement.MediaPlayer;
-            if (_playData == null)
+            if (_playData == null || _partId!=partId)
             {
-                var data = await _videoService.GetVideoPlayAsync(videoId, partId, _currentQn);
+                _partId = partId;
+                var data = await _videoService.GetVideoPlayAsync(_videoId, partId, _currentQn);
                 if (data != null)
                 {
                     _playData = data;
@@ -114,24 +175,30 @@ namespace BiliBili_UWP.Components.Controls
                         QualityCollection.Add(new Tuple<int, string>(_playData.accept_quality[i], _playData.accept_description[i]));
                     }
                     _currentQn = QualityCollection.First().Item1;
+                    VideoMTC.QualitySelectIndex = 0;
                 }
             }
             if (_playData != null)
             {
-                DanmakuList = (await _danmakuParse.ParseBiliBili(Convert.ToInt64(partId)));
+                if (DanmakuList.Count == 0)
+                    DanmakuList = (await _danmakuParse.ParseBiliBili(Convert.ToInt64(partId)));
                 MediaSource mediaSource = null;
                 if (_playData is VideoPlayDash)
                     mediaSource = await HandleDashSource();
                 else
-                    mediaSource = await HandleFlvSource(videoId);
+                    mediaSource = await HandleFlvSource(_videoId);
+                var offset = TimeSpan.FromSeconds(_mediaPlayer.PlaybackSession.Position.TotalSeconds);
+                var other = _tempSource;
                 _tempSource = mediaSource;
-                var currentTs = _mediaPlayer.TimelineControllerPositionOffset;
                 _mediaPlayer.Source = new MediaPlaybackItem(mediaSource);
-                _mediaPlayer.TimelineControllerPositionOffset = currentTs;
+                if(offset.TotalSeconds>0)
+                    _player.PlaybackSession.Position = offset;
+                other?.Dispose();
 
                 VideoMTC.IsInit = false;
                 VideoMTC.IsPlaying = mediaElement.AutoPlay;
                 VideoMTC.IsInit = true;
+                Resume();
             }
             else
             {
@@ -143,7 +210,7 @@ namespace BiliBili_UWP.Components.Controls
 
         private void DanmuTimer_Tick(object sender, object e)
         {
-            if (_pointerHoldCount >= 5 && _isCatchPointer && Window.Current.CoreWindow.PointerCursor!=null)
+            if (_pointerHoldCount >= 5 && _isCatchPointer && Window.Current.CoreWindow.PointerCursor != null)
             {
                 Window.Current.CoreWindow.PointerCursor = null;
             }
@@ -197,12 +264,30 @@ namespace BiliBili_UWP.Components.Controls
         {
             VideoMTC.IsPlaying = false;
             _danmaTimer.Stop();
+            if (dispRequest != null)
+            {
+                dispRequest.RequestRelease();
+                dispRequest = null;
+            }
         }
 
         public void Resume()
         {
             VideoMTC.IsPlaying = true;
             _danmaTimer.Start();
+            if (dispRequest == null)
+            {
+                // 用户观看视频，需要保持屏幕的点亮状态
+                dispRequest = new DisplayRequest();
+                dispRequest.RequestActive(); // 激活显示请求
+            }
+        }
+
+        public void Close()
+        {
+            Pause();
+            DanmakuList.Clear();
+            _tempSource.Dispose();
         }
 
         private async Task<MediaSource> HandleDashSource()
@@ -274,6 +359,7 @@ namespace BiliBili_UWP.Components.Controls
 
         private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
         {
+            if(DanmakuControls!=null)
             DanmakuControls.Clip = new RectangleGeometry() { Rect = new Rect(0, 0, e.NewSize.Width, e.NewSize.Height) };
         }
 
@@ -311,6 +397,119 @@ namespace BiliBili_UWP.Components.Controls
         {
             Debug.WriteLine("失去焦点");
             IsFocus = false;
+        }
+
+        private void VideoMTC_CinemaChanged(object sender, bool e)
+        {
+            CinemaChanged?.Invoke(this, e);
+        }
+
+        private async void VideoMTC_QualityChanged(object sender, int e)
+        {
+            if (_currentQn != e)
+            {
+                _currentQn = e;
+                await RefreshVideoSource(_partId);
+            }
+        }
+
+        private void VideoMTC_CompactOverlayButtonClick(object sender, bool e)
+        {
+            CompactOverlayChanged?.Invoke(this, e);
+        }
+
+        private void VideoMTC_SeparateButtonClick(object sender, RoutedEventArgs e)
+        {
+            SeparateButtonClick?.Invoke(this, e);
+        }
+        public Visibility CinemaButtonVisibility
+        {
+            get { return (Visibility)GetValue(CinemaButtonVisibilityProperty); }
+            set { SetValue(CinemaButtonVisibilityProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for CinemaButtonVisibility.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty CinemaButtonVisibilityProperty =
+            DependencyProperty.Register("CinemaButtonVisibility", typeof(Visibility), typeof(VideoPlayer), new PropertyMetadata(Visibility.Visible));
+
+        public Visibility FullWindowButtonVisibility
+        {
+            get { return (Visibility)GetValue(FullWindowButtonVisibilityProperty); }
+            set { SetValue(FullWindowButtonVisibilityProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for FullWindowButtonVisibility.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty FullWindowButtonVisibilityProperty =
+            DependencyProperty.Register("FullWindowButtonVisibility", typeof(Visibility), typeof(VideoPlayer), new PropertyMetadata(Visibility.Visible));
+
+        public Visibility CompactOverlayButtonVisibility
+        {
+            get { return (Visibility)GetValue(CompactOverlayButtonVisibilityProperty); }
+            set { SetValue(CompactOverlayButtonVisibilityProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for CompactOverlayButtonVisibility.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty CompactOverlayButtonVisibilityProperty =
+            DependencyProperty.Register("CompactOverlayButtonVisibility", typeof(Visibility), typeof(VideoPlayer), new PropertyMetadata(Visibility.Visible));
+
+        public Visibility SeparateButtonVisibility
+        {
+            get { return (Visibility)GetValue(SeparateButtonVisibilityProperty); }
+            set { SetValue(SeparateButtonVisibilityProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for SeparateButtonVisibility.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SeparateButtonVisibilityProperty =
+            DependencyProperty.Register("SeparateButtonVisibility", typeof(Visibility), typeof(VideoPlayer), new PropertyMetadata(Visibility.Visible));
+
+        public int ChoiceRows
+        {
+            get { return (int)GetValue(ChoiceRowsProperty); }
+            set { SetValue(ChoiceRowsProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ChoiceRows.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ChoiceRowsProperty =
+            DependencyProperty.Register("ChoiceRows", typeof(int), typeof(VideoPlayer), new PropertyMetadata(1));
+
+
+
+        private void VideoMTC_Loaded(object sender, RoutedEventArgs e)
+        {
+            MTCLoaded?.Invoke(this, EventArgs.Empty);
+        }
+
+        private async Task InitInteraction(int cid, int edgeId)
+        {
+            if (_isChoiceHandling)
+                return;
+            _isChoiceHandling = true;
+            Reset();
+            var data = await _videoService.GetInteractionVideoAsync(_videoId, _detail.interaction.graph_version, edgeId);
+            ChoiceItemsControl.Visibility = Visibility.Collapsed;
+            await RefreshVideoSource(cid);
+            if (data != null)
+            {
+                ChoiceCollection.Clear();
+                _interaction = data;
+                if (_interaction.edges.questions != null)
+                {
+                    var choices = _interaction.edges.questions.First().choices;
+                    choices.ForEach(p => ChoiceCollection.Add(p));
+                }
+            }
+            _isChoiceHandling = false;
+        }
+
+        private async void Choice_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var data = (sender as FrameworkElement).DataContext as Choice;
+            await InitInteraction(data.cid, data.id);
+        }
+
+        private void ChoiceItemsControl_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            ((sender as ItemsControl).ItemsPanelRoot as ItemsWrapGrid).ItemWidth = e.NewSize.Width / 2;
         }
     }
 }

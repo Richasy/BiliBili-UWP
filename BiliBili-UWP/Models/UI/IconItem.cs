@@ -28,7 +28,14 @@ namespace BiliBili_UWP.Models.UI
         {
             return 539060726 + EqualityComparer<string>.Default.GetHashCode(Name);
         }
-
+        public static List<IconItem> GetReplySortItems()
+        {
+            return new List<IconItem>
+            {
+                new IconItem("","按热门","3"),
+                new IconItem("","按时间","2"),
+            };
+        }
         public static List<IconItem> GetChannelVideoSortItems()
         {
             return new List<IconItem>
@@ -44,7 +51,7 @@ namespace BiliBili_UWP.Models.UI
             {
                 new IconItem("","默认排序","default"),
                 new IconItem("","播放多","view"),
-                new IconItem("","新发布","new"),
+                new IconItem("","新发布","pubdate"),
                 new IconItem("","弹幕多","danmaku"),
             };
         }

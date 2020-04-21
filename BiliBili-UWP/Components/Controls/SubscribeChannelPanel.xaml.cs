@@ -1,4 +1,5 @@
 ﻿using BiliBili_Lib.Models.BiliBili;
+using BiliBili_UWP.Components.Widgets;
 using BiliBili_UWP.Models.Core;
 using BiliBili_UWP.Models.UI;
 using System;
@@ -37,7 +38,10 @@ namespace BiliBili_UWP.Components.Controls
 
         private void SearchChannelButton_Click(object sender, RoutedEventArgs e)
         {
-            App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Pages.Sub.Channel.ChannelListPage));
+            if (App.BiliViewModel.IsLogin)
+                App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Pages.Sub.Channel.ChannelListPage));
+            else
+                new TipPopup("请先登录").ShowError();
         }
 
         private void ChannelListView_ItemClick(object sender, ItemClickEventArgs e)

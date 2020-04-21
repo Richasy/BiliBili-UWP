@@ -49,35 +49,62 @@ namespace BiliBili_UWP.Components.Controls
             if (e.NewValue != null && e.NewValue is Topic data)
             {
                 var instance = d as TopicCard;
-                instance.UserAvatar.ProfilePicture = new BitmapImage(new Uri(data.desc.user_profile.info.face)) { DecodePixelWidth = 40 };
-                instance.UserNameBlock.Text = data.desc.user_profile.info.uname;
-                string tip = AppTool.GetReadDateString(data.desc.timestamp);
-                if (!string.IsNullOrEmpty(data.display.usr_action_txt))
-                    tip += " · " + data.display.usr_action_txt;
-                if (data.desc.view != 0)
-                    tip += " · " + AppTool.GetNumberAbbreviation(data.desc.view) + "次查看";
-                instance.TipBlock.Text = tip;
+                if (data.desc.user_profile != null)
+                {
+                    instance.HeaderContainer.Visibility = Visibility.Visible;
+                    instance.UserAvatar.ProfilePicture = new BitmapImage(new Uri(data.desc.user_profile.info.face)) { DecodePixelWidth = 40 };
+                    instance.UserNameBlock.Text = data.desc.user_profile.info.uname;
+                    string tip = AppTool.GetReadDateString(data.desc.timestamp);
+                    if (data.display != null && !string.IsNullOrEmpty(data.display.usr_action_txt))
+                        tip += " · " + data.display.usr_action_txt;
+                    if (data.desc.view != 0)
+                        tip += " · " + AppTool.GetNumberAbbreviation(data.desc.view) + "次查看";
+                    instance.TipBlock.Text = tip;
+                }
+                else
+                {
+                    instance.HeaderContainer.Visibility = Visibility.Collapsed;
+                }
                 var me = App.BiliViewModel._client.Account.Me;
                 if ((me != null && me.mid == data.desc.uid) || data.display.relation.is_follow == 1)
                     instance.FollowButton.Visibility = Visibility.Collapsed;
                 else
                     instance.FollowButton.Visibility = Visibility.Visible;
                 instance.LikeBlock.Text = AppTool.GetNumberAbbreviation(data.desc.like);
-                instance.LikeIcon.Foreground = data.desc.is_liked==1 ? UIHelper.GetThemeBrush(ColorType.PrimaryColor) : UIHelper.GetThemeBrush(ColorType.TipTextColor);
+                instance.LikeIcon.Foreground = data.desc.is_liked == 1 ? UIHelper.GetThemeBrush(ColorType.PrimaryColor) : UIHelper.GetThemeBrush(ColorType.TipTextColor);
                 instance.RepostBlock.Text = data.desc.repost == 0 ? "转发" : AppTool.GetNumberAbbreviation(data.desc.repost);
                 instance.TagList.Visibility = Visibility.Visible;
-                if (data.display.topic_info.topic_details != null && data.display.topic_info.topic_details.Count > 0)
+                if (data.display != null && data.display.topic_info != null && data.display.topic_info.topic_details != null && data.display.topic_info.topic_details.Count > 0)
                     instance.TagList.ItemsSource = data.display.topic_info.topic_details;
                 else
                     instance.TagList.Visibility = Visibility.Collapsed;
                 instance.MainDisplay.Visibility = Visibility.Visible;
+                if (data.display != null && data.display.emoji_info != null && data.display.emoji_info.emoji_details.Count > 0)
+                {
+                    var dict = new Dictionary<string, Emote>();
+                    foreach (var item in data.display.emoji_info.emoji_details)
+                    {
+                        dict.Add(item.text, item);
+                    }
+                    instance.DescriptionBlock.EmoteSource = dict;
+                }
                 if (data.desc.type == 8)
                 {
                     //视频
-                    var info = JsonConvert.DeserializeObject<AV>(data.card);
+                    var info = JsonConvert.DeserializeObject<VideoDynamic>(data.card);
                     info.dynamic = Uri.UnescapeDataString(info.dynamic);
-                    instance.DescriptionBlock.Text = Regex.Replace(info.dynamic, @"#(.*?)#", "").Trim();
+                    if (!string.IsNullOrEmpty(info.dynamic))
+                        instance.DescriptionBlock.Text = Regex.Replace(info.dynamic, @"#(.*?)#", "").Trim();
+                    instance.DescriptionBlock.Visibility = string.IsNullOrEmpty(instance.DescriptionBlock.Text) ? Visibility.Collapsed : Visibility.Visible;
                     instance.CommentBlock.Text = AppTool.GetNumberAbbreviation(info.stat.reply);
+                    instance.MainDisplay.Data = info;
+                }
+                else if (data.desc.type == 1)
+                {
+                    //转发
+                    var info = JsonConvert.DeserializeObject<RepostDynamic>(data.card);
+                    instance.DescriptionBlock.Visibility = Visibility.Collapsed;
+                    instance.CommentBlock.Text = AppTool.GetNumberAbbreviation(info.item.reply);
                     instance.MainDisplay.Data = info;
                 }
                 else if (data.desc.type == 2)
@@ -95,16 +122,65 @@ namespace BiliBili_UWP.Components.Controls
                     //纯文本
                     var temp = JObject.Parse(data.card);
                     var info = JsonConvert.DeserializeObject<TextDynamic>(temp["item"].ToString());
-                    instance.DescriptionBlock.Text = Regex.Replace(info.content, @"#(.*?)#", "").Trim();
+                    if (!string.IsNullOrEmpty(info.content))
+                        instance.DescriptionBlock.Text = Regex.Replace(info.content, @"#(.*?)#", "").Trim();
                     instance.CommentBlock.Text = AppTool.GetNumberAbbreviation(info.reply);
                     instance.MainDisplay.Visibility = Visibility.Collapsed;
                 }
                 else if (data.desc.type == 64)
                 {
+                    //专栏
                     var info = JsonConvert.DeserializeObject<DocumentDynamic>(data.card);
-                    instance.DescriptionBlock.Text = Regex.Replace(info.dynamic, @"#(.*?)#", "").Trim();
+                    if (!string.IsNullOrEmpty(info.dynamic))
+                        instance.DescriptionBlock.Text = Regex.Replace(info.dynamic, @"#(.*?)#", "").Trim();
                     instance.CommentBlock.Text = AppTool.GetNumberAbbreviation(info.stats.reply);
                     instance.MainDisplay.Data = info;
+                }
+                else if (data.desc.type == 512)
+                {
+                    //动漫
+                    var info = JsonConvert.DeserializeObject<AnimeDynamic>(data.card);
+                    instance.HeaderContainer.Visibility = Visibility.Visible;
+                    instance.UserAvatar.ProfilePicture = new BitmapImage(new Uri(info.season.square_cover)) { DecodePixelWidth = 40 };
+                    instance.UserNameBlock.Text = info.season.title;
+                    string tip = AppTool.GetReadDateString(data.desc.timestamp);
+                    tip += " · " + "更新了";
+                    instance.TipBlock.Text = tip;
+                    instance.DescriptionBlock.Visibility = Visibility.Collapsed;
+                    instance.FollowButton.Visibility = Visibility.Collapsed;
+                    instance.CommentBlock.Text = AppTool.GetNumberAbbreviation(info.stat.reply);
+                    instance.MainDisplay.Data = info;
+                }
+                else if (data.desc.type == 16)
+                {
+                    //小视频
+                    var info = JsonConvert.DeserializeObject<ShortVideoDynamic>(data.card);
+                    if (!string.IsNullOrEmpty(info.item.description))
+                        instance.DescriptionBlock.Text = Regex.Replace(info.item.description, @"#(.*?)#", "").Trim();
+                    instance.CommentBlock.Text = AppTool.GetNumberAbbreviation(info.item.reply);
+                    instance.MainDisplay.Data = info;
+                }
+                else if (data.desc.type == 2048)
+                {
+                    //网页
+                    var info = JsonConvert.DeserializeObject<WebDynamic>(data.card);
+                    if (!string.IsNullOrEmpty(info.vest.content))
+                        instance.DescriptionBlock.Text = Regex.Replace(info.vest.content, @"#(.*?)#", "").Trim();
+                    instance.CommentBlock.Text = AppTool.GetNumberAbbreviation(data.desc.comment);
+                    instance.MainDisplay.Data = info;
+                }
+                else if (data.desc.type == 4303)
+                {
+                    //视频单
+                    var info = JsonConvert.DeserializeObject<CourseDynamic>(data.card);
+                    if (!string.IsNullOrEmpty(info.new_ep.title))
+                        instance.DescriptionBlock.Text = Regex.Replace(info.new_ep.title, @"#(.*?)#", "").Trim();
+                    instance.CommentBlock.Text = data.desc.comment == 0 ? "" : AppTool.GetNumberAbbreviation(data.desc.comment);
+                    instance.MainDisplay.Data = info;
+                }
+                else
+                {
+                    string yo = "";
                 }
             }
         }
@@ -116,7 +192,27 @@ namespace BiliBili_UWP.Components.Controls
 
         private void CommentButton_Click(object sender, RoutedEventArgs e)
         {
-
+            var param = new Dictionary<string, string>();
+            param.Add("oid", Data.desc.rid);
+            string type = "11";
+            if (MainDisplay._cardType == "video")
+                type = "1";
+            else if (MainDisplay._cardType == "anime")
+            {
+                param["oid"] = (MainDisplay.Data as AnimeDynamic).aid.ToString();
+                type = "1";
+            }
+            else if (MainDisplay._cardType == "repost" || MainDisplay._cardType == "web")
+            {
+                param["oid"] = Data.desc.dynamic_id_str;
+                type = "17";
+            }
+            else if (MainDisplay._cardType == "shortVideo")
+                type = "5";
+            else if (MainDisplay._cardType == "music")
+                type = "14";
+            param.Add("type", type);
+            App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Pages.Sub.ReplyPage), param);
         }
 
         private async void LikeButton_Click(object sender, RoutedEventArgs e)

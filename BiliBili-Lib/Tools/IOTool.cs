@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -47,6 +48,40 @@ namespace BiliBili_Lib.Tools
             save.FileTypeChoices.Add(adviceFileName, new List<string>() { type });
             var file = await save.PickSaveFileAsync();
             return file;
+        }
+        /// <summary>
+        /// 获取本地存储的数据并进行转化
+        /// </summary>
+        /// <typeparam name="T">转化类型</typeparam>
+        /// <param name="path">文件名</param>
+        /// <param name="defaultValue">默认值</param>
+        /// <returns></returns>
+        public async static Task<T> GetLocalDataAsync<T>(string fileName, string defaultValue = "[]")
+        {
+            try
+            {
+                var file = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appdata:///local/"+fileName));
+                string content = await FileIO.ReadTextAsync(file);
+                if (string.IsNullOrEmpty(content))
+                    content = defaultValue;
+                return JsonConvert.DeserializeObject<T>(content);
+            }
+            catch (Exception)
+            {
+                return JsonConvert.DeserializeObject<T>(defaultValue);
+            }
+        }
+
+        /// <summary>
+        /// 将数据存储到本地
+        /// </summary>
+        /// <param name="fileName">文件名</param>
+        /// <param name="content">内容</param>
+        /// <returns></returns>
+        public async static Task SetLocalDataAsync(string fileName, string content)
+        {
+            var file = await ApplicationData.Current.LocalFolder.CreateFileAsync(fileName, CreationCollisionOption.OpenIfExists);
+            await FileIO.WriteTextAsync(file, content);
         }
     }
 }

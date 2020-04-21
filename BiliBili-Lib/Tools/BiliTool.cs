@@ -39,21 +39,28 @@ namespace BiliBili_Lib.Tools
             var client = new HttpClient(filter);
             using (client)
             {
-                client.DefaultRequestHeaders.Add("user-agent", "Mozilla/5.0 BiliDroid/4.34.0 (bbcallen@gmail.com)");
-                client.DefaultRequestHeaders.Referer = new Uri("https://www.bilibili.com/");
-                var response = await client.GetAsync(new Uri(url));
-                if (response.IsSuccessStatusCode)
+                try
                 {
-                    string res = await response.Content.ReadAsStringAsync();
-                    var jobj = JObject.Parse(res);
-                    string content = string.Empty;
-                    if (jobj.SelectToken(path) != null && !total)
-                        content = jobj.SelectToken(path).ToString();
+                    client.DefaultRequestHeaders.Add("user-agent", "Mozilla/5.0 BiliDroid/4.34.0 (bbcallen@gmail.com)");
+                    client.DefaultRequestHeaders.Referer = new Uri("https://www.bilibili.com/");
+                    var response = await client.GetAsync(new Uri(url));
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string res = await response.Content.ReadAsStringAsync();
+                        var jobj = JObject.Parse(res);
+                        string content = string.Empty;
+                        if (jobj.SelectToken(path) != null && !total)
+                            content = jobj.SelectToken(path).ToString();
+                        else
+                            content = res;
+                        return content;
+                    }
                     else
-                        content = res;
-                    return content;
+                    {
+                        return null;
+                    }
                 }
-                else
+                catch (Exception)
                 {
                     return null;
                 }

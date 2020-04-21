@@ -2,6 +2,7 @@
 using BiliBili_UWP.Components.Widgets;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -25,15 +26,23 @@ namespace BiliBili_UWP.Dialogs
     public sealed partial class ShowImageDialog : ContentDialog
     {
         private string _source = "";
+        private ObservableCollection<string> ImageCollection = new ObservableCollection<string>();
         public ShowImageDialog()
         {
             this.InitializeComponent();
         }
         public ShowImageDialog(string url):this()
         {
-            var temp = url + "@500w.jpg";
             _source = url;
-            DisplayImage.Source = temp;
+            ImageCollection.Add(url);
+        }
+        public ShowImageDialog(ICollection<string> urls) : this()
+        {
+            _source = urls.First();
+            foreach (var item in urls)
+            {
+                ImageCollection.Add(item);
+            }
         }
 
         private async void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
@@ -65,14 +74,14 @@ namespace BiliBili_UWP.Dialogs
         private void ContentDialog_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
             args.Cancel = true;
-            PrimaryButtonText = "复制中";
-            IsPrimaryButtonEnabled = false;
+            SecondaryButtonText = "复制中";
+            IsSecondaryButtonEnabled = false;
             var package = new DataPackage();
             package.SetBitmap(RandomAccessStreamReference.CreateFromUri(new Uri(_source)));
             Clipboard.SetContent(package);
             new TipPopup("复制完成").ShowMessage();
-            PrimaryButtonText = "复制";
-            IsPrimaryButtonEnabled = true;
+            SecondaryButtonText = "复制";
+            IsSecondaryButtonEnabled = true;
         }
     }
 }

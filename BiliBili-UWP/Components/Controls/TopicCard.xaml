@@ -28,7 +28,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid>
+        <Grid x:Name="HeaderContainer">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
@@ -39,7 +39,7 @@
                            VerticalAlignment="Center"/>
                 <StackPanel VerticalAlignment="Center" Margin="10,0,0,0">
                     <TextBlock x:Name="UserNameBlock" Style="{StaticResource SmallTipTextStyle}" FontSize="12" FontWeight="Bold"
-                           Foreground="{ThemeResource ImportantTextColor}"/>
+                           Foreground="{ThemeResource ImportantTextColor}" MaxWidth="195"/>
                     <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="10" x:Name="TipBlock" Margin="0,5,0,0"/>
                 </StackPanel>
             </StackPanel>
@@ -49,8 +49,8 @@
             <Button Style="{StaticResource TransparentButtonStyle}" VerticalAlignment="Center" Grid.Column="2"
                     Content="&#xE9A9;" FontFamily="{StaticResource Icon}"/>
         </Grid>
-        <TextBlock x:Name="DescriptionBlock" IsTextSelectionEnabled="True" LineHeight="18" Style="{StaticResource BodyWrapTextStyle}" FontSize="12" Margin="0,10,0,5" Grid.Row="1"/>
-        <ItemsControl ItemTemplate="{StaticResource TagItemTemplate}" x:Name="TagList" Grid.Row="2" Margin="0,0,0,5"
+        <local:RenderTextBlock x:Name="DescriptionBlock" Margin="0,5,0,0" Grid.Row="1"/>
+        <ItemsControl ItemTemplate="{StaticResource TagItemTemplate}" x:Name="TagList" Grid.Row="2" Margin="0,5,0,0"
                       >
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -58,7 +58,7 @@
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
         </ItemsControl>
-        <local:DynamicContentBlock Grid.Row="3" x:Name="MainDisplay"/>
+        <local:DynamicContentBlock Grid.Row="3" Margin="0,5,0,0" x:Name="MainDisplay"/>
         <Grid Grid.Row="4">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*" />

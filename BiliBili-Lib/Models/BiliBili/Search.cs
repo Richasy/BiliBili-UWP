@@ -66,7 +66,7 @@ namespace BiliBili_Lib.Models.BiliBili
         public string uri { get; set; }
         public string cover { get; set; }
         public int mid { get; set; }
-        
+
     }
     public class SearchVideo : SearchBase
     {
@@ -99,7 +99,7 @@ namespace BiliBili_Lib.Models.BiliBili
         public string badge { get; set; }
         public new string render_cover
         {
-            get => image_urls.Count > 0 ? image_urls.First()+"@400w.jpg" : "";
+            get => image_urls.Count > 0 ? image_urls.First() + "@400w.jpg" : "";
         }
     }
 
@@ -191,12 +191,24 @@ namespace BiliBili_Lib.Models.BiliBili
             public string param { get; set; }
             public string index { get; set; }
         }
-        
-        
+
+
     }
     public class Badge
     {
         public string text { get; set; }
+    }
+
+    public class SearchSuggestion
+    {
+        public string value { get; set; }
+        public int @ref { get; set; }
+        public string name { get; set; }
+        public int spid { get; set; }
+        public override string ToString()
+        {
+            return value;
+        }
     }
 
 }

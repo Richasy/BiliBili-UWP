@@ -107,6 +107,46 @@ namespace BiliBili_Lib.Models.Others
         /// 取消关注用户
         /// </summary>
         public const string ACCOUNT_UNFOLLOW_USER = _vcBase + "/feed/v1/feed/unfollow";
+        /// <summary>
+        /// 获取收藏夹列表
+        /// </summary>
+        public const string ACCOUNT_FAVORITE_LIST = _apiBase + "/medialist/gateway/base/created";
+        /// <summary>
+        /// 历史记录
+        /// </summary>
+        public const string ACCOUNT_HISTORY = _apiBase + "/x/v2/history";
+        /// <summary>
+        /// 清空历史记录
+        /// </summary>
+        public const string ACCOUNT_HISTORY_CLEAR = _apiBase + "/x/v2/history/clear";
+        /// <summary>
+        /// 我的播单信息
+        /// </summary>
+        public const string ACCOUNT_MEDIALIST = _apiBase + "/medialist/gateway/base/space";
+        /// <summary>
+        /// 稍后再看记录
+        /// </summary>
+        public const string ACCOUNT_VIEW_LATER = _apiBase + "/x/v2/history/toview";
+        /// <summary>
+        /// 收藏的专栏文章
+        /// </summary>
+        public const string ACCOUNT_FAVORITE_DOCUMENT = _apiBase + "/x/v2/favorite/article";
+        /// <summary>
+        /// 我的追番
+        /// </summary>
+        public const string ACCOUNT_FAVOROTE_ANIME = _apiBase + "/pgc/app/follow/v2/bangumi";
+        /// <summary>
+        /// 我的追剧
+        /// </summary>
+        public const string ACCOUNT_FAVOROTE_CINEMA = _apiBase + "/pgc/app/follow/v2/cinema";
+        /// <summary>
+        /// 收藏夹视频索引
+        /// </summary>
+        public const string ACCOUNT_FAVORITE_IDS = _apiBase + "/medialist/gateway/base/resource/ids";
+        /// <summary>
+        /// 收藏夹视频详情
+        /// </summary>
+        public const string ACCOUNT_FAVORITE_INFO = _apiBase + "/medialist/gateway/base/resource/infos";
         #endregion
 
         #region 频道 Channel
@@ -173,6 +213,14 @@ namespace BiliBili_Lib.Models.Others
         /// 特殊类目搜索
         /// </summary>
         public const string APP_SEARCH_TYPE = _appBase + "/x/v2/search/type";
+        /// <summary>
+        /// 获取搜索建议
+        /// </summary>
+        public const string APP_SEARCH_SUGGEST = "http://s.search.bilibili.com/main/suggest";
+        /// <summary>
+        /// 获取全部emoji表情
+        /// </summary>
+        public const string APP_EMOJI = _apiBase + "/x/v2/reply/v2/emojis";
         #endregion
 
         #region 视频 Video
@@ -187,7 +235,7 @@ namespace BiliBili_Lib.Models.Others
         /// <summary>
         /// 视频详细信息
         /// </summary>
-        public const string VIDEO_DETAIL_INFO = _apiBase + "/x/web-interface/view";
+        public const string VIDEO_DETAIL_INFO = _appBase + "/x/v2/view";
         /// <summary>
         /// 视频简易信息
         /// </summary>
@@ -212,7 +260,30 @@ namespace BiliBili_Lib.Models.Others
         /// 是否已收藏（视频）
         /// </summary>
         public const string VIDEO_IS_FAVORITE = _apiBase + "/x/v2/fav/video/favoured";
-
+        /// <summary>
+        /// 点赞视频
+        /// </summary>
+        public const string VIDEO_LIKE = _appBase + "/x/v2/view/like";
+        /// <summary>
+        /// 投币
+        /// </summary>
+        public const string VIDEO_COIN = _appBase + "/x/v2/view/coin/add";
+        /// <summary>
+        /// 添加收藏夹
+        /// </summary>
+        public const string VIDEO_FAVORITE = _apiBase + "/medialist/gateway/coll/resource/deal";
+        /// <summary>
+        /// 一键三连
+        /// </summary>
+        public const string VIDEO_TRIPLE = _appBase + "/x/v2/view/like/triple";
+        /// <summary>
+        /// 添加观看记录
+        /// </summary>
+        public const string VIDEO_ADD_WATCH = _apiBase + "/x/v2/history/report";
+        /// <summary>
+        /// 获取互动视频选项
+        /// </summary>
+        public const string VIDEO_INTERACTION_EDGE = _apiBase + "/x/stein/edgeinfo_v2";
         #endregion
 
         #region 话题及动态 Topic Dynamic
@@ -224,6 +295,14 @@ namespace BiliBili_Lib.Models.Others
         /// 点赞动态
         /// </summary>
         public const string DYNAMIC_LIKE = _vcBase + "/dynamic_like/v1/dynamic_like/thumb";
+        /// <summary>
+        /// 获取新动态
+        /// </summary>
+        public const string DYNAMIC_NEW = _vcBase + "/dynamic_svr/v1/dynamic_svr/dynamic_new";
+        /// <summary>
+        /// 获取历史动态
+        /// </summary>
+        public const string DYNAMIC_HISTORY = _vcBase + "/dynamic_svr/v1/dynamic_svr/dynamic_history";
         #endregion
 
         #region 动漫 Anime
@@ -239,6 +318,21 @@ namespace BiliBili_Lib.Models.Others
         /// 国创综合信息
         /// </summary>
         public const string ANIME_CHN_SQUARE = _apiBase + "/pgc/app/v2/page/bangumi/chn";
+        #endregion
+
+        #region 回复 Reply
+        /// <summary>
+        /// 获取回复列表
+        /// </summary>
+        public const string REPLY_LIST = _apiBase + "/x/v2/reply/main";
+        /// <summary>
+        /// 获取某回复详情
+        /// </summary>
+        public const string REPLY_DETAIL = _apiBase + "/x/v2/reply/detail";
+        /// <summary>
+        /// 点赞评论
+        /// </summary>
+        public const string REPLY_LIKE = _apiBase + "/x/v2/reply/action";
         #endregion
     }
 }

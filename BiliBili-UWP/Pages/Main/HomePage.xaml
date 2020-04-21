@@ -8,10 +8,11 @@
     xmlns:bilibili="using:BiliBili_Lib.Models.BiliBili"
     xmlns:controls="using:BiliBili_UWP.Components.Controls"
     xmlns:controls1="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:DataType="bilibili:VideoRecommend" x:Key="VideoItemTemplate">
-            <controls:RecommendVideoCard Data="{Binding}" Margin="3" x:Name="VideoContainer"/>
+            <controls:RecommendVideoCard Data="{x:Bind}" Margin="3" x:Name="VideoContainer"/>
         </DataTemplate>
     </Page.Resources>
     <Grid>
@@ -37,12 +38,21 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <TextBlock Style="{StaticResource TitleTextStyle}" Text="推荐视频" Margin="0,0,0,15"/>
+            <Grid Margin="0,0,0,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Style="{StaticResource TitleTextStyle}" Text="推荐视频" VerticalAlignment="Center"/>
+                <widgets:AsyncButton Icon="&#xE9C7;" Text="换一换" x:Name="RefreshButton" CornerRadius="15" FontSize="10" BorderThickness="1"
+                                 Style="{StaticResource DefaultAsyncButtonStyle}" BorderBrush="{ThemeResource LineColor}" Grid.Column="1"
+                                 Click="RefreshButton_Click" Margin="20,0,0,0"/>
+            </Grid>
             <Grid Grid.Row="1">
                 <controls1:AdaptiveGridView x:Name="RecommendVideoView"
                               HorizontalAlignment="Stretch"
                                                 DesiredWidth="215"
-                                                ItemHeight="195"
+                                                ItemHeight="190"
                           ItemTemplate="{StaticResource VideoItemTemplate}"
                           ItemContainerStyle="{StaticResource TransparentGridViewItemContainerStyle}"
                           Style="{StaticResource NoScrollGridView}"
@@ -55,7 +65,7 @@
             </Grid>
 
             <ProgressBar IsIndeterminate="True" Foreground="{ThemeResource PrimaryColor}" Grid.Row="2"
-                             x:Name="VideLoadingBar" Visibility="Collapsed"/>
+                             x:Name="VideoLoadingBar" Visibility="Collapsed"/>
         </Grid>
     </Grid>
 </Page>

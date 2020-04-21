@@ -1,0 +1,61 @@
+﻿<Page
+    x:Class="BiliBili_UWP.Pages.Main.FavoritePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BiliBili_UWP.Pages.Main"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:bilibili="using:BiliBili_Lib.Models.BiliBili"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:controls1="using:BiliBili_UWP.Components.Controls"
+    xmlns:favorites="using:BiliBili_Lib.Models.BiliBili.Favorites"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <DataTemplate x:DataType="bilibili:FavoriteItem" x:Key="CollectItemTemplate">
+            <Grid Width="170" CornerRadius="4" Background="{ThemeResource CardBackground}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <controls:ImageEx Source="{x:Bind cover,Converter={StaticResource CoverResolutionConverter},ConverterParameter=200}"
+                                  PlaceholderSource="ms-appx:///Assets/img_holder_rect.png" PlaceholderStretch="Uniform"
+                                  Stretch="UniformToFill" CornerRadius="4" IsCacheEnabled="True" Height="100"/>
+                <StackPanel Padding="10,8" Grid.Row="1" HorizontalAlignment="Left">
+                    <TextBlock Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource ImportantTextColor}"
+                               Text="{x:Bind title}" ToolTipService.ToolTip="{x:Bind title}" MaxWidth="140" HorizontalAlignment="Left"/>
+                    <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="10" Margin="0,5,0,0">
+                        <Run Text="{x:Bind media_count,Converter={StaticResource NumberAbbrConverter}}"/>
+                        <Run Text="个内容 · "/>
+                        <Run Text="{x:Bind upper.name}"/>
+                    </TextBlock>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:DataType="favorites:FavoriteAnime" x:Key="AnimeItemTemplate">
+            <controls1:DefaultVideoCard Cover="{x:Bind cover}"
+                                        Width="170" RightTopText="{x:Bind badge}" Title="{x:Bind title}" SectionVisibility="Collapsed"
+                                        Height="180"
+                                        Tip="{x:Bind new_ep.index_show}" BottomText="{x:Bind progress.index_show}"/>
+        </DataTemplate>
+    </Page.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <controls1:HorizontalScrollSectionPanel Title="我的创建" HoldText="我还没有创建播单哟~" x:Name="MyFavoriteListView"
+                                                ItemClick="MyFavoriteListView_ItemClick" ItemTemplate="{StaticResource CollectItemTemplate}"
+                                                ItemsSource="{x:Bind MyFavoriteCollection}"/>
+        <controls1:HorizontalScrollSectionPanel Title="我的收藏" HoldText="我还没有收藏播单哟~" x:Name="MyCollectListView" Grid.Row="1"
+                                                ItemClick="MyFavoriteListView_ItemClick"  ItemTemplate="{StaticResource CollectItemTemplate}"
+                                                ItemsSource="{x:Bind MyCollectCollection}" Margin="0,20,0,0"/>
+        <controls1:HorizontalScrollSectionPanel Title="我的追番" HoldText="我还没有追番哟~" x:Name="MyAnimeListView" Grid.Row="2"
+                                                ItemClick="MyAnimeListView_ItemClick"  ItemTemplate="{StaticResource AnimeItemTemplate}"
+                                                ItemsSource="{x:Bind MyAnimeCollection}" Margin="0,20,0,0"/>
+        <controls1:HorizontalScrollSectionPanel Title="我的追剧" HoldText="我还没有追剧哟~" x:Name="MyCinemaListView" Grid.Row="3"
+                                                ItemClick="MyCinemaListView_ItemClick"  ItemTemplate="{StaticResource AnimeItemTemplate}"
+                                                ItemsSource="{x:Bind MyCinemaCollection}" Margin="0,20,0,0"/>
+    </Grid>
+</Page>

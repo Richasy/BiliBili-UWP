@@ -81,7 +81,7 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <Grid x:Name="HeaderVideoContainer" Margin="0,0,0,15" HorizontalAlignment="Left">
+                    <Grid x:Name="HeaderVideoContainer" Margin="0,0,0,15" HorizontalAlignment="Left" Tapped="HeaderVideoContainer_Tapped">
                         <controls:ImageEx x:Name="HeaderVideoImage" CornerRadius="4" Height="150"
                                           Stretch="UniformToFill" IsCacheEnabled="True" PlaceholderSource="ms-appx:///Assets/img_holder.png"/>
                         <Grid VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Padding="10" Background="{ThemeResource MaskAcrylicBackground}"
@@ -94,8 +94,6 @@
                             <widgets:IconTextBlock Icon="&#xEA32;" x:Name="HeaderVideoPlayCount" Grid.Column="1" VerticalAlignment="Center"
                                                    FontSize="10"/>
                         </Grid>
-                        <widgets:AsyncButton Style="{StaticResource DefaultAsyncButtonStyle}"  Padding="4,2" HorizontalAlignment="Right" VerticalAlignment="Top"
-                                             x:Name="RankButton" Click="RankButton_Click" Text="查看排行榜" FontSize="10" Margin="0,5,5,0" Background="{ThemeResource MaskAcrylicBackground}"/>
                     </Grid>
                     <GridView x:Name="VideoGridView" ItemContainerStyle="{StaticResource TransparentGridViewItemContainerStyle}" HorizontalAlignment="Center"
                               Style="{StaticResource NoScrollGridView}" ItemsSource="{x:Bind VideoCollection}" Grid.Row="1"

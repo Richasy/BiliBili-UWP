@@ -25,10 +25,12 @@
             </Grid>
         </DataTemplate>
         <DataTemplate x:DataType="bilibili:AnimeModuleItem" x:Key="VideoCardItemTemplate">
-            <controls:DefaultVideoCard Width="150" Cover="{x:Bind cover}"
+            <controls:DefaultVideoCard Cover="{x:Bind cover}"
                                        RightTopText="{x:Bind badge}"
                                        Tip="{x:Bind desc}"
                                        Title="{x:Bind title}"
+                                       DecodePixelWidth="160"
+                                       Width="180"
                                        BottomText="{x:Bind stat.follow_view}"
                                        SectionVisibility="Collapsed"
                                        />
