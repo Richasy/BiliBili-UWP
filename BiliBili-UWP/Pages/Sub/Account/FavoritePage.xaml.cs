@@ -97,10 +97,10 @@ namespace BiliBili_UWP.Pages.Sub.Account
         private void FavoriteListView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var video = e.ClickedItem as FavoriteVideo;
-            if (video.attr == 0)
-                App.AppViewModel.PlayVideo(video.id);
-            else
+            if (video.attr == 1)
                 new TipPopup("该视频可能已经失效，无法播放").ShowError();
+            else
+                App.AppViewModel.PlayVideo(video.id);
         }
 
         private async void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)

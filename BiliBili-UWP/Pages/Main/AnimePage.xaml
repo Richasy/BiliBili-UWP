@@ -51,6 +51,7 @@
                             <controls:DefaultVideoPanel Title="{x:Bind title}"
                                                         Cover="{x:Bind cover}"
                                                         Tip="{x:Bind badge}"
+                                                        Background="{ThemeResource CardBackground}"
                                                         BottomText="{x:Bind pts}"
                                                         SectionVisibility="Collapsed"
                                                         RightTopImage="{x:Bind render_sign}"

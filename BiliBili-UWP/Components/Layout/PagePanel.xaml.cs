@@ -1,4 +1,5 @@
 ﻿using BiliBili_Lib.Models.BiliBili;
+using BiliBili_UWP.Components.Widgets;
 using BiliBili_UWP.Models.Enums;
 using BiliBili_UWP.Models.UI.Interface;
 using System;
@@ -151,8 +152,11 @@ namespace BiliBili_UWP.Components.Layout
                     break;
                 case SideMenuItemType.Help:
                     break;
-                case SideMenuItemType.Player:
-                    page = typeof(Pages.Main.PlayerPage);
+                case SideMenuItemType.VideoPlayer:
+                    page = typeof(Pages.Main.VideoPage);
+                    break;
+                case SideMenuItemType.BangumiPlayer:
+                    page = typeof(Pages.Main.BangumiPage);
                     break;
                 case SideMenuItemType.MiniPlayer:
                     page = typeof(Pages.Main.MiniPlayerPage);
@@ -176,8 +180,10 @@ namespace BiliBili_UWP.Components.Layout
                 result = SideMenuItemType.Dynamic;
             else if (type.Equals(typeof(Pages.Main.RegionPage)))
                 result = SideMenuItemType.Region;
-            else if (type.Equals(typeof(Pages.Main.PlayerPage)))
-                result = SideMenuItemType.Player;
+            else if (type.Equals(typeof(Pages.Main.VideoPage)))
+                result = SideMenuItemType.VideoPlayer;
+            else if (type.Equals(typeof(Pages.Main.BangumiPage)))
+                result = SideMenuItemType.BangumiPlayer;
             else if (type.Equals(typeof(Pages.Main.HistoryPage)))
                 result = SideMenuItemType.MyHistory;
             else if (type.Equals(typeof(Pages.Main.FavoritePage)))
@@ -335,6 +341,12 @@ namespace BiliBili_UWP.Components.Layout
             {
                 ScrollToBottom?.Invoke();
             }
+        }
+
+        private void PageFrame_NavigationFailed(object sender, NavigationFailedEventArgs e)
+        {
+            new TipPopup(e.Exception.Message).ShowError();
+            e.Handled = true;
         }
     }
 }

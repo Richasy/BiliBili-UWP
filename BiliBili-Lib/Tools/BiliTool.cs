@@ -202,15 +202,24 @@ namespace BiliBili_Lib.Tools
         /// <param name="parameters">查询参数</param>
         /// <param name="hasAccessKey">是否包含令牌</param>
         /// <returns></returns>
-        public static string UrlContact(string _baseUrl, Dictionary<string, string> parameters = null, bool hasAccessKey = false)
+        public static string UrlContact(string _baseUrl, Dictionary<string, string> parameters = null, bool hasAccessKey = false,bool useWeb=false)
         {
             if (parameters == null)
                 parameters = new Dictionary<string, string>();
-            parameters.Add("appkey", AndroidKey.Appkey);
+            
             parameters.Add("build", BuildNumber);
-            parameters.Add("mobi_app", "android");
-            parameters.Add("platform", "android");
-            parameters.Add("ts", AppTool.GetNowSeconds().ToString());
+            if (!useWeb)
+            {
+                parameters.Add("appkey", AndroidKey.Appkey);
+                parameters.Add("mobi_app", "android");
+                parameters.Add("platform", "android");
+                parameters.Add("ts", AppTool.GetNowSeconds().ToString());
+            }
+            else
+            {
+                parameters.Add("appkey", WebVideoKey.Appkey);
+                parameters.Add("ts", AppTool.GetNowMilliSeconds().ToString());
+            }
             if (hasAccessKey && !string.IsNullOrEmpty(_accessToken))
                 parameters.Add("access_key", _accessToken);
             string param = string.Empty;
@@ -219,7 +228,8 @@ namespace BiliBili_Lib.Tools
                 param += $"{item.Key}={item.Value}&";
             }
             param = param.TrimEnd('&');
-            param += $"&sign={GetSign(param)}";
+            string sign = useWeb ? GetSign(param, WebVideoKey) : GetSign(param);
+            param += $"&sign={sign}";
             return !string.IsNullOrEmpty(_baseUrl)?_baseUrl + $"?{param}":param;
         }
     }

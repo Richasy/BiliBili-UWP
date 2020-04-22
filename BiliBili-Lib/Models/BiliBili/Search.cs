@@ -97,10 +97,6 @@ namespace BiliBili_Lib.Models.BiliBili
         public int like { get; set; }
         public int reply { get; set; }
         public string badge { get; set; }
-        public new string render_cover
-        {
-            get => image_urls.Count > 0 ? image_urls.First() + "@400w.jpg" : "";
-        }
     }
 
     public class SearchLive : SearchBase
@@ -139,10 +135,6 @@ namespace BiliBili_Lib.Models.BiliBili
         public string render_follow
         {
             get => is_atten == 1 ? "已关注" : "关注";
-        }
-        public new string render_cover
-        {
-            get => cover + "@50w.jpg";
         }
     }
 

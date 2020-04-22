@@ -55,7 +55,7 @@ namespace BiliBili_Lib.Service
             var data = await BiliTool.ConvertEntityFromWebAsync<List<VideoRecommend>>(url, "data.items");
             if (data != null && data.Count > 0)
             {
-                data.RemoveAll(p => p.card_goto != "av");
+                data.RemoveAll(p => p.card_goto != "av" && p.card_goto != "bangumi");
                 return data;
             }
             return new List<VideoRecommend>();
@@ -144,7 +144,7 @@ namespace BiliBili_Lib.Service
         /// <param name="next">下一页偏移值</param>
         /// <param name="mode">排序方式：3-按热度，2-按时间</param>
         /// <returns>Item1：下一次偏移值，Item2：评论总数，Item3：评论列表，Item4: 是否到了结尾，Item5: 置顶回复</returns>
-        public async Task<Tuple<int, int, List<Reply>, bool,Reply>> GetReplyAsync(string oid, int next, int mode, string type = "1")
+        public async Task<Tuple<int, int, List<Reply>, bool, Reply>> GetReplyAsync(string oid, int next, int mode, string type = "1")
         {
             var param = new Dictionary<string, string>();
             param.Add("oid", oid);
@@ -170,7 +170,7 @@ namespace BiliBili_Lib.Service
                         top = JsonConvert.DeserializeObject<Reply>(jobj["top"]["upper"].ToString());
                     }
                     var replies = JsonConvert.DeserializeObject<List<Reply>>(jobj["replies"].ToString());
-                    return new Tuple<int, int, List<Reply>, bool,Reply>(ne, all, replies, isEnd,top);
+                    return new Tuple<int, int, List<Reply>, bool, Reply>(ne, all, replies, isEnd, top);
                 }
                 catch (Exception)
                 {

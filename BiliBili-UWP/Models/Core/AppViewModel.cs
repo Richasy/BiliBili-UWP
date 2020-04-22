@@ -1,9 +1,12 @@
 ﻿using BiliBili_Lib.Enums;
+using BiliBili_Lib.Models.BiliBili.Anime;
 using BiliBili_Lib.Models.BiliBili.Video;
 using BiliBili_Lib.Tools;
 using BiliBili_UWP.Components.Controls;
 using BiliBili_UWP.Components.Layout;
+using BiliBili_UWP.Models.Enums;
 using BiliBili_UWP.Models.UI;
+using BiliBili_UWP.Models.UI.Interface;
 using BiliBili_UWP.Models.UI.Others;
 using BiliBili_UWP.Pages.Main;
 using Microsoft.QueryStringDotNET;
@@ -34,6 +37,7 @@ namespace BiliBili_UWP.Models.Core
         public SidePanel CurrentSidePanel;
         public PagePanel CurrentPagePanel;
         public VideoPlayer CurrentVideoPlayer;
+        public PlayerType CurrentPlayerType;
         public WebPopup _webPopup;
 
         public List<Tuple<Guid, Action<Size>>> WindowsSizeChangedNotify { get; set; } = new List<Tuple<Guid, Action<Size>>>();
@@ -71,7 +75,7 @@ namespace BiliBili_UWP.Models.Core
         /// <summary>
         /// 播放视频
         /// </summary>
-        /// <param name="aid">AV号</param>
+        /// <param name="epid">AV号</param>
         /// <param name="sender">触发控件（用于查找封面以实现连接动画）</param>
         public void PlayVideo(int aid,object sender=null)
         {
@@ -83,8 +87,51 @@ namespace BiliBili_UWP.Models.Core
                 var image = VisualTreeExtension.VisualTreeFindName<FrameworkElement>((FrameworkElement)sender, "VideoCover");
                 ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("VideoConnectedAnimation", image);
             }
-            CurrentSidePanel.SetSelectedItem(Enums.SideMenuItemType.Line);
-            CurrentPagePanel.NavigateToPage(Enums.SideMenuItemType.Player, aid);
+            CurrentSidePanel.SetSelectedItem(SideMenuItemType.Line);
+            CurrentPagePanel.NavigateToPage(SideMenuItemType.VideoPlayer, aid);
+        }
+        /// <summary>
+        /// 播放番剧
+        /// </summary>
+        /// <param name="epid">AV号</param>
+        /// <param name="sender">触发控件（用于查找封面以实现连接动画）</param>
+        public void PlayBangumi(int epid, object sender = null,bool isEp=false)
+        {
+            if (CurrentPagePanel.IsSubPageOpen)
+                CurrentPagePanel.IsSubPageOpen = false;
+            SelectedSideMenuItem = null;
+            if (sender != null)
+            {
+                var image = VisualTreeExtension.VisualTreeFindName<FrameworkElement>((FrameworkElement)sender, "VideoCover");
+                ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("VideoConnectedAnimation", image);
+            }
+            CurrentSidePanel.SetSelectedItem(SideMenuItemType.Line);
+            if(isEp)
+                CurrentPagePanel.NavigateToPage(SideMenuItemType.BangumiPlayer, new Tuple<int,bool>(epid,isEp));
+            else
+                CurrentPagePanel.NavigateToPage(SideMenuItemType.BangumiPlayer, epid);
+        }
+        /// <summary>
+        /// 获取当前的播放页
+        /// </summary>
+        /// <returns></returns>
+        public IPlayerPage GetCurrentPlayerPage()
+        {
+            IPlayerPage page = null;
+            switch (CurrentPlayerType)
+            {
+                case PlayerType.Video:
+                    page = VideoPage.Current;
+                    break;
+                case PlayerType.Bangumi:
+                    page = BangumiPage.Current;
+                    break;
+                case PlayerType.Live:
+                    break;
+                default:
+                    break;
+            }
+            return page;
         }
         /// <summary>
         /// 进入全屏模式
@@ -92,9 +139,10 @@ namespace BiliBili_UWP.Models.Core
         /// <param name="isFull">是否为全屏模式</param>
         public void PlayVideoFullScreen(bool isFull)
         {
+            IPlayerPage page = GetCurrentPlayerPage();
             if (isFull)
             {
-                PlayerPage.Current.RemovePlayer();
+                page.RemovePlayer();
                 MainPage.Current.InsertPlayer();
                 ApplicationView.GetForCurrentView().TryEnterFullScreenMode();
             }
@@ -104,7 +152,7 @@ namespace BiliBili_UWP.Models.Core
                 if (!CurrentVideoPlayer.MTC.IsCinema)
                 {
                     MainPage.Current.RemovePlayer();
-                    PlayerPage.Current.InsertPlayer();
+                    page.InsertPlayer();
                 }
             }
         }
@@ -114,9 +162,10 @@ namespace BiliBili_UWP.Models.Core
         /// <param name="isCinema">是否为影院模式</param>
         public void PlayVideoCinema(bool isCinema)
         {
+            IPlayerPage page = GetCurrentPlayerPage();
             if (isCinema)
             {
-                PlayerPage.Current.RemovePlayer();
+                page.RemovePlayer();
                 MainPage.Current.InsertPlayer();
             }
             else
@@ -124,7 +173,7 @@ namespace BiliBili_UWP.Models.Core
                 if (!CurrentVideoPlayer.MTC.IsFullWindow)
                 {
                     MainPage.Current.RemovePlayer();
-                    PlayerPage.Current.InsertPlayer();
+                    page.InsertPlayer();
                 }
             }
         }
@@ -134,9 +183,10 @@ namespace BiliBili_UWP.Models.Core
         /// <param name="isCompact">是否为影院模式</param>
         public async void PlayVideoCompactOverlay(bool isCompact)
         {
+            IPlayerPage page = GetCurrentPlayerPage();
             if (isCompact)
             {
-                PlayerPage.Current.RemovePlayer();
+                page.RemovePlayer();
                 MainPage.Current.InsertPlayer();
                 await ApplicationView.GetForCurrentView().TryEnterViewModeAsync(ApplicationViewMode.CompactOverlay);
             }
@@ -145,7 +195,7 @@ namespace BiliBili_UWP.Models.Core
                 if (!CurrentVideoPlayer.MTC.IsCompactOverlay)
                 {
                     MainPage.Current.RemovePlayer();
-                    PlayerPage.Current.InsertPlayer();
+                    page.InsertPlayer();
                     await ApplicationView.GetForCurrentView().TryEnterViewModeAsync(ApplicationViewMode.Default);
                 }
             }
@@ -169,7 +219,29 @@ namespace BiliBili_UWP.Models.Core
                 newViewId = ApplicationView.GetForCurrentView().Id;
             });
             bool viewShown = await ApplicationViewSwitcher.TryShowAsStandaloneAsync(newViewId);
-            if (CurrentPageType == typeof(PlayerPage))
+            if (CurrentPageType == typeof(VideoPage))
+                CurrentPagePanel.MainPageBack();
+        }
+        /// <summary>
+        /// 在新窗口中播放视频
+        /// </summary>
+        /// <param name="bangumi">视频ID</param>
+        /// <param name="cid">分片ID</param>
+        public async void PlayVideoSeparate(BangumiDetail bangumi, Episode part)
+        {
+            CoreApplicationView newView = CoreApplication.CreateNewView();
+            int newViewId = 0;
+            await newView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                Frame frame = new Frame();
+                frame.Navigate(typeof(MiniPlayerPage), new Tuple<BangumiDetail, Episode>(bangumi, part));
+                Window.Current.Content = frame;
+                // You have to activate the window in order to show it later.
+                Window.Current.Activate();
+                newViewId = ApplicationView.GetForCurrentView().Id;
+            });
+            bool viewShown = await ApplicationViewSwitcher.TryShowAsStandaloneAsync(newViewId);
+            if (CurrentPageType == typeof(VideoPage))
                 CurrentPagePanel.MainPageBack();
         }
         /// <summary>

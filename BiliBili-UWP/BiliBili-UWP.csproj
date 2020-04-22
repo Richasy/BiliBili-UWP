@@ -224,6 +224,7 @@
     <Compile Include="Models\Core\BiliViewModel.Channel.cs" />
     <Compile Include="Models\Enums\ColorType.cs" />
     <Compile Include="Models\Enums\InputBoxType.cs" />
+    <Compile Include="Models\Enums\PlayerType.cs" />
     <Compile Include="Models\Enums\SideMenuGroupType.cs" />
     <Compile Include="Models\Enums\SideMenuItemType.cs" />
     <Compile Include="Models\UI\Converter\ChannelCoverConverter.cs" />
@@ -239,6 +240,7 @@
     <Compile Include="Models\UI\Converter\StringVisbilityConverter.cs" />
     <Compile Include="Models\UI\IconItem.cs" />
     <Compile Include="Models\UI\Interface\IAppPopup.cs" />
+    <Compile Include="Models\UI\Interface\IPlayerPage.cs" />
     <Compile Include="Models\UI\Interface\IRefreshPage.cs" />
     <Compile Include="Models\UI\Others\CustomResourceLoader.cs" />
     <Compile Include="Models\UI\Others\IndicatorHelper.cs" />
@@ -251,6 +253,9 @@
     <Compile Include="Models\UI\SideMenuItem.cs" />
     <Compile Include="Models\UI\StaticString.cs" />
     <Compile Include="Models\UI\UIHelper.cs" />
+    <Compile Include="Pages\Main\BangumiPage.xaml.cs">
+      <DependentUpon>BangumiPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Main\DynamicPage.xaml.cs">
       <DependentUpon>DynamicPage.xaml</DependentUpon>
     </Compile>
@@ -269,8 +274,8 @@
     <Compile Include="Pages\Main\MiniPlayerPage.xaml.cs">
       <DependentUpon>MiniPlayerPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Main\PlayerPage.xaml.cs">
-      <DependentUpon>PlayerPage.xaml</DependentUpon>
+    <Compile Include="Pages\Main\VideoPage.xaml.cs">
+      <DependentUpon>VideoPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Main\RegionPage.xaml.cs">
       <DependentUpon>RegionPage.xaml</DependentUpon>
@@ -521,6 +526,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Pages\Main\BangumiPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\Main\DynamicPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -545,7 +554,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\Main\PlayerPage.xaml">
+    <Page Include="Pages\Main\VideoPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

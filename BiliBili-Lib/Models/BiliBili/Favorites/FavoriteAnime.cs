@@ -27,14 +27,18 @@ namespace BiliBili_Lib.Models.BiliBili.Favorites
         public string square_cover { get; set; }
         public string title { get; set; }
         public string url { get; set; }
-        public class New_Ep
+
+        public override bool Equals(object obj)
         {
-            public string cover { get; set; }
-            public int duration { get; set; }
-            public int id { get; set; }
-            public string index_show { get; set; }
-            public int is_new { get; set; }
+            return obj is FavoriteAnime anime &&
+                   season_id == anime.season_id;
         }
+
+        public override int GetHashCode()
+        {
+            return 1209251872 + season_id.GetHashCode();
+        }
+
         public class Progress
         {
             public string index_show { get; set; }
@@ -48,5 +52,14 @@ namespace BiliBili_Lib.Models.BiliBili.Favorites
             public int id { get; set; }
             public string title { get; set; }
         }
+
+    }
+    public class New_Ep
+    {
+        public string cover { get; set; }
+        public int duration { get; set; }
+        public int id { get; set; }
+        public string index_show { get; set; }
+        public int is_new { get; set; }
     }
 }

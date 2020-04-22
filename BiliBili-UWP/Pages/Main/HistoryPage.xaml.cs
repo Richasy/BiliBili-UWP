@@ -121,7 +121,10 @@ namespace BiliBili_UWP.Pages.Main
         {
             var item = e.ClickedItem as VideoDetail;
             var ele = HistoryVideoView.ContainerFromItem(item);
-            App.AppViewModel.PlayVideo(item.aid, ele);
+            if (item.bangumi != null)
+                App.AppViewModel.PlayBangumi(item.bangumi.ep_id, ele, true);
+            else
+                App.AppViewModel.PlayVideo(item.aid, ele);
         }
     }
 }

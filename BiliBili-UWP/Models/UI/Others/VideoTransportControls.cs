@@ -113,7 +113,6 @@ namespace BiliBili_UWP.Models.UI.Others
             else if (instance.IsCompactOverlay && v)
                 instance.IsCompactOverlay = false;
             instance._fullWindowButton.Icon = v ? instance.GetIcon("") : instance.GetIcon("");
-            instance.CinemaButtonVisibility = v ? Visibility.Collapsed : Visibility.Visible;
             instance.FullWindowChanged?.Invoke(instance, v);
             instance.DanmakuControls.UpdateLayout();
         }

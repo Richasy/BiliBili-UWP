@@ -55,7 +55,7 @@
                                                 ItemClick="MyAnimeListView_ItemClick"  ItemTemplate="{StaticResource AnimeItemTemplate}"
                                                 ItemsSource="{x:Bind MyAnimeCollection}" Margin="0,20,0,0"/>
         <controls1:HorizontalScrollSectionPanel Title="我的追剧" HoldText="我还没有追剧哟~" x:Name="MyCinemaListView" Grid.Row="3"
-                                                ItemClick="MyCinemaListView_ItemClick"  ItemTemplate="{StaticResource AnimeItemTemplate}"
+                                                ItemClick="MyAnimeListView_ItemClick"   ItemTemplate="{StaticResource AnimeItemTemplate}"
                                                 ItemsSource="{x:Bind MyCinemaCollection}" Margin="0,20,0,0"/>
     </Grid>
 </Page>

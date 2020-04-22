@@ -95,7 +95,7 @@
                            Text="{x:Bind title}" TextWrapping="Wrap" Margin="15,10,15,6" FontWeight="Bold"/>
                 <TextBlock Style="{StaticResource SmallTipTextStyle}" Grid.Row="1"
                            Text="{x:Bind desc}" LineHeight="16" TextWrapping="Wrap" Margin="15,0,15,5" MaxLines="3" FontSize="10"/>
-                <controls:ImageEx Source="{x:Bind render_cover}" Visibility="{x:Bind image_urls.Count,Converter={StaticResource IntVisibilityConverter}}"
+                <controls:ImageEx Source="{x:Bind cover,Converter={StaticResource CoverResolutionConverter},ConverterParameter=300}" Visibility="{x:Bind image_urls.Count,Converter={StaticResource IntVisibilityConverter}}"
                                   Grid.Row="2" MaxHeight="90" HorizontalAlignment="Stretch" Stretch="UniformToFill" PlaceholderSource="ms-appx:///Assets/img_holder.png"/>
                 <StackPanel Orientation="Horizontal" Grid.Row="3" Margin="15,10">
                     <widgets:IconTextBlock Icon="&#xEA31;" Text="{x:Bind name}" FontSize="10" GutterWidth="5" IconForeground="{ThemeResource TipTextColor}"/>

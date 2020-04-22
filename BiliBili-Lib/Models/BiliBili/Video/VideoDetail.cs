@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BiliBili_Lib.Models.BiliBili.Anime;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -35,6 +36,8 @@ namespace BiliBili_Lib.Models.BiliBili.Video
         public List<VideoRelated> relates { get; set; }
         public int id { get; set; }
         public InteractionPart interaction { get; set; }
+        public BangumiSlim bangumi { get; set; }
+        public string redirect_url { get; set; }
     }
     public class ReqestUser
     {

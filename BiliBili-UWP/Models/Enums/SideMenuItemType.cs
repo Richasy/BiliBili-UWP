@@ -22,7 +22,8 @@ namespace BiliBili_UWP.Models.Enums
         Help,
 
         Line,
-        Player,
+        VideoPlayer,
+        BangumiPlayer,
         Region,
         MiniPlayer
     }

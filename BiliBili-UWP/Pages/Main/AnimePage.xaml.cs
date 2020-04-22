@@ -45,7 +45,7 @@ namespace BiliBili_UWP.Pages.Main
         {
             if (e.NavigationMode == NavigationMode.Back)
                 return;
-            if(e.Parameter!=null && e.Parameter is bool _isJP)
+            if (e.Parameter != null && e.Parameter is bool _isJP)
             {
                 isJP = _isJP;
             }
@@ -67,7 +67,7 @@ namespace BiliBili_UWP.Pages.Main
         {
             Reset();
             var data = await _animeService.GetAnimeSquareAsync(isJP);
-            if(data!=null && data.Count > 0)
+            if (data != null && data.Count > 0)
             {
                 //Banner
                 var banners = data.Where(p => p.style == "banner").FirstOrDefault();
@@ -78,7 +78,7 @@ namespace BiliBili_UWP.Pages.Main
                     BannerContainer.HolderVisibility = BannerCollection.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
                 }
                 int hot_id = isJP ? 119 : 124;
-                var hot = data.Where(p => p.module_id==hot_id).FirstOrDefault();
+                var hot = data.Where(p => p.module_id == hot_id).FirstOrDefault();
                 if (hot != null)
                 {
                     HotContainer.Visibility = Visibility.Visible;
@@ -94,7 +94,7 @@ namespace BiliBili_UWP.Pages.Main
                         item.cards = item.cards.Take(3).ToList();
                         for (int i = 0; i < item.cards.Count; i++)
                         {
-                            item.cards[i].render_sign = $"ms-appx:///Assets/Rank/ic_live_rank_{i+1}.png";
+                            item.cards[i].render_sign = $"ms-appx:///Assets/Rank/ic_live_rank_{i + 1}.png";
                         }
                         RankCollection.Add(item);
                     }
@@ -123,20 +123,17 @@ namespace BiliBili_UWP.Pages.Main
 
         }
 
-        private async void BannerListView_ItemClick(object sender, ItemClickEventArgs e)
+        private void BannerListView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var banner = e.ClickedItem as AnimeModuleItem;
-            await Launcher.LaunchUriAsync(new Uri(banner.link));
-        }
-
-        private void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
-        {
-
+            if (banner.oid > 0)
+                App.AppViewModel.PlayBangumi(banner.oid, sender, true);
         }
 
         private void HotContainer_ItemClick(object sender, ItemClickEventArgs e)
         {
-
+            var item = e.ClickedItem as AnimeModuleItem;
+            App.AppViewModel.PlayBangumi(item.oid, sender);
         }
 
         private async void HotContainer_RefreshButtonClick(object sender, EventArgs e)
@@ -145,7 +142,7 @@ namespace BiliBili_UWP.Pages.Main
             btn.IsLoading = true;
             int hot_id = isJP ? 119 : 124;
             var items = await _animeService.GetAnimeSectionExchange(1, hot_id);
-            if (items!=null && items.Count > 0)
+            if (items != null && items.Count > 0)
             {
                 var others = items.Where(p => !HotCollection.Contains(p)).Take(6).ToList();
                 if (others.Count() > 0)
@@ -167,10 +164,10 @@ namespace BiliBili_UWP.Pages.Main
             return newList;
         }
 
-        private async void RankVideo_Tapped(object sender, TappedRoutedEventArgs e)
+        private void RankVideo_Tapped(object sender, TappedRoutedEventArgs e)
         {
             var video = (sender as FrameworkElement).DataContext as Card;
-            await Launcher.LaunchUriAsync(new Uri(video.link));
+            App.AppViewModel.PlayBangumi(video.oid, sender);
         }
     }
 }

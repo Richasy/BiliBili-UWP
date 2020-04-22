@@ -152,7 +152,16 @@ namespace BiliBili_UWP.Pages.Sub.Video
         private void VideoListView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var item = e.ClickedItem as RegionVideo;
-            App.AppViewModel.PlayVideo(Convert.ToInt32(item.param));
+            if(item.@goto=="av")
+                App.AppViewModel.PlayVideo(Convert.ToInt32(item.param));
+            else if (item.@goto == "bangumi")
+            {
+                var sp = item.uri.Split("#");
+                if (sp.Length > 1)
+                    App.AppViewModel.PlayBangumi(Convert.ToInt32(sp.Last()), null, true);
+                else
+                    App.AppViewModel.PlayBangumi(Convert.ToInt32(item.param), null);
+            } 
         }
 
         private async void TabListView_ItemClick(object sender, ItemClickEventArgs e)

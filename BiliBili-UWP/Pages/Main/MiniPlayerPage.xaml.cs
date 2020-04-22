@@ -1,4 +1,5 @@
-﻿using BiliBili_Lib.Models.BiliBili.Video;
+﻿using BiliBili_Lib.Models.BiliBili.Anime;
+using BiliBili_Lib.Models.BiliBili.Video;
 using BiliBili_UWP.Models.UI;
 using System;
 using System.Collections.Generic;
@@ -32,9 +33,12 @@ namespace BiliBili_UWP.Pages.Main
         }
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if(e.Parameter!=null && e.Parameter is Tuple<VideoDetail,int> data)
+            if(e.Parameter!=null)
             {
-                await VideoPlayer.Init(data.Item1,data.Item2);
+                if (e.Parameter is Tuple<VideoDetail, int> data)
+                    await VideoPlayer.Init(data.Item1, data.Item2);
+                else if (e.Parameter is Tuple<BangumiDetail, Episode> bangu)
+                    await VideoPlayer.Init(bangu.Item1, bangu.Item2);
                 UIHelper.SetTitleBarColor();
             }
         }

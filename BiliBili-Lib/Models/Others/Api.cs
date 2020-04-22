@@ -17,6 +17,7 @@ namespace BiliBili_Lib.Models.Others
         public const string _vcBase = "https://api.vc.bilibili.com";
         public const string _liveBase = "https://api.live.bilibili.com";
         public const string _passBase = "https://passport.bilibili.com";
+        public const string _bangumiBase = "https://bangumi.bilibili.com";
 
         #region 验证
         /// <summary>
@@ -318,6 +319,27 @@ namespace BiliBili_Lib.Models.Others
         /// 国创综合信息
         /// </summary>
         public const string ANIME_CHN_SQUARE = _apiBase + "/pgc/app/v2/page/bangumi/chn";
+        /// <summary>
+        /// 获取播放地址
+        /// </summary>
+        //public const string ANIME_PLAY = _apiBase + "/pgc/player/api/playurl";
+        public const string ANIME_PLAY = _bangumiBase + "/player/web_api/v2/playurl";
+        /// <summary>
+        /// 获取动漫详情
+        /// </summary>
+        public const string ANIME_DETAIL = _apiBase + "/pgc/view/app/season";
+        /// <summary>
+        /// 检查用户是否投币
+        /// </summary>
+        public const string ANIME_CHECK_COIN = _apiBase + "/pgc/season/episode/coin/user/number";
+        /// <summary>
+        /// 追番/追剧
+        /// </summary>
+        public const string ANIME_FOLLOW = _apiBase + "/pgc/app/follow/add";
+        /// <summary>
+        /// 取消追番/追剧
+        /// </summary>
+        public const string ANIME_UNFOLLOW = _apiBase + "/pgc/app/follow/del";
         #endregion
 
         #region 回复 Reply

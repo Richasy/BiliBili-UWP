@@ -104,7 +104,7 @@ namespace BiliBili_Lib.Tools
         public static long GetNowMilliSeconds()
         {
             TimeSpan ts = DateTime.Now - new DateTime(1970, 1, 1, 8, 0, 0, 0);
-            int seconds = Convert.ToInt32(ts.TotalMilliseconds);
+            long seconds = Convert.ToInt64(ts.TotalMilliseconds);
             return seconds;
         }
         /// <summary>

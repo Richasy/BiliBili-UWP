@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -70,13 +71,16 @@ namespace BiliBili_Lib.Models.BiliBili.Video
         public int startWithSap { get; set; }
         public int start_with_sap { get; set; }
         public SegmentBase segment_base { get; set; }
+        public SegmentBase SegmentBase { get; set; }
         public int codecid { get; set; }
     }
 
     public class SegmentBase
     {
         public string initialization { get; set; }
+        public string Initialization { get; set; }
         public string index_range { get; set; }
+        public string indexRange { get; set; }
     }
 
 }

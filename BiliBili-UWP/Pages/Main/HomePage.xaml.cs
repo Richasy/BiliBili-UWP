@@ -100,7 +100,16 @@ namespace BiliBili_UWP.Pages.Main
         {
             var item = e.ClickedItem as VideoRecommend;
             var container = RecommendVideoView.ContainerFromItem(item);
-            App.AppViewModel.PlayVideo(item.args.aid,container);
+            if(item.card_goto=="av")
+                App.AppViewModel.PlayVideo(item.args.aid,container);
+            else if(item.card_goto=="bangumi")
+            {
+                var sp = item.uri.Split("#");
+                if (sp.Length > 1)
+                    App.AppViewModel.PlayBangumi(Convert.ToInt32(sp.Last()), container, true);
+                else
+                    App.AppViewModel.PlayBangumi(Convert.ToInt32(item.param), container, true);
+            }
         }
 
         private async Task RefreshVideo()

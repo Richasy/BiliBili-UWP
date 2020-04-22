@@ -14,6 +14,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -38,7 +39,7 @@ namespace BiliBili_UWP.Pages.Main
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class PlayerPage : Page, IRefreshPage
+    public sealed partial class VideoPage : Page, IRefreshPage, IPlayerPage
     {
         private ObservableCollection<VideoPart> VideoPartCollection = new ObservableCollection<VideoPart>();
         private VideoDetail _detail = null;
@@ -46,13 +47,13 @@ namespace BiliBili_UWP.Pages.Main
         private ObservableCollection<VideoTag> TagCollection = new ObservableCollection<VideoTag>();
         private ObservableCollection<Staff> StaffCollection = new ObservableCollection<Staff>();
         private VideoService _videoService = App.BiliViewModel._client.Video;
-        private AnimeService _animeService = App.BiliViewModel._client.Anime;
+
         private int _currentPartId = 0;
         private int videoId = 0;
-        public static PlayerPage Current;
+        public static VideoPage Current;
         private List<FavoriteItem> _tempFavorites = new List<FavoriteItem>();
 
-        public PlayerPage()
+        public VideoPage()
         {
             this.InitializeComponent();
             Current = this;
@@ -68,6 +69,8 @@ namespace BiliBili_UWP.Pages.Main
                 {
                     anim.TryStart(VideoPlayer);
                 }
+                App.AppViewModel.CurrentVideoPlayer = VideoPlayer;
+                App.AppViewModel.CurrentPlayerType = Models.Enums.PlayerType.Video;
                 if (aid == videoId)
                     return;
                 else
@@ -75,15 +78,17 @@ namespace BiliBili_UWP.Pages.Main
                     videoId = aid;
                     await Refresh();
                 }
-                App.AppViewModel.CurrentVideoPlayer = VideoPlayer;
             }
         }
 
         protected async override void OnNavigatedFrom(NavigationEventArgs e)
         {
-            VideoPlayer.Pause();
+            VideoPlayer.Close();
             App.AppViewModel.CurrentVideoPlayer = null;
-            await _videoService.AddVideoHistoryAsync(videoId, _currentPartId, VideoPlayer.CurrentProgress);
+            App.AppViewModel.CurrentPlayerType = Models.Enums.PlayerType.None;
+            if (videoId > 0 && _currentPartId > 0)
+                await _videoService.AddVideoHistoryAsync(videoId, _currentPartId, VideoPlayer.CurrentProgress);
+            Reset();
             base.OnNavigatedFrom(e);
         }
         private void Reset()
@@ -122,14 +127,28 @@ namespace BiliBili_UWP.Pages.Main
             if (detail != null)
             {
                 _detail = detail;
-                InitDetail();
-                await VideoPlayer.Init(_detail,_currentPartId);
+                if (InitDetail())
+                    await VideoPlayer.Init(_detail, _currentPartId);
             }
             tip.HidePopup();
         }
 
-        private void InitDetail()
+        private bool InitDetail()
         {
+            if (!string.IsNullOrEmpty(_detail.redirect_url))
+            {
+                var regex_ep = new Regex(@"ep(\d+)");
+                if (regex_ep.IsMatch(_detail.redirect_url))
+                {
+                    string epId = regex_ep.Match(_detail.redirect_url).Value.Replace("ep", "");
+                    new TipPopup("正在转到专题...").ShowMessage();
+                    videoId = 0;
+                    _currentPartId = 0;
+                    App.AppViewModel.CurrentPagePanel.MainPageBack();
+                    App.AppViewModel.PlayBangumi(Convert.ToInt32(epId),null,true);
+                    return false;
+                }
+            }
             TitleBlock.Text = _detail.title;
             PlayCountBlock.Text = AppTool.GetNumberAbbreviation(_detail.stat.view);
             DanmukuCountBlock.Text = AppTool.GetNumberAbbreviation(_detail.stat.danmaku);
@@ -137,7 +156,8 @@ namespace BiliBili_UWP.Pages.Main
             ReplyCountBlock.Text = AppTool.GetNumberAbbreviation(_detail.stat.reply);
 
             DescriptionBlock.Text = _detail.desc;
-            
+            ToolTipService.SetToolTip(DescriptionBlock, _detail.desc);
+
             LikeButton.Text = AppTool.GetNumberAbbreviation(_detail.stat.like);
             CoinButton.Text = AppTool.GetNumberAbbreviation(_detail.stat.coin);
             FavoriteButton.Text = AppTool.GetNumberAbbreviation(_detail.stat.favorite);
@@ -150,12 +170,12 @@ namespace BiliBili_UWP.Pages.Main
             _currentPartId = _detail.pages.First().cid;
             PartListView.Visibility = _detail.pages.Count > 1 ? Visibility.Visible : Visibility.Collapsed;
 
-            if(_detail.tag!=null && _detail.tag.Count > 0)
+            if (_detail.tag != null && _detail.tag.Count > 0)
             {
                 _detail.tag.ForEach(p => TagCollection.Add(p));
             }
 
-            if(_detail.staff!=null && _detail.staff.Count > 0)
+            if (_detail.staff != null && _detail.staff.Count > 0)
             {
                 _detail.staff.ForEach(p => StaffCollection.Add(p));
                 SingleUserContainer.Visibility = Visibility.Collapsed;
@@ -170,16 +190,17 @@ namespace BiliBili_UWP.Pages.Main
             if (_detail.req_user != null)
             {
                 LikeButton.IsCheck = _detail.req_user.like != 0;
-                CoinButton.IsCheck = _detail.req_user.like != 0;
-                FavoriteButton.IsCheck = _detail.req_user.like != 0;
+                CoinButton.IsCheck = _detail.req_user.coin != 0;
+                FavoriteButton.IsCheck = _detail.req_user.favorite != 0;
                 FollowButton.Style = _detail.req_user.attention == 1 ? UIHelper.GetStyle("DefaultAsyncButtonStyle") : UIHelper.GetStyle("PrimaryAsyncButtonStyle");
                 FollowButton.Text = _detail.req_user.attention == 1 ? "已关注" : "关注";
             }
 
-            if(_detail.relates!=null && _detail.relates.Count > 0)
+            if (_detail.relates != null && _detail.relates.Count > 0)
             {
                 _detail.relates.Where(p => p.@goto == "av").Take(10).ToList().ForEach(p => RelatedCollection.Add(p));
             }
+            return true;
         }
 
         private async void RelateVideoContainer_ItemClick(object sender, ItemClickEventArgs e)
@@ -265,7 +286,7 @@ namespace BiliBili_UWP.Pages.Main
                 if (Convert.ToBoolean(SelectLikeCheckBox.IsChecked))
                     LikeButton.IsCheck = true;
                 new TipPopup("成功投币！").ShowMessage();
-            } 
+            }
             else
                 new TipPopup("投币失败").ShowError();
             CoinButton.IsCheck = result;
@@ -285,12 +306,12 @@ namespace BiliBili_UWP.Pages.Main
             }
             foreach (var item in _tempFavorites)
             {
-                if(item.fav_state==1 && !selectedItems.Any(p=>(p as FavoriteItem).id == item.id))
+                if (item.fav_state == 1 && !selectedItems.Any(p => (p as FavoriteItem).id == item.id))
                 {
                     removedList.Add(item.id.ToString());
                 }
             }
-            if(addList.Count>0 || removedList.Count > 0)
+            if (addList.Count > 0 || removedList.Count > 0)
             {
                 FavoriteSureButton.IsLoading = true;
                 bool result = await _videoService.AddVideoToFavoriteAsync(_detail.aid, addList, removedList);
@@ -322,7 +343,7 @@ namespace BiliBili_UWP.Pages.Main
             if (item.cid != _currentPartId)
             {
                 _currentPartId = item.cid;
-                await VideoPlayer.Init(_detail,_currentPartId);
+                await VideoPlayer.Init(_detail, _currentPartId);
             }
         }
 
@@ -335,12 +356,6 @@ namespace BiliBili_UWP.Pages.Main
         private void StaffListView_ItemClick(object sender, ItemClickEventArgs e)
         {
 
-        }
-
-        private void DescriptionBlock_IsTextTrimmedChanged(TextBlock sender, IsTextTrimmedChangedEventArgs args)
-        {
-            if (DescriptionBlock.IsTextTrimmed)
-                ToolTipService.SetToolTip(DescriptionBlock, _detail.desc);
         }
 
         private async void FollowButton_Click(object sender, RoutedEventArgs e)

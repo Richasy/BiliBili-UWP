@@ -67,7 +67,9 @@
                     <ScrollViewer Margin="0,20,0,0" x:Name="PageScrollViewer" Style="{StaticResource BasicScrollViewer}" Padding="0,0,30,0" Grid.Row="2"
                                   ViewChanged="PageScrollViewer_ViewChanged" HorizontalScrollMode="Disabled">
                         <Grid x:Name="DisplayContainer">
-                            <Frame x:Name="PageFrame" Navigated="PageFrame_Navigated" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:FieldModifier="Public"/>
+                            <Frame x:Name="PageFrame" Navigated="PageFrame_Navigated" HorizontalAlignment="Stretch" 
+                                   VerticalAlignment="Stretch" x:FieldModifier="Public"
+                                   NavigationFailed="PageFrame_NavigationFailed"/>
                         </Grid>
                     </ScrollViewer>
                     <Grid Grid.Row="2" Background="{ThemeResource PageBackground}" x:Name="HolderContainer"

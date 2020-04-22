@@ -116,14 +116,14 @@ namespace BiliBili_UWP.Pages.Main
             App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Sub.Account.FavoritePage), item);
         }
 
-        private void MyCinemaListView_ItemClick(object sender, ItemClickEventArgs e)
-        {
-
-        }
-
         private void MyAnimeListView_ItemClick(object sender, ItemClickEventArgs e)
         {
-
+            var item = e.ClickedItem as FavoriteAnime;
+            var con = (sender as ListView).ContainerFromItem(item);
+            if (item.progress != null)
+                App.AppViewModel.PlayBangumi(item.progress.last_ep_id, con, true);
+            else
+                App.AppViewModel.PlayBangumi(item.season_id, con);
         }
     }
 }

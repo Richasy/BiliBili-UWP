@@ -1,5 +1,6 @@
 ﻿using BiliBili_Lib.Enums;
 using BiliBili_Lib.Models.BiliBili;
+using BiliBili_Lib.Models.BiliBili.Anime;
 using BiliBili_Lib.Models.BiliBili.Video;
 using BiliBili_Lib.Service;
 using BiliBili_Lib.Tools;
@@ -39,6 +40,7 @@ namespace BiliBili_UWP.Components.Controls
     {
         private VideoPlayBase _playData = null;
         private VideoService _videoService = App.BiliViewModel._client.Video;
+        private AnimeService _animeService = App.BiliViewModel._client.Anime;
         private ObservableCollection<Tuple<int, string>> QualityCollection = new ObservableCollection<Tuple<int, string>>();
         private ObservableCollection<Choice> ChoiceCollection = new ObservableCollection<Choice>();
         private DanmakuParse _danmakuParse = new DanmakuParse();
@@ -61,8 +63,12 @@ namespace BiliBili_UWP.Components.Controls
 
         private int _videoId = 0;
         private int _partId = 0;
+        private Episode _bangumiPart = null;
 
-        private VideoDetail _detail = null;
+        private VideoDetail _videoDetail = null;
+        private BangumiDetail _bangumiDetail = null;
+
+        public bool isBangumi = false;
 
         public event EventHandler<bool> FullWindowChanged;
         public event EventHandler<bool> CinemaChanged;
@@ -86,13 +92,14 @@ namespace BiliBili_UWP.Components.Controls
             MTC = VideoMTC;
         }
 
-        public async Task Init(VideoDetail detail,int cid=0)
+        public async Task Init(VideoDetail detail, int cid = 0)
         {
-            _detail = detail;
+            _videoDetail = detail;
             _videoId = detail.aid;
+            isBangumi = false;
             if (cid == 0)
             {
-                if(detail!=null && detail.pages!=null)
+                if (detail != null && detail.pages != null)
                     cid = detail.pages.First().cid;
             }
             if (detail.interaction != null)
@@ -104,6 +111,15 @@ namespace BiliBili_UWP.Components.Controls
                 Reset();
                 await RefreshVideoSource(cid);
             }
+        }
+
+        public async Task Init(BangumiDetail detail, Episode part)
+        {
+            isBangumi = true;
+            _bangumiDetail = detail;
+            _bangumiPart = part;
+            Reset();
+            await RefreshVideoSource(part);
         }
 
         private void Reset()
@@ -135,10 +151,10 @@ namespace BiliBili_UWP.Components.Controls
 
         private async void Media_Ended(MediaPlayer sender, object args)
         {
-            await DispatcherHelper.ExecuteOnUIThreadAsync(async() =>
+            await DispatcherHelper.ExecuteOnUIThreadAsync(async () =>
             {
                 VideoMTC.IsPlaying = false;
-                if (_detail.interaction != null)
+                if (_videoDetail.interaction != null)
                 {
                     //互动视频
                     if (ChoiceCollection.Count > 0)
@@ -147,7 +163,7 @@ namespace BiliBili_UWP.Components.Controls
                             await InitInteraction(ChoiceCollection.First().cid, ChoiceCollection.First().id);
                         else
                             ChoiceItemsControl.Visibility = Visibility.Visible;
-                    }  
+                    }
                 }
                 else
                 {
@@ -163,7 +179,7 @@ namespace BiliBili_UWP.Components.Controls
         {
             LoadingBar.Visibility = Visibility.Visible;
             var _mediaPlayer = mediaElement.MediaPlayer;
-            if (_playData == null || _partId!=partId)
+            if (_playData == null || _partId != partId)
             {
                 _partId = partId;
                 var data = await _videoService.GetVideoPlayAsync(_videoId, partId, _currentQn);
@@ -187,12 +203,62 @@ namespace BiliBili_UWP.Components.Controls
                     mediaSource = await HandleDashSource();
                 else
                     mediaSource = await HandleFlvSource(_videoId);
-                var offset = TimeSpan.FromSeconds(_mediaPlayer.PlaybackSession.Position.TotalSeconds);
+                if (mediaSource != null)
+                {
+                    var offset = TimeSpan.FromSeconds(_mediaPlayer.PlaybackSession.Position.TotalSeconds);
+                    var other = _tempSource;
+                    _tempSource = mediaSource;
+                    _mediaPlayer.Source = new MediaPlaybackItem(mediaSource);
+                    if (offset.TotalSeconds > 0)
+                        _player.PlaybackSession.Position = offset;
+                    other?.Dispose();
+
+                    VideoMTC.IsInit = false;
+                    VideoMTC.IsPlaying = mediaElement.AutoPlay;
+                    VideoMTC.IsInit = true;
+                    Resume();
+                }
+                else
+                    ErrorContainer.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                ErrorContainer.Visibility = Visibility.Visible;
+            }
+            mediaElement.Focus(FocusState.Programmatic);
+            LoadingBar.Visibility = Visibility.Collapsed;
+        }
+
+        public async Task RefreshVideoSource(Episode part)
+        {
+            LoadingBar.Visibility = Visibility.Visible;
+            if (_playData == null || _bangumiPart.id != part.id)
+            {
+                _bangumiPart = part;
+                var data = await _animeService.GetBangumiPlayAsync(_bangumiDetail.type, part.cid, _currentQn);
+                if (data != null)
+                {
+                    _playData = data;
+                    for (int i = 0; i < _playData.accept_quality.Count; i++)
+                    {
+                        QualityCollection.Add(new Tuple<int, string>(_playData.accept_quality[i], _playData.accept_description[i]));
+                    }
+                    _currentQn = QualityCollection.First().Item1;
+                    VideoMTC.QualitySelectIndex = 0;
+                }
+            }
+            if (_playData != null)
+            {
+                if (DanmakuList.Count == 0)
+                    DanmakuList = (await _danmakuParse.ParseBiliBili(Convert.ToInt64(part.cid)));
+                MediaSource mediaSource = null;
+                if (_playData is VideoPlayDash)
+                    mediaSource = await HandleDashSource();
+                else
+                    mediaSource = await HandleFlvSource(_videoId, true);
                 var other = _tempSource;
                 _tempSource = mediaSource;
-                _mediaPlayer.Source = new MediaPlaybackItem(mediaSource);
-                if(offset.TotalSeconds>0)
-                    _player.PlaybackSession.Position = offset;
+                _player.Source = new MediaPlaybackItem(mediaSource);
                 other?.Dispose();
 
                 VideoMTC.IsInit = false;
@@ -287,7 +353,8 @@ namespace BiliBili_UWP.Components.Controls
         {
             Pause();
             DanmakuList.Clear();
-            _tempSource.Dispose();
+            if (_tempSource != null)
+                _tempSource.Dispose();
         }
 
         private async Task<MediaSource> HandleDashSource()
@@ -301,10 +368,14 @@ namespace BiliBili_UWP.Components.Controls
             if (video == null)
                 video = data.dash.video.OrderByDescending(p => p.id).FirstOrDefault(p => p.codecid == 7);
             var audio = data.dash.audio.FirstOrDefault();
-            var mediaSource = await _videoService.CreateMediaSourceAsync(video, audio);
-            return mediaSource;
+            MediaSource source = null;
+            if (isBangumi)
+                source = await _animeService.CreateMediaSourceAsync(video, audio);
+            else
+                source = await _videoService.CreateMediaSourceAsync(video, audio);
+            return source;
         }
-        private async Task<MediaSource> HandleFlvSource(int videoId)
+        private async Task<MediaSource> HandleFlvSource(int videoId, bool isBangumi = false)
         {
             var playList = new Playlist(PlaylistTypes.NetworkHttp);
             var data = _playData as VideoPlayFlv;
@@ -314,6 +385,7 @@ namespace BiliBili_UWP.Components.Controls
                 urls.Add(p.url);
                 playList.Append(p.url, 0, p.length / 1000);
             });
+            string prefix = isBangumi ? "https://www.bilibili.com/bangumi/play/ep" : "https://www.bilibili.com/video/av";
             playList.NetworkConfigs = CreatePlaylistNetworkConfigs("https://www.bilibili.com/video/av" + videoId + "/");
             var mediaSouce = MediaSource.CreateFromUri(await playList.SaveAndGetFileUriAsync());
             return mediaSouce;
@@ -359,8 +431,8 @@ namespace BiliBili_UWP.Components.Controls
 
         private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            if(DanmakuControls!=null)
-            DanmakuControls.Clip = new RectangleGeometry() { Rect = new Rect(0, 0, e.NewSize.Width, e.NewSize.Height) };
+            if (DanmakuControls != null)
+                DanmakuControls.Clip = new RectangleGeometry() { Rect = new Rect(0, 0, e.NewSize.Width, e.NewSize.Height) };
         }
 
         private void VideoMTC_FullWindowChanged(object sender, bool e)
@@ -485,7 +557,7 @@ namespace BiliBili_UWP.Components.Controls
                 return;
             _isChoiceHandling = true;
             Reset();
-            var data = await _videoService.GetInteractionVideoAsync(_videoId, _detail.interaction.graph_version, edgeId);
+            var data = await _videoService.GetInteractionVideoAsync(_videoId, _videoDetail.interaction.graph_version, edgeId);
             ChoiceItemsControl.Visibility = Visibility.Collapsed;
             await RefreshVideoSource(cid);
             if (data != null)
