@@ -121,6 +121,22 @@ namespace BiliBili_Lib.Models.Others
         /// </summary>
         public const string ACCOUNT_HISTORY_CLEAR = _apiBase + "/x/v2/history/clear";
         /// <summary>
+        /// 稍后观看记录
+        /// </summary>
+        public const string ACCOUNT_VIEWLATER = _apiBase + "/x/v2/history/toview";
+        /// <summary>
+        /// 添加稍后观看记录
+        /// </summary>
+        public const string ACCOUNT_VIEWLATER_ADD = _apiBase + "/x/v2/history/toview/add";
+        /// <summary>
+        /// 删除稍后观看记录
+        /// </summary>
+        public const string ACCOUNT_VIEWLATER_DEL = _apiBase + "/x/v2/history/toview/del";
+        /// <summary>
+        /// 清空稍后观看记录
+        /// </summary>
+        public const string ACCOUNT_VIEWLATER_CLEAR = _apiBase + "/x/v2/history/toview/clear";
+        /// <summary>
         /// 我的播单信息
         /// </summary>
         public const string ACCOUNT_MEDIALIST = _apiBase + "/medialist/gateway/base/space";
@@ -340,6 +356,14 @@ namespace BiliBili_Lib.Models.Others
         /// 取消追番/追剧
         /// </summary>
         public const string ANIME_UNFOLLOW = _apiBase + "/pgc/app/follow/del";
+        /// <summary>
+        /// 番剧索引限制条件
+        /// </summary>
+        public const string ANIME_INDEX_CONDITION = _apiBase + "/pgc/season/index/condition";
+        /// <summary>
+        /// 番剧索引搜索结果
+        /// </summary>
+        public const string ANIME_INDEX_RESULT = _apiBase + "/pgc/season/index/result";
         #endregion
 
         #region 回复 Reply

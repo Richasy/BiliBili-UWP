@@ -43,7 +43,8 @@
                         <TextBlock Text="{x:Bind staff}" Visibility="{x:Bind staff,Converter={StaticResource StringVisibilityConverter}}" Margin="0,10,0,0" Style="{StaticResource SmallTipTextStyle}" MaxLines="2" FontSize="10"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Grid.Row="1">
-                        <widgets:AsyncButton Text="立即观看" Style="{StaticResource PrimaryAsyncButtonStyle}" Padding="2" FontSize="10" x:Name="WatchAnimeButton"/>
+                        <widgets:AsyncButton Text="立即观看" Style="{StaticResource PrimaryAsyncButtonStyle}" Padding="2" FontSize="10" x:Name="WatchAnimeButton"
+                                             Click="WatchAnimeButton_Click"/>
                         <widgets:AsyncButton FontSize="10" Text="{x:Bind render_follow}" Style="{StaticResource DefaultAsyncButtonStyle}" Margin="10,0,0,0"/>
                     </StackPanel>
                 </Grid>
@@ -78,8 +79,8 @@
                         <widgets:IconTextBlock Icon="&#xEA32;" GutterWidth="5" Text="{x:Bind archives}" Margin="10,0,0,0" FontSize="10"/>
                     </StackPanel>
                 </StackPanel>
-                <widgets:AsyncButton Padding="0" FontSize="10" Style="{StaticResource DefaultAsyncButtonStyle}"
-                                     Text="{x:Bind render_follow}" VerticalAlignment="Center" Grid.Column="2"
+                <widgets:AsyncButton Padding="0" FontSize="10" Style="{StaticResource PrimaryAsyncButtonStyle}"
+                                     Text="关注" VerticalAlignment="Center" Grid.Column="2" Visibility="{x:Bind attentions,Converter={StaticResource IntVisibilityConverter},ConverterParameter=yo}"
                                      Margin="15,0,0,0" x:Name="FollowUserButton" Click="FollowUserButton_Click"/>
             </Grid>
         </DataTemplate>

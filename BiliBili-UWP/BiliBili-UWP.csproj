@@ -274,14 +274,23 @@
     <Compile Include="Pages\Main\MiniPlayerPage.xaml.cs">
       <DependentUpon>MiniPlayerPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\Main\SettingPage.xaml.cs">
+      <DependentUpon>SettingPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Main\VideoPage.xaml.cs">
       <DependentUpon>VideoPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Main\RegionPage.xaml.cs">
       <DependentUpon>RegionPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\Main\ViewLaterPage.xaml.cs">
+      <DependentUpon>ViewLaterPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Sub\Account\FavoritePage.xaml.cs">
       <DependentUpon>FavoritePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Sub\Anime\IndexPage.xaml.cs">
+      <DependentUpon>IndexPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Sub\Channel\ChannelDetailPage.xaml.cs">
       <DependentUpon>ChannelDetailPage.xaml</DependentUpon>
@@ -554,6 +563,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\Main\SettingPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\Main\VideoPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -562,7 +575,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\Main\ViewLaterPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\Sub\Account\FavoritePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Sub\Anime\IndexPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -115,7 +115,7 @@ namespace BiliBili_UWP.Pages.Main
 
         private void IndexButton_Click(object sender, RoutedEventArgs e)
         {
-
+            App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Sub.Anime.IndexPage), 1);
         }
 
         private void TimelineButton_Click(object sender, RoutedEventArgs e)

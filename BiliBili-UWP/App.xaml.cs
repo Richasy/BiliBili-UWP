@@ -45,8 +45,7 @@ namespace BiliBili_UWP
             this.Suspending += OnSuspending;
             UnhandledException += OnUnhandleException;
             string theme = AppTool.GetLocalSetting(Settings.Theme, "Light");
-            //RequestedTheme = theme == "Light" ? ApplicationTheme.Light : ApplicationTheme.Dark;
-            RequestedTheme = ApplicationTheme.Dark;
+            RequestedTheme = theme == "Light" ? ApplicationTheme.Light : ApplicationTheme.Dark;
         }
         private void OnUnhandleException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
         {

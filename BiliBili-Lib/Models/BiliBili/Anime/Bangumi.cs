@@ -30,7 +30,7 @@ namespace BiliBili_Lib.Models.BiliBili.Anime
         }
     }
 
-    
+
 
     public class BangumiDetail
     {
@@ -73,6 +73,7 @@ namespace BiliBili_Lib.Models.BiliBili.Anime
         public string type_desc { get; set; }
         public string type_name { get; set; }
         public UserStatus user_status { get; set; }
+        public Limit limit { get; set; }
         public class Actor
         {
             public string info { get; set; }
@@ -89,6 +90,13 @@ namespace BiliBili_Lib.Models.BiliBili.Anime
             public int share { get; set; }
             public int views { get; set; }
         }
+
+        public class Limit
+        {
+            public string content { get; set; }
+            public string image { get; set; }
+        }
+
     }
 
 

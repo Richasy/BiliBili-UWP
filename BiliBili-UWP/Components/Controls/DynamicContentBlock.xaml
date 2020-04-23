@@ -114,6 +114,8 @@
                             <Run Text=" 投稿"/>
                         </TextBlock>
                     </StackPanel>
+                    <local:RenderTextBlock Text="{x:Bind render_origin_content}" Visibility="{x:Bind render_origin_content,Converter={StaticResource StringVisibilityConverter}}"
+                                           />
                     <local:DynamicContentBlock Data="{x:Bind render_origin}" HorizontalAlignment="Stretch"/>
                 </StackPanel>
             </StackPanel>
@@ -141,6 +143,21 @@
                 <StackPanel VerticalAlignment="Center" Grid.Column="1" Margin="15,0,0,0">
                     <TextBlock Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource NormalTextColor}" Text="{x:Bind sketch.title}"/>
                     <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="10" Text="{x:Bind sketch.desc_text}" Margin="0,5,0,0"/>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:DataType="bilibili:MusicDynamic" x:Name="MusicTemplate">
+            <Grid BorderBrush="{ThemeResource LineColor}" BorderThickness="1" CornerRadius="4"
+                  Background="{ThemeResource CardBackground}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+                <controls:ImageEx Width="60" Height="60" CornerRadius="4" Source="{x:Bind cover,Converter={StaticResource CoverResolutionConverter},ConverterParameter=100}"
+                                  PlaceholderStretch="Uniform" PlaceholderSource="ms-appx:///Assets/img_holder_rect.png" Stretch="UniformToFill" IsCacheEnabled="True"/>
+                <StackPanel VerticalAlignment="Center" Grid.Column="1" Margin="15,0,0,0">
+                    <TextBlock Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource NormalTextColor}" Text="{x:Bind title}"/>
+                    <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="10" Text="{x:Bind typeInfo}" Margin="0,5,0,0"/>
                 </StackPanel>
             </Grid>
         </DataTemplate>

@@ -147,8 +147,10 @@ namespace BiliBili_UWP.Components.Layout
                 case SideMenuItemType.MyDownload:
                     break;
                 case SideMenuItemType.ViewLater:
+                    page = typeof(Pages.Main.ViewLaterPage);
                     break;
                 case SideMenuItemType.Settings:
+                    page = typeof(Pages.Main.SettingPage);
                     break;
                 case SideMenuItemType.Help:
                     break;
@@ -188,6 +190,10 @@ namespace BiliBili_UWP.Components.Layout
                 result = SideMenuItemType.MyHistory;
             else if (type.Equals(typeof(Pages.Main.FavoritePage)))
                 result = SideMenuItemType.MyFavorite;
+            else if (type.Equals(typeof(Pages.Main.ViewLaterPage)))
+                result = SideMenuItemType.ViewLater;
+            else if (type.Equals(typeof(Pages.Main.SettingPage)))
+                result = SideMenuItemType.Settings;
             return result;
         }
 
@@ -213,7 +219,14 @@ namespace BiliBili_UWP.Components.Layout
             {
                 BackButton.Visibility = Visibility.Collapsed;
             }
-            NavigateToPage(menu, last.Item2, true);
+            try
+            {
+                NavigateToPage(menu, last.Item2, true);
+            }
+            catch (Exception)
+            {
+
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -102,6 +102,7 @@ namespace BiliBili_UWP.Components.Controls
             var hot = e.ClickedItem as HotSearch;
             string key = hot.keyword;
             App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Pages.Sub.SearchPage), key);
+            HotSearchFlyout.Hide();
         }
 
         private void UserControl_PointerEntered(object sender, PointerRoutedEventArgs e)

@@ -13,7 +13,10 @@ namespace BiliBili_UWP.Models.UI.Converter
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             var num = System.Convert.ToInt32(value);
-            return num == 0 ? Visibility.Collapsed : Visibility.Visible;
+            if(parameter==null)
+                return num == 0 ? Visibility.Collapsed : Visibility.Visible;
+            else
+                return num == 0 ? Visibility.Visible : Visibility.Collapsed;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

@@ -131,10 +131,10 @@ namespace BiliBili_Lib.Models.BiliBili
             get => AppTool.GetNumberAbbreviation(archives);
         }
         public int roomid { get; set; }
-        public int is_atten { get; set; }
+        public int attentions { get; set; }
         public string render_follow
         {
-            get => is_atten == 1 ? "已关注" : "关注";
+            get => attentions == 1 ? "已关注" : "关注";
         }
     }
 

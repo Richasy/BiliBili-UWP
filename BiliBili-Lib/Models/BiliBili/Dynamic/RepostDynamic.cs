@@ -14,6 +14,7 @@ namespace BiliBili_Lib.Models.BiliBili
         public string origin_extend_json { get; set; }
         public OriginUser origin_user { get; set; }
         public object render_origin { get; set; }
+        public string render_origin_content { get; set; }
         public class OriginUser : Author
         {
             public OriginUserInfo info { get; set; }

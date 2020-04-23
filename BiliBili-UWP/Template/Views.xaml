@@ -676,7 +676,7 @@
                                     <VisualState.Setters>
                                         <Setter Target="LayoutRoot.Background" Value="{ThemeResource CardBackground}"/>
                                         <Setter Target="LayoutRoot.BorderBrush" Value="{ThemeResource ComboBoxItemRevealBorderBrushSelected}"/>
-                                        <Setter Target="ContentPresenter.Foreground" Value="White"/>
+                                        <Setter Target="ContentPresenter.Foreground" Value="{ThemeResource PrimaryColor}"/>
                                     </VisualState.Setters>
                                     <Storyboard>
                                         <PointerUpThemeAnimation Storyboard.TargetName="LayoutRoot"/>
@@ -686,7 +686,7 @@
                                     <VisualState.Setters>
                                         <Setter Target="LayoutRoot.Background" Value="{ThemeResource CardBackground}"/>
                                         <Setter Target="LayoutRoot.BorderBrush" Value="{ThemeResource ComboBoxItemRevealBorderBrushSelectedUnfocused}"/>
-                                        <Setter Target="ContentPresenter.Foreground" Value="White"/>
+                                        <Setter Target="ContentPresenter.Foreground" Value="{ThemeResource PrimaryColor}"/>
                                     </VisualState.Setters>
                                 </VisualState>
                                 <VisualState x:Name="SelectedDisabled">
@@ -700,7 +700,7 @@
                                     <VisualState.Setters>
                                         <Setter Target="LayoutRoot.Background" Value="{ThemeResource CardBackgroundOver}"/>
                                         <Setter Target="LayoutRoot.BorderBrush" Value="{ThemeResource ComboBoxItemRevealBorderBrushSelectedPointerOver}"/>
-                                        <Setter Target="ContentPresenter.Foreground" Value="White"/>
+                                        <Setter Target="ContentPresenter.Foreground" Value="{ThemeResource PrimaryColorOver}"/>
                                         <Setter Target="LayoutRoot.(RevealBrush.State)" Value="PointerOver"/>
                                     </VisualState.Setters>
                                     <Storyboard>

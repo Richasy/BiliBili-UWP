@@ -178,6 +178,15 @@ namespace BiliBili_UWP.Components.Controls
                     instance.CommentBlock.Text = data.desc.comment == 0 ? "" : AppTool.GetNumberAbbreviation(data.desc.comment);
                     instance.MainDisplay.Data = info;
                 }
+                else if (data.desc.type == 256)
+                {
+                    //音频
+                    var info = JsonConvert.DeserializeObject<MusicDynamic>(data.card);
+                    if (!string.IsNullOrEmpty(info.intro))
+                        instance.DescriptionBlock.Text = Regex.Replace(info.intro, @"#(.*?)#", "").Trim();
+                    instance.CommentBlock.Text = AppTool.GetNumberAbbreviation(info.replyCnt);
+                    instance.MainDisplay.Data = info;
+                }
                 else
                 {
                     string yo = "";

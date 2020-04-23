@@ -125,8 +125,10 @@
     <Compile Include="Models\BiliBili\Account.cs" />
     <Compile Include="Models\BiliBili\Anime.cs" />
     <Compile Include="Models\BiliBili\Anime\Bangumi.cs" />
+    <Compile Include="Models\BiliBili\Anime\IndexCondition.cs" />
     <Compile Include="Models\BiliBili\Dynamic\AnimeDynamic.cs" />
     <Compile Include="Models\BiliBili\Dynamic\CourseDynamic.cs" />
+    <Compile Include="Models\BiliBili\Dynamic\MusicDynamic.cs" />
     <Compile Include="Models\BiliBili\Dynamic\RepostDynamic.cs" />
     <Compile Include="Models\BiliBili\Dynamic\ShortVideoDynamic.cs" />
     <Compile Include="Models\BiliBili\Dynamic\VideoDynamic.cs" />
@@ -154,6 +156,7 @@
     <Compile Include="Models\Interface\IAlphaBackground.cs" />
     <Compile Include="Models\Others\Api.cs" />
     <Compile Include="Models\Others\ApiKeyInfo.cs" />
+    <Compile Include="Models\Others\KeyValueModel.cs" />
     <Compile Include="Models\Others\NotifyBase.cs" />
     <Compile Include="Models\Others\Secure.cs" />
     <Compile Include="Models\Others\TokenPackage.cs" />

@@ -1,9 +1,12 @@
 ﻿using BiliBili_Lib.Models.BiliBili.Anime;
+using BiliBili_Lib.Models.Others;
 using BiliBili_Lib.Service;
 using BiliBili_Lib.Tools;
 using BiliBili_UWP.Components.Widgets;
+using BiliBili_UWP.Dialogs;
 using BiliBili_UWP.Models.UI;
 using BiliBili_UWP.Models.UI.Interface;
+using Microsoft.QueryStringDotNET;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -107,6 +110,8 @@ namespace BiliBili_UWP.Pages.Main
             ScoreBlock.Text = "--";
             ScoreCountBlock.Text = "0人";
             RatingContainer.Visibility = Visibility.Visible;
+            Section1Container.Visibility = Visibility.Visible;
+            Section2Container.Visibility = Visibility.Visible;
 
             FollowButton.Style = UIHelper.GetStyle("PrimaryAsyncButtonStyle");
             FollowButton.Text = "追番";
@@ -127,7 +132,7 @@ namespace BiliBili_UWP.Pages.Main
             tip.HidePopup();
         }
 
-        private void InitDetail()
+        private async void InitDetail()
         {
             TitleBlock.Text = _detail.title;
             PlayCountBlock.Text = _detail.stat.play;
@@ -154,8 +159,16 @@ namespace BiliBili_UWP.Pages.Main
 
             Section1Title.Text = _detail.actor.title;
             Section1Content.Text = _detail.actor.info;
+            if (string.IsNullOrEmpty(_detail.actor.info))
+            {
+                Section1Container.Visibility = Visibility.Collapsed;
+            }
             Section2Title.Text = _detail.staff.title;
             Section2Content.Text = _detail.staff.info;
+            if (string.IsNullOrEmpty(_detail.staff.info))
+            {
+                Section2Container.Visibility = Visibility.Collapsed;
+            }
 
             _detail.episodes.ForEach(p => BangumiPartCollection.Add(p));
 
@@ -182,7 +195,7 @@ namespace BiliBili_UWP.Pages.Main
                 PartListView.ScrollIntoView(_currentPart);
             }
 
-            if (_currentPart == null)
+            if (_currentPart == null && _detail.episodes.Count>0)
             {
                 _currentPart = _detail.episodes.First();
                 PartListView.SelectedIndex = 0;
@@ -194,8 +207,20 @@ namespace BiliBili_UWP.Pages.Main
 
             if (_detail.user_status != null)
             {
+                string followString = "已追剧";
+                string unfollowString = "追剧";
+                if(_detail.type==1 || _detail.type==2|| _detail.type == 4)
+                {
+                    followString = "已追番";
+                    unfollowString = "追番";
+                }
                 FollowButton.Style = _detail.user_status.follow == 1 ? UIHelper.GetStyle("DefaultAsyncButtonStyle") : UIHelper.GetStyle("PrimaryAsyncButtonStyle");
-                FollowButton.Text = _detail.user_status.follow == 1 ? "已追番" : "追番";
+                FollowButton.Text = _detail.user_status.follow == 1 ? followString : unfollowString;
+            }
+
+            if (_detail.limit != null)
+            {
+                await new ConfirmDialog(_detail.limit.content).ShowAsync();
             }
         }
         public void RemovePlayer()
@@ -234,7 +259,7 @@ namespace BiliBili_UWP.Pages.Main
 
         private void CoinButton_Click(object sender, EventArgs e)
         {
-            if (CoinButton.IsCheck)
+            if (CoinButton.IsCheck || _currentPart==null)
                 return;
             if (App.BiliViewModel.CheckAccoutStatus())
             {
@@ -243,22 +268,28 @@ namespace BiliBili_UWP.Pages.Main
         }
         private void ReplyCountBlock_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            var param = new Dictionary<string, string>();
-            param.Add("oid", _currentPart.aid.ToString());
-            param.Add("type", "1");
-            App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Sub.ReplyPage), param);
+            if (_currentPart != null)
+            {
+                var param = new Dictionary<string, string>();
+                param.Add("oid", _currentPart.aid.ToString());
+                param.Add("type", "1");
+                App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Sub.ReplyPage), param);
+            }
         }
 
         private async void CheckCoin()
         {
-            bool isCoin = await _animeService.CheckUserCoinAsync(_currentPart.id);
-            CoinButton.IsCheck = isCoin;
+            if (_currentPart != null)
+            {
+                bool isCoin = await _animeService.CheckUserCoinAsync(_currentPart.id);
+                CoinButton.IsCheck = isCoin;
+            }
         }
 
         private async void PartListView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var item = e.ClickedItem as Episode;
-            if (item.cid != _currentPart.cid)
+            if (item.cid != _currentPart?.cid)
             {
                 _currentPart = item;
                 await VideoPlayer.Init(_detail, _currentPart);
@@ -267,7 +298,21 @@ namespace BiliBili_UWP.Pages.Main
         private void TagListView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var item = e.ClickedItem as BangumiStyle;
-            //App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Sub.Channel.TagDetailPage), item.tag_id);
+            string param = item.url.Split("?").Last().TrimStart('?');
+            QueryString args = QueryString.Parse(param);
+            var list = new List<KeyValueModel>();
+            if (args.Count() > 0)
+            {
+                foreach (var query in args)
+                {
+                    list.Add(new KeyValueModel(query.Name, query.Value));
+                }
+                list.Add(new KeyValueModel("season_type", _detail.type.ToString()));
+            }
+            if (list.Count > 0)
+            {
+                App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Sub.Anime.IndexPage), list);
+            }
         }
         private async void FollowButton_Click(object sender, RoutedEventArgs e)
         {
@@ -303,8 +348,11 @@ namespace BiliBili_UWP.Pages.Main
 
         private void VideoPlayer_SeparateButtonClick(object sender, RoutedEventArgs e)
         {
-            VideoPlayer.Close();
-            App.AppViewModel.PlayVideoSeparate(_detail, _currentPart);
+            if (_currentPart != null)
+            {
+                VideoPlayer.Close();
+                App.AppViewModel.PlayVideoSeparate(_detail, _currentPart);
+            }
         }
     }
 }

@@ -110,9 +110,7 @@
                       Style="{StaticResource NoScrollListView}"
                           ItemTemplate="{StaticResource ResultItemTemplate}"
                           ItemsSource="{x:Bind AnimeCollection}"
-                      IsItemClickEnabled="True"
-                      Margin="0,0,0,0"
-                      ItemClick="AnimeListView_ItemClick"
+                              SelectionMode="None"
                       />
                     <TextBlock Text="查找不到相关番剧" Style="{StaticResource TipTextStyle}" Visibility="Collapsed" Margin="10,10,0,0"
                            VerticalAlignment="Top" HorizontalAlignment="Left" Grid.Row="1" x:Name="AnimeHolderBlock" FontWeight="Bold"/>
@@ -162,9 +160,7 @@
                       Style="{StaticResource NoScrollListView}"
                           ItemTemplate="{StaticResource ResultItemTemplate}"
                           ItemsSource="{x:Bind MovieCollection}"
-                      IsItemClickEnabled="True"
-                      Margin="0,0,0,0"
-                      ItemClick="MovieListView_ItemClick"
+                      SelectionMode="None"
                       />
                     <TextBlock Text="查找不到相关影视" Style="{StaticResource TipTextStyle}" Visibility="Collapsed" Margin="10,10,0,0"
                            VerticalAlignment="Top" HorizontalAlignment="Left" Grid.Row="1" x:Name="MovieHolderBlock" FontWeight="Bold"/>

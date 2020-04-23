@@ -56,11 +56,17 @@ namespace BiliBili_Lib.Service
             var data = await BiliTool.GetTextFromWebAsync(url);
             if (!string.IsNullOrEmpty(data))
             {
-                var jobj = JObject.Parse(data);
-                string nextOffset = jobj["history_offset"].ToString();
-                var topics = JsonConvert.DeserializeObject<List<Topic>>(jobj["cards"].ToString());
-                topics.RemoveAll(p => p == null || p.card == null || p.card.Length < 10);
-                return new Tuple<string, List<Topic>>(nextOffset, topics);
+                try
+                {
+                    var jobj = JObject.Parse(data);
+                    string nextOffset = jobj["history_offset"].ToString();
+                    var topics = JsonConvert.DeserializeObject<List<Topic>>(jobj["cards"].ToString());
+                    topics.RemoveAll(p => p == null || p.card == null || p.card.Length < 10);
+                    return new Tuple<string, List<Topic>>(nextOffset, topics);
+                }
+                catch (Exception)
+                {
+                }
             }
             return null;
         }
@@ -81,11 +87,17 @@ namespace BiliBili_Lib.Service
             var data = await BiliTool.GetTextFromWebAsync(url);
             if (!string.IsNullOrEmpty(data))
             {
-                var jobj = JObject.Parse(data);
-                string nextOffset = jobj["next_offset"].ToString();
-                var topics = JsonConvert.DeserializeObject<List<Topic>>(jobj["cards"].ToString());
-                topics.RemoveAll(p => p == null || p.card == null || p.card.Length < 10);
-                return new Tuple<string, List<Topic>>(nextOffset, topics);
+                try
+                {
+                    var jobj = JObject.Parse(data);
+                    string nextOffset = jobj["next_offset"].ToString();
+                    var topics = JsonConvert.DeserializeObject<List<Topic>>(jobj["cards"].ToString());
+                    topics.RemoveAll(p => p == null || p.card == null || p.card.Length < 10);
+                    return new Tuple<string, List<Topic>>(nextOffset, topics);
+                }
+                catch (Exception)
+                {
+                }
             }
             return null;
         }

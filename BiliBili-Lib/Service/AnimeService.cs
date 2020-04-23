@@ -220,5 +220,55 @@ namespace BiliBili_Lib.Service
             var data = BiliTool.UrlContact("", param, true);
             await BiliTool.PostContentToWebAsync(Api.VIDEO_ADD_WATCH, data);
         }
+        /// <summary>
+        /// 获取动漫索引限制条件
+        /// </summary>
+        /// <param name="type">分区类型</param>
+        /// <returns></returns>
+        public async Task<IndexCondition> GetBangumiIndexConditionAsync(int type)
+        {
+            var param = new Dictionary<string, string>();
+            param.Add("season_type", type.ToString());
+            param.Add("type", "0");
+            string url = BiliTool.UrlContact(Api.ANIME_INDEX_CONDITION, param, true);
+            var result = await BiliTool.ConvertEntityFromWebAsync<IndexCondition>(url);
+            return result;
+        }
+        /// <summary>
+        /// 获取动漫索引筛查结果
+        /// </summary>
+        /// <param name="page">页码</param>
+        /// <param name="type">分区类型</param>
+        /// <param name="conditions">限制条件</param>
+        /// <returns></returns>
+        public async Task<Tuple<bool,List<AnimeIndexResult>>> GetBangumiIndexResultsAsync(int page,int type,List<KeyValueModel> conditions)
+        {
+            var param = new Dictionary<string, string>();
+            foreach (var item in conditions)
+            {
+                param.Add(item.Key, item.Value);
+            }
+            param.Add("type", "0");
+            param.Add("page", page.ToString());
+            param.Add("season_type", type.ToString());
+            param.Add("pagesize", "21");
+            string url = BiliTool.UrlContact(Api.ANIME_INDEX_RESULT, param, true);
+            var response = await BiliTool.GetTextFromWebAsync(url);
+            try
+            {
+                if (!string.IsNullOrEmpty(response))
+                {
+                    var jobj = JObject.Parse(response);
+                    bool hasNext = jobj["has_next"].ToString() == "1";
+                    var data = JsonConvert.DeserializeObject<List<AnimeIndexResult>>(jobj["list"].ToString());
+                    return new Tuple<bool, List<AnimeIndexResult>>(hasNext, data);
+                }
+            }
+            catch (Exception)
+            {
+            }
+           
+            return null;
+        }
     }
 }

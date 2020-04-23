@@ -104,19 +104,19 @@ namespace BiliBili_UWP.Components.Controls
         public static readonly DependencyProperty RightTopImageProperty =
             DependencyProperty.Register("RightTopImage", typeof(string), typeof(DefaultVideoCard), new PropertyMetadata(""));
 
-        public Flyout ExtraFlyout
+        public FlyoutBase ExtraFlyout
         {
-            get { return (Flyout)GetValue(ExtraFlyoutProperty); }
+            get { return (FlyoutBase)GetValue(ExtraFlyoutProperty); }
             set { SetValue(ExtraFlyoutProperty, value); }
         }
 
         // Using a DependencyProperty as the backing store for ExtraFlyout.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ExtraFlyoutProperty =
-            DependencyProperty.Register("ExtraFlyout", typeof(Flyout), typeof(DefaultVideoCard), new PropertyMetadata(null,new PropertyChangedCallback(ExtraFlyout_Changed)));
+            DependencyProperty.Register("ExtraFlyout", typeof(FlyoutBase), typeof(DefaultVideoCard), new PropertyMetadata(null,new PropertyChangedCallback(ExtraFlyout_Changed)));
 
         private static void ExtraFlyout_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (e.NewValue != null && e.NewValue is Flyout flyout)
+            if (e.NewValue != null && e.NewValue is FlyoutBase flyout)
             {
                 var instance = d as DefaultVideoCard;
                 instance.MoreButton.Visibility = Visibility.Visible;

@@ -371,17 +371,7 @@ namespace BiliBili_UWP.Pages.Sub
             App.AppViewModel.PlayVideo(Convert.ToInt32(video.param));
         }
 
-        private void AnimeListView_ItemClick(object sender, ItemClickEventArgs e)
-        {
-
-        }
-
         private void UserListView_ItemClick(object sender, ItemClickEventArgs e)
-        {
-
-        }
-
-        private void MovieListView_ItemClick(object sender, ItemClickEventArgs e)
         {
 
         }

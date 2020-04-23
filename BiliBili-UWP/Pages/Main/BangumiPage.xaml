@@ -121,11 +121,11 @@
                     <TextBlock Style="{StaticResource TitleTextStyle}" FontSize="15" Text="简介"/>
                     <TextBlock x:Name="DescriptionBlock" Style="{StaticResource IntroduceBlockStyle}" MaxWidth="250"/>
                 </StackPanel>
-                <StackPanel Grid.Column="2">
+                <StackPanel Grid.Column="2" x:Name="Section1Container">
                     <TextBlock Style="{StaticResource TitleTextStyle}" FontSize="15" x:Name="Section1Title"/>
                     <TextBlock x:Name="Section1Content" Style="{StaticResource IntroduceBlockStyle}"/>
                 </StackPanel>
-                <StackPanel Grid.Column="4">
+                <StackPanel Grid.Column="4" x:Name="Section2Container">
                     <TextBlock Style="{StaticResource TitleTextStyle}" FontSize="15" x:Name="Section2Title"/>
                     <TextBlock x:Name="Section2Content" Style="{StaticResource IntroduceBlockStyle}"/>
                 </StackPanel>

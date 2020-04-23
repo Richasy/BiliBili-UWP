@@ -1,4 +1,5 @@
 ﻿using BiliBili_Lib.Models.BiliBili;
+using BiliBili_UWP.Components.Widgets;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -69,9 +70,32 @@ namespace BiliBili_UWP.Components.Controls
             }
         }
 
-        private void FollowUserButton_Click(object sender, RoutedEventArgs e)
+        private async void FollowUserButton_Click(object sender, RoutedEventArgs e)
         {
+            var user = Data as SearchUser;
+            if (App.BiliViewModel.CheckAccoutStatus())
+            {
+                var btn = sender as AsyncButton;
+                btn.IsLoading = true;
+                bool result = await App.BiliViewModel._client.Account.FollowUser(user.mid);
+                if (result)
+                {
+                    user.attentions = 1;
+                    btn.Visibility = Visibility.Collapsed;
+                    new TipPopup("已关注用户").ShowMessage();
+                }
+                else
+                {
+                    new TipPopup("关注失败").ShowError();
+                }
+                btn.IsLoading = false;
+            }
+        }
 
+        private void WatchAnimeButton_Click(object sender, RoutedEventArgs e)
+        {
+            var d = Data as SearchAnime;
+            App.AppViewModel.PlayBangumi(d.season_id);
         }
     }
 }

@@ -231,6 +231,11 @@ namespace BiliBili_UWP.Components.Controls
 
         public async Task RefreshVideoSource(Episode part)
         {
+            if (part == null)
+            {
+                ErrorContainer.Visibility = Visibility.Visible;
+                return;
+            }
             LoadingBar.Visibility = Visibility.Visible;
             if (_playData == null || _bangumiPart.id != part.id)
             {

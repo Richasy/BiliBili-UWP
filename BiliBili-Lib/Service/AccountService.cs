@@ -381,5 +381,65 @@ namespace BiliBili_Lib.Service
             var response = await BiliTool.ConvertEntityFromWebAsync<List<FavoriteVideo>>(url);
             return response;
         }
+
+        /// <summary>
+        /// 获取稍后观看列表
+        /// </summary>
+        /// <param name="page">页码</param>
+        /// <returns></returns>
+        public async Task<List<VideoDetail>> GetViewLaterAsync(int page = 1)
+        {
+            string url = Api.ACCOUNT_VIEWLATER + $"?pn={page}&ps=40";
+            var data = await BiliTool.ConvertEntityFromWebAsync<List<VideoDetail>>(url,"data.list");
+            return data;
+        }
+
+        /// <summary>
+        /// 清空稍后观看列表
+        /// </summary>
+        /// <returns></returns>
+        public async Task<bool> ClearViewLaterAsync()
+        {
+            string url = BiliTool.UrlContact(Api.ACCOUNT_VIEWLATER_CLEAR, null, true);
+            string content = await BiliTool.PostContentToWebAsync(url, "");
+            return content != null;
+        }
+
+        /// <summary>
+        /// 添加稍后再看
+        /// </summary>
+        /// <param name="aid">视频ID</param>
+        /// <returns></returns>
+        public async Task<bool> AddViewLaterAsync(int aid)
+        {
+            var param = new Dictionary<string, string>();
+            param.Add("aid", aid.ToString());
+            var data = BiliTool.UrlContact("", param, true);
+            string content = await BiliTool.PostContentToWebAsync(Api.ACCOUNT_VIEWLATER_ADD, data);
+            if (!string.IsNullOrEmpty(content))
+            {
+                var jobj = JObject.Parse(content);
+                return jobj["code"].ToString() == "0";
+            }
+            return false;
+        }
+        /// <summary>
+        /// 移出稍后再看
+        /// </summary>
+        /// <param name="aids">视频ID组</param>
+        /// <returns></returns>
+        public async Task<bool> DeleteViewLaterAsync(params int[] aids)
+        {
+            var param = new Dictionary<string, string>();
+            param.Add("aid", string.Join(',',aids));
+            var data = BiliTool.UrlContact("", param, true);
+            string content = await BiliTool.PostContentToWebAsync(Api.ACCOUNT_VIEWLATER_DEL, data);
+            if (!string.IsNullOrEmpty(content))
+            {
+                var jobj = JObject.Parse(content);
+                return jobj["code"].ToString() == "0";
+            }
+            return false;
+        }
     }
 }

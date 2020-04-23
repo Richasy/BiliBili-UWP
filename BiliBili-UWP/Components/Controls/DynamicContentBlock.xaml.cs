@@ -71,6 +71,7 @@ namespace BiliBili_UWP.Components.Controls
                         var anime = repost.render_origin as AnimeDynamic;
                         repost.origin_user.info.face = anime.season.cover;
                         repost.origin_user.info.uname = anime.season.title;
+                        repost.render_origin_content = anime.new_desc;
                     }
                     else if (repost.item.orig_type == 4303)
                     {
@@ -79,6 +80,10 @@ namespace BiliBili_UWP.Components.Controls
                         repost.origin_user.info.face = da.up_info.avatar;
                         repost.origin_user.info.uname = da.up_info.name;
                     }
+                    else if (repost.item.orig_type == 4)
+                        repost.render_origin_content = (repost.render_origin as TextDynamic).content;
+                    else if(repost.item.orig_type==2)
+                        repost.render_origin_content = (repost.render_origin as ImageDynamic).description;
                     instance.MainContentControl.ContentTemplate = instance.RepostTemplate;
                 }
                 else if(data is AnimeDynamic)
@@ -106,6 +111,11 @@ namespace BiliBili_UWP.Components.Controls
                     instance._cardType = "course";
                     instance.MainContentControl.ContentTemplate = instance.CourseTemplate;
                 }
+                else if(data is MusicDynamic)
+                {
+                    instance._cardType = "music";
+                    instance.MainContentControl.ContentTemplate = instance.MusicTemplate;
+                }
             }
         }
 
@@ -117,6 +127,11 @@ namespace BiliBili_UWP.Components.Controls
             {
                 var item = Data as WebDynamic;
                 App.AppViewModel.ShowWebPopup(item.sketch.title, item.sketch.target_url);
+            }
+            else if (_cardType == "anime")
+            {
+                var item = Data as AnimeDynamic;
+                App.AppViewModel.PlayBangumi(item.episode_id, sender, true);
             }
         }
 
