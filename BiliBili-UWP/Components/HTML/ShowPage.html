@@ -1,0 +1,119 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>RSS Stalker</title>
+    <meta http-equiv="X-UA-Compatible" content="IE =edge">
+    <meta name="referrer" content="no-referrer" />
+    <meta name="viewport" content="width =device-width,initial-scale =1.0, maximum-scale=1.0, user-scalable=0; ">
+    <link href="https://cdn.bootcss.com/highlight.js/9.15.6/styles/atom-one-$theme$.min.css" rel="stylesheet">
+    <script>
+        hljs.initHighlightingOnLoad();
+
+    </script>
+    <script>
+        var getHtml = function () {
+            return document.body.innerHTML;
+        }
+    </script>
+    <script>
+        var setMark = function () {
+            window.getSelection().getRangeAt(0).surroundContents(document.createElement("mark"));
+        }
+        var setFontFamily = function (fontfamily) {
+            document.body.style.fontFamily = fontfamily;
+        }
+        var setFontSize = function (fontSize) {
+            document.getElementsByTagName('html')[0].style.fontSize = fontSize + 'px';
+        }
+    </script>
+    <script>
+        // 文本选中事件封装
+        var $sinaMiniBlogShare = function (eleContainer) {
+            var eleTitle = document.getElementsByTagName("title")[0];
+            eleContainer = eleContainer || document;
+            var funGetSelectTxt = function () {
+                var txt = "";
+                if (document.selection) {
+                    txt = document.selection.createRange().text;
+                } else {
+                    txt = document.getSelection();
+                }
+                return txt.toString();
+            };
+            eleContainer.onmouseup = function (e) {
+                e = e || window.event;
+                var txt = funGetSelectTxt(), sh = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+                if (txt) {
+                    var data = {
+                        Key: 'SelectText',
+                        Value: txt
+                    };
+                    window.external.notify(JSON.stringify(data));
+                }
+            };
+
+        };
+    </script>
+    <style>
+        $style$
+    </style>
+</head>
+<body $noscroll$>
+    <progress id="content_progress" value="0"></progress>
+    $body$
+
+    <script>
+        $sinaMiniBlogShare();
+        document.addEventListener('DOMContentLoaded', function () {
+            $return$
+            var winHeight = window.innerHeight,
+                docHeight = document.documentElement.scrollHeight,
+                progressBar = document.querySelector('#content_progress');
+            progressBar.max = docHeight - winHeight;
+            progressBar.value = window.scrollY;
+            document.addEventListener('scroll', function () {
+                progressBar.max = document.documentElement.scrollHeight - window.innerHeight;
+                progressBar.value = window.scrollY;
+            });
+        });
+        var links = document.getElementsByTagName('a');
+        var imgs = document.getElementsByTagName('img');
+        // 拦截所有导航事件
+        if (links.length > 0) {
+            for (var i = 0; i < links.length; i++) {
+                links[i].addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    let target = e.currentTarget;
+                    let link = target.getAttribute('href');
+                    let data = {
+                        Key: 'LinkClick',
+                        Value: link
+                    }
+                    window.external.notify(JSON.stringify(data));
+                })
+            }
+        }
+        // 给所有图片附加点击事件
+        if (imgs.length > 0) {
+            for (var i = 0; i < imgs.length; i++) {
+                imgs[i].addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    let target = e.currentTarget;
+                    let src = target.getAttribute('src');
+                    var obj = {
+                        Key: 'ImageClick',
+                        Value: src
+                    };
+                    window.external.notify(JSON.stringify(obj));
+                })
+            }
+        }
+    </script>
+
+</body>
+
+</html>

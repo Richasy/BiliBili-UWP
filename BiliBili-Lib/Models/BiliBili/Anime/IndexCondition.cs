@@ -24,11 +24,33 @@ namespace BiliBili_Lib.Models.BiliBili.Anime
             get => _selectIndex;
             set => Set(ref _selectIndex, value);
         }
+
+        public override bool Equals(object obj)
+        {
+            return obj is ConditionContainer container &&
+                   field == container.field;
+        }
+
+        public override int GetHashCode()
+        {
+            return -306121345 + EqualityComparer<string>.Default.GetHashCode(field);
+        }
     }
     public class ConditionItem
     {
         public string keyword { get; set; }
         public string name { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            return obj is ConditionItem item &&
+                   keyword == item.keyword;
+        }
+
+        public override int GetHashCode()
+        {
+            return -1834187100 + EqualityComparer<string>.Default.GetHashCode(keyword);
+        }
     }
 
     public class AnimeIndexResult

@@ -19,7 +19,7 @@
                    Margin="0,0,8,0" Visibility="Collapsed" x:Name="IconBlock"/>
         <ProgressRing x:Name="LoadingRing" Foreground="{x:Bind Foreground}" Width="{x:Bind FontSize,Mode=OneWay}" Height="{x:Bind FontSize,Mode=OneWay}"
                       VerticalAlignment="Center" MinWidth="{x:Bind FontSize,Mode=OneWay}" MinHeight="{x:Bind FontSize,Mode=OneWay}" Margin="0,0,6,0" Visibility="Collapsed" IsActive="{x:Bind IsLoading,Mode=OneWay}"/>
-        <TextBlock Grid.Column="1" Style="{StaticResource BodyTextStyle}" x:Name="NameTextBlock" Foreground="{x:Bind Foreground}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"
+        <TextBlock Grid.Column="1" Style="{StaticResource BodyTextStyle}" x:Name="NameTextBlock" Foreground="{x:Bind Foreground,Mode=OneWay}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"
                    VerticalAlignment="Center" Text="{x:Bind Text,Mode=OneWay}" FontSize="{x:Bind FontSize,Mode=OneWay}"/>
     </Grid>
 </Button>

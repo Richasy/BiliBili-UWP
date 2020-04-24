@@ -202,7 +202,10 @@ namespace BiliBili_UWP.Pages.Sub.Channel
         private void VideoGridView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var data = e.ClickedItem as VideoChannel;
-            App.AppViewModel.PlayVideo(Convert.ToInt32(data.param));
+            if (data.@goto == "av")
+                App.AppViewModel.PlayVideo(Convert.ToInt32(data.param));
+            else if (data.@goto == "bangumi")
+                App.AppViewModel.PlayBangumi(Convert.ToInt32(data.param), null, true);
         }
 
         private async void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)

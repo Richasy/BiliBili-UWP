@@ -270,5 +270,20 @@ namespace BiliBili_Lib.Service
            
             return null;
         }
+
+        /// <summary>
+        /// 获取动漫时间线
+        /// </summary>
+        /// <param name="type">区块类型，番剧：2，国创：3</param>
+        /// <returns></returns>
+        public async Task<List<Timeline>> GetTimelineAsync(int type)
+        {
+            var param = new Dictionary<string, string>();
+            param.Add("type", type.ToString());
+            param.Add("filter_type", "0");
+            string url = BiliTool.UrlContact(Api.ANIME_TIMELINE, param, true);
+            var data = await BiliTool.ConvertEntityFromWebAsync<List<Timeline>>(url, "result.data");
+            return data;
+        }
     }
 }

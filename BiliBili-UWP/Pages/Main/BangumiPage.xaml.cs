@@ -181,7 +181,7 @@ namespace BiliBili_UWP.Pages.Main
                     {
                         _currentPart = part;
                         PartListView.SelectedIndex = i;
-                        PartListView.ScrollIntoView(part);
+                        PartListView.ScrollIntoView(part,ScrollIntoViewAlignment.Leading);
                         break;
                     }
                 }
@@ -192,7 +192,7 @@ namespace BiliBili_UWP.Pages.Main
             {
                 _currentPart = _detail.episodes.Where(p => p.id == _detail.user_status.progress.last_ep_id).FirstOrDefault();
                 PartListView.SelectedIndex = Convert.ToInt32(_detail.user_status.progress.last_ep_index) - 1;
-                PartListView.ScrollIntoView(_currentPart);
+                PartListView.ScrollIntoView(_currentPart,ScrollIntoViewAlignment.Leading);
             }
 
             if (_currentPart == null && _detail.episodes.Count>0)

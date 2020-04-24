@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -23,6 +24,7 @@ namespace BiliBili_UWP.Components.Controls
     {
         public Popup _popup { get; set; }
         public Guid _popupId { get; set; }
+        private string _url;
         public WebPopup()
         {
             this.InitializeComponent();
@@ -30,6 +32,7 @@ namespace BiliBili_UWP.Components.Controls
         }
         public void Init(string title,string url)
         {
+            _url = url;
             TitleBlock.Text = title;
             PopWebView.Navigate(new Uri(url));
         }
@@ -57,6 +60,11 @@ namespace BiliBili_UWP.Components.Controls
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
             HidePopup();
+        }
+
+        private async void NewWebButton_Click(object sender, RoutedEventArgs e)
+        {
+            await Launcher.LaunchUriAsync(new Uri(_url));
         }
     }
 }

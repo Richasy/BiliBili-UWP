@@ -187,6 +187,14 @@ namespace BiliBili_UWP.Components.Controls
                     instance.CommentBlock.Text = AppTool.GetNumberAbbreviation(info.replyCnt);
                     instance.MainDisplay.Data = info;
                 }
+                else if (data.desc.type == 4200)
+                {
+                    //音频
+                    var info = JsonConvert.DeserializeObject<LiveDynamic>(data.card);
+                    instance.DescriptionBlock.Visibility = Visibility.Collapsed;
+                    instance.CommentBlock.Text = "";
+                    instance.MainDisplay.Data = info;
+                }
                 else
                 {
                     string yo = "";
@@ -267,6 +275,11 @@ namespace BiliBili_UWP.Components.Controls
         {
             var data = (sender as FrameworkElement).DataContext as TopicDetail;
             App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Pages.Sub.Channel.TagDetailPage), data.topic_id);
+        }
+
+        private void Account_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Pages.Sub.Account.DetailPage), Data.desc.uid);
         }
     }
 }

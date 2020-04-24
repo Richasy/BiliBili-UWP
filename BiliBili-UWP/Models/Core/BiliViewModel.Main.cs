@@ -105,7 +105,10 @@ namespace BiliBili_UWP.Models.Core
                 return JsonConvert.DeserializeObject<CourseDynamic>(content);
             else if (type == 256)
                 return JsonConvert.DeserializeObject<MusicDynamic>(content);
+            else if (type == 4200)
+                return JsonConvert.DeserializeObject<LiveDynamic>(content);
             return null;
+            //4200
         }
 
         /// <summary>

@@ -13,7 +13,11 @@ namespace BiliBili_UWP.Models.UI.Converter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            bool isSelect = (bool)value;
+            bool isSelect = false;
+            if(value is int num)
+                isSelect = num == 1;
+            else
+                isSelect = (bool)value;
             if(parameter==null)
                 return isSelect ? UIHelper.GetThemeBrush(Enums.ColorType.SecondaryColor) : UIHelper.GetThemeBrush(Enums.ColorType.CardBackground);
             else if(parameter.ToString()=="Foreground")

@@ -47,10 +47,12 @@ namespace BiliBili_UWP.Components.Account
                     {
                         PendantImage.Visibility = Visibility.Visible;
                         PendantImage.Source = new BitmapImage(new Uri(me.pendant.image));
+                        UserNameBlock.Margin = new Thickness(0);
                     }
                     else
                     {
-                        PendantImage.Visibility = Visibility.Visible;
+                        PendantImage.Visibility = Visibility.Collapsed;
+                        UserNameBlock.Margin = new Thickness(0, 20, 0, 0);
                     }
                 }
             }
@@ -106,6 +108,12 @@ namespace BiliBili_UWP.Components.Account
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
             App.BiliViewModel.ShowLoginPopup();
+        }
+
+        private void Account_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var me = App.BiliViewModel._client.Account.Me;
+            App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Pages.Sub.Account.DetailPage), me.mid);
         }
     }
 }

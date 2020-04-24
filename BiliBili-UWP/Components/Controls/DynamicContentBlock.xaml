@@ -105,7 +105,7 @@
                 <TextBlock IsTextSelectionEnabled="True" LineHeight="18" Style="{StaticResource BodyWrapTextStyle}" FontSize="12" Margin="0,10,0,5"
                            Text="{x:Bind item.content}" Visibility="{x:Bind item.content,Converter={StaticResource StringVisibilityConverter}}"/>
                 <StackPanel Background="{ThemeResource CardBackgroundOver}" Padding="10" CornerRadius="4">
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10" Tapped="Account_Tapped">
                         <controls:ImageEx Source="{x:Bind origin_user.info.face,Converter={StaticResource CoverResolutionConverter},ConverterParameter=30}"
                                           Width="25" Height="25" CornerRadius="12.5"/>
                         <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="10" VerticalAlignment="Center"
@@ -140,7 +140,7 @@
                 </Grid.ColumnDefinitions>
                 <controls:ImageEx Width="60" Height="60" CornerRadius="4" Source="{x:Bind sketch.cover_url,Converter={StaticResource CoverResolutionConverter},ConverterParameter=100}"
                                   PlaceholderStretch="Uniform" PlaceholderSource="ms-appx:///Assets/img_holder_rect.png" Stretch="UniformToFill" IsCacheEnabled="True"/>
-                <StackPanel VerticalAlignment="Center" Grid.Column="1" Margin="15,0,0,0">
+                <StackPanel VerticalAlignment="Center" Grid.Column="1" Margin="15,0,5,0">
                     <TextBlock Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource NormalTextColor}" Text="{x:Bind sketch.title}"/>
                     <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="10" Text="{x:Bind sketch.desc_text}" Margin="0,5,0,0"/>
                 </StackPanel>
@@ -155,7 +155,7 @@
                 </Grid.ColumnDefinitions>
                 <controls:ImageEx Width="60" Height="60" CornerRadius="4" Source="{x:Bind cover,Converter={StaticResource CoverResolutionConverter},ConverterParameter=100}"
                                   PlaceholderStretch="Uniform" PlaceholderSource="ms-appx:///Assets/img_holder_rect.png" Stretch="UniformToFill" IsCacheEnabled="True"/>
-                <StackPanel VerticalAlignment="Center" Grid.Column="1" Margin="15,0,0,0">
+                <StackPanel VerticalAlignment="Center" Grid.Column="1" Margin="15,0,5,0">
                     <TextBlock Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource NormalTextColor}" Text="{x:Bind title}"/>
                     <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="10" Text="{x:Bind typeInfo}" Margin="0,5,0,0"/>
                 </StackPanel>
@@ -173,7 +173,7 @@
                         Visibility="{x:Bind badge.text,Converter={StaticResource StringVisibilityConverter}}" Margin="0,10,10,0">
                     <TextBlock Text="{x:Bind badge.text}" Style="{StaticResource SmallTipTextStyle}" FontSize="10" Foreground="{ThemeResource PrimaryColor}"/>
                 </Border>
-                <Grid Grid.Row="1" Margin="0,5,0,0">
+                <Grid Grid.Row="1" Margin="0,5,5,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
@@ -182,6 +182,35 @@
                     <TextBlock Text="{x:Bind subtitle}" Visibility="{x:Bind subtitle,Converter={StaticResource StringVisibilityConverter}}" Margin="0,5,0,0" Grid.Row="1"
                                ToolTipService.ToolTip="{x:Bind subtitle}" TextWrapping="Wrap" Style="{StaticResource SmallTipTextStyle}" FontSize="10"/>
                 </Grid>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:DataType="bilibili:LiveDynamic" x:Name="LiveTemplate">
+            <Grid BorderBrush="{ThemeResource LineColor}" BorderThickness="1" CornerRadius="4"
+                  Background="{ThemeResource CardBackground}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <controls:ImageEx Source="{x:Bind cover,Converter={StaticResource CoverResolutionConverter},ConverterParameter=300}" CornerRadius="4" DecodePixelWidth="300" MaxHeight="200"
+                                  Stretch="UniformToFill" PlaceholderSource="ms-appx:///Assets/img_holder_rect.png" x:Name="VideoCover" IsCacheEnabled="True"/>
+                <Grid Grid.Row="1" Margin="0,5,5,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="{x:Bind title}" ToolTipService.ToolTip="{x:Bind title}" TextWrapping="Wrap" Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource NormalTextColor}"/>
+                    <TextBlock Margin="0,5,0,0" Grid.Row="1" TextWrapping="Wrap" Style="{StaticResource SmallTipTextStyle}" FontSize="10">
+                        <Run Text="{x:Bind area_v2_name}"/>
+                        <Run Text=" · "/>
+                        <Run Text="{x:Bind online,Converter={StaticResource NumberAbbrConverter}}"/>
+                        <Run Text="人气"/>
+                    </TextBlock>
+                </Grid>
+                <Border Background="{ThemeResource PrimaryColorOpacity}" CornerRadius="2" Padding="5,3" Margin="10,0" VerticalAlignment="Top"
+                        Visibility="{x:Bind live_status,Converter={StaticResource IntVisibilityConverter}}" Grid.Column="2">
+                    <TextBlock Text="直播中" Foreground="{ThemeResource PrimaryColor}" Style="{StaticResource SmallTipTextStyle}" FontSize="10"/>
+                </Border>
             </Grid>
         </DataTemplate>
     </UserControl.Resources>

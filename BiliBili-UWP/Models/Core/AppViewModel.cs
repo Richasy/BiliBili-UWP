@@ -39,6 +39,7 @@ namespace BiliBili_UWP.Models.Core
         public VideoPlayer CurrentVideoPlayer;
         public PlayerType CurrentPlayerType;
         public WebPopup _webPopup;
+        public DocumentPopup _documentPopup;
 
         public List<Tuple<Guid, Action<Size>>> WindowsSizeChangedNotify { get; set; } = new List<Tuple<Guid, Action<Size>>>();
         public AppViewModel()
@@ -255,6 +256,18 @@ namespace BiliBili_UWP.Models.Core
                 _webPopup = new WebPopup();
             _webPopup.Init(title, url);
             _webPopup.ShowPopup();
+        }
+        /// <summary>
+        /// 显示专栏文章弹出层
+        /// </summary>
+        /// <param name="title">标题</param>
+        /// <param name="url">地址</param>
+        public void ShowDoucmentPopup(string title, int id)
+        {
+            if (_documentPopup == null)
+                _documentPopup = new DocumentPopup();
+            _documentPopup.Init(title, id);
+            _documentPopup.ShowPopup();
         }
     }
 }

@@ -65,6 +65,11 @@ namespace BiliBili_UWP.Components.Controls
                 else if(data is SearchDocument)
                 {
                     instance._cardType = "document";
+                    var doc = data as SearchDocument;
+                    if(string.IsNullOrEmpty(doc.cover) && doc.image_urls.Count > 0)
+                    {
+                        doc.cover = doc.image_urls.First();
+                    }
                     instance.MainContentControl.ContentTemplate = instance.DocumentTemplate;
                 }
             }

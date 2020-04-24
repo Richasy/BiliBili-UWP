@@ -128,6 +128,39 @@ namespace BiliBili_Lib.Service
             }
             return false;
         }
-
+        /// <summary>
+        /// 获取用户空间历史动态
+        /// </summary>
+        /// <param name="uid">要查看的用户ID</param>
+        /// <param name="page">页码</param>
+        /// <param name="offset_id">偏移值，初次不需要，每次请求会返回下一次请求的偏移值</param>
+        /// <returns>Item1:下次偏移值;Item2:动态列表</returns>
+        public async Task<Tuple<string, List<Topic>>> GetUserSpaceDynamicAsync(int uid,int page=1,string offset_id="0")
+        {
+            var param = new Dictionary<string, string>();
+            param.Add("host_uid", uid.ToString());
+            param.Add("qn", "32");
+            if(!string.IsNullOrEmpty(BiliTool.mid))
+                param.Add("visitor_uid", BiliTool.mid);
+            param.Add("offset_dynamic_id", offset_id);
+            param.Add("page", page.ToString());
+            string url = BiliTool.UrlContact(Api.DYNAMIC_USER_HISTORY, param, true);
+            var data = await BiliTool.GetTextFromWebAsync(url);
+            if (!string.IsNullOrEmpty(data))
+            {
+                try
+                {
+                    var jobj = JObject.Parse(data);
+                    string nextOffset = jobj["next_offset"].ToString();
+                    var topics = JsonConvert.DeserializeObject<List<Topic>>(jobj["cards"].ToString());
+                    topics.RemoveAll(p => p == null || p.card == null || p.card.Length < 10);
+                    return new Tuple<string, List<Topic>>(nextOffset, topics);
+                }
+                catch (Exception)
+                {
+                }
+            }
+            return null;
+        }
     }
 }

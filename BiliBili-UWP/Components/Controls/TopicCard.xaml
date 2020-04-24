@@ -34,7 +34,7 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <StackPanel Orientation="Horizontal">
+            <StackPanel Orientation="Horizontal" Tapped="Account_Tapped">
                 <PersonPicture Width="30" Height="30" Style="{StaticResource BasicPersonPictureStyle}" x:Name="UserAvatar"
                            VerticalAlignment="Center"/>
                 <StackPanel VerticalAlignment="Center" Margin="10,0,0,0">

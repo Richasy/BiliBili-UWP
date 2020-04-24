@@ -164,6 +164,14 @@ namespace BiliBili_Lib.Models.Others
         /// 收藏夹视频详情
         /// </summary>
         public const string ACCOUNT_FAVORITE_INFO = _apiBase + "/medialist/gateway/base/resource/infos";
+        /// <summary>
+        /// 用户空间
+        /// </summary>
+        public const string ACCOUNT_USER_SPACE = _appBase + "/x/v2/space";
+        /// <summary>
+        /// 用户投稿视频
+        /// </summary>
+        public const string ACCOUNT_USER_ARCHIVE = _appBase + "/x/v2/space/archive";
         #endregion
 
         #region 频道 Channel
@@ -320,6 +328,10 @@ namespace BiliBili_Lib.Models.Others
         /// 获取历史动态
         /// </summary>
         public const string DYNAMIC_HISTORY = _vcBase + "/dynamic_svr/v1/dynamic_svr/dynamic_history";
+        /// <summary>
+        /// 用户空间动态
+        /// </summary>
+        public const string DYNAMIC_USER_HISTORY = _vcBase + "/dynamic_svr/v1/dynamic_svr/space_history";
         #endregion
 
         #region 动漫 Anime
@@ -364,6 +376,10 @@ namespace BiliBili_Lib.Models.Others
         /// 番剧索引搜索结果
         /// </summary>
         public const string ANIME_INDEX_RESULT = _apiBase + "/pgc/season/index/result";
+        /// <summary>
+        /// 动漫时间表
+        /// </summary>
+        public const string ANIME_TIMELINE = _apiBase + "/pgc/app/timeline";
         #endregion
 
         #region 回复 Reply

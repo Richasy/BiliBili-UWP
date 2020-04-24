@@ -157,7 +157,7 @@
                     <ColumnDefinition Width="1*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <StackPanel Orientation="Horizontal" x:Name="SingleUserContainer">
+                <StackPanel Orientation="Horizontal" x:Name="SingleUserContainer" Tapped="SingleUserContainer_Tapped">
                     <PersonPicture x:Name="UPAvatar" Width="35" Height="35" VerticalAlignment="Center" Style="{StaticResource BasicPersonPictureStyle}"/>
                     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15,0,0,0">
                         <TextBlock x:Name="UPNameBlock" Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource ImportantTextColor}"/>

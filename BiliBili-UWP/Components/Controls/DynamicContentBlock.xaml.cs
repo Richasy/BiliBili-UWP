@@ -116,6 +116,11 @@ namespace BiliBili_UWP.Components.Controls
                     instance._cardType = "music";
                     instance.MainContentControl.ContentTemplate = instance.MusicTemplate;
                 }
+                else if(data is LiveDynamic)
+                {
+                    instance._cardType = "live";
+                    instance.MainContentControl.ContentTemplate = instance.LiveTemplate;
+                }
             }
         }
 
@@ -133,6 +138,11 @@ namespace BiliBili_UWP.Components.Controls
                 var item = Data as AnimeDynamic;
                 App.AppViewModel.PlayBangumi(item.episode_id, sender, true);
             }
+            else if (_cardType == "document")
+            {
+                var item = Data as DocumentDynamic;
+                App.AppViewModel.ShowDoucmentPopup(item.title, item.id);
+            }
         }
 
         private async void Image_Tapped(object sender, TappedRoutedEventArgs e)
@@ -140,6 +150,13 @@ namespace BiliBili_UWP.Components.Controls
             var images = (Data as ImageDynamic).pictures.Select(p => p.img_src).ToList();
             var dialog = new ShowImageDialog(images);
             await dialog.ShowAsync();
+        }
+
+        private void Account_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            e.Handled = true;
+            var data = Data as RepostDynamic;
+            App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Pages.Sub.Account.DetailPage), data.origin_user.mid);
         }
     }
 }

@@ -19,7 +19,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <Grid HorizontalAlignment="Center">
+            <Grid HorizontalAlignment="Center" Tapped="Account_Tapped">
                 <PersonPicture x:Name="UserAvatar" Style="{StaticResource BasicPersonPictureStyle}" Width="55"/>
                 <controls:ImageEx Width="100" Stretch="Uniform" DecodePixelWidth="100" x:Name="PendantImage"/>
             </Grid>

@@ -37,11 +37,11 @@ namespace BiliBili_UWP.Components.Controls
 
         // Using a DependencyProperty as the backing store for Data.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty DataProperty =
-            DependencyProperty.Register("Data", typeof(Reply), typeof(ReplyMainBlock), new PropertyMetadata(null,new PropertyChangedCallback(Data_Changed)));
+            DependencyProperty.Register("Data", typeof(Reply), typeof(ReplyMainBlock), new PropertyMetadata(null, new PropertyChangedCallback(Data_Changed)));
 
         private static void Data_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if(e.NewValue!=null && e.NewValue is Reply data)
+            if (e.NewValue != null && e.NewValue is Reply data)
             {
                 var instance = d as ReplyMainBlock;
                 instance.UserAvatar.Source = new BitmapImage(new Uri(data.member.avatar + "@50w.jpg"));
@@ -51,7 +51,7 @@ namespace BiliBili_UWP.Components.Controls
                 instance.ContentBlock.EmoteSource = data.content.emote;
                 instance.ContentBlock.Text = data.content.message;
                 instance.LikeBlock.Text = AppTool.GetNumberAbbreviation(data.like);
-                instance.LikeIcon.Foreground = data.up_action.like ? UIHelper.GetThemeBrush(Models.Enums.ColorType.PrimaryColor) : UIHelper.GetThemeBrush(Models.Enums.ColorType.TipTextColor);
+                instance.LikeIcon.Foreground = data.action==0 ? UIHelper.GetThemeBrush(Models.Enums.ColorType.PrimaryColor) : UIHelper.GetThemeBrush(Models.Enums.ColorType.TipTextColor);
                 if (data.rcount > 0)
                 {
                     instance.SubReplyContainer.Visibility = Visibility.Visible;
@@ -66,11 +66,11 @@ namespace BiliBili_UWP.Components.Controls
 
         private async void LikeButton_Click(object sender, RoutedEventArgs e)
         {
-            bool isLike = !Data.up_action.like;
+            bool isLike = !(Data.action == 0);
             bool result = await App.BiliViewModel._client.LikeReplyAsync(isLike, Data.oid.ToString(), Data.rpid.ToString(), Data.type.ToString());
             if (result)
             {
-                Data.up_action.like = !Data.up_action.like;
+                Data.action = Data.action == 0 ? 1 : 0;
                 LikeIcon.Foreground = Data.up_action.like ? UIHelper.GetThemeBrush(Models.Enums.ColorType.PrimaryColor) : UIHelper.GetThemeBrush(Models.Enums.ColorType.TipTextColor);
                 if (isLike)
                     Data.like += 1;

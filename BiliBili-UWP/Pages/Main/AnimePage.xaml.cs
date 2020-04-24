@@ -120,7 +120,7 @@ namespace BiliBili_UWP.Pages.Main
 
         private void TimelineButton_Click(object sender, RoutedEventArgs e)
         {
-
+            App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Sub.Anime.TimelinePage), isJP ? 2 : 3);
         }
 
         private void BannerListView_ItemClick(object sender, ItemClickEventArgs e)

@@ -123,11 +123,15 @@
     <Compile Include="Enums\LoginResultType.cs" />
     <Compile Include="Enums\Settings.cs" />
     <Compile Include="Models\BiliBili\Account.cs" />
+    <Compile Include="Models\BiliBili\Account\ArchiveVideo.cs" />
+    <Compile Include="Models\BiliBili\Account\User.cs" />
     <Compile Include="Models\BiliBili\Anime.cs" />
     <Compile Include="Models\BiliBili\Anime\Bangumi.cs" />
     <Compile Include="Models\BiliBili\Anime\IndexCondition.cs" />
+    <Compile Include="Models\BiliBili\Anime\TimeLine.cs" />
     <Compile Include="Models\BiliBili\Dynamic\AnimeDynamic.cs" />
     <Compile Include="Models\BiliBili\Dynamic\CourseDynamic.cs" />
+    <Compile Include="Models\BiliBili\Dynamic\LiveDynamic.cs" />
     <Compile Include="Models\BiliBili\Dynamic\MusicDynamic.cs" />
     <Compile Include="Models\BiliBili\Dynamic\RepostDynamic.cs" />
     <Compile Include="Models\BiliBili\Dynamic\ShortVideoDynamic.cs" />

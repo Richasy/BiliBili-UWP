@@ -355,7 +355,8 @@ namespace BiliBili_UWP.Pages.Main
 
         private void StaffListView_ItemClick(object sender, ItemClickEventArgs e)
         {
-
+            var item = e.ClickedItem as Staff;
+            App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Sub.Account.DetailPage), item.mid);
         }
 
         private async void FollowButton_Click(object sender, RoutedEventArgs e)
@@ -394,6 +395,12 @@ namespace BiliBili_UWP.Pages.Main
         {
             VideoPlayer.Close();
             App.AppViewModel.PlayVideoSeparate(_detail, _currentPartId);
+        }
+
+        private void SingleUserContainer_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var accId = _detail.owner.mid;
+            App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Pages.Sub.Account.DetailPage), accId);
         }
     }
 }

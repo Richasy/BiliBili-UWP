@@ -14,4 +14,5 @@
     <converter:DurationConverter x:Key="DurationConverter"/>
     <converter:IntBoolConverter x:Key="IntBoolConverter"/>
     <converter:SelectedColorConverter x:Key="SelectedColorConverter"/>
+    <converter:RelateTimeConverter x:Key="RelateTimeConverter"/>
 </ResourceDictionary>

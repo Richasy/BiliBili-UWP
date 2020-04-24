@@ -33,7 +33,7 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <StackPanel>
-                <TextBlock Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource ImportantTextColor}" FontWeight="Bold"
+                <TextBlock Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource ImportantTextColor}"
                                                TextWrapping="Wrap" MaxLines="2" Text="{x:Bind Title,Mode=OneWay}"/>
                 <Border Background="{ThemeResource PrimaryColorOpacity}" Padding="5,2" CornerRadius="3"
                             Visibility="{x:Bind Tip,Mode=OneWay,Converter={StaticResource StringVisibilityConverter}}" HorizontalAlignment="Left" Margin="0,5,0,0">

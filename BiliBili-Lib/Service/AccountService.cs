@@ -1,6 +1,7 @@
 ﻿using BiliBili_Lib.Enums;
 using BiliBili_Lib.Models;
 using BiliBili_Lib.Models.BiliBili;
+using BiliBili_Lib.Models.BiliBili.Account;
 using BiliBili_Lib.Models.BiliBili.Favorites;
 using BiliBili_Lib.Models.BiliBili.Video;
 using BiliBili_Lib.Models.Others;
@@ -440,6 +441,36 @@ namespace BiliBili_Lib.Service
                 return jobj["code"].ToString() == "0";
             }
             return false;
+        }
+
+        /// <summary>
+        /// 获取用户空间信息（经过删减）
+        /// </summary>
+        /// <param name="uid">用户ID</param>
+        /// <returns></returns>
+        public async Task<UserResponse> GetUserSpaceAsync(int uid)
+        {
+            var param = new Dictionary<string, string>();
+            param.Add("vmid", uid.ToString());
+            string url = BiliTool.UrlContact(Api.ACCOUNT_USER_SPACE, param, true);
+            var data = await BiliTool.ConvertEntityFromWebAsync<UserResponse>(url);
+            return data;
+        }
+
+        /// <summary>
+        /// 获取用户的投稿
+        /// </summary>
+        /// <param name="uid">用户ID</param>
+        /// <param name="page">页码</param>
+        /// <returns></returns>
+        public async Task<ArchiveResponse> GetUserArchiveAsync(int uid, int page)
+        {
+            var param = new Dictionary<string, string>();
+            param.Add("vmid", uid.ToString());
+            param.Add("pn", page.ToString());
+            string url = BiliTool.UrlContact(Api.ACCOUNT_USER_ARCHIVE, param, true);
+            var data = await BiliTool.ConvertEntityFromWebAsync<ArchiveResponse>(url);
+            return data;
         }
     }
 }

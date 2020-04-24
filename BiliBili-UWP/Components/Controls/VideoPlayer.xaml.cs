@@ -190,6 +190,7 @@ namespace BiliBili_UWP.Components.Controls
                     {
                         QualityCollection.Add(new Tuple<int, string>(_playData.accept_quality[i], _playData.accept_description[i]));
                     }
+                    VideoMTC.QualitySelectIndex = -1;
                     _currentQn = QualityCollection.First().Item1;
                     VideoMTC.QualitySelectIndex = 0;
                 }

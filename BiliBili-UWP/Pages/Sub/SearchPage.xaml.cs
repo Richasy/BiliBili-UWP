@@ -373,12 +373,14 @@ namespace BiliBili_UWP.Pages.Sub
 
         private void UserListView_ItemClick(object sender, ItemClickEventArgs e)
         {
-
+            var user = e.ClickedItem as SearchUser;
+            App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Pages.Sub.Account.DetailPage), user.mid);
         }
 
         private void DocumentListView_ItemClick(object sender, ItemClickEventArgs e)
         {
-
+            var item = e.ClickedItem as SearchDocument;
+            App.AppViewModel.ShowDoucmentPopup(item.title, item.id);
         }
 
         private async void VideoSortComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

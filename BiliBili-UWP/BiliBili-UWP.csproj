@@ -143,6 +143,9 @@
     <Compile Include="Components\Controls\DefaultVideoPanel.xaml.cs">
       <DependentUpon>DefaultVideoPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Components\Controls\DocumentPopup.xaml.cs">
+      <DependentUpon>DocumentPopup.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Components\Controls\DynamicContentBlock.xaml.cs">
       <DependentUpon>DynamicContentBlock.xaml</DependentUpon>
     </Compile>
@@ -235,6 +238,7 @@
     <Compile Include="Models\UI\Converter\IntBoolConverter.cs" />
     <Compile Include="Models\UI\Converter\IntVisibilityConverter.cs" />
     <Compile Include="Models\UI\Converter\NumberAbbrConverter.cs" />
+    <Compile Include="Models\UI\Converter\RelateTimeConverter.cs" />
     <Compile Include="Models\UI\Converter\SideMenuExtraVisibilityConverter.cs" />
     <Compile Include="Models\UI\Converter\SideMenuSignColorConverter.cs" />
     <Compile Include="Models\UI\Converter\StringVisbilityConverter.cs" />
@@ -286,11 +290,17 @@
     <Compile Include="Pages\Main\ViewLaterPage.xaml.cs">
       <DependentUpon>ViewLaterPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\Sub\Account\DetailPage.xaml.cs">
+      <DependentUpon>DetailPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Sub\Account\FavoritePage.xaml.cs">
       <DependentUpon>FavoritePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Sub\Anime\IndexPage.xaml.cs">
       <DependentUpon>IndexPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Sub\Anime\TimelinePage.xaml.cs">
+      <DependentUpon>TimelinePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Sub\Channel\ChannelDetailPage.xaml.cs">
       <DependentUpon>ChannelDetailPage.xaml</DependentUpon>
@@ -400,6 +410,9 @@
     <Content Include="Assets\Rank\ic_live_rank_8.png" />
     <Content Include="Assets\Rank\ic_live_rank_9.png" />
     <Content Include="Assets\Rank\ic_rank_seeds.png" />
+    <Content Include="Components\HTML\Dark.css" />
+    <Content Include="Components\HTML\Light.css" />
+    <Content Include="Components\HTML\ShowPage.html" />
     <Content Include="Others\Update.txt" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
@@ -432,6 +445,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Components\Controls\DefaultVideoPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\Controls\DocumentPopup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -579,11 +596,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\Sub\Account\DetailPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\Sub\Account\FavoritePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\Sub\Anime\IndexPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Sub\Anime\TimelinePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -653,6 +678,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="HtmlAgilityPack">
+      <Version>1.11.23</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.9</Version>
     </PackageReference>

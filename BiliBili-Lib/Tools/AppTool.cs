@@ -156,5 +156,21 @@ namespace BiliBili_Lib.Tools
                 result = Math.Round(number / 10000.0, 1).ToString() + "万";
             return result;
         }
+
+        /// <summary>
+        /// 从网页获取html文本
+        /// </summary>
+        /// <param name="url">网址</param>
+        /// <returns></returns>
+        public static async Task<string> GetHtmlFromWeb(string url)
+        {
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4115.0 Safari/537.36 Edg/84.0.488.1");
+            using (client)
+            {
+                string html = await client.GetStringAsync(url);
+                return html;
+            }
+        }
     }
 }
