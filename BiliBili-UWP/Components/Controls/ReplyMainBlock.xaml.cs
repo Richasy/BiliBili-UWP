@@ -29,6 +29,8 @@ namespace BiliBili_UWP.Components.Controls
             this.InitializeComponent();
         }
 
+        public event EventHandler<Reply> CommentButtonClick;
+
         public Reply Data
         {
             get { return (Reply)GetValue(DataProperty); }
@@ -51,8 +53,8 @@ namespace BiliBili_UWP.Components.Controls
                 instance.ContentBlock.EmoteSource = data.content.emote;
                 instance.ContentBlock.Text = data.content.message;
                 instance.LikeBlock.Text = AppTool.GetNumberAbbreviation(data.like);
-                instance.LikeIcon.Foreground = data.action==0 ? UIHelper.GetThemeBrush(Models.Enums.ColorType.PrimaryColor) : UIHelper.GetThemeBrush(Models.Enums.ColorType.TipTextColor);
-                if (data.rcount > 0)
+                instance.LikeIcon.Foreground = data.action==1 ? UIHelper.GetThemeBrush(Models.Enums.ColorType.PrimaryColor) : UIHelper.GetThemeBrush(Models.Enums.ColorType.TipTextColor);
+                if (data.rcount > 0 && instance.SubReplyVisibility==Visibility.Visible)
                 {
                     instance.SubReplyContainer.Visibility = Visibility.Visible;
                     instance.SubReplyItemsControl.ItemsSource = data.replies;
@@ -66,7 +68,7 @@ namespace BiliBili_UWP.Components.Controls
 
         private async void LikeButton_Click(object sender, RoutedEventArgs e)
         {
-            bool isLike = !(Data.action == 0);
+            bool isLike = !(Data.action == 1);
             bool result = await App.BiliViewModel._client.LikeReplyAsync(isLike, Data.oid.ToString(), Data.rpid.ToString(), Data.type.ToString());
             if (result)
             {
@@ -84,7 +86,7 @@ namespace BiliBili_UWP.Components.Controls
 
         private void CommentButton_Click(object sender, RoutedEventArgs e)
         {
-
+            CommentButtonClick?.Invoke(this, Data);
         }
 
         public Visibility TopBadgeVisibility
@@ -96,6 +98,22 @@ namespace BiliBili_UWP.Components.Controls
         // Using a DependencyProperty as the backing store for TopBadgeVisibility.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty TopBadgeVisibilityProperty =
             DependencyProperty.Register("TopBadgeVisibility", typeof(Visibility), typeof(ReplyMainBlock), new PropertyMetadata(Visibility.Collapsed));
+
+        private void MoreReplyButton_Click(object sender, RoutedEventArgs e)
+        {
+            App.AppViewModel.ShowReplyDetailPopup(Data.rpid_str, Data.oid.ToString(), Data.type.ToString());
+        }
+
+        public Visibility SubReplyVisibility
+        {
+            get { return (Visibility)GetValue(SubReplyVisibilityProperty); }
+            set { SetValue(SubReplyVisibilityProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for SubReplyVisibility.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SubReplyVisibilityProperty =
+            DependencyProperty.Register("SubReplyVisibility", typeof(Visibility), typeof(ReplyMainBlock), new PropertyMetadata(Visibility.Visible));
+
 
 
     }

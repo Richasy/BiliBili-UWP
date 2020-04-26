@@ -124,7 +124,7 @@ namespace BiliBili_UWP.Pages.Main
             if (item.bangumi != null)
                 App.AppViewModel.PlayBangumi(item.bangumi.ep_id, ele, true);
             else
-                App.AppViewModel.PlayVideo(item.aid, ele);
+                App.AppViewModel.PlayVideo(item.aid, ele, "main.my-history.0.0");
         }
     }
 }

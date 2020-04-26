@@ -1,5 +1,6 @@
 ﻿using BiliBili_Lib.Models.BiliBili;
 using BiliBili_Lib.Service;
+using BiliBili_UWP.Components.Widgets;
 using BiliBili_UWP.Models.UI;
 using BiliBili_UWP.Models.UI.Interface;
 using System;
@@ -83,7 +84,7 @@ namespace BiliBili_UWP.Pages.Sub
             {
                 total = replies.Item2;
                 next = replies.Item1;
-                if (replies.Item3!=null && replies.Item3.Count > 0)
+                if (replies.Item3 != null && replies.Item3.Count > 0)
                 {
                     replies.Item3.ForEach(p => ReplyCollection.Add(p));
                 }
@@ -128,6 +129,29 @@ namespace BiliBili_UWP.Pages.Sub
                 _isRequesting = false;
                 LoadingBar.Visibility = Visibility.Collapsed;
             }
+        }
+
+        private async void ReplyTextBox_SendReply(object sender, string e)
+        {
+            bool result = await _client.AddReplyAsync(oid, e, type);
+
+            if (result)
+            {
+                if (mode != 2)
+                    mode = 2;
+                ReplyTextBox.ClearText();
+                new TipPopup("发送成功").ShowMessage();
+                await Refresh();
+            }
+            else
+            {
+                new TipPopup("发送失败").ShowError();
+            }
+        }
+
+        private void ReplyMainBlock_CommentButtonClick(object sender, Reply e)
+        {
+            App.AppViewModel.ShowReplyDetailPopup(e.rpid_str, oid, type);
         }
     }
 }

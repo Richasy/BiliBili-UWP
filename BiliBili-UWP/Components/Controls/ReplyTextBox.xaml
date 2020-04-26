@@ -1,0 +1,39 @@
+﻿<UserControl
+    x:Class="BiliBili_UWP.Components.Controls.ReplyTextBox"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BiliBili_UWP.Components.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
+    mc:Ignorable="d"
+    Loaded="UserControl_Loaded"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid Background="{ThemeResource CardBackground}" CornerRadius="4" Padding="10,5,10,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <Button Style="{StaticResource DefaultCircleButtonStyle}" Width="30" Height="30" FontSize="12"
+                    Content="&#xE9E2;" x:Name="EmojiButton" VerticalAlignment="Top">
+                <Button.Flyout>
+                    <Flyout FlyoutPresenterStyle="{StaticResource NoPaddingFlyoutStyle}" x:Name="EmojiFlyout">
+                        <widgets:EmojiPanel x:Name="EmojiPanel" EmojiSelected="EmojiPanel_EmojiSelected"/>
+                    </Flyout>
+                </Button.Flyout>
+            </Button>
+            <TextBox x:Name="ReplyBox" Style="{StaticResource TransparentTextBoxStyle}" HorizontalAlignment="Stretch"
+                     VerticalAlignment="Stretch" MaxHeight="100" FontSize="12" PlaceholderText="{x:Bind PlaceholderText,Mode=OneWay}" Grid.Column="1" Margin="10,5,0,0"/>
+        </Grid>
+        <widgets:AsyncButton FontSize="12" Style="{StaticResource DefaultAsyncButtonStyle}" Padding="5,4"
+                             x:Name="SendButton" Click="SendButton_Click" Grid.Column="1" VerticalAlignment="Top"
+                             Margin="10,0,0,0" Text="发送" Icon="&#xE9D1;"/>
+    </Grid>
+</UserControl>

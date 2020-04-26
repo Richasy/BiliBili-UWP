@@ -6,6 +6,16 @@ using System.Threading.Tasks;
 
 namespace BiliBili_Lib.Models.BiliBili
 {
+    public class EmojiReplyContainer
+    {
+        public int id { get; set; }
+        public string text { get; set; }
+        public string url { get; set; }
+        public int mtime { get; set; }
+        public int type { get; set; }
+        public int attr { get; set; }
+        public List<Emote> emote { get; set; }
+    }
 
     public class EmojiContainer
     {

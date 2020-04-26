@@ -158,8 +158,14 @@
     <Compile Include="Components\Controls\RenderTextBlock.xaml.cs">
       <DependentUpon>RenderTextBlock.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Components\Controls\ReplyDetailPopup.xaml.cs">
+      <DependentUpon>ReplyDetailPopup.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Components\Controls\ReplyMainBlock.xaml.cs">
       <DependentUpon>ReplyMainBlock.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Controls\ReplyTextBox.xaml.cs">
+      <DependentUpon>ReplyTextBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Components\Controls\ScanChannelPanel.xaml.cs">
       <DependentUpon>ScanChannelPanel.xaml</DependentUpon>
@@ -196,6 +202,9 @@
     </Compile>
     <Compile Include="Components\Widgets\CheckButton.xaml.cs">
       <DependentUpon>CheckButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Widgets\EmojiPanel.xaml.cs">
+      <DependentUpon>EmojiPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Components\Widgets\IconInputBox.xaml.cs">
       <DependentUpon>IconInputBox.xaml</DependentUpon>
@@ -247,11 +256,13 @@
     <Compile Include="Models\UI\Interface\IPlayerPage.cs" />
     <Compile Include="Models\UI\Interface\IRefreshPage.cs" />
     <Compile Include="Models\UI\Others\CustomResourceLoader.cs" />
+    <Compile Include="Models\UI\Others\EmojiTemplateSelector.cs" />
     <Compile Include="Models\UI\Others\IndicatorHelper.cs" />
     <Compile Include="Models\UI\Others\NotifyPropertyBase.cs" />
     <Compile Include="Models\UI\Others\SearchItemTemplateSelector.cs" />
     <Compile Include="Models\UI\Converter\SelectedBackgroundConverter.cs" />
     <Compile Include="Models\UI\Others\SideMenuItemTemplateSelector.cs" />
+    <Compile Include="Models\UI\Others\SystemFont.cs" />
     <Compile Include="Models\UI\Others\VideoTransportControls.cs" />
     <Compile Include="Models\UI\Others\VisualTreeExtension.cs" />
     <Compile Include="Models\UI\SideMenuItem.cs" />
@@ -274,6 +285,9 @@
     </Compile>
     <Compile Include="Pages\Main\AnimePage.xaml.cs">
       <DependentUpon>AnimePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Main\LivePage.xaml.cs">
+      <DependentUpon>LivePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Main\MiniPlayerPage.xaml.cs">
       <DependentUpon>MiniPlayerPage.xaml</DependentUpon>
@@ -468,7 +482,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Components\Controls\ReplyDetailPopup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Components\Controls\ReplyMainBlock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\Controls\ReplyTextBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -517,6 +539,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Components\Widgets\CheckButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\Widgets\EmojiPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -573,6 +599,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\Main\AnimePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Main\LivePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -701,6 +731,9 @@
     </PackageReference>
     <PackageReference Include="NSDanmaku">
       <Version>1.4.3</Version>
+    </PackageReference>
+    <PackageReference Include="SharpDX.Direct2D1">
+      <Version>4.0.1</Version>
     </PackageReference>
     <PackageReference Include="SYEngine.uwp">
       <Version>1.0.7</Version>

@@ -53,6 +53,7 @@ namespace BiliBili_UWP.Components.Controls
         private List<string> SendDanmakuList = new List<string>();
         private DispatcherTimer _danmaTimer = new DispatcherTimer();
         private int _pointerHoldCount = 0; // 光标保持不动的持续时间
+        private int _heartBeatCount = 0;
         private bool _isCatchPointer = false;
         private bool _isMergeSameDanmaku = false; //合并相同弹幕
         private int _maxDanmakuNumber = 0;
@@ -190,9 +191,9 @@ namespace BiliBili_UWP.Components.Controls
                     {
                         QualityCollection.Add(new Tuple<int, string>(_playData.accept_quality[i], _playData.accept_description[i]));
                     }
-                    VideoMTC.QualitySelectIndex = -1;
+                    VideoMTC._qualityListView.SelectedIndex = -1;
                     _currentQn = QualityCollection.First().Item1;
-                    VideoMTC.QualitySelectIndex = 0;
+                    VideoMTC._qualityListView.SelectedIndex = 0;
                 }
             }
             if (_playData != null)
@@ -288,6 +289,13 @@ namespace BiliBili_UWP.Components.Controls
             }
             if (_pointerHoldCount < 5)
                 _pointerHoldCount++;
+            if (_heartBeatCount >= 10)
+            {
+                HeartBeat();
+                _heartBeatCount = 0;
+            }
+            else
+                _heartBeatCount++;
             try
             {
                 if (DanmakuControls == null)
@@ -330,6 +338,14 @@ namespace BiliBili_UWP.Components.Controls
             {
 
             }
+        }
+
+        private async void HeartBeat()
+        {
+            if (isBangumi)
+                await _animeService.AddVideoHistoryAsync(_bangumiPart.aid, _bangumiPart.id, _bangumiPart.cid, CurrentProgress);
+            else
+                await _videoService.AddVideoHistoryAsync(_videoId, _partId, CurrentProgress);
         }
 
         public void Pause()

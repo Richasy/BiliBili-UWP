@@ -52,8 +52,8 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <StackPanel Orientation="Horizontal">
-                    <Button Style="{StaticResource TransparentButtonStyle}" x:Name="LikeButton" Click="LikeButton_Click"  HorizontalAlignment="Stretch">
-                        <TextBlock Style="{StaticResource SmallTipTextStyle}" HorizontalAlignment="Center" FontSize="10">
+                    <Button Style="{StaticResource TransparentButtonStyle}" x:Name="LikeButton" Click="LikeButton_Click" Margin="-10,3,0,0" HorizontalAlignment="Stretch">
+                        <TextBlock Style="{StaticResource SmallTipTextStyle}" HorizontalAlignment="Center" FontSize="10" Padding="0">
                             <Run Text="&#xE9F0;" FontFamily="{StaticResource Icon}" x:Name="LikeIcon"/>
                             <Run x:Name="LikeBlock"/>
                         </TextBlock>
@@ -73,7 +73,8 @@
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
-                <Button Style="{StaticResource TransparentButtonStyle}" Padding="0" Visibility="Collapsed" x:Name="MoreReplyButton" Margin="0,5,0,0">
+                <Button Style="{StaticResource TransparentButtonStyle}" Padding="0" Visibility="Collapsed" x:Name="MoreReplyButton" Margin="0,5,0,0"
+                        Click="MoreReplyButton_Click">
                     <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="10" Foreground="{ThemeResource SecondaryColor}"
                                >
                         <Run x:Name="TotalReplyCount"/>

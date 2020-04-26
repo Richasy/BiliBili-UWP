@@ -79,11 +79,15 @@
                 <StackPanel Margin="0,10" Grid.Column="1">
                     <TextBlock Style="{StaticResource TitleTextStyle}" x:Name="TitleBlock" FontSize="20" Foreground="{ThemeResource ImportantTextColor}"/>
                     <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                        <widgets:IconTextBlock Icon="&#xEA32;" FontSize="12" IconForeground="{ThemeResource TipTextColor}" x:Name="PlayCountBlock"/>
-                        <widgets:IconTextBlock Icon="&#xEA35;" Margin="15,0,0,0" FontSize="12" IconForeground="{ThemeResource TipTextColor}" x:Name="DanmukuCountBlock"/>
-                        <widgets:IconTextBlock Icon="&#xEA44;" Margin="15,0,0,0" FontSize="12" IconForeground="{ThemeResource TipTextColor}" x:Name="RepostCountBlock"/>
-                        <widgets:IconTextBlock Icon="&#xE99E;" Margin="15,0,0,0" FontSize="12" IconForeground="{ThemeResource TipTextColor}" x:Name="ReplyCountBlock"
-                                               Tapped="ReplyCountBlock_Tapped"/>
+                        <widgets:IconTextBlock Icon="&#xEA32;" GutterWidth="5" FontSize="12" IconForeground="{ThemeResource TipTextColor}" x:Name="PlayCountBlock"/>
+                        <widgets:IconTextBlock Icon="&#xEA35;" GutterWidth="5" Margin="15,0,0,0" FontSize="12" IconForeground="{ThemeResource TipTextColor}" x:Name="DanmukuCountBlock"/>
+                        <widgets:IconTextBlock Icon="&#xEA44;" GutterWidth="5" Margin="15,0,0,0" FontSize="12" IconForeground="{ThemeResource TipTextColor}" x:Name="RepostCountBlock"/>
+                        <Button Style="{StaticResource TransparentButtonStyle}" x:Name="ReplyButton" Padding="0" Click="ReplyButton_Click"  Margin="15,0,0,0" HorizontalAlignment="Stretch">
+                            <TextBlock Style="{StaticResource SmallTipTextStyle}" HorizontalAlignment="Center" FontSize="12">
+                            <Run Text="&#xE99E;" FontFamily="{StaticResource Icon}" Foreground="{ThemeResource PrimaryColor}"/>
+                            <Run x:Name="ReplyCountBlock" Foreground="{ThemeResource NormalTextColor}"/>
+                            </TextBlock>
+                        </Button>
                     </StackPanel>
                     <TextBlock x:Name="BasicInfoBlock" Style="{StaticResource SmallTipTextStyle}" FontSize="10" Margin="0,10,0,0"
                                LineHeight="20"/>

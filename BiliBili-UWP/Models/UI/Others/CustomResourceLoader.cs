@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BiliBili_Lib.Tools;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,7 +15,7 @@ namespace BiliBili_UWP.Models.UI.Others
         {
             if (resourceId == "Basic")
             {
-                return new FontFamily("Taipei Sans TC Beta Light");
+                return new FontFamily(AppTool.GetLocalSetting(BiliBili_Lib.Enums.Settings.FontFamily,"微软雅黑"));
             }
             return null;
         }

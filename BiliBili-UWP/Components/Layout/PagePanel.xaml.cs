@@ -131,6 +131,7 @@ namespace BiliBili_UWP.Components.Layout
                     page = typeof(Pages.Main.HomePage);
                     break;
                 case SideMenuItemType.Live:
+                    page = typeof(Pages.Main.LivePage);
                     break;
                 case SideMenuItemType.Anime:
                     page = typeof(Pages.Main.AnimePage);
@@ -192,6 +193,8 @@ namespace BiliBili_UWP.Components.Layout
                 result = SideMenuItemType.MyFavorite;
             else if (type.Equals(typeof(Pages.Main.ViewLaterPage)))
                 result = SideMenuItemType.ViewLater;
+            else if (type.Equals(typeof(Pages.Main.LivePage)))
+                result = SideMenuItemType.Live;
             else if (type.Equals(typeof(Pages.Main.SettingPage)))
                 result = SideMenuItemType.Settings;
             return result;

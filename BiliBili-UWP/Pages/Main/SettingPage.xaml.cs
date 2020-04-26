@@ -1,8 +1,11 @@
 ﻿using BiliBili_Lib.Enums;
 using BiliBili_Lib.Tools;
 using BiliBili_UWP.Dialogs;
+using BiliBili_UWP.Models.UI.Others;
+using Microsoft.Toolkit.Uwp.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -28,25 +31,45 @@ namespace BiliBili_UWP.Pages.Main
     public sealed partial class SettingPage : Page
     {
         private bool _isInit = false;
+        private ObservableCollection<SystemFont> FontCollection = new ObservableCollection<SystemFont>();
 
         public SettingPage()
         {
             this.InitializeComponent();
             NavigationCacheMode = NavigationCacheMode.Enabled;
         }
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if (_isInit || e.NavigationMode==NavigationMode.Back)
+            if (_isInit || e.NavigationMode == NavigationMode.Back)
                 return;
 
             string theme = AppTool.GetLocalSetting(Settings.Theme, "Light");
             ThemeComboBox.SelectedIndex = theme == "Light" ? 0 : 1;
 
+            FontInit();
+
             base.OnNavigatedTo(e);
             _isInit = true;
         }
 
-        private void ThemeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void FontInit()
+        {
+            FontComboBox.IsEnabled = false;
+            var fonts = SystemFont.GetFonts();
+            if (fonts != null && fonts.Count > 0)
+            {
+                string fontName = AppTool.GetLocalSetting(Settings.FontFamily, "微软雅黑");
+                fonts.ForEach(p => FontCollection.Add(p));
+                var font = FontCollection.Where(p => p.Name == fontName).FirstOrDefault();
+                if (font != null)
+                {
+                    FontComboBox.SelectedItem = font;
+                }
+            }
+            FontComboBox.IsEnabled = true;
+        }
+
+        private async void ThemeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (!_isInit)
                 return;
@@ -55,7 +78,7 @@ namespace BiliBili_UWP.Pages.Main
             if (oldTheme != item)
             {
                 AppTool.WriteLocalSetting(Settings.Theme, item);
-                
+                await ShowRestartDialog();
             }
         }
 
@@ -67,6 +90,19 @@ namespace BiliBili_UWP.Pages.Main
                 await CoreApplication.RequestRestartAsync("restart");
             };
             await dialog.ShowAsync();
+        }
+
+        private async void FontComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (!_isInit)
+                return;
+            var item = FontComboBox.SelectedItem as SystemFont;
+            string oldFont = AppTool.GetLocalSetting(Settings.FontFamily, "微软雅黑");
+            if (item.Name != oldFont)
+            {
+                AppTool.WriteLocalSetting(Settings.FontFamily, item.Name);
+                await ShowRestartDialog();
+            }
         }
     }
 }

@@ -472,5 +472,18 @@ namespace BiliBili_Lib.Service
             var data = await BiliTool.ConvertEntityFromWebAsync<ArchiveResponse>(url);
             return data;
         }
+
+        /// <summary>
+        /// 获取表情包
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<EmojiReplyContainer>> GetUserEmojiAsync()
+        {
+            var param = new Dictionary<string, string>();
+            param.Add("business", "reply");
+            string url = BiliTool.UrlContact(Api.ACCOUNT_EMOJI_PANEL,param, true);
+            var items = await BiliTool.ConvertEntityFromWebAsync<List<EmojiReplyContainer>>(url, "data.packages");
+            return items;
+        }
     }
 }

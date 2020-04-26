@@ -52,6 +52,7 @@ namespace BiliBili_UWP.Pages.Main
         private int videoId = 0;
         public static VideoPage Current;
         private List<FavoriteItem> _tempFavorites = new List<FavoriteItem>();
+        private string _fromSign = "";
 
         public VideoPage()
         {
@@ -62,8 +63,10 @@ namespace BiliBili_UWP.Pages.Main
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if (e.Parameter != null && e.Parameter is int aid)
+            if (e.Parameter != null && e.Parameter is Tuple<int,string> data)
             {
+                int aid = data.Item1;
+                _fromSign = data.Item2;
                 var anim = ConnectedAnimationService.GetForCurrentView().GetAnimation("VideoConnectedAnimation");
                 if (anim != null)
                 {
@@ -123,7 +126,7 @@ namespace BiliBili_UWP.Pages.Main
             Reset();
             var tip = new WaitingPopup("加载视频中...");
             tip.ShowPopup();
-            var detail = await _videoService.GetVideoDetailAsync(videoId);
+            var detail = await _videoService.GetVideoDetailAsync(videoId,_fromSign);
             if (detail != null)
             {
                 _detail = detail;
@@ -207,6 +210,7 @@ namespace BiliBili_UWP.Pages.Main
         {
             var video = e.ClickedItem as VideoRelated;
             videoId = video.aid;
+            _fromSign = "main.ugc-video-detail.0.0";
             await Refresh();
         }
 
@@ -329,14 +333,6 @@ namespace BiliBili_UWP.Pages.Main
             }
         }
 
-        private void ReplyCountBlock_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            var param = new Dictionary<string, string>();
-            param.Add("oid", _detail.aid.ToString());
-            param.Add("type", "1");
-            App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Sub.ReplyPage), param);
-        }
-
         private async void PartListView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var item = e.ClickedItem as VideoPart;
@@ -401,6 +397,14 @@ namespace BiliBili_UWP.Pages.Main
         {
             var accId = _detail.owner.mid;
             App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Pages.Sub.Account.DetailPage), accId);
+        }
+
+        private void ReplyButton_Click(object sender, RoutedEventArgs e)
+        {
+            var param = new Dictionary<string, string>();
+            param.Add("oid", _detail.aid.ToString());
+            param.Add("type", "1");
+            App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Sub.ReplyPage), param);
         }
     }
 }

@@ -76,5 +76,30 @@ namespace BiliBili_Lib.Models.BiliBili
         {
             return $"`{member.uname}` : {content.message}";
         }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Reply reply &&
+                   rpid == reply.rpid;
+        }
+
+        public override int GetHashCode()
+        {
+            return -1199556862 + rpid.GetHashCode();
+        }
+    }
+
+    public class ReplyDetailResponse
+    {
+        public Cursor cursor { get; set; }
+        public bool show_bvid { get; set; }
+        public class Cursor
+        {
+            public bool is_begin { get; set; }
+            public bool is_end { get; set; }
+            public int next { get; set; }
+            public int prev { get; set; }
+        }
+        public Reply root { get; set; }
     }
 }

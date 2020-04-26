@@ -172,6 +172,10 @@ namespace BiliBili_Lib.Models.Others
         /// 用户投稿视频
         /// </summary>
         public const string ACCOUNT_USER_ARCHIVE = _appBase + "/x/v2/space/archive";
+        /// <summary>
+        /// 获取用户的表情包
+        /// </summary>
+        public const string ACCOUNT_EMOJI_PANEL = _apiBase + "/x/emote/user/panel";
         #endregion
 
         #region 频道 Channel
@@ -395,6 +399,21 @@ namespace BiliBili_Lib.Models.Others
         /// 点赞评论
         /// </summary>
         public const string REPLY_LIKE = _apiBase + "/x/v2/reply/action";
+        /// <summary>
+        /// 添加评论
+        /// </summary>
+        public const string REPLY_ADD = _apiBase + "/x/v2/reply/add";
+        /// <summary>
+        /// 删除评论
+        /// </summary>
+        public const string REPLY_DELETE = _apiBase + "/x/v2/reply/del";
+        #endregion
+
+        #region 直播 Live
+        /// <summary>
+        /// 获取直播首页信息
+        /// </summary>
+        public const string LIVE_SQUARE = _liveBase + "/xlive/app-interface/v2/index/getAllList";
         #endregion
     }
 }

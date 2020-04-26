@@ -5,10 +5,17 @@
     xmlns:local="using:BiliBili_UWP.Pages.Main"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:others="using:BiliBili_UWP.Models.UI.Others"
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:Key="TipHeaderStyle">
             <TextBlock Style="{StaticResource SmallTipTextStyle}" Text="{Binding}" Margin="0,0,0,5"/>
+        </DataTemplate>
+        <DataTemplate x:Key="FontItemTemplate" x:DataType="others:SystemFont">
+            <Grid Padding="8,5">
+                <TextBlock Style="{StaticResource SmallTipTextStyle}" FontFamily="{x:Bind FontFamily}"
+                           Foreground="{ThemeResource NormalTextColor}" Text="{x:Bind Name}"/>
+            </Grid>
         </DataTemplate>
     </Page.Resources>
     <Grid>
@@ -19,11 +26,14 @@
         <TextBlock Style="{StaticResource HeaderTextStyle}" Text="应用设置" VerticalAlignment="Center"/>
         <Grid Margin="0,30,0,0" Grid.Row="1">
             <StackPanel>
-                <ComboBox Style="{StaticResource BasicComboBoxStyle}" ItemContainerStyle="{StaticResource BasicComboBoxItemContainerStyle}"
+                <ComboBox Style="{StaticResource BasicComboBoxStyle}" ItemContainerStyle="{StaticResource BasicComboBoxItemContainerStyle}" FontSize="12"
                           HeaderTemplate="{StaticResource TipHeaderStyle}" Header="主题切换" x:Name="ThemeComboBox" SelectionChanged="ThemeComboBox_SelectionChanged">
                     <ComboBoxItem Content="白昼主题" Tag="Light"/>
                     <ComboBoxItem Content="暗夜主题" Tag="Dark"/>
                 </ComboBox>
+                <ComboBox Style="{StaticResource BasicComboBoxStyle}" ItemContainerStyle="{StaticResource BasicComboBoxItemContainerStyle}"
+                          HeaderTemplate="{StaticResource TipHeaderStyle}" Header="应用字体" x:Name="FontComboBox" SelectionChanged="FontComboBox_SelectionChanged"
+                          ItemTemplate="{StaticResource FontItemTemplate}" Margin="0,15,0,0" ItemsSource="{x:Bind FontCollection}"/>
             </StackPanel>
         </Grid>
     </Grid>

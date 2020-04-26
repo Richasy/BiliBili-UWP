@@ -19,6 +19,7 @@ namespace BiliBili_UWP.Models.UI.Others
         private AppBarButton _compactOverlayButton;
         private AppBarButton _cinemaButton;
         private AppBarButton _separateButton;
+        public ListView _qualityListView;
         public bool IsInit = false;
 
         public VideoTransportControls()
@@ -51,8 +52,8 @@ namespace BiliBili_UWP.Models.UI.Others
             _separateButton = GetTemplateChild("SeparateButton") as AppBarButton;
             _separateButton.Click += SeparateButtonClick;
 
-            var qualityListView = GetTemplateChild("QualityListView") as ListView;
-            qualityListView.ItemClick += QualityListView_ItemClick;
+            _qualityListView = GetTemplateChild("QualityListView") as ListView;
+            _qualityListView.ItemClick += QualityListView_ItemClick;
 
             base.OnApplyTemplate();
         }

@@ -127,7 +127,7 @@ namespace BiliBili_UWP.Components.Controls
         private void MainContentControl_Tapped(object sender, TappedRoutedEventArgs e)
         {
             if (_cardType == "video")
-                App.AppViewModel.PlayVideo((Data as VideoDynamic).aid, sender);
+                App.AppViewModel.PlayVideo((Data as VideoDynamic).aid, sender, "dynamic.dt.0.0");
             else if (_cardType == "web")
             {
                 var item = Data as WebDynamic;

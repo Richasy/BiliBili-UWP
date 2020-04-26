@@ -40,6 +40,7 @@ namespace BiliBili_UWP.Models.Core
         public PlayerType CurrentPlayerType;
         public WebPopup _webPopup;
         public DocumentPopup _documentPopup;
+        public ReplyDetailPopup _replyDetailPopup;
 
         public List<Tuple<Guid, Action<Size>>> WindowsSizeChangedNotify { get; set; } = new List<Tuple<Guid, Action<Size>>>();
         public AppViewModel()
@@ -57,7 +58,7 @@ namespace BiliBili_UWP.Models.Core
         {
             QueryString args = QueryString.Parse(argument);
             args.TryGetValue("action", out string action);
-            
+
         }
         public async void CheckAppUpdate()
         {
@@ -76,9 +77,10 @@ namespace BiliBili_UWP.Models.Core
         /// <summary>
         /// 播放视频
         /// </summary>
-        /// <param name="epid">AV号</param>
+        /// <param name="aid">AV号</param>
         /// <param name="sender">触发控件（用于查找封面以实现连接动画）</param>
-        public void PlayVideo(int aid,object sender=null)
+        /// <param name="fromSign">来源参数</param>
+        public void PlayVideo(int aid, object sender = null, string fromSign = "")
         {
             if (CurrentPagePanel.IsSubPageOpen)
                 CurrentPagePanel.IsSubPageOpen = false;
@@ -89,14 +91,14 @@ namespace BiliBili_UWP.Models.Core
                 ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("VideoConnectedAnimation", image);
             }
             CurrentSidePanel.SetSelectedItem(SideMenuItemType.Line);
-            CurrentPagePanel.NavigateToPage(SideMenuItemType.VideoPlayer, aid);
+            CurrentPagePanel.NavigateToPage(SideMenuItemType.VideoPlayer, new Tuple<int, string>(aid, fromSign));
         }
         /// <summary>
         /// 播放番剧
         /// </summary>
         /// <param name="epid">AV号</param>
         /// <param name="sender">触发控件（用于查找封面以实现连接动画）</param>
-        public void PlayBangumi(int epid, object sender = null,bool isEp=false)
+        public void PlayBangumi(int epid, object sender = null, bool isEp = false)
         {
             if (CurrentPagePanel.IsSubPageOpen)
                 CurrentPagePanel.IsSubPageOpen = false;
@@ -107,8 +109,8 @@ namespace BiliBili_UWP.Models.Core
                 ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("VideoConnectedAnimation", image);
             }
             CurrentSidePanel.SetSelectedItem(SideMenuItemType.Line);
-            if(isEp)
-                CurrentPagePanel.NavigateToPage(SideMenuItemType.BangumiPlayer, new Tuple<int,bool>(epid,isEp));
+            if (isEp)
+                CurrentPagePanel.NavigateToPage(SideMenuItemType.BangumiPlayer, new Tuple<int, bool>(epid, isEp));
             else
                 CurrentPagePanel.NavigateToPage(SideMenuItemType.BangumiPlayer, epid);
         }
@@ -206,7 +208,7 @@ namespace BiliBili_UWP.Models.Core
         /// </summary>
         /// <param name="video">视频ID</param>
         /// <param name="cid">分片ID</param>
-        public async void PlayVideoSeparate(VideoDetail video,int cid)
+        public async void PlayVideoSeparate(VideoDetail video, int cid)
         {
             CoreApplicationView newView = CoreApplication.CreateNewView();
             int newViewId = 0;
@@ -250,7 +252,7 @@ namespace BiliBili_UWP.Models.Core
         /// </summary>
         /// <param name="title">标题</param>
         /// <param name="url">地址</param>
-        public void ShowWebPopup(string title,string url)
+        public void ShowWebPopup(string title, string url)
         {
             if (_webPopup == null)
                 _webPopup = new WebPopup();
@@ -261,13 +263,23 @@ namespace BiliBili_UWP.Models.Core
         /// 显示专栏文章弹出层
         /// </summary>
         /// <param name="title">标题</param>
-        /// <param name="url">地址</param>
         public void ShowDoucmentPopup(string title, int id)
         {
             if (_documentPopup == null)
                 _documentPopup = new DocumentPopup();
             _documentPopup.Init(title, id);
             _documentPopup.ShowPopup();
+        }
+        /// <summary>
+        /// 显示评论详情弹出层
+        /// </summary>
+        /// <param name="title">标题</param>
+        public async void ShowReplyDetailPopup(string replyId, string oid, string type)
+        {
+            if (_replyDetailPopup == null)
+                _replyDetailPopup = new ReplyDetailPopup();
+            _replyDetailPopup.ShowPopup();
+            await _replyDetailPopup.Init(replyId, oid, type);
         }
     }
 }

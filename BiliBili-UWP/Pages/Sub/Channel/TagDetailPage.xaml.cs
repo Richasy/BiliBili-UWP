@@ -148,7 +148,7 @@ namespace BiliBili_UWP.Pages.Sub.Channel
         private void VideoListView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var data = e.ClickedItem as VideoRecommend;
-            App.AppViewModel.PlayVideo(Convert.ToInt32(data.param));
+            App.AppViewModel.PlayVideo(Convert.ToInt32(data.param),null, "traffic.new-channel-detail-featured.0.0.0.0");
         }
         private async void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
         {

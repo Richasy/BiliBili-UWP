@@ -181,6 +181,28 @@ namespace BiliBili_Lib.Service
                 return null;
         }
         /// <summary>
+        /// 获取评论详情
+        /// </summary>
+        /// <param name="replyId">评论ID</param>
+        /// <param name="oid">源ID</param>
+        /// <param name="next">偏移值</param>
+        /// <param name="type">类型</param>
+        /// <returns></returns>
+        public async Task<ReplyDetailResponse> GetReplyDetailAsync(string replyId, string oid, int next, string type = "1")
+        {
+            var param = new Dictionary<string, string>();
+            param.Add("oid", oid);
+            param.Add("root", replyId);
+            param.Add("next", next.ToString());
+            param.Add("prev", "0");
+            param.Add("type", type);
+            param.Add("ps", "30");
+            param.Add("plat", "3");
+            var url = BiliTool.UrlContact(Api.REPLY_DETAIL, param, true);
+            var data = await BiliTool.ConvertEntityFromWebAsync<ReplyDetailResponse>(url);
+            return data;
+        }
+        /// <summary>
         /// 点赞/取消点赞评论
         /// </summary>
         /// <param name="isLike">是否点赞</param>
@@ -200,6 +222,63 @@ namespace BiliBili_Lib.Service
             string response = await BiliTool.PostContentToWebAsync(Api.REPLY_LIKE, data);
             var jobj = JObject.Parse(response);
             return jobj["code"].ToString() == "0";
+        }
+
+        /// <summary>
+        /// 添加评论
+        /// </summary>
+        /// <param name="oid">源ID</param>
+        /// <param name="message">信息</param>
+        /// <param name="type">类型</param>
+        /// <returns></returns>
+        public async Task<bool> AddReplyAsync(string oid, string message, string type = "1")
+        {
+            var param = new Dictionary<string, string>();
+            param.Add("oid", oid);
+            param.Add("type", type);
+            param.Add("message", Uri.EscapeDataString(message));
+            param.Add("lottery", "0");
+            param.Add("vote", "0");
+            var data = BiliTool.UrlContact("", param, true);
+            string response = await BiliTool.PostContentToWebAsync(Api.REPLY_ADD, data);
+            var jobj = JObject.Parse(response);
+            if (jobj.ContainsKey("data"))
+            {
+                return jobj["data"]["success_action"].ToString() == "0";
+            }
+            return false;
+        }
+        /// <summary>
+        /// 添加评论
+        /// </summary>
+        /// <param name="oid">源ID</param>
+        /// <param name="message">信息</param>
+        /// <param name="type">类型</param>
+        /// <returns></returns>
+        public async Task<Reply> AddReplyAsync(string oid, string message, string parentId, string rootId, string type = "1")
+        {
+            var param = new Dictionary<string, string>();
+            param.Add("oid", oid);
+            param.Add("parent", oid);
+            param.Add("root", rootId);
+            param.Add("type", parentId);
+            param.Add("message", Uri.EscapeDataString(message));
+            param.Add("lottery", "0");
+            param.Add("vote", "0");
+            var data = BiliTool.UrlContact("", param, true);
+            try
+            {
+                string response = await BiliTool.PostContentToWebAsync(Api.REPLY_ADD, data);
+                var jobj = JObject.Parse(response);
+                if (jobj.ContainsKey("data"))
+                {
+                    return JsonConvert.DeserializeObject<Reply>(jobj["data"]["reply"].ToString());
+                }
+            }
+            catch (Exception)
+            {
+            }
+            return null;
         }
 
         /// <summary>

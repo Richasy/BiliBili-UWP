@@ -158,10 +158,11 @@ namespace BiliBili_Lib.Service
         /// </summary>
         /// <param name="aid">视频avid</param>
         /// <returns></returns>
-        public async Task<VideoDetail> GetVideoDetailAsync(int aid)
+        public async Task<VideoDetail> GetVideoDetailAsync(int aid,string fromSign="")
         {
             var param = new Dictionary<string, string>();
             param.Add("aid", aid.ToString());
+            param.Add("from_spmid", fromSign);
             string url = BiliTool.UrlContact(Api.VIDEO_DETAIL_INFO, param, true);
             var data = await BiliTool.ConvertEntityFromWebAsync<VideoDetail>(url);
             return data;

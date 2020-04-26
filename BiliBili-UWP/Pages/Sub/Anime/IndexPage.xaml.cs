@@ -187,7 +187,7 @@ namespace BiliBili_UWP.Pages.Sub.Anime
             var data = combo.DataContext as ConditionContainer;
             var select = combo.SelectedItem as ConditionItem;
             var old = SelectConditions.Where(p => p.Key == data.field).FirstOrDefault();
-            if (old.Value != select.keyword)
+            if (old==null || old.Value != select.keyword)
             {
                 old.Value = select.keyword;
                 _page = 1;

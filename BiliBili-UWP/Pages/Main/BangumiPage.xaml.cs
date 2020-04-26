@@ -266,16 +266,6 @@ namespace BiliBili_UWP.Pages.Main
                 FlyoutBase.ShowAttachedFlyout(CoinButton);
             }
         }
-        private void ReplyCountBlock_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            if (_currentPart != null)
-            {
-                var param = new Dictionary<string, string>();
-                param.Add("oid", _currentPart.aid.ToString());
-                param.Add("type", "1");
-                App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Sub.ReplyPage), param);
-            }
-        }
 
         private async void CheckCoin()
         {
@@ -352,6 +342,16 @@ namespace BiliBili_UWP.Pages.Main
             {
                 VideoPlayer.Close();
                 App.AppViewModel.PlayVideoSeparate(_detail, _currentPart);
+            }
+        }
+        private void ReplyButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_currentPart != null)
+            {
+                var param = new Dictionary<string, string>();
+                param.Add("oid", _currentPart.aid.ToString());
+                param.Add("type", "1");
+                App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Sub.ReplyPage), param);
             }
         }
     }
