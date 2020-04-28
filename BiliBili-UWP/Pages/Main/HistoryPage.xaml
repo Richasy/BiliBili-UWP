@@ -9,6 +9,7 @@
     xmlns:controls1="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:bilibili="using:BiliBili_Lib.Models.BiliBili.Video"
     xmlns:controls="using:BiliBili_UWP.Components.Controls"
+    Loaded="Page_Loaded"
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:DataType="bilibili:VideoDetail" x:Key="VideoItemTemplate">

@@ -9,6 +9,7 @@
     xmlns:controls="using:BiliBili_UWP.Components.Controls"
     xmlns:controls1="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
+    Loaded="Page_Loaded"
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:DataType="bilibili:VideoRecommend" x:Key="VideoItemTemplate">
@@ -44,8 +45,8 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <TextBlock Style="{StaticResource TitleTextStyle}" Text="推荐视频" VerticalAlignment="Center"/>
-                <widgets:AsyncButton Icon="&#xE9C7;" Text="换一换" x:Name="RefreshButton" CornerRadius="15" FontSize="10" BorderThickness="1"
-                                 Style="{StaticResource DefaultAsyncButtonStyle}" BorderBrush="{ThemeResource LineColor}" Grid.Column="1"
+                <widgets:AsyncButton Icon="&#xE9C7;" Text="换一换" x:Name="RefreshButton" CornerRadius="15" FontSize="10"
+                                 Style="{StaticResource DefaultAsyncButtonStyle}" Grid.Column="1"
                                  Click="RefreshButton_Click" Margin="20,0,0,0"/>
             </Grid>
             <Grid Grid.Row="1">

@@ -9,6 +9,7 @@
     xmlns:controls="using:BiliBili_UWP.Components.Controls"
     xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
     xmlns:controls1="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    Loaded="Page_Loaded"
     mc:Ignorable="d">
 
     <Page.Resources>

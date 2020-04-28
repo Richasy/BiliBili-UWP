@@ -18,7 +18,7 @@
         </Grid.ColumnDefinitions>
         
         <controls:ImageEx x:Name="UserAvatar" Width="30" Height="30" CornerRadius="15" Margin="0,0,10,0"
-                          VerticalAlignment="Top"/>
+                          VerticalAlignment="Top" Tapped="Account_Tapped"/>
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />

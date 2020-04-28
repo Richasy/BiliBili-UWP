@@ -36,6 +36,7 @@ namespace BiliBili_UWP.Pages.Main
         private ObservableCollection<VideoDetail> ViewLaterCollection = new ObservableCollection<VideoDetail>();
         private bool _isViewLaterRequesting = false;
         private int _page = 1;
+        private double _scrollOffset = 0;
         public ViewLaterPage()
         {
             this.InitializeComponent();
@@ -45,6 +46,7 @@ namespace BiliBili_UWP.Pages.Main
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
             App.AppViewModel.CurrentPagePanel.ScrollToBottom = ScrollViewerBottomHandle;
+            App.AppViewModel.CurrentPagePanel.ScrollChanged = ScrollViewerChanged;
             if (_isInit || e.NavigationMode == NavigationMode.Back)
             {
                 return;
@@ -138,6 +140,19 @@ namespace BiliBili_UWP.Pages.Main
             else
             {
                 new TipPopup("移出失败，请稍后重试").ShowError();
+            }
+        }
+        private void ScrollViewerChanged()
+        {
+            double offset = App.AppViewModel.CurrentPagePanel.PageScrollViewer.VerticalOffset;
+            _scrollOffset = offset;
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (_scrollOffset > 0)
+            {
+                App.AppViewModel.CurrentPagePanel.PageScrollViewer.ChangeView(0, _scrollOffset, 1);
             }
         }
     }

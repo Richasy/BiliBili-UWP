@@ -35,6 +35,7 @@ namespace BiliBili_UWP.Pages.Main
         public BiliViewModel channelVM = App.BiliViewModel;
         public ObservableCollection<VideoRecommend> RecommendCollection = App.BiliViewModel.RecommendVideoCollection;
         private bool _isRecommendRequesting = false;
+        private double _scrollOffset = 0;
         public HomePage()
         {
             this.InitializeComponent();
@@ -50,6 +51,8 @@ namespace BiliBili_UWP.Pages.Main
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
             App.AppViewModel.CurrentPagePanel.ScrollToBottom=ScrollViewerBottomHandle;
+            App.AppViewModel.CurrentPagePanel.ScrollChanged = ScrollViewerChanged;
+            
             if (_isInit || e.NavigationMode == NavigationMode.Back)
             {
                 return;
@@ -60,6 +63,7 @@ namespace BiliBili_UWP.Pages.Main
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
             App.AppViewModel.CurrentPagePanel.ScrollToBottom = null;
+            App.AppViewModel.CurrentPagePanel.ScrollChanged = null;
             base.OnNavigatingFrom(e);
         }
         public async Task Refresh()
@@ -115,6 +119,7 @@ namespace BiliBili_UWP.Pages.Main
         private async Task RefreshVideo()
         {
             RecommendCollection.Clear();
+            _scrollOffset = 0;
             int i = 0;
             while (i < 2)
             {
@@ -126,6 +131,19 @@ namespace BiliBili_UWP.Pages.Main
         private async void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
             await RefreshVideo();
+        }
+        private void ScrollViewerChanged()
+        {
+            double offset = App.AppViewModel.CurrentPagePanel.PageScrollViewer.VerticalOffset;
+            _scrollOffset = offset;
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (_scrollOffset > 0)
+            {
+                App.AppViewModel.CurrentPagePanel.PageScrollViewer.ChangeView(0, _scrollOffset, 1);
+            }
         }
     }
 }

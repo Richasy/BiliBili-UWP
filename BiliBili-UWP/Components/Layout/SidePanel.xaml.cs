@@ -69,6 +69,7 @@ namespace BiliBili_UWP.Components.Layout
             list.ForEach(p => MenuItemCollection.Add(p));
             var select = MenuItemCollection.Where(p => p.IsSelected).FirstOrDefault();
             SideMenuListView.SelectedItem = App.AppViewModel.SelectedSideMenuItem = select;
+            GetFollowerUnread();
         }
 
         public event EventHandler<Region> RegionSelected;
@@ -122,6 +123,19 @@ namespace BiliBili_UWP.Components.Layout
         {
             var index = MenuItemCollection.IndexOf(MenuItemCollection.Where(p => p.IsSelected).FirstOrDefault());
             SideMenuListView.SelectedIndex = index;
+        }
+
+        private async void GetFollowerUnread()
+        {
+            if (App.BiliViewModel.IsLogin)
+            {
+                var count=await App.BiliViewModel._client.GetFollowerUnreadCountAsync();
+                var menuItem = MenuItemCollection.Where(p => p.Type == SideMenuItemType.Dynamic).FirstOrDefault();
+                if (count > 0)
+                {
+                    menuItem.Unread = count;
+                }
+            }
         }
     }
 }

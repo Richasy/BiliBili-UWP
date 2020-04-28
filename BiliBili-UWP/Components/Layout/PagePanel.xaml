@@ -65,7 +65,7 @@
                     <ProgressBar IsIndeterminate="True" Grid.Row="1" x:Name="LoadingBar" Foreground="{ThemeResource PrimaryColor}"
                      Visibility="Collapsed" HorizontalAlignment="Stretch"/>
                     <ScrollViewer Margin="0,20,0,0" x:Name="PageScrollViewer" Style="{StaticResource BasicScrollViewer}" Padding="0,0,30,0" Grid.Row="2"
-                                  ViewChanged="PageScrollViewer_ViewChanged" HorizontalScrollMode="Disabled">
+                                  ViewChanged="PageScrollViewer_ViewChanged" HorizontalScrollMode="Disabled" x:FieldModifier="Public">
                         <Grid x:Name="DisplayContainer">
                             <Frame x:Name="PageFrame" Navigated="PageFrame_Navigated" HorizontalAlignment="Stretch" 
                                    VerticalAlignment="Stretch" x:FieldModifier="Public"

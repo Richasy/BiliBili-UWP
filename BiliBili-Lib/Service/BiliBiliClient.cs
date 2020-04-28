@@ -305,5 +305,21 @@ namespace BiliBili_Lib.Service
             }
             return list;
         }
+
+        /// <summary>
+        /// 获取关注者的未读消息数
+        /// </summary>
+        /// <returns></returns>
+        public async Task<int> GetFollowerUnreadCountAsync()
+        {
+            string url = BiliTool.UrlContact(Api.APP_FOLLOWER_UNREAD, null, true);
+            string response = await BiliTool.GetTextFromWebAsync(url);
+            if (!string.IsNullOrEmpty(response))
+            {
+                var jobj = JObject.Parse(response);
+                return Convert.ToInt32(jobj["count"].ToString());
+            }
+            return -1;
+        }
     }
 }

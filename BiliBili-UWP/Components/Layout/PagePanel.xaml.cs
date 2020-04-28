@@ -30,6 +30,7 @@ namespace BiliBili_UWP.Components.Layout
         private List<Tuple<Type, object>> MainFrameHistoryList = new List<Tuple<Type, object>>();
         private List<Tuple<Type, object>> SubFrameHistoryList = new List<Tuple<Type, object>>();
         public Action ScrollToBottom = null;
+        public Action ScrollChanged = null;
         public PagePanel()
         {
             this.InitializeComponent();
@@ -353,6 +354,7 @@ namespace BiliBili_UWP.Components.Layout
         private void PageScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
         {
             var ele = sender as ScrollViewer;
+            ScrollChanged?.Invoke();
             if (ele.ExtentHeight - ele.ViewportHeight - ele.VerticalOffset < 50)
             {
                 ScrollToBottom?.Invoke();

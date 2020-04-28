@@ -9,6 +9,7 @@
     xmlns:bilibili="using:BiliBili_Lib.Models.BiliBili"
     xmlns:controls1="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:controls="using:BiliBili_UWP.Components.Controls"
+    Loaded="Page_Loaded"
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:DataType="bilibili:RegionBanner" x:Key="BannerItemTemplate">
@@ -73,7 +74,16 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <TextBlock Style="{StaticResource TitleTextStyle}" Text="全区动态" Margin="0,0,0,15"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Style="{StaticResource TitleTextStyle}" Text="全区动态" Margin="0,0,0,15"/>
+                <widgets:AsyncButton Icon="&#xE9C7;" Text="换一换" x:Name="RefreshButton" CornerRadius="15" FontSize="10"
+                                 Style="{StaticResource DefaultAsyncButtonStyle}" Grid.Column="1"
+                                 Click="RefreshButton_Click" Margin="20,0,0,0"/>
+            </Grid>
             <Grid Grid.Row="1">
                 <controls1:AdaptiveGridView x:Name="RecommendVideoView"
                           ItemTemplate="{StaticResource VideoItemTemplate}"

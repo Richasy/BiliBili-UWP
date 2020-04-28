@@ -36,6 +36,7 @@ namespace BiliBili_UWP.Pages.Main
         private ObservableCollection<VideoDetail> HistoryCollection = new ObservableCollection<VideoDetail>();
         private bool _isHistoryRequesting = false;
         private int _page = 1;
+        private double _scrollOffset = 0;
         public HistoryPage()
         {
             this.InitializeComponent();
@@ -45,6 +46,7 @@ namespace BiliBili_UWP.Pages.Main
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
             App.AppViewModel.CurrentPagePanel.ScrollToBottom = ScrollViewerBottomHandle;
+            App.AppViewModel.CurrentPagePanel.ScrollChanged = ScrollViewerChanged;
             if (_isInit || e.NavigationMode == NavigationMode.Back)
             {
                 return;
@@ -55,12 +57,14 @@ namespace BiliBili_UWP.Pages.Main
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
             App.AppViewModel.CurrentPagePanel.ScrollToBottom = null;
+            App.AppViewModel.CurrentPagePanel.ScrollChanged = null;
             base.OnNavigatingFrom(e);
         }
         public async Task Refresh()
         {
             HistoryCollection.Clear();
             _page = 1;
+            _scrollOffset = 0;
             if (biliVM.IsLogin)
             {
                 await LoadHistory();
@@ -125,6 +129,18 @@ namespace BiliBili_UWP.Pages.Main
                 App.AppViewModel.PlayBangumi(item.bangumi.ep_id, ele, true);
             else
                 App.AppViewModel.PlayVideo(item.aid, ele, "main.my-history.0.0");
+        }
+        private void ScrollViewerChanged()
+        {
+            double offset = App.AppViewModel.CurrentPagePanel.PageScrollViewer.VerticalOffset;
+            _scrollOffset = offset;
+        }
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (_scrollOffset > 0)
+            {
+                App.AppViewModel.CurrentPagePanel.PageScrollViewer.ChangeView(0, _scrollOffset, 1);
+            }
         }
     }
 }

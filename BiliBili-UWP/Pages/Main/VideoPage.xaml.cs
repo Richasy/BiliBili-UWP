@@ -74,13 +74,8 @@ namespace BiliBili_UWP.Pages.Main
                 }
                 App.AppViewModel.CurrentVideoPlayer = VideoPlayer;
                 App.AppViewModel.CurrentPlayerType = Models.Enums.PlayerType.Video;
-                if (aid == videoId)
-                    return;
-                else
-                {
-                    videoId = aid;
-                    await Refresh();
-                }
+                videoId = aid;
+                await Refresh();
             }
         }
 
@@ -164,6 +159,8 @@ namespace BiliBili_UWP.Pages.Main
             LikeButton.Text = AppTool.GetNumberAbbreviation(_detail.stat.like);
             CoinButton.Text = AppTool.GetNumberAbbreviation(_detail.stat.coin);
             FavoriteButton.Text = AppTool.GetNumberAbbreviation(_detail.stat.favorite);
+
+            DateBlock.Text = AppTool.GetReadDateString(_detail.pubdate);
 
             UPAvatar.ProfilePicture = string.IsNullOrEmpty(_detail.owner.face) ? null : new BitmapImage(new Uri(_detail.owner.face + "@50w.jpg")) { DecodePixelWidth = 40 };
             UPNameBlock.Text = _detail.owner.name;

@@ -114,7 +114,9 @@ namespace BiliBili_UWP.Components.Controls
         public static readonly DependencyProperty SubReplyVisibilityProperty =
             DependencyProperty.Register("SubReplyVisibility", typeof(Visibility), typeof(ReplyMainBlock), new PropertyMetadata(Visibility.Visible));
 
-
-
+        private void Account_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Pages.Sub.Account.DetailPage), Data.member.mid);
+        }
     }
 }

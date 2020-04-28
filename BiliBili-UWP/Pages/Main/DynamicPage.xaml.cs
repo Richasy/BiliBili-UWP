@@ -34,6 +34,7 @@ namespace BiliBili_UWP.Pages.Main
         private BiliViewModel biliVM = App.BiliViewModel;
         private TopicService _topicService = App.BiliViewModel._client.Topic;
         private string offset = "";
+        private double _scrollOffset = 0;
         public DynamicPage()
         {
             this.InitializeComponent();
@@ -48,6 +49,7 @@ namespace BiliBili_UWP.Pages.Main
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
             App.AppViewModel.CurrentPagePanel.ScrollToBottom = ScrollViewerBottomHandle;
+            App.AppViewModel.CurrentPagePanel.ScrollChanged = ScrollViewerChanged;
             if (_isInit || e.NavigationMode == NavigationMode.Back)
             {
                 return;
@@ -55,15 +57,20 @@ namespace BiliBili_UWP.Pages.Main
             await Refresh();
             _isInit = true;
         }
+
+        
+
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
             App.AppViewModel.CurrentPagePanel.ScrollToBottom = null;
+            App.AppViewModel.CurrentPagePanel.ScrollChanged = null;
             base.OnNavigatingFrom(e);
         }
         private void Reset()
         {
             DynamicCollection.Clear();
             offset = "";
+            _scrollOffset = 0;
             HolderText.Visibility = Visibility.Collapsed;
             DynamicLoadingBar.Visibility = Visibility.Collapsed;
         }
@@ -97,6 +104,18 @@ namespace BiliBili_UWP.Pages.Main
         private async void ScrollViewerBottomHandle()
         {
             await LoadDynamic();
+        }
+        private void ScrollViewerChanged()
+        {
+            double offset = App.AppViewModel.CurrentPagePanel.PageScrollViewer.VerticalOffset;
+            _scrollOffset = offset;
+        }
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (_scrollOffset > 0)
+            {
+                App.AppViewModel.CurrentPagePanel.PageScrollViewer.ChangeView(0, _scrollOffset, 1);
+            }
         }
     }
 }

@@ -250,6 +250,10 @@ namespace BiliBili_Lib.Models.Others
         /// 获取全部emoji表情
         /// </summary>
         public const string APP_EMOJI = _apiBase + "/x/v2/reply/v2/emojis";
+        /// <summary>
+        /// 获取关注用户未读消息数
+        /// </summary>
+        public const string APP_FOLLOWER_UNREAD = _apiBase + "/x/relation/followers/unread/count";
         #endregion
 
         #region 视频 Video

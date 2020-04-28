@@ -38,6 +38,7 @@ namespace BiliBili_UWP.Pages.Main
         private RegionContainer _region;
         private bool _isRecommendRequesting = false;
         private int ctime = 0;
+        private double _scrollOffset = 0;
         public RegionPage()
         {
             this.InitializeComponent();
@@ -46,6 +47,7 @@ namespace BiliBili_UWP.Pages.Main
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
             App.AppViewModel.CurrentPagePanel.ScrollToBottom = ScrollViewerBottomHandle;
+            App.AppViewModel.CurrentPagePanel.ScrollChanged = ScrollViewerChanged;
             if (e.NavigationMode == NavigationMode.Back)
                 return;
             if (e.Parameter != null && e.Parameter is RegionContainer _con)
@@ -61,11 +63,13 @@ namespace BiliBili_UWP.Pages.Main
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
             App.AppViewModel.CurrentPagePanel.ScrollToBottom = null;
+            App.AppViewModel.CurrentPagePanel.ScrollChanged = null;
             base.OnNavigatingFrom(e);
         }
         private void Reset()
         {
             ctime = 0;
+            _scrollOffset = 0;
             BannerContainer.Visibility = Visibility.Collapsed;
             RankContainer.Visibility = Visibility.Collapsed;
 
@@ -144,6 +148,23 @@ namespace BiliBili_UWP.Pages.Main
             var view = sender as ListView;
             var ele = view.ContainerFromItem(video);
             App.AppViewModel.PlayVideo(Convert.ToInt32(video.aid),ele);
+        }
+        private void ScrollViewerChanged()
+        {
+            double offset = App.AppViewModel.CurrentPagePanel.PageScrollViewer.VerticalOffset;
+            _scrollOffset = offset;
+        }
+
+        private async void RefreshButton_Click(object sender, RoutedEventArgs e)
+        {
+            await Refresh();
+        }
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (_scrollOffset > 0)
+            {
+                App.AppViewModel.CurrentPagePanel.PageScrollViewer.ChangeView(0, _scrollOffset, 1);
+            }
         }
     }
 }
