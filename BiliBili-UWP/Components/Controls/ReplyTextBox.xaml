@@ -29,7 +29,7 @@
                     </Flyout>
                 </Button.Flyout>
             </Button>
-            <TextBox x:Name="ReplyBox" Style="{StaticResource TransparentTextBoxStyle}" HorizontalAlignment="Stretch"
+            <TextBox x:Name="ReplyBox" Style="{StaticResource TransparentTextBoxStyle}" HorizontalAlignment="Stretch" FontFamily="{CustomResource Basic}"
                      VerticalAlignment="Stretch" MaxHeight="100" FontSize="12" PlaceholderText="{x:Bind PlaceholderText,Mode=OneWay}" Grid.Column="1" Margin="10,5,0,0"/>
         </Grid>
         <widgets:AsyncButton FontSize="12" Style="{StaticResource DefaultAsyncButtonStyle}" Padding="5,4"

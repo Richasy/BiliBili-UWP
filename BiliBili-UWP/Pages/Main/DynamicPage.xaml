@@ -39,7 +39,7 @@
                     </ItemsPanelTemplate>
                 </GridView.ItemsPanel>
             </GridView>
-            <TextBlock Style="{StaticResource TipTextStyle}" Text="无法加载动态列表" FontWeight="Bold" VerticalAlignment="Center"
+            <TextBlock Style="{StaticResource TipTextStyle}" Text="无法加载动态列表" FontWeight="Bold" VerticalAlignment="Top"
                            x:Name="HolderText" Visibility="Collapsed"/>
         </Grid>
 

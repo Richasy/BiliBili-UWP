@@ -25,6 +25,7 @@ namespace BiliBili_UWP.Components.Layout
     {
         private ObservableCollection<SideMenuItem> MenuItemCollection = new ObservableCollection<SideMenuItem>();
         private ObservableCollection<RegionContainer> RegionCollection = App.BiliViewModel.RegionCollection;
+        private DispatcherTimer _unreadTimer = new DispatcherTimer();
         public SidePanel()
         {
             this.InitializeComponent();
@@ -34,6 +35,13 @@ namespace BiliBili_UWP.Components.Layout
             App.AppViewModel.SelectedSideMenuItem = list.Where(p=>p.IsSelected).FirstOrDefault();
             App.BiliViewModel.IsLoginChanged -= IsLoginChanged;
             App.BiliViewModel.IsLoginChanged += IsLoginChanged;
+            _unreadTimer.Interval = TimeSpan.FromSeconds(30);
+            _unreadTimer.Tick += UnreadTimer_Tick;
+        }
+
+        private void UnreadTimer_Tick(object sender, object e)
+        {
+            GetFollowerUnread();
         }
 
         public bool IsWide
@@ -123,6 +131,8 @@ namespace BiliBili_UWP.Components.Layout
         {
             var index = MenuItemCollection.IndexOf(MenuItemCollection.Where(p => p.IsSelected).FirstOrDefault());
             SideMenuListView.SelectedIndex = index;
+            GetFollowerUnread();
+            _unreadTimer.Start();
         }
 
         private async void GetFollowerUnread()

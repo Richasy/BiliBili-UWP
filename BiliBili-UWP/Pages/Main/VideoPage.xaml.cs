@@ -354,6 +354,8 @@ namespace BiliBili_UWP.Pages.Main
 
         private async void FollowButton_Click(object sender, RoutedEventArgs e)
         {
+            if (!App.BiliViewModel.CheckAccoutStatus())
+                return;
             bool result = false;
             if (_detail.req_user.attention == 1)
             {

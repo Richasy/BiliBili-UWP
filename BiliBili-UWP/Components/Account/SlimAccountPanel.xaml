@@ -9,6 +9,7 @@
     xmlns:other="using:BiliBili_UWP.Models.UI.Others"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d"
+    Loaded="UserControl_Loaded"
     d:DesignHeight="300"
     d:DesignWidth="400">
 
@@ -46,6 +47,6 @@
         <widgets:AsyncButton Style="{StaticResource SecondaryAsyncButtonStyle}" Icon="&#xE901;"
                              Text="登录账户" x:Name="LoginButton" Click="LoginButton_Click" HorizontalAlignment="Stretch"/>
         <PersonPicture x:Name="UserAvatarNarrrow" Style="{StaticResource BasicPersonPictureStyle}" Width="40" HorizontalAlignment="Center"
-                       Visibility="Collapsed"/>
+                       Visibility="Collapsed" Tapped="UserAvatarNarrrow_Tapped"/>
     </Grid>
 </UserControl>

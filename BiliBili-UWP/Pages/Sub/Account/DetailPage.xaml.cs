@@ -67,6 +67,7 @@ namespace BiliBili_UWP.Pages.Sub.Account
             UserAvatar.ProfilePicture = null;
             PendantImage.Source = null;
             PendantImage.Visibility = Visibility.Collapsed;
+            FollowButton.IsEnabled = false;
             UserNameBlock.Text = "--";
             LikeBlock.Text = "--";
             FollowBlock.Text = "--";
@@ -87,12 +88,14 @@ namespace BiliBili_UWP.Pages.Sub.Account
         }
         public async Task Refresh()
         {
+            LoadingRing.IsActive = true;
             Reset();
             var detail = await _accountService.GetUserSpaceAsync(_uid);
             if (detail != null)
             {
                 InitDetail(detail);
             }
+            LoadingRing.IsActive = false;
         }
 
         private async void InitDetail(UserResponse detail)
@@ -161,6 +164,7 @@ namespace BiliBili_UWP.Pages.Sub.Account
                 FollowButton.Text = "已互关";
             else
                 FollowButton.Text = _user.relation.is_follow == 0 ? "关注" : "已关注";
+            FollowButton.IsEnabled = true;
         }
 
         private async Task LoadMoreVideo(bool isIncrease=false)

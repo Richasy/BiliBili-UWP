@@ -78,6 +78,7 @@ namespace BiliBili_UWP.Components.Controls
         public event EventHandler MTCLoaded;
 
         private bool _isChoiceHandling = false;
+        private bool _isMTCShow = false;
 
         public int CurrentProgress
         {
@@ -128,6 +129,8 @@ namespace BiliBili_UWP.Components.Controls
             ErrorContainer.Visibility = Visibility.Collapsed;
             bool isAutoPlay = AppTool.GetBoolSetting(Settings.IsAutoPlay);
             mediaElement.AutoPlay = isAutoPlay;
+            bool isShowDanmaku = AppTool.GetBoolSetting(Settings.IsDanmakuOpen);
+            DanmakuVisibilityButton.Content = isShowDanmaku ? "" : "";
             _maxDanmakuNumber = Convert.ToInt32(AppTool.GetLocalSetting(Settings.MaxDanmuNumber, "200"));
             _playData = null;
             QualityCollection.Clear();
@@ -198,8 +201,7 @@ namespace BiliBili_UWP.Components.Controls
             }
             if (_playData != null)
             {
-                if (DanmakuList.Count == 0)
-                    DanmakuList = (await _danmakuParse.ParseBiliBili(Convert.ToInt64(partId)));
+                await LoadDanmaku();
                 MediaSource mediaSource = null;
                 if (_playData is VideoPlayDash)
                     mediaSource = await HandleDashSource();
@@ -218,7 +220,8 @@ namespace BiliBili_UWP.Components.Controls
                     VideoMTC.IsInit = false;
                     VideoMTC.IsPlaying = mediaElement.AutoPlay;
                     VideoMTC.IsInit = true;
-                    Resume();
+                    if (mediaElement.AutoPlay)
+                        Resume();
                 }
                 else
                     ErrorContainer.Visibility = Visibility.Visible;
@@ -256,8 +259,7 @@ namespace BiliBili_UWP.Components.Controls
             }
             if (_playData != null)
             {
-                if (DanmakuList.Count == 0)
-                    DanmakuList = (await _danmakuParse.ParseBiliBili(Convert.ToInt64(part.cid)));
+                await LoadDanmaku();
                 MediaSource mediaSource = null;
                 if (_playData is VideoPlayDash)
                     mediaSource = await HandleDashSource();
@@ -281,13 +283,32 @@ namespace BiliBili_UWP.Components.Controls
             LoadingBar.Visibility = Visibility.Collapsed;
         }
 
+        private async Task LoadDanmaku()
+        {
+            bool isShow = AppTool.GetBoolSetting(Settings.IsDanmakuOpen);
+            DanmakuList.Clear();
+            if (isShow)
+            {
+                if (isBangumi)
+                    DanmakuList = await _danmakuParse.ParseBiliBili(Convert.ToInt64(_bangumiPart.cid));
+                else
+                    DanmakuList = await _danmakuParse.ParseBiliBili(Convert.ToInt64(_partId));
+            }
+        }
+
         private void DanmuTimer_Tick(object sender, object e)
         {
-            if (_pointerHoldCount >= 5 && _isCatchPointer && Window.Current.CoreWindow.PointerCursor != null)
+            if (_pointerHoldCount >= 3)
             {
-                Window.Current.CoreWindow.PointerCursor = null;
+                if(_isCatchPointer && Window.Current.CoreWindow.PointerCursor != null)
+                    Window.Current.CoreWindow.PointerCursor = null;
+                if (_isMTCShow)
+                {
+                    _isMTCShow = false;
+                    VideoMTC.Hide();
+                }
             }
-            if (_pointerHoldCount < 5)
+            if (_pointerHoldCount < 3)
                 _pointerHoldCount++;
             if (_heartBeatCount >= 10)
             {
@@ -424,12 +445,6 @@ namespace BiliBili_UWP.Components.Controls
             return config;
         }
 
-        private void mediaElement_PointerMoved(object sender, PointerRoutedEventArgs e)
-        {
-            _pointerHoldCount = 0;
-            Window.Current.CoreWindow.PointerCursor = new Windows.UI.Core.CoreCursor(Windows.UI.Core.CoreCursorType.Arrow, 0);
-        }
-
         /// <summary>
         /// 弹幕是否该被屏蔽（不显示）
         /// </summary>
@@ -470,6 +485,7 @@ namespace BiliBili_UWP.Components.Controls
         private void UserControl_PointerExited(object sender, PointerRoutedEventArgs e)
         {
             _isCatchPointer = false;
+            Window.Current.CoreWindow.PointerCursor = new Windows.UI.Core.CoreCursor(Windows.UI.Core.CoreCursorType.Arrow, 0);
         }
 
         private void VideoMTC_PlayButtonClick(object sender, bool e)
@@ -604,6 +620,68 @@ namespace BiliBili_UWP.Components.Controls
         private void ChoiceItemsControl_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             ((sender as ItemsControl).ItemsPanelRoot as ItemsWrapGrid).ItemWidth = e.NewSize.Width / 2;
+        }
+
+        public Visibility DanmakuBarVisibility
+        {
+            get { return (Visibility)GetValue(DanmakuBarVisibilityProperty); }
+            set { SetValue(DanmakuBarVisibilityProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for DanmakuBarVisibility.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty DanmakuBarVisibilityProperty =
+            DependencyProperty.Register("DanmakuBarVisibility", typeof(Visibility), typeof(VideoPlayer), new PropertyMetadata(Visibility.Visible));
+
+        private async void DanmakuVisibilityButton_Click(object sender, RoutedEventArgs e)
+        {
+            bool isShowDanmaku = AppTool.GetBoolSetting(Settings.IsDanmakuOpen);
+            isShowDanmaku = !isShowDanmaku;
+            AppTool.WriteLocalSetting(Settings.IsDanmakuOpen, isShowDanmaku.ToString());
+            DanmakuVisibilityButton.Content = isShowDanmaku ? "" : "";
+            await LoadDanmaku();
+        }
+
+        private async void SendDanmakuButton_Click(object sender, RoutedEventArgs e)
+        {
+            await SendDanmaku();
+        }
+
+        private async void DanmakuBox_KeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == VirtualKey.Enter)
+            {
+                await SendDanmaku();
+            }
+        }
+
+        private async Task SendDanmaku()
+        {
+            string text = DanmakuBox.Text;
+            if (!string.IsNullOrEmpty(text))
+            {
+                SendDanmakuButton.IsEnabled = false;
+                DanmakuBox.IsEnabled = false;
+                // send
+                SendDanmakuButton.IsEnabled = true;
+                DanmakuBox.IsEnabled = true;
+                DanmakuBox.Text = string.Empty;
+            }
+        }
+
+        private void UserControl_PointerMoved(object sender, PointerRoutedEventArgs e)
+        {
+            _pointerHoldCount = 0;
+            if (!_isMTCShow)
+            {
+                _isMTCShow = true;
+                VideoMTC.Show();
+            }
+            Window.Current.CoreWindow.PointerCursor = new Windows.UI.Core.CoreCursor(Windows.UI.Core.CoreCursorType.Arrow, 0);
+        }
+
+        private void DanmakuSettingButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

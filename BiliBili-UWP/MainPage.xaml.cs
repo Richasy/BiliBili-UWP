@@ -46,11 +46,8 @@ namespace BiliBili_UWP
             App.AppViewModel.CheckAppUpdate();
             var popup = new WaitingPopup("正在初始化");
             popup.ShowPopup();
-            await App.BiliViewModel.AutoLoginAsync();
             await App.BiliViewModel.GetRegionsAsync();
-            await App.BiliViewModel.InitEmoji(true);
             Window.Current.Dispatcher.AcceleratorKeyActivated += AccelertorKeyActivedHandle;
-
             PagePanel.NavigateToPage(Models.Enums.SideMenuItemType.Home);
             popup.HidePopup();
             _isInit = true;

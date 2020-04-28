@@ -52,5 +52,6 @@
                 </Grid>
             </StackPanel>
         </ScrollViewer>
+        <ProgressRing x:Name="LoadingRing" Style="{StaticResource BasicProgressRingStyle}" Grid.Row="2"/>
     </Grid>
 </Page>

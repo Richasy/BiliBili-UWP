@@ -17,10 +17,15 @@
     LostFocus="UserControl_LostFocus"
     SizeChanged="UserControl_SizeChanged"
     PointerEntered="UserControl_PointerEntered"
+    PointerMoved="UserControl_PointerMoved"
     PointerExited="UserControl_PointerExited">
 
     <Grid Background="{ThemeResource PageBackground}">
-        <MediaPlayerElement x:Name="mediaElement"  AreTransportControlsEnabled="True" PointerMoved="mediaElement_PointerMoved"
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <MediaPlayerElement x:Name="mediaElement"  AreTransportControlsEnabled="True"
                             Background="{ThemeResource PageBackground}">
             <MediaPlayerElement.TransportControls>
                 <others:VideoTransportControls x:Name="VideoMTC"
@@ -37,6 +42,7 @@
                                                CompactOverlayButtonClick="VideoMTC_CompactOverlayButtonClick"
                                                SeparateButtonClick="VideoMTC_SeparateButtonClick"
                                                Loaded="VideoMTC_Loaded"
+                                               ShowAndHideAutomatically="False"
                                                />
             </MediaPlayerElement.TransportControls>
         </MediaPlayerElement>
@@ -65,5 +71,23 @@
             <TextBlock Text="嗨呀！加载失败了，就问你气不气？" HorizontalAlignment="Center"
                        TextAlignment="Center" Margin="0,10,0,0"/>
         </StackPanel>
+        <Grid Grid.Row="1" Visibility="{x:Bind DanmakuBarVisibility,Mode=OneWay}" Background="{ThemeResource MediaTransportControlsPanelBackground}"
+              Padding="15,5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Horizontal">
+                <Button Style="{StaticResource TransparentButtonStyle}" x:Name="DanmakuVisibilityButton" Content="&#xEA43;"
+                    FontFamily="{StaticResource Icon}" Click="DanmakuVisibilityButton_Click" FontSize="25"/>
+                <Button Style="{StaticResource TransparentButtonStyle}" x:Name="DanmakuSettingButton" Content="&#xEA25;"
+                    FontFamily="{StaticResource Icon}" Click="DanmakuSettingButton_Click"  FontSize="25" Margin="10,0,0,0"/>
+            </StackPanel>
+            <TextBox Style="{StaticResource TransparentTextBoxStyle}" Margin="15,0" VerticalAlignment="Center" PlaceholderText="哔哩哔哩[]~(￣▽￣)~*"
+                     Grid.Column="1" x:Name="DanmakuBox" HorizontalAlignment="Stretch" KeyDown="DanmakuBox_KeyDown" Padding="6,5"/>
+            <Button Style="{StaticResource TransparentButtonStyle}" x:Name="SendDanmakuButton" Content="&#xE9D1;" Grid.Column="2" VerticalAlignment="Center"
+                    FontFamily="{StaticResource Icon}" Click="SendDanmakuButton_Click"/>
+        </Grid>
     </Grid>
 </UserControl>

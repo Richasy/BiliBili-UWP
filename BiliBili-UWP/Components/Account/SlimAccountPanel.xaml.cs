@@ -112,8 +112,33 @@ namespace BiliBili_UWP.Components.Account
 
         private void Account_Tapped(object sender, TappedRoutedEventArgs e)
         {
+            ToMe();
+        }
+
+        private void ToMe()
+        {
             var me = App.BiliViewModel._client.Account.Me;
             App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Pages.Sub.Account.DetailPage), me.mid);
+        }
+
+        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            LoginButton.IsLoading = true;
+            await App.BiliViewModel.AutoLoginAsync();
+            LoginButton.IsLoading = false;
+        }
+
+        private void UserAvatarNarrrow_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            if (App.BiliViewModel.IsLogin)
+            {
+                ToMe();
+            }
+            else
+            {
+                if(!LoginButton.IsLoading)
+                    App.BiliViewModel.ShowLoginPopup();
+            }
         }
     }
 }

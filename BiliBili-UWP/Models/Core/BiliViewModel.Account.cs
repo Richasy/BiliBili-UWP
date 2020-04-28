@@ -37,6 +37,8 @@ namespace BiliBili_UWP.Models.Core
                 }
             }
         }
+
+        public bool IsLogining = false;
         
         public event EventHandler<bool> IsLoginChanged;
         public LoginPopup LoginPopup;

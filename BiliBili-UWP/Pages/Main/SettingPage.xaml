@@ -34,6 +34,8 @@
                 <ComboBox Style="{StaticResource BasicComboBoxStyle}" ItemContainerStyle="{StaticResource BasicComboBoxItemContainerStyle}"
                           HeaderTemplate="{StaticResource TipHeaderStyle}" Header="应用字体" x:Name="FontComboBox" SelectionChanged="FontComboBox_SelectionChanged"
                           ItemTemplate="{StaticResource FontItemTemplate}" Margin="0,15,0,0" ItemsSource="{x:Bind FontCollection}"/>
+                <ToggleSwitch Style="{StaticResource BasicToggleSwitchStyle}" HeaderTemplate="{StaticResource TipHeaderStyle}"
+                              Header="播放页自动播放" x:Name="AutoPlaySwitch" Toggled="AutoPlaySwitch_Toggled" Margin="0,15,0,0"/>
             </StackPanel>
         </Grid>
     </Grid>

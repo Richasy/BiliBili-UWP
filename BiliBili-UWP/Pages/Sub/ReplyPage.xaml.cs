@@ -73,12 +73,15 @@ namespace BiliBili_UWP.Pages.Sub
         public async Task Refresh()
         {
             Reset();
+            LoadingRing.IsActive = true;
             await LoadReplies();
+            LoadingRing.IsActive = false;
             _isInit = true;
         }
 
         private async Task LoadReplies()
         {
+            _isRequesting = true;
             var replies = await _client.GetReplyAsync(oid, next, mode, type);
             if (replies != null)
             {
@@ -99,6 +102,7 @@ namespace BiliBili_UWP.Pages.Sub
                     TopReplyContainer.Visibility = Visibility.Collapsed;
                 }
             }
+            _isRequesting = false;
             HolderText.Visibility = ReplyCollection.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
         }
 
@@ -124,9 +128,7 @@ namespace BiliBili_UWP.Pages.Sub
                 if (ReplyCollection.Count >= total || isEnd)
                     return;
                 LoadingBar.Visibility = Visibility.Visible;
-                _isRequesting = true;
                 await LoadReplies();
-                _isRequesting = false;
                 LoadingBar.Visibility = Visibility.Collapsed;
             }
         }

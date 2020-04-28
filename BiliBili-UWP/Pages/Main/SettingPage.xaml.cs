@@ -38,13 +38,15 @@ namespace BiliBili_UWP.Pages.Main
             this.InitializeComponent();
             NavigationCacheMode = NavigationCacheMode.Enabled;
         }
-        protected async override void OnNavigatedTo(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             if (_isInit || e.NavigationMode == NavigationMode.Back)
                 return;
 
             string theme = AppTool.GetLocalSetting(Settings.Theme, "Light");
             ThemeComboBox.SelectedIndex = theme == "Light" ? 0 : 1;
+            bool isAutoPlay = AppTool.GetBoolSetting(Settings.IsAutoPlay);
+            AutoPlaySwitch.IsOn = isAutoPlay;
 
             FontInit();
 
@@ -52,7 +54,7 @@ namespace BiliBili_UWP.Pages.Main
             _isInit = true;
         }
 
-        private async void FontInit()
+        private void FontInit()
         {
             FontComboBox.IsEnabled = false;
             var fonts = SystemFont.GetFonts();
@@ -103,6 +105,13 @@ namespace BiliBili_UWP.Pages.Main
                 AppTool.WriteLocalSetting(Settings.FontFamily, item.Name);
                 await ShowRestartDialog();
             }
+        }
+
+        private void AutoPlaySwitch_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (!_isInit)
+                return;
+            AppTool.WriteLocalSetting(Settings.IsAutoPlay, AutoPlaySwitch.IsOn.ToString());
         }
     }
 }

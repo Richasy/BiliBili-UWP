@@ -37,7 +37,7 @@
                     <TextBlock Style="{StaticResource CaptionTextStyle}" FontSize="14" Text="{x:Bind Name}"/>
                 </StackPanel>
                 <Border Grid.Column="3" VerticalAlignment="Center" Padding="5,3" CornerRadius="2" Background="{ThemeResource PrimaryColorOpacity}"
-                        Visibility="{x:Bind Unread,Converter={StaticResource SideMenuExtraVisibleConverter},Mode=OneWay}">
+                        Visibility="{x:Bind Unread,Converter={StaticResource SideMenuExtraVisibleConverter},Mode=OneWay}" Margin="0,0,30,0">
                     <TextBlock Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource PrimaryColor}" VerticalAlignment="Center"
                            Text="{x:Bind Unread,Mode=OneWay}"/>
                 </Border>
