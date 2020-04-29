@@ -21,6 +21,8 @@
     <SolidColorBrush x:Key="LineColor" Color="#3F4567"/>
     <SolidColorBrush x:Key="LineColorOver" Color="#57608F"/>
 
+    <Color x:Key="ShadowColor">#111111</Color>
+
     <SolidColorBrush x:Key="ProgressColor" Color="#000000" Opacity="0.45"/>
     <SolidColorBrush x:Key="ScreenMaskColor" Color="Black" Opacity="0.3"/>
 

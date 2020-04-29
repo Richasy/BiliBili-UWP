@@ -3,6 +3,7 @@ using BiliBili_Lib.Models.BiliBili.Account;
 using BiliBili_Lib.Service;
 using BiliBili_Lib.Tools;
 using BiliBili_UWP.Components.Widgets;
+using BiliBili_UWP.Dialogs;
 using BiliBili_UWP.Models.UI;
 using BiliBili_UWP.Models.UI.Interface;
 using System;
@@ -69,6 +70,8 @@ namespace BiliBili_UWP.Pages.Sub.Account
             UserAvatar.ProfilePicture = null;
             PendantImage.Source = null;
             PendantImage.Visibility = Visibility.Collapsed;
+            LogoutButton.Visibility = Visibility.Collapsed;
+            FollowButton.Visibility = Visibility.Collapsed;
             FollowButton.IsEnabled = false;
             UserNameBlock.Text = "--";
             LikeBlock.Text = "--";
@@ -158,9 +161,15 @@ namespace BiliBili_UWP.Pages.Sub.Account
         private void CheckFollowButtonStatus()
         {
             if (App.BiliViewModel.IsLogin && App.BiliViewModel._client.Account.Me.mid == _uid)
+            {
                 FollowButton.Visibility = Visibility.Collapsed;
+                LogoutButton.Visibility = Visibility.Visible;
+            }
             else
+            {
                 FollowButton.Visibility = Visibility.Visible;
+                LogoutButton.Visibility = Visibility.Collapsed;
+            }
             FollowButton.Style = _user.relation.is_follow == 1 ? UIHelper.GetStyle("DefaultAsyncButtonStyle") : UIHelper.GetStyle("PrimaryAsyncButtonStyle");
             if (_user.relation.is_follow == 1 && _user.relation.is_followed == 1)
                 FollowButton.Text = "已互关";
@@ -260,6 +269,17 @@ namespace BiliBili_UWP.Pages.Sub.Account
                 App.AppViewModel.PlayVideo(Convert.ToInt32(data.param));
             else if (data.@goto == "bangumi")
                 App.AppViewModel.PlayBangumi(Convert.ToInt32(data.param), null, true);
+        }
+
+        private async void LogoutButton_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new ConfirmDialog("退出提醒", "是否退出当前登录的账户？");
+            var result = await dialog.ShowAsync();
+            if (result == ContentDialogResult.Primary)
+            {
+                App.BiliViewModel.ClearAccountInformation();
+                await Refresh();
+            }
         }
     }
 }

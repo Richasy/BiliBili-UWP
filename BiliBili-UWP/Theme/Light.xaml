@@ -18,6 +18,8 @@
     <SolidColorBrush x:Key="TipTextColor" Color="#999AA1"/>
     <SolidColorBrush x:Key="MaskTextColor" Color="#d3dbe8"/>
 
+    <Color x:Key="ShadowColor">#AAAAAA</Color>
+
     <SolidColorBrush x:Key="LineColor" Color="#E1E1E1"/>
     <SolidColorBrush x:Key="LineColorOver" Color="#D9D9D9"/>
 

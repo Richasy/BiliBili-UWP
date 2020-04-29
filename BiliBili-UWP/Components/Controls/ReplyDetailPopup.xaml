@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:bilibili="using:BiliBili_Lib.Models.BiliBili"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -83,53 +84,58 @@
     </UserControl.Resources>
     <Grid x:Name="PopupBackground"
           Background="{ThemeResource ScreenMaskColor}">
-        <Grid x:Name="PopupContainer" VerticalAlignment="Center" HorizontalAlignment="Center"
-              Width="500" Background="{ThemeResource PageBackground}" CornerRadius="5"
-              >
-            <Grid.RenderTransform>
+        <controls:DropShadowPanel BlurRadius="25"
+                                  Color="{ThemeResource ShadowColor}"
+                                  x:Name="PopupContainer"
+                                  Opacity="0.03"
+                                   VerticalAlignment="Center" HorizontalAlignment="Center"
+                                  >
+            <controls:DropShadowPanel.RenderTransform>
                 <TranslateTransform Y="-20"></TranslateTransform>
-            </Grid.RenderTransform>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <Grid Padding="25,15,25,10">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-                <TextBlock Style="{StaticResource TitleTextStyle}" Text="评论详情" Foreground="{ThemeResource NormalTextColor}" VerticalAlignment="Center"/>
-                <Button Style="{StaticResource DefaultCircleButtonStyle}" x:Name="CloseButton" Margin="10,0,0,0" Content="&#xEA15;" Grid.Column="1" VerticalAlignment="Center"
+            </controls:DropShadowPanel.RenderTransform>
+            <Grid Width="500" Background="{ThemeResource PageBackground}" CornerRadius="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid Padding="25,15,25,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Style="{StaticResource TitleTextStyle}" Text="评论详情" Foreground="{ThemeResource NormalTextColor}" VerticalAlignment="Center"/>
+                    <Button Style="{StaticResource DefaultCircleButtonStyle}" x:Name="CloseButton" Margin="10,0,0,0" Content="&#xEA15;" Grid.Column="1" VerticalAlignment="Center"
                         Click="CloseButton_Click" Width="30" Height="30"/>
-            </Grid>
-            <ScrollViewer Style="{StaticResource BasicScrollViewer}" Padding="25,0,25,10" Grid.Row="1"
+                </Grid>
+                <ScrollViewer Style="{StaticResource BasicScrollViewer}" Padding="25,0,25,10" Grid.Row="1"
                           ViewChanged="ScrollViewer_ViewChanged" x:Name="ScrollViewer">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                    <Grid Background="{ThemeResource CardBackground}" Padding="10" CornerRadius="4" Margin="0,0,0,10">
-                        <local:ReplyMainBlock x:Name="HeaderBlock" HorizontalAlignment="Stretch" TopBadgeVisibility="Collapsed"
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid Background="{ThemeResource CardBackground}" Padding="10" CornerRadius="4" Margin="0,0,0,10">
+                            <local:ReplyMainBlock x:Name="HeaderBlock" HorizontalAlignment="Stretch" TopBadgeVisibility="Collapsed"
                                           SubReplyVisibility="Collapsed" CommentButtonClick="ReplyMainBlock_CommentButtonClick"/>
-                    </Grid>
-                    <Grid Grid.Row="1">
-                        <ListView ItemTemplate="{StaticResource ReplyItemTemplate}"
+                        </Grid>
+                        <Grid Grid.Row="1">
+                            <ListView ItemTemplate="{StaticResource ReplyItemTemplate}"
                       ItemsSource="{x:Bind ReplyCollection}"
                       SelectionMode="None"
                       ItemContainerStyle="{StaticResource TransparentListViewContainerStyle}"
                       Style="{StaticResource NoScrollListView}"
                       x:Name="ReplyListView"/>
-                        <TextBlock Style="{StaticResource TipTextStyle}" Text="暂无追加评论" FontWeight="Bold"
+                            <TextBlock Style="{StaticResource TipTextStyle}" Text="暂无追加评论" FontWeight="Bold"
                            x:Name="HolderText" Visibility="Collapsed" VerticalAlignment="Top"/>
-                        <ProgressBar VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Foreground="{ThemeResource PrimaryColor}"
+                            <ProgressBar VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Foreground="{ThemeResource PrimaryColor}"
                              IsIndeterminate="True" Visibility="Collapsed" x:Name="LoadingBar"/>
+                        </Grid>
                     </Grid>
-                </Grid>
-            </ScrollViewer>
-            <local:ReplyTextBox Grid.Row="2" SendReply="ReplyTextBox_SendReply" x:Name="ReplyTextBox" Margin="10"/>
-            <ProgressRing Style="{StaticResource BasicProgressRingStyle}" x:Name="LoadingRing"/>
-        </Grid>
+                </ScrollViewer>
+                <local:ReplyTextBox Grid.Row="2" SendReply="ReplyTextBox_SendReply" x:Name="ReplyTextBox" Margin="10"/>
+                <ProgressRing Style="{StaticResource BasicProgressRingStyle}" x:Name="LoadingRing"/>
+            </Grid>
+        </controls:DropShadowPanel>
     </Grid>
 </UserControl>

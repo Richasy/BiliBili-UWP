@@ -5,6 +5,7 @@
     xmlns:local="using:BiliBili_UWP.Components.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -77,31 +78,37 @@
     </UserControl.Resources>
     <Grid x:Name="PopupBackground"
           Background="{ThemeResource ScreenMaskColor}">
-        <Grid x:Name="PopupContainer" VerticalAlignment="Center" HorizontalAlignment="Center"
-              Width="500" Background="{ThemeResource PageBackground}" CornerRadius="5">
-            <Grid.RenderTransform>
+        <controls:DropShadowPanel BlurRadius="25"
+                                  Color="{ThemeResource ShadowColor}"
+                                  x:Name="PopupContainer"
+                                  Opacity="0.03"
+                                   VerticalAlignment="Center" HorizontalAlignment="Center"
+                                  >
+            <controls:DropShadowPanel.RenderTransform>
                 <TranslateTransform Y="-20"></TranslateTransform>
-            </Grid.RenderTransform>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="1*" />
-            </Grid.RowDefinitions>
-            <Grid Padding="25,15,25,10">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-                <TextBlock Style="{StaticResource TitleTextStyle}" x:Name="TitleBlock" Foreground="{ThemeResource NormalTextColor}" VerticalAlignment="Center"/>
-                <Button Style="{StaticResource DefaultCircleButtonStyle}" x:Name="NewWebButton" Margin="10,0,0,0" Content="&#xE97C;" Grid.Column="1" VerticalAlignment="Center"
+            </controls:DropShadowPanel.RenderTransform>
+            <Grid Width="500" Background="{ThemeResource PageBackground}" CornerRadius="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="1*" />
+                </Grid.RowDefinitions>
+                <Grid Padding="25,15,25,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Style="{StaticResource TitleTextStyle}" x:Name="TitleBlock" Foreground="{ThemeResource NormalTextColor}" VerticalAlignment="Center"/>
+                    <Button Style="{StaticResource DefaultCircleButtonStyle}" x:Name="NewWebButton" Margin="10,0,0,0" Content="&#xE97C;" Grid.Column="1" VerticalAlignment="Center"
                         Click="NewWebButton_Click"  Width="30" Height="30"/>
-                <Button Style="{StaticResource DefaultCircleButtonStyle}" x:Name="CloseButton" Margin="10,0,0,0" Content="&#xEA15;" Grid.Column="2" VerticalAlignment="Center"
+                    <Button Style="{StaticResource DefaultCircleButtonStyle}" x:Name="CloseButton" Margin="10,0,0,0" Content="&#xEA15;" Grid.Column="2" VerticalAlignment="Center"
                         Click="CloseButton_Click" Width="30" Height="30"/>
-            </Grid>
-            <WebView DefaultBackgroundColor="Transparent"
+                </Grid>
+                <WebView DefaultBackgroundColor="Transparent"
                      Grid.Row="1" HorizontalAlignment="Stretch"
                      VerticalAlignment="Stretch"
                      x:Name="PopWebView"/>
-        </Grid>
+            </Grid>
+        </controls:DropShadowPanel>
     </Grid>
 </UserControl>

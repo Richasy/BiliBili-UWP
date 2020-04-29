@@ -77,39 +77,48 @@
     </UserControl.Resources>
     <Grid x:Name="PopupBackground"
           Background="{ThemeResource ScreenMaskColor}">
-        <Grid Background="{ThemeResource PageBackground}" CornerRadius="4"
-               x:Name="PopupContainer"
+        <controls:DropShadowPanel BlurRadius="25"
+                                  Color="{ThemeResource ShadowColor}"
+                                  x:Name="PopupContainer"
+                                  Opacity="0.01"
+                                  OffsetY="6"
+                                   VerticalAlignment="Center" HorizontalAlignment="Center"
+                                  >
+            <controls:DropShadowPanel.RenderTransform>
+                <TranslateTransform Y="-20"></TranslateTransform>
+            </controls:DropShadowPanel.RenderTransform>
+            <Grid Background="{ThemeResource PageBackground}" CornerRadius="4"
               MaxWidth="400"
               Padding="40,20,0,20"
               MaxHeight="700"
-              VerticalAlignment="Center" HorizontalAlignment="Center">
-            <Grid.RenderTransform>
-                <TranslateTransform Y="-20"></TranslateTransform>
-            </Grid.RenderTransform>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <controls:ImageEx x:Name="AppIcon" Source="ms-appx:///Assets/bilibili logo.png" DecodePixelWidth="50" Width="50" Height="50" Margin="0,0,40,0" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0,20,40,0">
-                <TextBlock Text="升级说明" Style="{StaticResource TitleTextStyle}" Foreground="{ThemeResource ImportantTextColor}"/>
-                <TextBlock HorizontalAlignment="Center" x:Name="VersionBlock" VerticalAlignment="Center" Margin="10,0,0,0" Style="{StaticResource SmallTipTextStyle}"/>
-            </StackPanel>
-            <ScrollViewer Style="{StaticResource BasicScrollViewer}" HorizontalAlignment="Center"
+             >
+                
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <controls:ImageEx x:Name="AppIcon" Source="ms-appx:///Assets/bilibili logo.png" DecodePixelWidth="50" Width="50" Height="50" Margin="0,0,40,0" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0,20,40,0">
+                    <TextBlock Text="升级说明" Style="{StaticResource TitleTextStyle}" Foreground="{ThemeResource ImportantTextColor}"/>
+                    <TextBlock HorizontalAlignment="Center" x:Name="VersionBlock" VerticalAlignment="Center" Margin="10,0,0,0" Style="{StaticResource SmallTipTextStyle}"/>
+                </StackPanel>
+                <ScrollViewer Style="{StaticResource BasicScrollViewer}" HorizontalAlignment="Center"
                           Margin="0,20,10,0"
                           Padding="0,0,30,0"
                           Grid.Row="2">
-                <controls:MarkdownTextBlock Style="{StaticResource BasicMarkdownTextBlock}" x:Name="MarkdownBlock"
+                    <controls:MarkdownTextBlock Style="{StaticResource BasicMarkdownTextBlock}" x:Name="MarkdownBlock"
                                             LinkClicked="MarkdownBlock_LinkClicked"
                                             TextWrapping="Wrap"
                                                 FontSize="15"
                                                 Foreground="{ThemeResource NormalTextColor}"
                                                 Grid.Row="1"
                                             />
-            </ScrollViewer>
-            <Button Style="{StaticResource PrimaryCircleButtonStyle}" Margin="0,20,40,0" Grid.Row="3" Content="&#xE92F;" Name="CloseButton" Click="CloseButton_Click" HorizontalAlignment="Center" Width="40" Height="40"/>
-        </Grid>
+                </ScrollViewer>
+                <Button Style="{StaticResource PrimaryCircleButtonStyle}" Margin="0,20,40,0" Grid.Row="3" Content="&#xE92F;" Name="CloseButton" Click="CloseButton_Click" HorizontalAlignment="Center" Width="40" Height="40"/>
+            </Grid>
+        </controls:DropShadowPanel>
+        
     </Grid>
 </UserControl>

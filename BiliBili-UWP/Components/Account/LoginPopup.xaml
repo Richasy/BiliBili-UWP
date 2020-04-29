@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -83,8 +84,8 @@
             <Viewbox.RenderTransform>
                 <TranslateTransform Y="-20"></TranslateTransform>
             </Viewbox.RenderTransform>
-            <Grid Padding="40,25" Background="{ThemeResource PageBackground}" CornerRadius="5" Width="450" MinHeight="520"
-              >
+
+            <Grid Padding="40,25" Background="{ThemeResource PageBackground}" CornerRadius="5" Width="450" MinHeight="520">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -112,6 +113,7 @@
                 <Button Style="{StaticResource PrimaryGhostCircleButtonStyle}" Content="&#xEA15;" VerticalAlignment="Top"
                         HorizontalAlignment="Right" x:Name="CloseButton" Click="CloseButton_Click"/>
             </Grid>
+
         </Viewbox>
         <Grid x:Name="WebContainer" Visibility="Collapsed" Background="{ThemeResource ScreenMaskColor}">
             <Grid HorizontalAlignment="Center" VerticalAlignment="Center">

@@ -69,8 +69,13 @@
                             <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="10" Text="粉丝" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Grid>
-                    <widgets:AsyncButton Grid.Row="1" HorizontalAlignment="Stretch" Text="关注" Style="{StaticResource PrimaryAsyncButtonStyle}"
-                                         x:Name="FollowButton" Click="FollowButton_Click" Padding="0,3" Margin="20,0" FontSize="10"/>
+                    <Grid Grid.Row="1" Margin="20,0">
+                        <widgets:AsyncButton HorizontalAlignment="Stretch" Text="关注" Style="{StaticResource PrimaryAsyncButtonStyle}"
+                                         x:Name="FollowButton" Click="FollowButton_Click" Padding="0,3" FontSize="11"/>
+                        <widgets:AsyncButton HorizontalAlignment="Stretch" Text="退出" Style="{StaticResource PrimaryAsyncButtonStyle}"
+                                         x:Name="LogoutButton" Click="LogoutButton_Click" Visibility="Collapsed"  Padding="0,3" FontSize="11"/>
+                    </Grid>
+                    
                 </Grid>
             </Grid>
             <Grid Grid.Row="1" Margin="0,15,0,0">
