@@ -38,7 +38,7 @@
                 <PersonPicture Width="30" Height="30" Style="{StaticResource BasicPersonPictureStyle}" x:Name="UserAvatar"
                            VerticalAlignment="Center"/>
                 <StackPanel VerticalAlignment="Center" Margin="10,0,0,0">
-                    <TextBlock x:Name="UserNameBlock" Style="{StaticResource SmallTipTextStyle}" FontSize="12" FontWeight="Bold"
+                    <TextBlock x:Name="UserNameBlock" Style="{StaticResource SmallTipTextStyle}" FontSize="13" FontWeight="Bold"
                            Foreground="{ThemeResource ImportantTextColor}" MaxWidth="195"/>
                     <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="10" x:Name="TipBlock" Margin="0,5,0,0"/>
                 </StackPanel>

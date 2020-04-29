@@ -48,8 +48,6 @@ namespace BiliBili_UWP.Pages.Main
             bool isAutoPlay = AppTool.GetBoolSetting(Settings.IsAutoPlay);
             AutoPlaySwitch.IsOn = isAutoPlay;
 
-            FontInit();
-
             base.OnNavigatedTo(e);
             _isInit = true;
         }
@@ -112,6 +110,11 @@ namespace BiliBili_UWP.Pages.Main
             if (!_isInit)
                 return;
             AppTool.WriteLocalSetting(Settings.IsAutoPlay, AutoPlaySwitch.IsOn.ToString());
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            FontInit();
         }
     }
 }

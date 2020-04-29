@@ -20,12 +20,13 @@
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
     <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
     <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
-    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
-    <AppxPackageDir>E:\Package\BiliBili\</AppxPackageDir>
-    <GenerateTestArtifacts>True</GenerateTestArtifacts>
+    <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
+    <AppxPackageDir>D:\Package\BiliBili\</AppxPackageDir>
+    <GenerateTestArtifacts>False</GenerateTestArtifacts>
     <AppxBundle>Always</AppxBundle>
-    <AppxBundlePlatforms>x64</AppxBundlePlatforms>
+    <AppxBundlePlatforms>x86|x64|arm|arm64</AppxBundlePlatforms>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
+    <PackageCertificateThumbprint>089117B0AE9A8BE629C6C956F9A0E20AC50ECD20</PackageCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -190,6 +191,9 @@
     <Compile Include="Components\Layout\SidePanel.xaml.cs">
       <DependentUpon>SidePanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Components\Others\UpdatePopup.xaml.cs">
+      <DependentUpon>UpdatePopup.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Components\Widgets\AsyncButton.xaml.cs">
       <DependentUpon>AsyncButton.xaml</DependentUpon>
     </Compile>
@@ -271,11 +275,17 @@
     <Compile Include="Pages\Main\BangumiPage.xaml.cs">
       <DependentUpon>BangumiPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\Main\DownloadPage.xaml.cs">
+      <DependentUpon>DownloadPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Main\DynamicPage.xaml.cs">
       <DependentUpon>DynamicPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Main\FavoritePage.xaml.cs">
       <DependentUpon>FavoritePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Main\HelpPage.xaml.cs">
+      <DependentUpon>HelpPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Main\HistoryPage.xaml.cs">
       <DependentUpon>HistoryPage.xaml</DependentUpon>
@@ -427,7 +437,9 @@
     <Content Include="Components\HTML\Dark.css" />
     <Content Include="Components\HTML\Light.css" />
     <Content Include="Components\HTML\ShowPage.html" />
+    <Content Include="Others\Introduce.txt" />
     <Content Include="Others\Update.txt" />
+    <None Include="Package.StoreAssociation.xml" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -526,6 +538,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Components\Others\UpdatePopup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Components\Widgets\AsyncButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -582,11 +598,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\Main\DownloadPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\Main\DynamicPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\Main\FavoritePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Main\HelpPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -752,9 +776,7 @@
       <Name>BiliBili-Notification</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Components\Others\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Assets\Fonts\Richasy_BiliBili.ttf" />
   </ItemGroup>

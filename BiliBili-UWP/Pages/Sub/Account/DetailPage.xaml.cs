@@ -57,10 +57,12 @@ namespace BiliBili_UWP.Pages.Sub.Account
                 return;
             if(e.Parameter!=null && e.Parameter is int uid)
             {
-                _uid = uid;
-                await Refresh();
+                if (_uid != uid)
+                {
+                    _uid = uid;
+                    await Refresh();
+                }
             }
-            base.OnNavigatedTo(e);
         }
         private void Reset()
         {

@@ -5,7 +5,6 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
-using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -21,17 +20,20 @@ namespace BiliBili_UWP.Pages.Main
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class LivePage : Page
+    public sealed partial class DownloadPage : Page
     {
-        public LivePage()
+        private bool _isInit = false;
+        public DownloadPage()
         {
             this.InitializeComponent();
             NavigationCacheMode = NavigationCacheMode.Enabled;
         }
-        
-        private async void ToWebButton_Click(object sender, RoutedEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            await Launcher.LaunchUriAsync(new Uri("https://live.bilibili.com/"));
+            if (e.NavigationMode == NavigationMode.Back || _isInit)
+                return;
+            _isInit = true;
+            base.OnNavigatedTo(e);
         }
     }
 }

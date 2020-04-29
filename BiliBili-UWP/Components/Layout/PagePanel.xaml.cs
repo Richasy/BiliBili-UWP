@@ -147,6 +147,7 @@ namespace BiliBili_UWP.Components.Layout
                     page = typeof(Pages.Main.FavoritePage);
                     break;
                 case SideMenuItemType.MyDownload:
+                    page = typeof(Pages.Main.DownloadPage);
                     break;
                 case SideMenuItemType.ViewLater:
                     page = typeof(Pages.Main.ViewLaterPage);
@@ -155,6 +156,7 @@ namespace BiliBili_UWP.Components.Layout
                     page = typeof(Pages.Main.SettingPage);
                     break;
                 case SideMenuItemType.Help:
+                    page = typeof(Pages.Main.HelpPage);
                     break;
                 case SideMenuItemType.VideoPlayer:
                     page = typeof(Pages.Main.VideoPage);
@@ -198,6 +200,10 @@ namespace BiliBili_UWP.Components.Layout
                 result = SideMenuItemType.Live;
             else if (type.Equals(typeof(Pages.Main.SettingPage)))
                 result = SideMenuItemType.Settings;
+            else if (type.Equals(typeof(Pages.Main.DownloadPage)))
+                result = SideMenuItemType.MyDownload;
+            else if (type.Equals(typeof(Pages.Main.HelpPage)))
+                result = SideMenuItemType.Help;
             return result;
         }
 

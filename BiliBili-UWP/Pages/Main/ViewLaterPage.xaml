@@ -20,7 +20,7 @@
                                        Tip="{x:Bind owner.name}"
                                        FirstSectionContent="{x:Bind stat.view,Converter={StaticResource NumberAbbrConverter}}"
                                        SecondSectionContent="{x:Bind stat.danmaku,Converter={StaticResource NumberAbbrConverter}}"
-                                       Width="190"
+                                       MaxWidth="215" HorizontalAlignment="Left"
                                        >
                 <controls:DefaultVideoCard.ExtraFlyout>
                     <MenuFlyout MenuFlyoutPresenterStyle="{StaticResource BasicMenuFlyoutStyle}">
@@ -52,7 +52,7 @@
         <Grid Grid.Row="1">
             <controls1:AdaptiveGridView x:Name="HistoryVideoView"
                               HorizontalAlignment="Stretch"
-                          DesiredWidth="215"
+                          DesiredWidth="200"
                           ItemHeight="180"
                           ItemTemplate="{StaticResource VideoItemTemplate}"
                           ItemContainerStyle="{StaticResource TransparentGridViewItemContainerStyle}"

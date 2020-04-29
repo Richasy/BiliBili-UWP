@@ -102,7 +102,7 @@
         </DataTemplate>
         <DataTemplate x:DataType="bilibili:RepostDynamic" x:Name="RepostTemplate">
             <StackPanel>
-                <TextBlock IsTextSelectionEnabled="True" LineHeight="18" Style="{StaticResource BodyWrapTextStyle}" FontSize="12" Margin="0,10,0,5"
+                <local:RenderTextBlock LineHeight="18" Margin="0,10,0,5"
                            Text="{x:Bind item.content}" Visibility="{x:Bind item.content,Converter={StaticResource StringVisibilityConverter}}"/>
                 <StackPanel Background="{ThemeResource CardBackgroundOver}" Padding="10" CornerRadius="4">
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,10" Tapped="Account_Tapped">

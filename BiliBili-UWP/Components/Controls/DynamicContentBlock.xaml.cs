@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text.RegularExpressions;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -83,7 +84,7 @@ namespace BiliBili_UWP.Components.Controls
                     else if (repost.item.orig_type == 4)
                         repost.render_origin_content = (repost.render_origin as TextDynamic).content;
                     else if(repost.item.orig_type==2)
-                        repost.render_origin_content = (repost.render_origin as ImageDynamic).description;
+                        repost.render_origin_content = Regex.Replace((repost.render_origin as ImageDynamic).description, @"#(.*?)#", "").Trim();
                     instance.MainContentControl.ContentTemplate = instance.RepostTemplate;
                 }
                 else if(data is AnimeDynamic)

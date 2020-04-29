@@ -19,7 +19,7 @@
                                        Tip="{x:Bind owner.name}"
                                        FirstSectionContent="{x:Bind stat.view,Converter={StaticResource NumberAbbrConverter}}"
                                        SecondSectionContent="{x:Bind stat.danmaku,Converter={StaticResource NumberAbbrConverter}}"
-                                       Width="190"
+                                       MaxWidth="215" HorizontalAlignment="Left"
                                        />
         </DataTemplate>
     </Page.Resources>

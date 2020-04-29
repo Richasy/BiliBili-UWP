@@ -4,6 +4,7 @@ using BiliBili_Lib.Models.BiliBili.Video;
 using BiliBili_Lib.Tools;
 using BiliBili_UWP.Components.Controls;
 using BiliBili_UWP.Components.Layout;
+using BiliBili_UWP.Components.Others;
 using BiliBili_UWP.Models.Enums;
 using BiliBili_UWP.Models.UI;
 using BiliBili_UWP.Models.UI.Interface;
@@ -41,6 +42,7 @@ namespace BiliBili_UWP.Models.Core
         public WebPopup _webPopup;
         public DocumentPopup _documentPopup;
         public ReplyDetailPopup _replyDetailPopup;
+        public UpdatePopup _updatePopup;
 
         public List<Tuple<Guid, Action<Size>>> WindowsSizeChangedNotify { get; set; } = new List<Tuple<Guid, Action<Size>>>();
         public AppViewModel()
@@ -68,9 +70,9 @@ namespace BiliBili_UWP.Models.Core
             {
                 var updateFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri($"ms-appx:///Others/Update.txt"));
                 string updateInfo = await FileIO.ReadTextAsync(updateFile);
-                //if (_updatePopup == null)
-                //    _updatePopup = new UpdatePanel(updateInfo);
-                //_updatePopup.ShowPopup();
+                if (_updatePopup == null)
+                    _updatePopup = new UpdatePopup(updateInfo);
+                _updatePopup.ShowPopup();
                 AppTool.WriteLocalSetting(Settings.LocalVersion, nowVersion);
             }
         }

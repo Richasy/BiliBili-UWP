@@ -21,6 +21,8 @@
                                     InlineCodeBackground="Transparent"
                                     InlineCodePadding="0"
                                     InlineCodeMargin="0"
+                                    Header1FontSize="{x:Bind FontSize,Mode=OneWay}"
+                                    Header1FontWeight="Normal"
                                     InlineCodeBorderThickness="0"/>
     </Grid>
 </UserControl>

@@ -128,6 +128,8 @@ namespace BiliBili_UWP.Pages.Main
             var banner = e.ClickedItem as AnimeModuleItem;
             if (banner.oid > 0)
                 App.AppViewModel.PlayBangumi(banner.oid, sender, true);
+            else
+                App.AppViewModel.ShowWebPopup(banner.title, banner.link);
         }
 
         private void HotContainer_ItemClick(object sender, ItemClickEventArgs e)

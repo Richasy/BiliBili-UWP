@@ -52,8 +52,8 @@
                 <StackPanel Padding="0,5" Grid.Row="1" HorizontalAlignment="Left">
                     <TextBlock Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource ImportantTextColor}" Text="{x:Bind title}"
                                MaxWidth="110"/>
-                    <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="10" Text="{x:Bind order}" Margin="0,3"/>
-                    <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="10" Text="{x:Bind index_show}"/>
+                    <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="10" Text="{x:Bind order}" Visibility="{x:Bind order,Converter={StaticResource StringVisibilityConverter}}" Margin="0,3"/>
+                    <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="10" Text="{x:Bind index_show}" Visibility="{x:Bind index_show,Converter={StaticResource StringVisibilityConverter}}"/>
                 </StackPanel>
             </Grid>
         </DataTemplate>

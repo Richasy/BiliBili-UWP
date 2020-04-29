@@ -1,0 +1,115 @@
+﻿<UserControl
+    x:Class="BiliBili_UWP.Components.Others.UpdatePopup"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BiliBili_UWP.Components.Others"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <UserControl.Resources>
+        <Storyboard x:Name="PopupIn">
+            <DoubleAnimation From="0"
+                             To="1"
+                             Duration="00:00:00.5"
+                             Storyboard.TargetName="PopupContainer"
+                             Storyboard.TargetProperty="Opacity"
+                             >
+                <DoubleAnimation.EasingFunction>
+                    <PowerEase EasingMode="EaseOut"></PowerEase>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation From="0"
+                             To="1"
+                             Duration="00:00:00.5"
+                             Storyboard.TargetName="PopupBackground"
+                             Storyboard.TargetProperty="Opacity"
+                             >
+                <DoubleAnimation.EasingFunction>
+                    <PowerEase EasingMode="EaseOut"></PowerEase>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation From="-20"
+                             To="0"
+                             Duration="00:00:00.5"
+                             Storyboard.TargetName="PopupContainer"
+                             Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+                             >
+                <DoubleAnimation.EasingFunction>
+                    <PowerEase EasingMode="EaseOut"></PowerEase>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+        <Storyboard x:Name="PopupOut">
+            <DoubleAnimation From="1"
+                             To="0"
+                             Duration="00:00:00.5"
+                             Storyboard.TargetName="PopupContainer"
+                             Storyboard.TargetProperty="Opacity"
+                             >
+                <DoubleAnimation.EasingFunction>
+                    <PowerEase EasingMode="EaseOut"></PowerEase>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation From="1"
+                             To="0"
+                             Duration="00:00:00.5"
+                             Storyboard.TargetName="PopupBackground"
+                             Storyboard.TargetProperty="Opacity"
+                             >
+                <DoubleAnimation.EasingFunction>
+                    <PowerEase EasingMode="EaseOut"></PowerEase>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation From="0"
+                             To="20"
+                             Duration="00:00:00.5"
+                             Storyboard.TargetName="PopupContainer"
+                             Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+                             >
+                <DoubleAnimation.EasingFunction>
+                    <PowerEase EasingMode="EaseOut"></PowerEase>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+    </UserControl.Resources>
+    <Grid x:Name="PopupBackground"
+          Background="{ThemeResource ScreenMaskColor}">
+        <Grid Background="{ThemeResource PageBackground}" CornerRadius="4"
+               x:Name="PopupContainer"
+              MaxWidth="400"
+              Padding="40,20,0,20"
+              MaxHeight="700"
+              VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Grid.RenderTransform>
+                <TranslateTransform Y="-20"></TranslateTransform>
+            </Grid.RenderTransform>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <controls:ImageEx x:Name="AppIcon" Source="ms-appx:///Assets/bilibili logo.png" DecodePixelWidth="50" Width="50" Height="50" Margin="0,0,40,0" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0,20,40,0">
+                <TextBlock Text="升级说明" Style="{StaticResource TitleTextStyle}" Foreground="{ThemeResource ImportantTextColor}"/>
+                <TextBlock HorizontalAlignment="Center" x:Name="VersionBlock" VerticalAlignment="Center" Margin="10,0,0,0" Style="{StaticResource SmallTipTextStyle}"/>
+            </StackPanel>
+            <ScrollViewer Style="{StaticResource BasicScrollViewer}" HorizontalAlignment="Center"
+                          Margin="0,20,10,0"
+                          Padding="0,0,30,0"
+                          Grid.Row="2">
+                <controls:MarkdownTextBlock Style="{StaticResource BasicMarkdownTextBlock}" x:Name="MarkdownBlock"
+                                            LinkClicked="MarkdownBlock_LinkClicked"
+                                            TextWrapping="Wrap"
+                                                FontSize="15"
+                                                Foreground="{ThemeResource NormalTextColor}"
+                                                Grid.Row="1"
+                                            />
+            </ScrollViewer>
+            <Button Style="{StaticResource PrimaryCircleButtonStyle}" Margin="0,20,40,0" Grid.Row="3" Content="&#xE92F;" Name="CloseButton" Click="CloseButton_Click" HorizontalAlignment="Center" Width="40" Height="40"/>
+        </Grid>
+    </Grid>
+</UserControl>

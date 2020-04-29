@@ -37,6 +37,12 @@
                                         Height="180"
                                         Tip="{x:Bind new_ep.index_show}" BottomText="{x:Bind progress.index_show}"/>
         </DataTemplate>
+        <DataTemplate x:DataType="favorites:FavoriteAnime" x:Key="MovieItemTemplate">
+            <controls1:DefaultVideoCard Cover="{x:Bind cover}"
+                                        Width="170" RightTopText="{x:Bind badge}" Title="{x:Bind title}" SectionVisibility="Collapsed"
+                                        Height="180"
+                                        Tip="{x:Bind new_ep.index_show}" BottomText="{x:Bind season_type_name}"/>
+        </DataTemplate>
     </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -55,7 +61,7 @@
                                                 ItemClick="MyAnimeListView_ItemClick"  ItemTemplate="{StaticResource AnimeItemTemplate}"
                                                 ItemsSource="{x:Bind MyAnimeCollection}" Margin="0,20,0,0"/>
         <controls1:HorizontalScrollSectionPanel Title="我的追剧" HoldText="我还没有追剧哟~" x:Name="MyCinemaListView" Grid.Row="3"
-                                                ItemClick="MyAnimeListView_ItemClick"   ItemTemplate="{StaticResource AnimeItemTemplate}"
+                                                ItemClick="MyAnimeListView_ItemClick"   ItemTemplate="{StaticResource MovieItemTemplate}"
                                                 ItemsSource="{x:Bind MyCinemaCollection}" Margin="0,20,0,0"/>
     </Grid>
 </Page>

@@ -191,8 +191,11 @@ namespace BiliBili_UWP.Pages.Main
             else if (_detail.user_status.progress != null)
             {
                 _currentPart = _detail.episodes.Where(p => p.id == _detail.user_status.progress.last_ep_id).FirstOrDefault();
-                PartListView.SelectedIndex = Convert.ToInt32(_detail.user_status.progress.last_ep_index) - 1;
-                PartListView.ScrollIntoView(_currentPart,ScrollIntoViewAlignment.Leading);
+                if (_currentPart != null)
+                {
+                    PartListView.SelectedIndex = Convert.ToInt32(_detail.user_status.progress.last_ep_index) - 1;
+                    PartListView.ScrollIntoView(_currentPart, ScrollIntoViewAlignment.Leading);
+                }
             }
 
             if (_currentPart == null && _detail.episodes.Count>0)
@@ -205,22 +208,26 @@ namespace BiliBili_UWP.Pages.Main
                 _detail.styles.ForEach(p => TagCollection.Add(p));
             }
 
+            CheckFollowButton();
+
+            if (_detail.limit != null)
+            {
+                await new ConfirmDialog(_detail.limit.content).ShowAsync();
+            }
+        }
+        private void CheckFollowButton()
+        {
             if (_detail.user_status != null)
             {
                 string followString = "已追剧";
                 string unfollowString = "追剧";
-                if(_detail.type==1 || _detail.type==2|| _detail.type == 4)
+                if (_detail.type == 1 || _detail.type == 2 || _detail.type == 4)
                 {
                     followString = "已追番";
                     unfollowString = "追番";
                 }
                 FollowButton.Style = _detail.user_status.follow == 1 ? UIHelper.GetStyle("DefaultAsyncButtonStyle") : UIHelper.GetStyle("PrimaryAsyncButtonStyle");
                 FollowButton.Text = _detail.user_status.follow == 1 ? followString : unfollowString;
-            }
-
-            if (_detail.limit != null)
-            {
-                await new ConfirmDialog(_detail.limit.content).ShowAsync();
             }
         }
         public void RemovePlayer()
@@ -328,8 +335,7 @@ namespace BiliBili_UWP.Pages.Main
                     new TipPopup("追番成功").ShowMessage();
                 }
             }
-            FollowButton.Style = _detail.user_status.follow == 1 ? UIHelper.GetStyle("DefaultAsyncButtonStyle") : UIHelper.GetStyle("PrimaryAsyncButtonStyle");
-            FollowButton.Text = _detail.user_status.follow == 1 ? "已追番" : "追番";
+            CheckFollowButton();
             if (!result)
                 new TipPopup("操作失败").ShowError();
         }

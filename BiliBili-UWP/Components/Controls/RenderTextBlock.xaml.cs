@@ -9,6 +9,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -70,7 +71,7 @@ namespace BiliBili_UWP.Components.Controls
 
         // Using a DependencyProperty as the backing store for FontSize.  This enables animation, styling, binding, etc...
         public static new readonly DependencyProperty FontSizeProperty =
-            DependencyProperty.Register("FontSize", typeof(double), typeof(RenderTextBlock), new PropertyMetadata(12.0));
+            DependencyProperty.Register("FontSize", typeof(double), typeof(RenderTextBlock), new PropertyMetadata(13.0));
 
         public new Brush Foreground
         {
@@ -90,7 +91,7 @@ namespace BiliBili_UWP.Components.Controls
 
         // Using a DependencyProperty as the backing store for LineHeight.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty LineHeightProperty =
-            DependencyProperty.Register("LineHeight", typeof(int), typeof(RenderTextBlock), new PropertyMetadata(18));
+            DependencyProperty.Register("LineHeight", typeof(int), typeof(RenderTextBlock), new PropertyMetadata(20));
 
         public Dictionary<string, Emote> EmoteSource
         {
@@ -104,9 +105,9 @@ namespace BiliBili_UWP.Components.Controls
 
 
 
-        private void richBlock_LinkClicked(object sender, Microsoft.Toolkit.Uwp.UI.Controls.LinkClickedEventArgs e)
+        private async void richBlock_LinkClicked(object sender, Microsoft.Toolkit.Uwp.UI.Controls.LinkClickedEventArgs e)
         {
-
+            await Launcher.LaunchUriAsync(new Uri(e.Link));
         }
     }
 }
