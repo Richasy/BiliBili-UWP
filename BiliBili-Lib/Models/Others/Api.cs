@@ -176,6 +176,10 @@ namespace BiliBili_Lib.Models.Others
         /// 获取用户的表情包
         /// </summary>
         public const string ACCOUNT_EMOJI_PANEL = _apiBase + "/x/emote/user/panel";
+        /// <summary>
+        /// 获取账户的未读消息
+        /// </summary>
+        public const string ACCOUNT_UNREAD = _apiBase + "/x/msgfeed/unread";
         #endregion
 
         #region 频道 Channel
@@ -262,6 +266,10 @@ namespace BiliBili_Lib.Models.Others
         /// </summary>
         public const string VIDEO_RECOMMEND = _appBase + "/x/v2/feed/index";
         /// <summary>
+        /// 不喜欢推荐视频
+        /// </summary>
+        public const string VIDEO_RECOMMEND_DISLIKE = _appBase + "/x/feed/dislike";
+        /// <summary>
         /// 视频分P列表
         /// </summary>
         public const string VIDEO_PART = _apiBase + "/x/player/pagelist";
@@ -317,6 +325,10 @@ namespace BiliBili_Lib.Models.Others
         /// 获取互动视频选项
         /// </summary>
         public const string VIDEO_INTERACTION_EDGE = _apiBase + "/x/stein/edgeinfo_v2";
+        /// <summary>
+        /// 发送弹幕
+        /// </summary>
+        public const string VIDEO_SEND_DANMAKU = _apiBase + "/x/v2/dm/post";
         #endregion
 
         #region 话题及动态 Topic Dynamic

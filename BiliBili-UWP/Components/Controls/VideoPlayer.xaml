@@ -19,7 +19,65 @@
     PointerEntered="UserControl_PointerEntered"
     PointerMoved="UserControl_PointerMoved"
     PointerExited="UserControl_PointerExited">
-
+    <UserControl.Resources>
+        <Flyout x:Name="DanmakuFlyout">
+            <Grid Width="200">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <StackPanel>
+                    <TextBlock Style="{StaticResource SmallTipTextStyle}" Text="字号"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                        <RadioButton GroupName="FontSize" x:Name="DefaultFontSizeRadio" Content="标准" FontSize="12" Style="{StaticResource BasicRadioButtonStyle}" IsChecked="True"/>
+                        <RadioButton GroupName="FontSize" x:Name="SmallFontSizeRadio" Margin="10,0,0,0" Content="小号" FontSize="12" Style="{StaticResource BasicRadioButtonStyle}"/>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Grid.Row="1" Margin="0,10">
+                    <TextBlock Style="{StaticResource SmallTipTextStyle}" Text="模式"/>
+                    <ComboBox Style="{StaticResource BasicComboBoxStyle}" ItemContainerStyle="{StaticResource BasicComboBoxItemContainerStyle}"
+                              x:Name="ModeComboBox" HorizontalAlignment="Stretch" Margin="0,5,0,0">
+                        <ComboBoxItem Tag="1" IsSelected="True">
+                            <widgets:IconTextBlock Icon="&#xEA27;" IconFontSize="22" FontSize="12" Text="滚动字幕" IconForeground="{ThemeResource PrimaryColor}"/>
+                        </ComboBoxItem>
+                        <ComboBoxItem Tag="4">
+                            <widgets:IconTextBlock Icon="&#xEA29;" IconFontSize="22" FontSize="12" Text="底部字幕" IconForeground="{ThemeResource PrimaryColor}"/>
+                        </ComboBoxItem>
+                        <ComboBoxItem Tag="5">
+                            <widgets:IconTextBlock Icon="&#xEA2B;" IconFontSize="22" FontSize="12" Text="顶部字幕" IconForeground="{ThemeResource PrimaryColor}"/>
+                        </ComboBoxItem>
+                    </ComboBox>
+                </StackPanel>
+                <StackPanel Grid.Row="2">
+                    <TextBlock Style="{StaticResource SmallTipTextStyle}" Text="颜色"/>
+                    <Grid Margin="0,5,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox Style="{StaticResource BasicTextBoxStyle}" VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                                 IsReadOnly="True" x:Name="ColorTextBox" Text="#FFFFFFFF" FontSize="12" Padding="5,8" VerticalContentAlignment="Center"/>
+                        <Border Width="80" VerticalAlignment="Stretch" CornerRadius="2" Margin="10,0,0,0" Grid.Column="1"
+                                x:Name="ColorViewBorder" Background="White"/>
+                    </Grid>
+                    <ItemsControl HorizontalAlignment="Stretch" Height="50" x:Name="DanmakuColorItemsControl">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <controls:UniformGrid Columns="5" ColumnSpacing="8" RowSpacing="8"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="others:DanmakuColor">
+                                <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch" CornerRadius="2" Background="{x:Bind Color}"
+                                        Tapped="DanmakuColor_Tapped" ToolTipService.ToolTip="{x:Bind Name}"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Grid>
+        </Flyout>
+    </UserControl.Resources>
     <Grid Background="{ThemeResource PageBackground}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -80,12 +138,12 @@
             </Grid.ColumnDefinitions>
             <StackPanel Orientation="Horizontal">
                 <Button Style="{StaticResource TransparentButtonStyle}" x:Name="DanmakuVisibilityButton" Content="&#xEA43;"
-                    FontFamily="{StaticResource Icon}" Click="DanmakuVisibilityButton_Click" FontSize="25"/>
-                <Button Style="{StaticResource TransparentButtonStyle}" x:Name="DanmakuSettingButton" Content="&#xEA25;"
-                    FontFamily="{StaticResource Icon}" Click="DanmakuSettingButton_Click"  FontSize="25" Margin="10,0,0,0"/>
+                    FontFamily="{StaticResource Icon}" Click="DanmakuVisibilityButton_Click" FontSize="25" ToolTipService.ToolTip="弹幕开关"/>
+                <Button Style="{StaticResource TransparentButtonStyle}" x:Name="DanmakuSettingButton" Content="&#xEA24;" ToolTipService.ToolTip="弹幕参数"
+                    FontFamily="{StaticResource Icon}" Flyout="{StaticResource DanmakuFlyout}" FontSize="25" Margin="10,0,0,0"/>
             </StackPanel>
-            <TextBox Style="{StaticResource TransparentTextBoxStyle}" Margin="15,0" VerticalAlignment="Center" PlaceholderText="哔哩哔哩[]~(￣▽￣)~*"
-                     Grid.Column="1" x:Name="DanmakuBox" HorizontalAlignment="Stretch" KeyDown="DanmakuBox_KeyDown" Padding="6,5"/>
+            <TextBox Style="{StaticResource TransparentTextBoxStyle}" Margin="15,0" VerticalAlignment="Center" PlaceholderText="哔哩哔哩 (゜-゜)つロ 干杯~-bilibili"
+                     Grid.Column="1" x:Name="DanmakuBox" AcceptsReturn="False" HorizontalAlignment="Stretch" KeyDown="DanmakuBox_KeyDown" Padding="6,5"/>
             <Button Style="{StaticResource TransparentButtonStyle}" x:Name="SendDanmakuButton" Content="&#xE9D1;" Grid.Column="2" VerticalAlignment="Center"
                     FontFamily="{StaticResource Icon}" Click="SendDanmakuButton_Click"/>
         </Grid>

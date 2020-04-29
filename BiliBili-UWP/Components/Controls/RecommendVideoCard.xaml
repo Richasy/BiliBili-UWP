@@ -7,15 +7,70 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:other="using:BiliBili_UWP.Models.UI.Others"
+    xmlns:bilibili="using:BiliBili_Lib.Models.BiliBili"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
+    <UserControl.Resources>
+        <ItemsPanelTemplate x:Key="ReasonPanelTemplate">
+            <controls:UniformGrid Columns="2" ColumnSpacing="6" RowSpacing="6"/>
+        </ItemsPanelTemplate>
+        <CommandBarFlyout x:Name="VideoFlyout">
+            <CommandBarFlyout.SecondaryCommands>
+                <AppBarButton Label="加入稍后再看" FontSize="12" FontFamily="{CustomResource Basic}" x:Name="LaterViewButton" Click="LaterViewButton_Click">
+                    <AppBarButton.Icon>
+                        <FontIcon FontFamily="{StaticResource Icon}" Glyph="&#xEA3B;"/>
+                    </AppBarButton.Icon>
+                </AppBarButton>
+                <AppBarElementContainer>
+                    <StackPanel HorizontalAlignment="Stretch" Padding="10">
+                        <StackPanel>
+                            <TextBlock Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource NormalTextColor}"
+                                           Text="反馈"/>
+                            <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="10" Text="选择后将优化首页此类内容"/>
+                            <ItemsControl x:Name="FeedbackItemsControl"
+                                              ItemsPanel="{StaticResource ReasonPanelTemplate}" Margin="0,5,0,0">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="bilibili:Reason">
+                                        <Border HorizontalAlignment="Stretch" Padding="5" CornerRadius="2" Background="{ThemeResource CardBackground}"
+                                                 Tapped="Feedback_Tapped">
+                                            <TextBlock Text="{x:Bind name}" Style="{StaticResource SmallTipTextStyle}"/>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
 
+                            </ItemsControl>
+                        </StackPanel>
+                        <StackPanel Margin="0,15,0,0">
+                            <TextBlock Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource NormalTextColor}"
+                                           Text="不感兴趣"/>
+                            <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="10" Text="选择后将减少相似的内容推荐"/>
+                            <ItemsControl x:Name="NotInterestedItemsControl"
+                                              ItemsPanel="{StaticResource ReasonPanelTemplate}" Margin="0,5,0,0">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="bilibili:Reason">
+                                        <Border HorizontalAlignment="Stretch" Padding="5" CornerRadius="2" Background="{ThemeResource CardBackground}"
+                                                 Tapped="Dislike_Tapped">
+                                            <TextBlock Text="{x:Bind name}" Style="{StaticResource SmallTipTextStyle}"/>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </StackPanel>
+                </AppBarElementContainer>
+            </CommandBarFlyout.SecondaryCommands>
+        </CommandBarFlyout>
+        <CommandBarFlyout x:Name="BangumiFlyout">
+            <CommandBarFlyout.SecondaryCommands>
+                <AppBarButton Label="不感兴趣" FontSize="12" FontFamily="{CustomResource Basic}" x:Name="DislikeButton" Click="DislikeButton_Click">
+                    <AppBarButton.Icon>
+                        <FontIcon FontFamily="{StaticResource Icon}" Glyph="&#xE974;"/>
+                    </AppBarButton.Icon>
+                </AppBarButton>
+            </CommandBarFlyout.SecondaryCommands>
+        </CommandBarFlyout>
+    </UserControl.Resources>
     <local:DefaultVideoCard x:Name="VideoCard">
-        <local:DefaultVideoCard.ExtraFlyout>
-            <Flyout>
-                
-            </Flyout>
-        </local:DefaultVideoCard.ExtraFlyout>
     </local:DefaultVideoCard>
 </UserControl>

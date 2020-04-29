@@ -443,5 +443,69 @@ namespace BiliBili_Lib.Service
             var data = await BiliTool.ConvertEntityFromWebAsync<InteractionVideo>(url);
             return data;
         }
+
+        /// <summary>
+        /// 发送弹幕
+        /// </summary>
+        /// <param name="message">弹幕信息</param>
+        /// <param name="aid">视频ID</param>
+        /// <param name="cid">弹幕块ID</param>
+        /// <param name="progress">进度</param>
+        /// <param name="color">颜色（已处理）</param>
+        /// <param name="fontSize">文本大小</param>
+        /// <param name="mode">模式</param>
+        /// <returns></returns>
+        public async Task<bool> SendDanmakuAsync(string message,int aid, int cid, double progress,string color,string fontSize,string mode)
+        {
+            var param = new Dictionary<string, string>();
+            param.Add("aid", aid.ToString());
+            param.Add("msg", Uri.EscapeDataString(message));
+            param.Add("oid", cid.ToString());
+            param.Add("color", color);
+            param.Add("fontSize", fontSize);
+            param.Add("mode", mode);
+            param.Add("pool", "0");
+            param.Add("plat", "3");
+            param.Add("type", "1");
+            param.Add("progress", Math.Round(progress).ToString());
+            var data = BiliTool.UrlContact("", param, true);
+            var response = await BiliTool.PostContentToWebAsync(Api.VIDEO_SEND_DANMAKU, data);
+            if (!string.IsNullOrEmpty(response))
+            {
+                var jobj = JObject.Parse(response);
+                return jobj["code"].ToString() == "0";
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// 不喜欢某视频
+        /// </summary>
+        /// <param name="arg">参数</param>
+        /// <param name="reason_id">原因ID</param>
+        /// <param name="go">类型</param>
+        /// <param name="isFeedback">标识是反馈还是不感兴趣</param>
+        /// <returns></returns>
+        public async Task<bool> DislikeRecommendVideoAsync(Args arg,int reason_id,string go,bool isFeedback=false)
+        {
+            var param = new Dictionary<string, string>();
+            param.Add("id", arg.aid.ToString());
+            param.Add("rid", arg.rid.ToString());
+            if(isFeedback)
+                param.Add("feedback_id", reason_id.ToString());
+            else
+                param.Add("reason_id", reason_id.ToString());
+            param.Add("goto", go);
+            param.Add("mid", arg.up_id.ToString());
+            param.Add("tag_id", arg.tid.ToString());
+            var url = BiliTool.UrlContact(Api.VIDEO_RECOMMEND_DISLIKE, param, true);
+            var response = await BiliTool.GetTextFromWebAsync(url, true);
+            if (!string.IsNullOrEmpty(response))
+            {
+                var jobj = JObject.Parse(response);
+                return jobj["code"].ToString() == "0";
+            }
+            return false;
+        }
     }
 }

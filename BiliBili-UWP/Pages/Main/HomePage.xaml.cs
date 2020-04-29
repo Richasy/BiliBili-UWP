@@ -145,5 +145,10 @@ namespace BiliBili_UWP.Pages.Main
                 App.AppViewModel.CurrentPagePanel.PageScrollViewer.ChangeView(0, _scrollOffset, 1);
             }
         }
+
+        private void VideoContainer_NeedRemoveVideo(object sender, VideoRecommend e)
+        {
+            RecommendCollection.Remove(e);
+        }
     }
 }

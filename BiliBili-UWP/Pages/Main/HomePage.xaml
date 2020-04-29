@@ -13,7 +13,8 @@
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:DataType="bilibili:VideoRecommend" x:Key="VideoItemTemplate">
-            <controls:RecommendVideoCard Data="{x:Bind}" Margin="3" x:Name="VideoContainer"/>
+            <controls:RecommendVideoCard Data="{x:Bind}" Margin="3" x:Name="VideoContainer"
+                                         NeedRemoveVideo="VideoContainer_NeedRemoveVideo"/>
         </DataTemplate>
     </Page.Resources>
     <Grid>

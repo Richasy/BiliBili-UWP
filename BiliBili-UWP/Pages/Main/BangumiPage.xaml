@@ -33,8 +33,8 @@
                 <TextBlock Text="{x:Bind name}" Style="{StaticResource SmallTipTextStyle}" FontSize="10" Foreground="{ThemeResource SecondaryColorOver}"/>
             </Border>
         </DataTemplate>
-        <Flyout FlyoutPresenterStyle="{StaticResource NoPaddingFlyoutStyle}" x:Key="CoinFlyout">
-            <StackPanel Padding="10">
+        <Flyout FlyoutPresenterStyle="{StaticResource NoPaddingFlyoutStyle}" x:Name="CoinFlyout">
+            <StackPanel Padding="10,10,0,10">
                 <Button Style="{StaticResource DefaultCircleButtonStyle}" Width="50" Height="50" CornerRadius="4" Tag="1"
                         Content="1" FontFamily="{CustomResource Basic}" FontWeight="Bold" FontSize="30" Click="CoinCountButton_Click"/>
             </StackPanel>

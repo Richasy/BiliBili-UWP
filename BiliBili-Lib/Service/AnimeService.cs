@@ -285,5 +285,25 @@ namespace BiliBili_Lib.Service
             var data = await BiliTool.ConvertEntityFromWebAsync<List<Timeline>>(url, "result.data");
             return data;
         }
+        /// <summary>
+        /// 不喜欢某番剧
+        /// </summary>
+        /// <param name="arg">参数</param>
+        /// <returns></returns>
+        public async Task<bool> DislikeRecommendVideoAsync(string bangumiId)
+        {
+            var param = new Dictionary<string, string>();
+            param.Add("id", bangumiId);
+            param.Add("goto", "bangumi");
+            param.Add("reason_id", "1");
+            var url = BiliTool.UrlContact(Api.VIDEO_RECOMMEND_DISLIKE, param, true);
+            var response = await BiliTool.GetTextFromWebAsync(url, true);
+            if (!string.IsNullOrEmpty(response))
+            {
+                var jobj = JObject.Parse(response);
+                return jobj["code"].ToString() == "0";
+            }
+            return false;
+        }
     }
 }

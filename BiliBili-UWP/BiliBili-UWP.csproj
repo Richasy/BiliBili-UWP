@@ -255,6 +255,7 @@
     <Compile Include="Models\UI\Interface\IPlayerPage.cs" />
     <Compile Include="Models\UI\Interface\IRefreshPage.cs" />
     <Compile Include="Models\UI\Others\CustomResourceLoader.cs" />
+    <Compile Include="Models\UI\Others\DanmakuColor.cs" />
     <Compile Include="Models\UI\Others\EmojiTemplateSelector.cs" />
     <Compile Include="Models\UI\Others\IndicatorHelper.cs" />
     <Compile Include="Models\UI\Others\NotifyPropertyBase.cs" />

@@ -148,5 +148,15 @@ namespace BiliBili_UWP.Models.UI
             popup.Height = Window.Current.Bounds.Height;
             popup._popup.IsOpen = true;
         }
+        /// <summary>
+        /// 根据颜色计算弹幕的颜色值
+        /// </summary>
+        /// <param name="c">颜色</param>
+        /// <returns></returns>
+        public static string GetDanmakuColor(Color c)
+        {
+            int num = c.R * 256 * 256 + c.G * 256 + c.B * 1;
+            return num.ToString();
+        }
     }
 }

@@ -5,6 +5,7 @@ using BiliBili_Lib.Models.BiliBili.Video;
 using BiliBili_Lib.Service;
 using BiliBili_Lib.Tools;
 using BiliBili_UWP.Components.Widgets;
+using BiliBili_UWP.Models.UI;
 using BiliBili_UWP.Models.UI.Others;
 using Microsoft.Toolkit.Uwp.Helpers;
 using NSDanmaku.Helper;
@@ -43,6 +44,7 @@ namespace BiliBili_UWP.Components.Controls
         private AnimeService _animeService = App.BiliViewModel._client.Anime;
         private ObservableCollection<Tuple<int, string>> QualityCollection = new ObservableCollection<Tuple<int, string>>();
         private ObservableCollection<Choice> ChoiceCollection = new ObservableCollection<Choice>();
+        private List<DanmakuColor> DanmakuColors = DanmakuColor.GetColorList();
         private DanmakuParse _danmakuParse = new DanmakuParse();
         private int _currentQn = 64;
         private MediaPlayer _player = new MediaPlayer();
@@ -82,7 +84,7 @@ namespace BiliBili_UWP.Components.Controls
 
         public int CurrentProgress
         {
-            get => Convert.ToInt32(_player.TimelineControllerPositionOffset.TotalSeconds);
+            get => Convert.ToInt32(_player.PlaybackSession.Position.TotalSeconds);
         }
 
         public VideoPlayer()
@@ -131,6 +133,12 @@ namespace BiliBili_UWP.Components.Controls
             mediaElement.AutoPlay = isAutoPlay;
             bool isShowDanmaku = AppTool.GetBoolSetting(Settings.IsDanmakuOpen);
             DanmakuVisibilityButton.Content = isShowDanmaku ? "" : "";
+            DanmakuColorItemsControl.ItemsSource = DanmakuColors;
+            ColorTextBox.Text = "#FFFFFF";
+            DefaultFontSizeRadio.IsChecked = true;
+            ModeComboBox.SelectedIndex = 0;
+            ColorViewBorder.Background = new SolidColorBrush(Windows.UI.Colors.White);
+            DanmakuBox.Text = "";
             _maxDanmakuNumber = Convert.ToInt32(AppTool.GetLocalSetting(Settings.MaxDanmuNumber, "200"));
             _playData = null;
             QualityCollection.Clear();
@@ -300,7 +308,7 @@ namespace BiliBili_UWP.Components.Controls
         {
             if (_pointerHoldCount >= 3)
             {
-                if(_isCatchPointer && Window.Current.CoreWindow.PointerCursor != null)
+                if (_isCatchPointer && Window.Current.CoreWindow.PointerCursor != null)
                     Window.Current.CoreWindow.PointerCursor = null;
                 if (_isMTCShow)
                 {
@@ -656,15 +664,51 @@ namespace BiliBili_UWP.Components.Controls
 
         private async Task SendDanmaku()
         {
+            if (!App.BiliViewModel.CheckAccoutStatus())
+                return;
+            if (_playData == null || _player.PlaybackSession.PlaybackState == MediaPlaybackState.Opening)
+            {
+                new TipPopup("请等待视频加载完成").ShowMessage();
+                return;
+            }
             string text = DanmakuBox.Text;
             if (!string.IsNullOrEmpty(text))
             {
                 SendDanmakuButton.IsEnabled = false;
                 DanmakuBox.IsEnabled = false;
+                string color = "";
+                if (!string.IsNullOrEmpty(ColorTextBox.Text))
+                    color = UIHelper.GetDanmakuColor(ColorHelper.ToColor(ColorTextBox.Text));
+                else
+                    color = UIHelper.GetDanmakuColor(Windows.UI.Colors.White);
+                string fontSize = Convert.ToBoolean(DefaultFontSizeRadio.IsChecked) ? "25" : "20";
+                string mode = (ModeComboBox.SelectedItem as ComboBoxItem).Tag.ToString();
+                bool result = false;
+                double progress = _player.PlaybackSession.Position.TotalMilliseconds;
+                if (isBangumi)
+                    result = await _videoService.SendDanmakuAsync(text, _bangumiPart.aid, _bangumiPart.cid, progress, color, fontSize, mode);
+                else
+                    result = await _videoService.SendDanmakuAsync(text, _videoId, _partId, progress, color, fontSize, mode);
+                if (result)
+                {
+                    DanmakuBox.Text = string.Empty;
+                    int fontSizeNum = Convert.ToInt32(fontSize);
+                    if (mode == "1")
+                        DanmakuControls.AddRollDanmu(new DanmakuModel { color = ColorHelper.ToColor(ColorTextBox.Text), size = fontSizeNum, text = text }, true);
+                    else if (mode == "4")
+                        DanmakuControls.AddBottomDanmu(new DanmakuModel { color = ColorHelper.ToColor(ColorTextBox.Text), size = fontSizeNum, text = text }, true);
+                    else if (mode == "5")
+                        DanmakuControls.AddTopDanmu(new DanmakuModel { color = ColorHelper.ToColor(ColorTextBox.Text), size = fontSizeNum, text = text }, true);
+                    else
+                        DanmakuControls.AddRollDanmu(new DanmakuModel { color = ColorHelper.ToColor(ColorTextBox.Text), size = fontSizeNum, text = text }, true);
+                }
+                else
+                {
+                    new TipPopup("发送失败").ShowError();
+                }
                 // send
                 SendDanmakuButton.IsEnabled = true;
                 DanmakuBox.IsEnabled = true;
-                DanmakuBox.Text = string.Empty;
             }
         }
 
@@ -679,9 +723,11 @@ namespace BiliBili_UWP.Components.Controls
             Window.Current.CoreWindow.PointerCursor = new Windows.UI.Core.CoreCursor(Windows.UI.Core.CoreCursorType.Arrow, 0);
         }
 
-        private void DanmakuSettingButton_Click(object sender, RoutedEventArgs e)
+        private void DanmakuColor_Tapped(object sender, TappedRoutedEventArgs e)
         {
-
+            var data = (sender as FrameworkElement).DataContext as DanmakuColor;
+            ColorTextBox.Text = data.Color.Color.ToString();
+            ColorViewBorder.Background = data.Color;
         }
     }
 }

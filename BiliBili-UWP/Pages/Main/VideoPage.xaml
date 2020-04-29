@@ -51,7 +51,7 @@
                 </Border>
             </Grid>
         </DataTemplate>
-        <Flyout FlyoutPresenterStyle="{StaticResource BasicFlyoutStyle}" x:Key="CoinFlyout">
+        <Flyout FlyoutPresenterStyle="{StaticResource BasicFlyoutStyle}" x:Name="CoinFlyout">
             <StackPanel Padding="10">
                 <StackPanel Orientation="Horizontal">
                     <Button Style="{StaticResource DefaultCircleButtonStyle}" Width="50" Height="50" CornerRadius="4" Tag="1"
@@ -107,7 +107,7 @@
                                   CompactOverlayChanged="VideoPlayer_CompactOverlayChanged"
                                   SeparateButtonClick="VideoPlayer_SeparateButtonClick"/>
         </Grid>
-        <Grid Grid.Row="1" Padding="0,20,20,20">
+        <Grid Grid.Row="1" Padding="0,10,20,20">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />

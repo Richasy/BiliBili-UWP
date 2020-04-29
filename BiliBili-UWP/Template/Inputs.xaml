@@ -617,6 +617,7 @@
         <Setter Property="Padding" Value="0"/>
         <Setter Property="TextWrapping" Value="Wrap"/>
         <Setter Property="AcceptsReturn" Value="True"/>
+        <Setter Property="FontFamily" Value="{CustomResource Basic}" />
         <Setter Property="SelectionHighlightColor" Value="{ThemeResource TextControlSelectionHighlightColor}"/>
         <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}"/>
         <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Auto"/>

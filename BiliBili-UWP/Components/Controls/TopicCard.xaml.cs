@@ -219,7 +219,7 @@ namespace BiliBili_UWP.Components.Controls
                 param["oid"] = (MainDisplay.Data as AnimeDynamic).aid.ToString();
                 type = "1";
             }
-            else if (MainDisplay._cardType == "repost" || MainDisplay._cardType == "web")
+            else if (MainDisplay._cardType == "repost" || MainDisplay._cardType == "web" || Data.desc.type == 4)
             {
                 param["oid"] = Data.desc.dynamic_id_str;
                 type = "17";

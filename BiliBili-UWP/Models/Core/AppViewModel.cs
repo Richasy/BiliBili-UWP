@@ -147,6 +147,7 @@ namespace BiliBili_UWP.Models.Core
             {
                 page.RemovePlayer();
                 MainPage.Current.InsertPlayer();
+                CurrentVideoPlayer.DanmakuBarVisibility = Visibility.Collapsed;
                 ApplicationView.GetForCurrentView().TryEnterFullScreenMode();
             }
             else
@@ -156,6 +157,7 @@ namespace BiliBili_UWP.Models.Core
                 {
                     MainPage.Current.RemovePlayer();
                     page.InsertPlayer();
+                    CurrentVideoPlayer.DanmakuBarVisibility = Visibility.Visible;
                 }
             }
         }
@@ -191,6 +193,7 @@ namespace BiliBili_UWP.Models.Core
             {
                 page.RemovePlayer();
                 MainPage.Current.InsertPlayer();
+                CurrentVideoPlayer.DanmakuBarVisibility = Visibility.Collapsed;
                 await ApplicationView.GetForCurrentView().TryEnterViewModeAsync(ApplicationViewMode.CompactOverlay);
             }
             else
@@ -199,6 +202,7 @@ namespace BiliBili_UWP.Models.Core
                 {
                     MainPage.Current.RemovePlayer();
                     page.InsertPlayer();
+                    CurrentVideoPlayer.DanmakuBarVisibility = Visibility.Visible;
                     await ApplicationView.GetForCurrentView().TryEnterViewModeAsync(ApplicationViewMode.Default);
                 }
             }

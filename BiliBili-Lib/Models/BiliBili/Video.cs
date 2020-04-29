@@ -56,6 +56,7 @@ namespace BiliBili_Lib.Models.BiliBili
         public int official_icon { get; set; }
         public int can_play { get; set; }
         public string desc { get; set; }
+
     }
     public class VideoChannel : VideoBase
     {

@@ -485,5 +485,15 @@ namespace BiliBili_Lib.Service
             var items = await BiliTool.ConvertEntityFromWebAsync<List<EmojiReplyContainer>>(url, "data.packages");
             return items;
         }
+        /// <summary>
+        /// 获取账户的未读消息
+        /// </summary>
+        /// <returns></returns>
+        public async Task<MyMessage> GetMyUnreadMessageAsync()
+        {
+            string url = BiliTool.UrlContact(Api.ACCOUNT_UNREAD, null, true);
+            var data = await BiliTool.ConvertEntityFromWebAsync<MyMessage>(url);
+            return data;
+        }
     }
 }

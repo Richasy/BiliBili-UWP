@@ -250,7 +250,10 @@ namespace BiliBili_UWP.Pages.Main
             CoinButton.IsEnabled = false;
             bool result = await App.BiliViewModel._client.Video.GiveCoinToVideoAsync(_currentPart.aid, coin, false);
             if (result)
+            {
                 new TipPopup("成功投币！").ShowMessage();
+                CoinFlyout.Hide();
+            }
             else
                 new TipPopup("投币失败").ShowError();
             CoinButton.IsCheck = result;

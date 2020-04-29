@@ -287,6 +287,7 @@ namespace BiliBili_UWP.Pages.Main
                 if (Convert.ToBoolean(SelectLikeCheckBox.IsChecked))
                     LikeButton.IsCheck = true;
                 new TipPopup("成功投币！").ShowMessage();
+                CoinFlyout.Hide();
             }
             else
                 new TipPopup("投币失败").ShowError();

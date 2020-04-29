@@ -1,6 +1,7 @@
 ﻿using BiliBili_Lib.Models.BiliBili.Anime;
 using BiliBili_Lib.Models.BiliBili.Video;
 using BiliBili_UWP.Models.UI;
+using BiliBili_UWP.Models.UI.Others;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,6 +18,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Windows.UI.Xaml.Resources;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -29,11 +31,13 @@ namespace BiliBili_UWP.Pages.Main
     {
         public MiniPlayerPage()
         {
+            CustomXamlResourceLoader.Current = new CustomResourceLoader();
             this.InitializeComponent();
         }
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if(e.Parameter!=null)
+            
+            if (e.Parameter!=null)
             {
                 if (e.Parameter is Tuple<VideoDetail, int> data)
                     await VideoPlayer.Init(data.Item1, data.Item2);

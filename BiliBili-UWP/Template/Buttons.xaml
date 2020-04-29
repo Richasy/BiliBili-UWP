@@ -1120,6 +1120,7 @@
         <Setter Property="Foreground" Value="{ThemeResource NormalTextColor}" />
         <Setter Property="BorderBrush" Value="Transparent" />
         <Setter Property="Padding" Value="8,0,0,0" />
+        <Setter Property="FontFamily" Value="{CustomResource Basic}"/>
         <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
