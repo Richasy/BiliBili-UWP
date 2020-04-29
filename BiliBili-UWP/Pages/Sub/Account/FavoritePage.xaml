@@ -24,7 +24,7 @@
                 <ListView x:Name="FavoriteListView" ItemsSource="{x:Bind VideoCollection}"
                   IsItemClickEnabled="True" ItemClick="FavoriteListView_ItemClick"
                   ItemContainerStyle="{StaticResource TransparentListViewContainerStyle}"
-                  Style="{StaticResource BasicListView}" ItemTemplate="{StaticResource VideoItemTemplate}"/>
+                  Style="{StaticResource NoScrollListView}" ItemTemplate="{StaticResource VideoItemTemplate}"/>
                 <ProgressBar IsIndeterminate="True" Foreground="{ThemeResource PrimaryColor}" HorizontalAlignment="Stretch"
                              VerticalAlignment="Bottom" x:Name="LoadingBar" Visibility="Collapsed"/>
             </Grid>

@@ -40,9 +40,9 @@ namespace BiliBili_UWP.Components.Controls
         {
             UIHelper.PopupShow(this,()=>
             {
-                PopupContainer.Height = Window.Current.Bounds.Height * 0.8;
+                DisplayContainer.Height = Window.Current.Bounds.Height * 0.8;
             });
-            PopupContainer.Height = Window.Current.Bounds.Height * 0.8;
+            DisplayContainer.Height = Window.Current.Bounds.Height * 0.8;
             PopupIn.Begin();
         }
         public void HidePopup()

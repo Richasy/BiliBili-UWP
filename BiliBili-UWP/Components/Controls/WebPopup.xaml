@@ -87,7 +87,8 @@
             <controls:DropShadowPanel.RenderTransform>
                 <TranslateTransform Y="-20"></TranslateTransform>
             </controls:DropShadowPanel.RenderTransform>
-            <Grid Width="500" Background="{ThemeResource PageBackground}" CornerRadius="5">
+            <Grid Width="500" Background="{ThemeResource PageBackground}" CornerRadius="5"
+                  Name="DisplayContainer">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="1*" />

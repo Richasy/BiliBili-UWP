@@ -82,12 +82,13 @@
                                   Color="{ThemeResource ShadowColor}"
                                   x:Name="PopupContainer"
                                   Opacity="0.03"
-                                   VerticalAlignment="Center" HorizontalAlignment="Center"
+                                  HorizontalAlignment="Center" VerticalAlignment="Center"
                                   >
             <controls:DropShadowPanel.RenderTransform>
                 <TranslateTransform Y="-20"></TranslateTransform>
             </controls:DropShadowPanel.RenderTransform>
-            <Grid MinWidth="400" MaxWidth="600" Background="{ThemeResource PageBackground}" CornerRadius="5">
+            <Grid MinWidth="400" MaxWidth="600" Background="{ThemeResource PageBackground}" CornerRadius="5"
+                  x:Name="DisplayContainer">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="1*" />
