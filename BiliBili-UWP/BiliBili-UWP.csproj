@@ -21,12 +21,13 @@
     <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
     <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
     <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
-    <AppxPackageDir>D:\Package\BiliBili\</AppxPackageDir>
-    <GenerateTestArtifacts>False</GenerateTestArtifacts>
+    <AppxPackageDir>E:\Package\BiliBili\</AppxPackageDir>
+    <GenerateTestArtifacts>True</GenerateTestArtifacts>
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x86|x64|arm|arm64</AppxBundlePlatforms>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
     <PackageCertificateThumbprint>19DE3251AB16B9B0D867892B047B3BB7FF135FF9</PackageCertificateThumbprint>
+    <AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
