@@ -74,19 +74,19 @@ namespace BiliBili_UWP.Components.Layout
                 instance.HolderContainer.Visibility = isDefault ? Visibility.Visible : Visibility.Collapsed;
             }
         }
-        public void NavigateToPage(SideMenuItemType type, object parameter = null,bool isBack=false)
+        public void NavigateToPage(SideMenuItemType type, object parameter = null, bool isBack = false)
         {
             PageSplitView.IsPaneOpen = false;
             var last = MainFrameHistoryList.LastOrDefault();
             var page = GetPageTypeFromMenuType(type);
             bool isRepeat = false;
-            if (last != null && last.Item1 == page && last.Item2==parameter)
+            if (last != null && last.Item1 == page && last.Item2 == parameter)
                 isRepeat = true;
             if (page != null)
             {
                 App.AppViewModel.CurrentPageType = page;
                 PageFrame.Navigate(page, parameter, new DrillInNavigationTransitionInfo());
-                
+
                 if (!isBack)
                 {
                     if (!isRepeat)
@@ -108,9 +108,9 @@ namespace BiliBili_UWP.Components.Layout
         {
             PageSplitView.IsPaneOpen = false;
             IsDefault = false;
-            if (region.name == "番剧" || region.name=="国创")
+            if (region.name == "番剧" || region.name == "国创")
             {
-                NavigateToPage(SideMenuItemType.Anime,region.name=="番剧");
+                NavigateToPage(SideMenuItemType.Anime, region.name == "番剧");
             }
             else
             {
@@ -209,7 +209,7 @@ namespace BiliBili_UWP.Components.Layout
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            MainPageBack();   
+            MainPageBack();
         }
 
         public void MainPageBack()
@@ -289,7 +289,7 @@ namespace BiliBili_UWP.Components.Layout
             OpenPaneButton.Visibility = Visibility.Collapsed;
         }
 
-        public void NavigateToSubPage(Type page, object parameter = null,bool isBack=false)
+        public void NavigateToSubPage(Type page, object parameter = null, bool isBack = false)
         {
             PageSplitView.IsPaneOpen = true;
             var last = SubFrameHistoryList.LastOrDefault();
@@ -371,6 +371,23 @@ namespace BiliBili_UWP.Components.Layout
         {
             new TipPopup(e.Exception.Message).ShowError();
             e.Handled = true;
+        }
+
+        protected override void OnPointerReleased(PointerRoutedEventArgs e)
+        {
+            if (e.GetCurrentPoint(this).Properties.PointerUpdateKind == Windows.UI.Input.PointerUpdateKind.XButton1Released)
+            {
+                e.Handled = true;
+                if (SubBackButton.Visibility == Visibility.Visible)
+                {
+                    SubPageBack();
+                }
+                else if (BackButton.Visibility == Visibility.Visible)
+                {
+                    MainPageBack();
+                }
+            }
+            base.OnPointerReleased(e);
         }
     }
 }
