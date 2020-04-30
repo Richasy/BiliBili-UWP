@@ -440,6 +440,7 @@
     <Content Include="Components\HTML\ShowPage.html" />
     <Content Include="Others\Introduce.txt" />
     <Content Include="Others\Update.txt" />
+    <None Include="BiliBili-UWP_TemporaryKey.pfx" />
     <None Include="Package.StoreAssociation.xml" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
