@@ -297,10 +297,15 @@ namespace BiliBili_UWP.Components.Controls
             DanmakuList.Clear();
             if (isShow)
             {
+                DanmakuControls.Visibility = Visibility.Visible;
                 if (isBangumi)
                     DanmakuList = await _danmakuParse.ParseBiliBili(Convert.ToInt64(_bangumiPart.cid));
                 else
                     DanmakuList = await _danmakuParse.ParseBiliBili(Convert.ToInt64(_partId));
+            }
+            else
+            {
+                DanmakuControls.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -538,6 +543,12 @@ namespace BiliBili_UWP.Components.Controls
 
         private void VideoMTC_SeparateButtonClick(object sender, RoutedEventArgs e)
         {
+            if (VideoMTC.IsCompactOverlay)
+                VideoMTC.IsCompactOverlay = false;
+            if (VideoMTC.IsFullWindow)
+                VideoMTC.IsFullWindow = false;
+            if (VideoMTC.IsCinema)
+                VideoMTC.IsCinema = false;
             SeparateButtonClick?.Invoke(this, e);
         }
         public Visibility CinemaButtonVisibility
