@@ -378,11 +378,13 @@ namespace BiliBili_UWP.Components.Layout
             if (e.GetCurrentPoint(this).Properties.PointerUpdateKind == Windows.UI.Input.PointerUpdateKind.XButton1Released)
             {
                 e.Handled = true;
-                if (SubBackButton.Visibility == Visibility.Visible)
+                if (SubFrameHistoryList.Count > 1
+                    && PageSplitView.IsPaneOpen 
+                    && PageSplitView.DisplayMode==SplitViewDisplayMode.CompactOverlay)
                 {
                     SubPageBack();
                 }
-                else if (BackButton.Visibility == Visibility.Visible)
+                else if (MainFrameHistoryList.Count>1)
                 {
                     MainPageBack();
                 }
