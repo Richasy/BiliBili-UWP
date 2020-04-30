@@ -13,7 +13,7 @@
             <TextBlock Style="{StaticResource SmallTipTextStyle}" Text="{Binding}" Margin="0,0,0,5"/>
         </DataTemplate>
         <DataTemplate x:Key="FontItemTemplate" x:DataType="others:SystemFont">
-            <Grid Padding="8,5">
+            <Grid Padding="3,5,8,5">
                 <TextBlock Style="{StaticResource SmallTipTextStyle}" FontFamily="{x:Bind FontFamily}"
                            Foreground="{ThemeResource NormalTextColor}" Text="{x:Bind Name}"/>
             </Grid>
@@ -37,6 +37,8 @@
                           ItemTemplate="{StaticResource FontItemTemplate}" Margin="0,15,0,0" ItemsSource="{x:Bind FontCollection}"/>
                 <ToggleSwitch Style="{StaticResource BasicToggleSwitchStyle}" HeaderTemplate="{StaticResource TipHeaderStyle}"
                               Header="播放页自动播放" x:Name="AutoPlaySwitch" Toggled="AutoPlaySwitch_Toggled" Margin="0,15,0,0"/>
+                <ToggleSwitch Style="{StaticResource BasicToggleSwitchStyle}" HeaderTemplate="{StaticResource TipHeaderStyle}"
+                              Header="手动控制媒体传输控件" x:Name="ManualMTCSwitch" Toggled="ManualMTCSwitch_Toggled"  Margin="0,15,0,0"/>
             </StackPanel>
         </Grid>
     </Grid>

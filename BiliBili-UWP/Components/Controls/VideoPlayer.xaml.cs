@@ -313,9 +313,10 @@ namespace BiliBili_UWP.Components.Controls
         {
             if (_pointerHoldCount >= 3)
             {
+                bool isManual = AppTool.GetBoolSetting(Settings.IsManualMediaTransportControls, false);
                 if (_isCatchPointer && Window.Current.CoreWindow.PointerCursor != null)
                     Window.Current.CoreWindow.PointerCursor = null;
-                if (_isMTCShow)
+                if (_isMTCShow && !isManual)
                 {
                     _isMTCShow = false;
                     VideoMTC.Hide();
@@ -726,7 +727,8 @@ namespace BiliBili_UWP.Components.Controls
         private void UserControl_PointerMoved(object sender, PointerRoutedEventArgs e)
         {
             _pointerHoldCount = 0;
-            if (!_isMTCShow)
+            bool isManual = AppTool.GetBoolSetting(Settings.IsManualMediaTransportControls, false);
+            if (!_isMTCShow && !isManual)
             {
                 _isMTCShow = true;
                 VideoMTC.Show();
@@ -739,6 +741,25 @@ namespace BiliBili_UWP.Components.Controls
             var data = (sender as FrameworkElement).DataContext as DanmakuColor;
             ColorTextBox.Text = data.Color.Color.ToString();
             ColorViewBorder.Background = data.Color;
+        }
+
+        private void mediaElement_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            bool isManual = AppTool.GetBoolSetting(Settings.IsManualMediaTransportControls, false);
+            if (isManual)
+            {
+                _isMTCShow = !_isMTCShow;
+                if (_isMTCShow)
+                    VideoMTC.Show();
+                else
+                    VideoMTC.Hide();
+            }
+        }
+
+        private void mediaElement_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
+        {
+            e.Handled = true;
+            VideoMTC.IsPlaying = !VideoMTC.IsPlaying;
         }
     }
 }

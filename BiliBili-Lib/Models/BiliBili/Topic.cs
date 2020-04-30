@@ -12,6 +12,17 @@ namespace BiliBili_Lib.Models.BiliBili
         public string card { get; set; }
         public string extend_json { get; set; }
         public TopicDisplay display { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Topic topic &&
+                   EqualityComparer<TopicDescription>.Default.Equals(desc, topic.desc);
+        }
+
+        public override int GetHashCode()
+        {
+            return -1524259552 + EqualityComparer<TopicDescription>.Default.GetHashCode(desc);
+        }
     }
 
     public class TopicOrigin
@@ -67,6 +78,17 @@ namespace BiliBili_Lib.Models.BiliBili
         public string orig_dy_id_str { get; set; }
         public string rid_str { get; set; }
         public string bvid { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            return obj is TopicDescription description &&
+                   dynamic_id == description.dynamic_id;
+        }
+
+        public override int GetHashCode()
+        {
+            return -1975087522 + EqualityComparer<string>.Default.GetHashCode(dynamic_id);
+        }
     }
 
     public class UserProfile

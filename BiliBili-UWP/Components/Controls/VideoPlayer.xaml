@@ -84,7 +84,8 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <MediaPlayerElement x:Name="mediaElement"  AreTransportControlsEnabled="True"
-                            Background="{ThemeResource PageBackground}">
+                            Background="{ThemeResource PageBackground}" Tapped="mediaElement_Tapped" IsDoubleTapEnabled="True"
+                            DoubleTapped="mediaElement_DoubleTapped" Style="{StaticResource BasicMediaStyle}">
             <MediaPlayerElement.TransportControls>
                 <others:VideoTransportControls x:Name="VideoMTC"
                                                FontSize="15" DanmakuLoaded="VideoMTC_DanmakuLoaded"
@@ -101,6 +102,10 @@
                                                SeparateButtonClick="VideoMTC_SeparateButtonClick"
                                                Loaded="VideoMTC_Loaded"
                                                ShowAndHideAutomatically="False"
+                                               IsFastForwardButtonVisible="True"
+                                               IsFastRewindButtonVisible="True"
+                                               IsFastForwardEnabled="True"
+                                               IsFastRewindEnabled="True"
                                                />
             </MediaPlayerElement.TransportControls>
         </MediaPlayerElement>

@@ -46,10 +46,21 @@ namespace BiliBili_UWP
             App.AppViewModel.CheckAppUpdate();
             var popup = new WaitingPopup("正在初始化");
             popup.ShowPopup();
-            await App.BiliViewModel.GetRegionsAsync();
-            Window.Current.Dispatcher.AcceleratorKeyActivated += AccelertorKeyActivedHandle;
-            PagePanel.NavigateToPage(Models.Enums.SideMenuItemType.Home);
-            popup.HidePopup();
+            try
+            {
+                await App.BiliViewModel.GetRegionsAsync();
+                Window.Current.Dispatcher.AcceleratorKeyActivated += AccelertorKeyActivedHandle;
+                PagePanel.NavigateToPage(Models.Enums.SideMenuItemType.Home);
+            }
+            catch (Exception)
+            {
+                var rootFrame = Window.Current.Content as Frame;
+                rootFrame.Navigate(typeof(Pages.Main.NetworkErrorPage));
+            }
+            finally
+            {
+                popup.HidePopup();
+            }
             _isInit = true;
         }
 
@@ -112,13 +123,13 @@ namespace BiliBili_UWP
             double width = e.NewSize.Width;
             if (width < 1000)
             {
-                AppSplitView.IsPaneOpen = false;
-                AppSplitView.DisplayMode = SplitViewDisplayMode.CompactOverlay;
+                if (AppSplitView.DisplayMode != SplitViewDisplayMode.CompactOverlay)
+                    AppSplitView.DisplayMode = SplitViewDisplayMode.CompactOverlay;
             }
             else
             {
-                AppSplitView.IsPaneOpen = true;
-                AppSplitView.DisplayMode = SplitViewDisplayMode.CompactInline;
+                if (AppSplitView.DisplayMode != SplitViewDisplayMode.CompactInline)
+                    AppSplitView.DisplayMode = SplitViewDisplayMode.CompactInline;
             }
         }
 

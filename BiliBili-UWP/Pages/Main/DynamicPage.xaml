@@ -20,7 +20,16 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="1*" />
         </Grid.RowDefinitions>
-        <TextBlock Text="动态" Style="{StaticResource TitleTextStyle}" Margin="0,0,0,15"/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="动态" Style="{StaticResource TitleTextStyle}" Margin="0,0,0,15"/>
+            <ToggleSwitch Style="{StaticResource BasicToggleSwitchStyle}" VerticalAlignment="Center" OnContent="只看视频" OffContent="只看视频"
+                          Grid.Column="1" Toggled="ToggleSwitch_Toggled"/>
+        </Grid>
+        
         <Grid Grid.Row="1">
             <GridView x:Name="DynamicView"
                               HorizontalAlignment="Stretch"

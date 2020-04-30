@@ -303,6 +303,9 @@
     <Compile Include="Pages\Main\MiniPlayerPage.xaml.cs">
       <DependentUpon>MiniPlayerPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\Main\NetworkErrorPage.xaml.cs">
+      <DependentUpon>NetworkErrorPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Main\SettingPage.xaml.cs">
       <DependentUpon>SettingPage.xaml</DependentUpon>
     </Compile>
@@ -421,6 +424,7 @@
     <Content Include="Assets\Logo\Wide310x150Logo.scale-150.png" />
     <Content Include="Assets\Logo\Wide310x150Logo.scale-200.png" />
     <Content Include="Assets\Logo\Wide310x150Logo.scale-400.png" />
+    <Content Include="Assets\null.png" />
     <Content Include="Assets\Rank\ic_live_guard_1.png" />
     <Content Include="Assets\Rank\ic_live_guard_2.png" />
     <Content Include="Assets\Rank\ic_live_guard_3.png" />
@@ -632,6 +636,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\Main\MiniPlayerPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Main\NetworkErrorPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

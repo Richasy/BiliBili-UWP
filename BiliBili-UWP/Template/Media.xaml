@@ -4,6 +4,33 @@
     xmlns:control="using:BiliBili_UWP.Models.UI.Others"
     xmlns:c="using:NSDanmaku.Controls"
     xmlns:local="using:BiliBili_UWP.Template">
+    <Style TargetType="MediaPlayerElement" x:Key="BasicMediaStyle">
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="MediaPlayerElement">
+                    <Grid x:Name="LayoutRoot">
+                        <Border Background="Transparent" />
+                        <Image  x:Name="PosterImage"
+                Visibility="Collapsed"
+                Source="{TemplateBinding PosterSource}"
+                Stretch="{TemplateBinding Stretch}" />
+                        <MediaPlayerPresenter x:Name="MediaPlayerPresenter"
+                IsFullWindow="{TemplateBinding IsFullWindow}"
+                Stretch="{TemplateBinding Stretch}"
+                MediaPlayer="{TemplateBinding MediaPlayer}" />
+                        <ContentPresenter     x:Name="TransportControlsPresenter"
+                Visibility="{TemplateBinding AreTransportControlsEnabled}" />
+                        <Grid x:Name="TimedTextSourcePresenter" />
+
+                    </Grid>
+
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     <Style TargetType="control:VideoTransportControls">
         <Setter Property="IsTabStop" Value="False" />
         <Setter Property="Background" Value="Transparent" />
@@ -541,7 +568,7 @@
                                    />
 
                         <Border x:Name="ControlPanel_ControlPanelVisibilityStates_Border">
-                            <Grid x:Name="ControlPanelGrid"
+                            <Grid x:Name="ControlPanelGrid" IsTapEnabled="False" IsDoubleTapEnabled="False"
                   Background="{ThemeResource MediaTransportControlsPanelBackground}"
                   VerticalAlignment="Bottom"
                   RenderTransformOrigin="0.5,0.5">
@@ -592,7 +619,7 @@
                                                      Height="4"
                                                      IsIndeterminate="True"
                                                      IsHitTestVisible="False"
-                                                     Foreground="{ThemeResource PrimaryColorOpacity}"
+                                                     Foreground="{ThemeResource PrimaryColor}"
                                                      VerticalAlignment="Top"
                                                      Margin="0,2,0,0"
                                                      Visibility="Collapsed" />

@@ -20,6 +20,7 @@ namespace BiliBili_Lib.Enums
         IsUseHevc,
         IsAutoPlay,
         MaxDanmuNumber,
-        IsInitEmoji
+        IsInitEmoji,
+        IsManualMediaTransportControls
     }
 }

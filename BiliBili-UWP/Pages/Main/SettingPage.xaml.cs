@@ -47,6 +47,8 @@ namespace BiliBili_UWP.Pages.Main
             ThemeComboBox.SelectedIndex = theme == "Light" ? 0 : 1;
             bool isAutoPlay = AppTool.GetBoolSetting(Settings.IsAutoPlay);
             AutoPlaySwitch.IsOn = isAutoPlay;
+            bool isManualMTC = AppTool.GetBoolSetting(Settings.IsManualMediaTransportControls,false);
+            ManualMTCSwitch.IsOn = isManualMTC;
 
             base.OnNavigatedTo(e);
             _isInit = true;
@@ -115,6 +117,13 @@ namespace BiliBili_UWP.Pages.Main
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             FontInit();
+        }
+
+        private void ManualMTCSwitch_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (!_isInit)
+                return;
+            AppTool.WriteLocalSetting(Settings.IsManualMediaTransportControls, ManualMTCSwitch.IsOn.ToString());
         }
     }
 }
