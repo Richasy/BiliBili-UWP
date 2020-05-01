@@ -75,28 +75,35 @@ namespace BiliBili_Lib.Service
             result.Status = LoginResultType.Error;
             if (!string.IsNullOrEmpty(response))
             {
-                var jobj = JObject.Parse(response);
-                int code = Convert.ToInt32(jobj["code"]);
-                if (code == 0)
+                try
                 {
-                    var data = JsonConvert.DeserializeObject<LoginResult>(jobj["data"].ToString());
-                    var package = new TokenPackage(data.token_info.access_token, data.token_info.refresh_token, AppTool.DateToTimeStamp(DateTime.Now.AddSeconds(data.token_info.expires_in)));
-                    InitToken(package);
-                    TokenChanged?.Invoke(this, package);
-                    result.Status = LoginResultType.Success;
-                    await SSO();
+                    var jobj = JObject.Parse(response);
+                    int code = Convert.ToInt32(jobj["code"]);
+                    if (code == 0)
+                    {
+                        var data = JsonConvert.DeserializeObject<LoginResult>(jobj["data"].ToString());
+                        var package = new TokenPackage(data.token_info.access_token, data.token_info.refresh_token, AppTool.DateToTimeStamp(DateTime.Now.AddSeconds(data.token_info.expires_in)));
+                        InitToken(package);
+                        TokenChanged?.Invoke(this, package);
+                        result.Status = LoginResultType.Success;
+                        await SSO();
+                    }
+                    else if (code == -2100)
+                    {
+                        result.Status = LoginResultType.NeedValidate;
+                        result.Url = jobj["url"].ToString();
+                    }
+                    else if (code == -105)
+                        result.Status = LoginResultType.NeedCaptcha;
+                    else if (code == -449)
+                        result.Status = LoginResultType.Busy;
+                    else
+                        result.Status = LoginResultType.Fail;
                 }
-                else if (code == -2100)
+                catch (Exception)
                 {
-                    result.Status = LoginResultType.NeedValidate;
-                    result.Url = jobj["url"].ToString();
+                    return new LoginCallback { Status = LoginResultType.Fail, Url = "" };
                 }
-                else if (code == -105)
-                    result.Status = LoginResultType.NeedCaptcha;
-                else if (code == -449)
-                    result.Status = LoginResultType.Busy;
-                else
-                    result.Status = LoginResultType.Fail;
             }
             return result;
         }
