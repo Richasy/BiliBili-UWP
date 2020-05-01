@@ -268,7 +268,7 @@
     <Compile Include="Models\UI\Others\IndicatorHelper.cs" />
     <Compile Include="Models\UI\Others\NotifyPropertyBase.cs" />
     <Compile Include="Models\UI\Others\SearchItemTemplateSelector.cs" />
-    <Compile Include="Models\UI\Converter\SelectedBackgroundConverter.cs" />
+    <Compile Include="Models\UI\Converter\SelectedColorConverter.cs" />
     <Compile Include="Models\UI\Others\SideMenuItemTemplateSelector.cs" />
     <Compile Include="Models\UI\Others\SystemFont.cs" />
     <Compile Include="Models\UI\Others\VideoTransportControls.cs" />
@@ -324,8 +324,14 @@
     <Compile Include="Pages\Sub\Account\DetailPage.xaml.cs">
       <DependentUpon>DetailPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\Sub\Account\FansPage.xaml.cs">
+      <DependentUpon>FansPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Sub\Account\FavoritePage.xaml.cs">
       <DependentUpon>FavoritePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Sub\Account\FollowPage.xaml.cs">
+      <DependentUpon>FollowPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Sub\Anime\IndexPage.xaml.cs">
       <DependentUpon>IndexPage.xaml</DependentUpon>
@@ -672,7 +678,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\Sub\Account\FansPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\Sub\Account\FavoritePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Sub\Account\FollowPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

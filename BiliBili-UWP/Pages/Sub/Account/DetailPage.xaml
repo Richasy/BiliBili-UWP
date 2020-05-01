@@ -99,12 +99,8 @@
                               FontSize="14" Margin="40,0,0,0" Click="DynamicButton_Click"/>
             </StackPanel>
         </Grid>
-        <Grid Grid.Row="2" x:Name="VideoContainer">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <ScrollViewer Margin="0,15,0,0" Grid.Row="1" Style="{StaticResource BasicScrollViewer}" ViewChanged="ScrollViewer_ViewChanged">
+        <Grid Grid.Row="2" Margin="0,15,0,0" x:Name="VideoContainer">
+            <ScrollViewer Style="{StaticResource BasicScrollViewer}" ViewChanged="ScrollViewer_ViewChanged">
                 <Grid>
                     <ListView x:Name="VideoListView" ItemContainerStyle="{StaticResource TransparentListViewContainerStyle}"
                               Style="{StaticResource NoScrollListView}" ItemsSource="{x:Bind VideoCollection}" HorizontalAlignment="Stretch"
@@ -116,8 +112,8 @@
             </ScrollViewer>
         </Grid>
 
-        <Grid Grid.Row="2" x:Name="DynamicContainer" Visibility="Collapsed">
-            <ScrollViewer Grid.Row="1" Margin="0,15,0,0" Style="{StaticResource BasicScrollViewer}" ViewChanged="ScrollViewer_ViewChanged">
+        <Grid Grid.Row="2" Margin="0,15,0,0" x:Name="DynamicContainer" Visibility="Collapsed">
+            <ScrollViewer Style="{StaticResource BasicScrollViewer}" ViewChanged="ScrollViewer_ViewChanged">
                 <Grid>
                     <ListView ItemTemplate="{StaticResource DynamicItemTemplate}"
                               ItemsSource="{x:Bind DynamicCollection}"

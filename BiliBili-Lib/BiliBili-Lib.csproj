@@ -124,6 +124,7 @@
     <Compile Include="Enums\Settings.cs" />
     <Compile Include="Models\BiliBili\Account.cs" />
     <Compile Include="Models\BiliBili\Account\ArchiveVideo.cs" />
+    <Compile Include="Models\BiliBili\Account\RelationUser.cs" />
     <Compile Include="Models\BiliBili\Account\User.cs" />
     <Compile Include="Models\BiliBili\Anime.cs" />
     <Compile Include="Models\BiliBili\Anime\Bangumi.cs" />

@@ -43,7 +43,7 @@ namespace BiliBili_UWP.Components.Account
                     DynamicBlock.Text = AppTool.GetNumberAbbreviation(me.dynamic);
                     FollowBlock.Text = AppTool.GetNumberAbbreviation(me.following);
                     FanBlock.Text = AppTool.GetNumberAbbreviation(me.follower);
-                    if (me.pendant!=null && !string.IsNullOrEmpty(me.pendant.image))
+                    if (me.pendant != null && !string.IsNullOrEmpty(me.pendant.image))
                     {
                         PendantImage.Visibility = Visibility.Visible;
                         PendantImage.Source = new BitmapImage(new Uri(me.pendant.image));
@@ -70,7 +70,7 @@ namespace BiliBili_UWP.Components.Account
 
         // Using a DependencyProperty as the backing store for IsOnlyAvatar.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty IsOnlyAvatarProperty =
-            DependencyProperty.Register("IsOnlyAvatar", typeof(bool), typeof(SlimAccountPanel), new PropertyMetadata(false,new PropertyChangedCallback(IsOnlyAvatar_Changed)));
+            DependencyProperty.Register("IsOnlyAvatar", typeof(bool), typeof(SlimAccountPanel), new PropertyMetadata(false, new PropertyChangedCallback(IsOnlyAvatar_Changed)));
 
         private static void IsOnlyAvatar_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -136,9 +136,25 @@ namespace BiliBili_UWP.Components.Account
             }
             else
             {
-                if(!LoginButton.IsLoading)
+                if (!LoginButton.IsLoading)
                     App.BiliViewModel.ShowLoginPopup();
             }
+        }
+
+        private void Dynamic_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var me = App.BiliViewModel._client.Account.Me;
+            App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Pages.Sub.Account.DetailPage), new Tuple<int, bool>(me.mid, true));
+        }
+
+        private void Fans_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Pages.Sub.Account.FansPage));
+        }
+
+        private void Follow_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Pages.Sub.Account.FollowPage));
         }
     }
 }

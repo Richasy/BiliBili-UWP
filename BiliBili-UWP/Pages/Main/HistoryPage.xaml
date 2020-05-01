@@ -40,9 +40,8 @@
         </Grid>
         <Grid Grid.Row="1">
             <controls1:AdaptiveGridView x:Name="HistoryVideoView"
-                              HorizontalAlignment="Stretch"
                           DesiredWidth="215"
-                          ItemHeight="180"
+                          ItemHeight="180" StretchContentForSingleRow="False"
                           ItemTemplate="{StaticResource VideoItemTemplate}"
                           ItemContainerStyle="{StaticResource TransparentGridViewItemContainerStyle}"
                           Style="{StaticResource NoScrollGridView}"

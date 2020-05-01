@@ -40,7 +40,7 @@
                               Header="播放页自动播放" x:Name="AutoPlaySwitch" Toggled="AutoPlaySwitch_Toggled" Margin="0,15,0,0"/>
                 <ToggleSwitch Style="{StaticResource BasicToggleSwitchStyle}" HeaderTemplate="{StaticResource TipHeaderStyle}"
                               Header="手动控制媒体传输控件" x:Name="ManualMTCSwitch" Toggled="ManualMTCSwitch_Toggled"  Margin="0,15,0,0"/>
-                <widgets:NumberBox HeaderTemplate="{StaticResource TipHeaderStyle}" Header="播放器跳跃步长" MaxWidth="150" HorizontalAlignment="Left"
+                <widgets:NumberBox HeaderTemplate="{StaticResource TipHeaderStyle}" Header="播放器跳跃步长(秒)" MaxWidth="150" HorizontalAlignment="Left"
                                    x:Name="PlayerSkipStepBox" Margin="0,15,0,0" ValueChanged="PlayerSkipStepBox_ValueChanged"/>
             </StackPanel>
         </Grid>

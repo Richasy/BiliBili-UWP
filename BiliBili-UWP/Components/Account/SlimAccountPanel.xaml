@@ -30,15 +30,15 @@
                 <widgets:LevelBlock x:Name="LevelBlock" HorizontalAlignment="Center" Margin="0,5,0,0"/>
             </StackPanel>
             <RelativePanel Width="200" HorizontalAlignment="Center" Grid.Row="2" Margin="0,15,0,0">
-                <StackPanel RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" >
+                <StackPanel RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" Tapped="Dynamic_Tapped">
                     <TextBlock Style="{StaticResource CaptionTextStyle}" Text="--" x:Name="DynamicBlock" HorizontalAlignment="Center"/>
                     <TextBlock Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource NormalTextColor}" Text="动态" HorizontalAlignment="Center"/>
                 </StackPanel>
-                <StackPanel RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True">
+                <StackPanel RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" Tapped="Follow_Tapped">
                     <TextBlock Style="{StaticResource CaptionTextStyle}" Text="--" x:Name="FollowBlock" HorizontalAlignment="Center"/>
                     <TextBlock Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource NormalTextColor}" Text="关注" HorizontalAlignment="Center"/>
                 </StackPanel>
-                <StackPanel RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True">
+                <StackPanel RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" Tapped="Fans_Tapped">
                     <TextBlock Style="{StaticResource CaptionTextStyle}" Text="--" x:Name="FanBlock" HorizontalAlignment="Center"/>
                     <TextBlock Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource NormalTextColor}" Text="粉丝" HorizontalAlignment="Center"/>
                 </StackPanel>

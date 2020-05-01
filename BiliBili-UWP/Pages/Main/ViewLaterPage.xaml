@@ -53,7 +53,7 @@
             <controls1:AdaptiveGridView x:Name="HistoryVideoView"
                               HorizontalAlignment="Stretch"
                           DesiredWidth="200"
-                          ItemHeight="185"
+                          ItemHeight="185" StretchContentForSingleRow="False"
                           ItemTemplate="{StaticResource VideoItemTemplate}"
                           ItemContainerStyle="{StaticResource TransparentGridViewItemContainerStyle}"
                           Style="{StaticResource NoScrollGridView}"

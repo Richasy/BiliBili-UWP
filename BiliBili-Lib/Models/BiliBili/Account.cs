@@ -108,5 +108,9 @@ namespace BiliBili_Lib.Models.BiliBili
         public int sys_msg { get; set; }
         public int up { get; set; }
     }
-
+    public class OfficialVerify
+    {
+        public int type { get; set; }
+        public string desc { get; set; }
+    }
 }

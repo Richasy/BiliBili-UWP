@@ -27,7 +27,19 @@
                                         Cover="{x:Bind cover}"
                                         FirstSectionContent="{x:Bind cover_left_text_1}"
                                         SecondSectionContent="{x:Bind cover_left_text_2}"
-                                        Duration="{x:Bind cover_left_text_3}"/>
+                                        Duration="{x:Bind cover_left_text_3}">
+                <controls1:DefaultVideoCard.ExtraFlyout>
+                    <CommandBarFlyout>
+                        <CommandBarFlyout.SecondaryCommands>
+                            <AppBarButton Label="加入稍后再看" FontSize="12" FontFamily="{CustomResource Basic}" x:Name="LaterViewButton" Click="LaterViewButton_Click">
+                                <AppBarButton.Icon>
+                                    <FontIcon FontFamily="{StaticResource Icon}" Glyph="&#xEA3B;"/>
+                                </AppBarButton.Icon>
+                            </AppBarButton>
+                        </CommandBarFlyout.SecondaryCommands>
+                    </CommandBarFlyout>
+                </controls1:DefaultVideoCard.ExtraFlyout>
+            </controls1:DefaultVideoCard>
         </DataTemplate>
         <DataTemplate x:DataType="bilibili:Topic" x:Key="TopicItemTemplate">
             <controls1:TopicCard Data="{Binding}" Margin="0,0,0,10"/>

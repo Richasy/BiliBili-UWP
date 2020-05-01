@@ -286,5 +286,11 @@ namespace BiliBili_UWP.Pages.Sub.Channel
                 App.AppViewModel.PlayVideo(Convert.ToInt32(_header.param));
             }
         }
+
+        private async void LaterViewButton_Click(object sender, RoutedEventArgs e)
+        {
+            var data = (sender as FrameworkElement).DataContext as VideoChannel;
+            await App.BiliViewModel.AddViewLater(sender, Convert.ToInt32(data.param));
+        }
     }
 }

@@ -391,7 +391,7 @@ namespace BiliBili_Lib.Service
         public async Task<List<VideoDetail>> GetViewLaterAsync(int page = 1)
         {
             string url = Api.ACCOUNT_VIEWLATER + $"?pn={page}&ps=40";
-            var data = await BiliTool.ConvertEntityFromWebAsync<List<VideoDetail>>(url,"data.list");
+            var data = await BiliTool.ConvertEntityFromWebAsync<List<VideoDetail>>(url, "data.list");
             return data;
         }
 
@@ -432,7 +432,7 @@ namespace BiliBili_Lib.Service
         public async Task<bool> DeleteViewLaterAsync(params int[] aids)
         {
             var param = new Dictionary<string, string>();
-            param.Add("aid", string.Join(',',aids));
+            param.Add("aid", string.Join(',', aids));
             var data = BiliTool.UrlContact("", param, true);
             string content = await BiliTool.PostContentToWebAsync(Api.ACCOUNT_VIEWLATER_DEL, data);
             if (!string.IsNullOrEmpty(content))
@@ -481,7 +481,7 @@ namespace BiliBili_Lib.Service
         {
             var param = new Dictionary<string, string>();
             param.Add("business", "reply");
-            string url = BiliTool.UrlContact(Api.ACCOUNT_EMOJI_PANEL,param, true);
+            string url = BiliTool.UrlContact(Api.ACCOUNT_EMOJI_PANEL, param, true);
             var items = await BiliTool.ConvertEntityFromWebAsync<List<EmojiReplyContainer>>(url, "data.packages");
             return items;
         }
@@ -493,6 +493,50 @@ namespace BiliBili_Lib.Service
         {
             string url = BiliTool.UrlContact(Api.ACCOUNT_UNREAD, null, true);
             var data = await BiliTool.ConvertEntityFromWebAsync<MyMessage>(url);
+            return data;
+        }
+        /// <summary>
+        /// 获取我的粉丝
+        /// </summary>
+        /// <param name="page">页码</param>
+        /// <param name="reversion">刷新标识</param>
+        /// <returns></returns>
+        public async Task<FanResponse> GetMyFansAsync(int page, long reversion = 0)
+        {
+            var param = new Dictionary<string, string>();
+            param.Add("pn", page.ToString());
+            param.Add("vmid", BiliTool.mid);
+            string url = BiliTool.UrlContact(Api.ACCOUNT_RELATION_FANS, param, true);
+            var response = await BiliTool.ConvertEntityFromWebAsync<FanResponse>(url);
+            return response;
+        }
+        /// <summary>
+        /// 获取我的关注的分组
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<FollowTag>> GetMyFollowTagsAsync()
+        {
+            var param = new Dictionary<string, string>();
+            param.Add("vmid", BiliTool.mid);
+            string url = BiliTool.UrlContact(Api.ACCOUNT_RELATION_FOLLOW_TAGS, param, true);
+            var data = await BiliTool.ConvertEntityFromWebAsync<List<FollowTag>>(url);
+            return data;
+        }
+        /// <summary>
+        /// 获取我关注的用户（按分组）
+        /// </summary>
+        /// <param name="tagId">分组ID</param>
+        /// <param name="pn">页码</param>
+        /// <returns></returns>
+        public async Task<List<RelationUser>> GetMyFollowUserAsync(int tagId,int pn)
+        {
+            var param = new Dictionary<string, string>();
+            param.Add("mid", BiliTool.mid);
+            param.Add("ps", "50");
+            param.Add("pn", pn.ToString());
+            param.Add("tagid", tagId.ToString());
+            string url = BiliTool.UrlContact(Api.ACCOUNT_RELATION_FOLLOW_DETAIL, param, true);
+            var data = await BiliTool.ConvertEntityFromWebAsync<List<RelationUser>>(url);
             return data;
         }
     }

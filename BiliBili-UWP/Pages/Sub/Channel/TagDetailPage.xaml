@@ -23,11 +23,31 @@
                     <TextBlock Text="&#xE9BE;" FontFamily="{StaticResource Icon}" VerticalAlignment="Center" HorizontalAlignment="Center"
                            Foreground="{ThemeResource PrimaryColor}" FontSize="25" Margin="0,0,-5,0"/>
                 </Border>
-                <StackPanel Grid.Row="1" Padding="10">
-                    <TextBlock Text="{x:Bind title}" ToolTipService.ToolTip="{x:Bind title}" Style="{StaticResource SmallTipTextStyle}" 
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Row="1" Padding="10">
+                        <TextBlock Text="{x:Bind title}" ToolTipService.ToolTip="{x:Bind title}" Style="{StaticResource SmallTipTextStyle}" 
                                Foreground="{ThemeResource NormalTextColor}"/>
-                    <TextBlock Text="{x:Bind desc}" Style="{StaticResource SmallTipTextStyle}" FontSize="10" Margin="0,5,0,0"/>
-                </StackPanel>
+                        <TextBlock Text="{x:Bind desc}" Style="{StaticResource SmallTipTextStyle}" FontSize="10" Margin="0,5,0,0"/>
+                    </StackPanel>
+                    <Button Style="{StaticResource TransparentButtonStyle}" Content="&#xE9A9;" Grid.Column="1" Margin="10,0,0,0"
+                        VerticalAlignment="Bottom" FontFamily="{StaticResource Icon}" FontSize="13" x:Name="MoreButton">
+                        <Button.Flyout>
+                            <CommandBarFlyout>
+                                <CommandBarFlyout.SecondaryCommands>
+                                    <AppBarButton Label="加入稍后再看" FontSize="12" FontFamily="{CustomResource Basic}" x:Name="LaterViewButton" Click="LaterViewButton_Click">
+                                        <AppBarButton.Icon>
+                                            <FontIcon FontFamily="{StaticResource Icon}" Glyph="&#xEA3B;"/>
+                                        </AppBarButton.Icon>
+                                    </AppBarButton>
+                                </CommandBarFlyout.SecondaryCommands>
+                            </CommandBarFlyout>
+                        </Button.Flyout>
+                    </Button>
+                </Grid>
             </Grid>
         </DataTemplate>
         <DataTemplate x:DataType="bilibili:Topic" x:Key="TopicItemTemplate">

@@ -56,12 +56,24 @@ namespace BiliBili_UWP.Pages.Sub.Account
             App.AppViewModel.CurrentPagePanel.SubPageTitle = "用户信息";
             if (e.NavigationMode == NavigationMode.Back)
                 return;
-            if(e.Parameter!=null && e.Parameter is int uid)
+            if(e.Parameter!=null)
             {
-                if (_uid != uid)
+                if(e.Parameter is int uid)
                 {
-                    _uid = uid;
-                    await Refresh();
+                    if (_uid != uid)
+                    {
+                        _uid = uid;
+                        await Refresh();
+                    }
+                }
+                else if(e.Parameter is Tuple<int,bool> pack)
+                {
+                    if (_uid != pack.Item1)
+                    {
+                        _uid = pack.Item1;
+                        await Refresh();
+                        await SwitchToDynamic();
+                    }
                 }
             }
         }
@@ -87,6 +99,9 @@ namespace BiliBili_UWP.Pages.Sub.Account
 
             VideoButton.IsChecked = true;
             DynamicButton.IsChecked = false;
+
+            VideoContainer.Visibility = Visibility.Visible;
+            DynamicContainer.Visibility = Visibility.Collapsed;
 
             DynamicCollection.Clear();
             VideoCollection.Clear();
@@ -191,6 +206,7 @@ namespace BiliBili_UWP.Pages.Sub.Account
                     _videoCount = response.count;
                     response.item.ForEach(p => VideoCollection.Add(p));
                 }
+                VideoHolderText.Visibility = VideoCollection.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
                 _isVideoRequesting = false;
             }
         }
@@ -211,6 +227,7 @@ namespace BiliBili_UWP.Pages.Sub.Account
                         response.Item2.ForEach(p => DynamicCollection.Add(p));
                     }
                 }
+                DynamicHolderText.Visibility = DynamicCollection.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
                 _isDynamicRequesting = false;
             }
         }
@@ -251,7 +268,13 @@ namespace BiliBili_UWP.Pages.Sub.Account
         }
         private async void DynamicButton_Click(object sender, RoutedEventArgs e)
         {
+            await SwitchToDynamic();
+        }
+
+        private async Task SwitchToDynamic()
+        {
             VideoButton.IsChecked = false;
+            DynamicButton.IsChecked = true;
             VideoContainer.Visibility = Visibility.Collapsed;
             DynamicContainer.Visibility = Visibility.Visible;
             if (DynamicCollection.Count == 0)

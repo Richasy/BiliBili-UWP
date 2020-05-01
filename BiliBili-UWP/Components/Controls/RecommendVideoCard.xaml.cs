@@ -78,18 +78,7 @@ namespace BiliBili_UWP.Components.Controls
 
         private async void LaterViewButton_Click(object sender, RoutedEventArgs e)
         {
-            LaterViewButton.IsEnabled = false;
-            bool result = await App.BiliViewModel._client.Account.AddViewLaterAsync(Data.args.aid);
-            if (result)
-            {
-                new TipPopup("已添加至稍后观看").ShowMessage();
-                VideoFlyout.Hide();
-            }
-            else
-            {
-                new TipPopup("添加失败").ShowError();
-            }
-            LaterViewButton.IsEnabled = true;
+            await App.BiliViewModel.AddViewLater(sender, Convert.ToInt32(Data.args.aid));
         }
 
         private async void Dislike_Tapped(object sender, TappedRoutedEventArgs e)
