@@ -70,7 +70,11 @@ namespace BiliBili_UWP
             {
                 var esc = Window.Current.CoreWindow.GetKeyState(VirtualKey.Escape);
                 var space = Window.Current.CoreWindow.GetKeyState(VirtualKey.Space);
+                var f11= Window.Current.CoreWindow.GetKeyState(VirtualKey.F11);
+                var left = Window.Current.CoreWindow.GetKeyState(VirtualKey.Left);
+                var right = Window.Current.CoreWindow.GetKeyState(VirtualKey.Right);
                 var player = App.AppViewModel.CurrentVideoPlayer;
+                
                 if (esc.HasFlag(CoreVirtualKeyStates.Down))
                 {
                     if (player != null)
@@ -96,6 +100,30 @@ namespace BiliBili_UWP
                         args.Handled = true;
                         player.MTC.IsPlaying = !player.MTC.IsPlaying;
                         player.Focus(FocusState.Programmatic);
+                    }
+                }
+                else if (f11.HasFlag(CoreVirtualKeyStates.Down))
+                {
+                    if(player != null && player.IsFocus)
+                    {
+                        args.Handled = true;
+                        player.MTC.IsFullWindow = !player.MTC.IsFullWindow;
+                    }
+                }
+                else if (left.HasFlag(CoreVirtualKeyStates.Down))
+                {
+                    if (player != null && player.IsFocus)
+                    {
+                        args.Handled = true;
+                        player.SkipRewind();
+                    }
+                }
+                else if (right.HasFlag(CoreVirtualKeyStates.Down))
+                {
+                    if (player != null && player.IsFocus)
+                    {
+                        args.Handled = true;
+                        player.SkipForward();
                     }
                 }
             }

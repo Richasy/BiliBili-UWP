@@ -13,8 +13,7 @@
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400"
-    GotFocus="UserControl_GotFocus"
-    LostFocus="UserControl_LostFocus"
+    
     SizeChanged="UserControl_SizeChanged"
     PointerEntered="UserControl_PointerEntered"
     PointerMoved="UserControl_PointerMoved"
@@ -83,7 +82,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <MediaPlayerElement x:Name="mediaElement"  AreTransportControlsEnabled="True"
+        <MediaPlayerElement x:Name="mediaElement"  AreTransportControlsEnabled="True" GotFocus="UserControl_GotFocus" LostFocus="UserControl_LostFocus"
                             Background="{ThemeResource PageBackground}" Tapped="mediaElement_Tapped" IsDoubleTapEnabled="True"
                             DoubleTapped="mediaElement_DoubleTapped" Style="{StaticResource BasicMediaStyle}">
             <MediaPlayerElement.TransportControls>

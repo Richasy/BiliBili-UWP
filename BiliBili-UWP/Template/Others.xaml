@@ -1503,6 +1503,7 @@
     <SolidColorBrush x:Key="MarkdownRichTextBlockBackground" Color="#FFF6F8FA"/>
     <Style x:Key="BasicMarkdownTextBlock" TargetType="controls:MarkdownTextBlock">
         <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="FontFamily" Value="{CustomResource Basic}" />
         <Setter Property="IsTabStop" Value="False"/>
         <Setter Property="LinkForeground" Value="{ThemeResource NormalTextColor}"/>
         <Setter Property="QuoteBackground" Value="Transparent"/>

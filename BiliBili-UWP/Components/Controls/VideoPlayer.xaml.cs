@@ -82,6 +82,8 @@ namespace BiliBili_UWP.Components.Controls
         private bool _isChoiceHandling = false;
         private bool _isMTCShow = false;
 
+        public int _skipStep = 0;
+
         public int CurrentProgress
         {
             get => Convert.ToInt32(_player.PlaybackSession.Position.TotalSeconds);
@@ -139,7 +141,11 @@ namespace BiliBili_UWP.Components.Controls
             ModeComboBox.SelectedIndex = 0;
             ColorViewBorder.Background = new SolidColorBrush(Windows.UI.Colors.White);
             DanmakuBox.Text = "";
+            _skipStep = Convert.ToInt32(AppTool.GetLocalSetting(Settings.PlayerSkipStep, "30"));
+            double volume = Convert.ToDouble(AppTool.GetLocalSetting(Settings.PlayerLastVolume, "100"));
+            _player.Volume = volume;
             _maxDanmakuNumber = Convert.ToInt32(AppTool.GetLocalSetting(Settings.MaxDanmuNumber, "200"));
+
             _playData = null;
             QualityCollection.Clear();
             DanmakuList.Clear();
@@ -155,10 +161,16 @@ namespace BiliBili_UWP.Components.Controls
             }
             _player = new MediaPlayer();
             _player.MediaEnded += Media_Ended;
+            _player.VolumeChanged += Volume_Changed;
             mediaElement.SetMediaPlayer(_player);
             if (DanmakuControls != null)
                 DanmakuControls.ClearAll();
             _danmaTimer.Start();
+        }
+
+        private void Volume_Changed(MediaPlayer sender, object args)
+        {
+            AppTool.WriteLocalSetting(Settings.PlayerLastVolume, sender.Volume.ToString());
         }
 
         private async void Media_Ended(MediaPlayer sender, object args)
@@ -760,6 +772,34 @@ namespace BiliBili_UWP.Components.Controls
         {
             e.Handled = true;
             VideoMTC.IsPlaying = !VideoMTC.IsPlaying;
+        }
+
+        public void SkipForward()
+        {
+            if (_player != null && _player.PlaybackSession.CanSeek)
+            {
+                var position = _player.PlaybackSession.Position.TotalSeconds;
+                var total = _player.PlaybackSession.NaturalDuration.TotalSeconds;
+                double target = 0d;
+                if (position + _skipStep > total)
+                    target = total;
+                else
+                    target = position + _skipStep;
+                _player.PlaybackSession.Position = TimeSpan.FromSeconds(target);
+            }
+        }
+        public void SkipRewind()
+        {
+            if (_player != null && _player.PlaybackSession.CanSeek)
+            {
+                var position = _player.PlaybackSession.Position.TotalSeconds;
+                double target = 0d;
+                if (position - _skipStep < 0)
+                    target = 0;
+                else
+                    target = position - _skipStep;
+                _player.PlaybackSession.Position = TimeSpan.FromSeconds(target);
+            }
         }
     }
 }

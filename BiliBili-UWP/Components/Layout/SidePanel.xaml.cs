@@ -2,20 +2,10 @@
 using BiliBili_UWP.Models.Enums;
 using BiliBili_UWP.Models.UI;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 //https://go.microsoft.com/fwlink/?LinkId=234236 上介绍了“用户控件”项模板
 
@@ -36,6 +26,9 @@ namespace BiliBili_UWP.Components.Layout
             App.BiliViewModel.IsLoginChanged += IsLoginChanged;
         }
 
+        
+        public event EventHandler<Region> RegionSelected;
+        public event EventHandler<SideMenuItem> SideMenuItemClick;
         public bool IsWide
         {
             get { return (bool)GetValue(IsWideProperty); }
@@ -71,10 +64,6 @@ namespace BiliBili_UWP.Components.Layout
             SideMenuListView.SelectedItem = App.AppViewModel.SelectedSideMenuItem = select;
         }
 
-        public event EventHandler<Region> RegionSelected;
-        public event EventHandler<SideMenuItem> SideMenuItemClick;
-
-
         private void SideMenuListView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var item = e.ClickedItem as SideMenuItem;
@@ -107,7 +96,9 @@ namespace BiliBili_UWP.Components.Layout
             {
                 item.IsSelected = item.Type == type;
             }
-            var index = MenuItemCollection.IndexOf(MenuItemCollection.Where(p => p.IsSelected).FirstOrDefault());
+            var selectItem = MenuItemCollection.Where(p => p.IsSelected).FirstOrDefault();
+            App.AppViewModel.SelectedSideMenuItem = selectItem;
+            var index = MenuItemCollection.IndexOf(selectItem);
             SideMenuListView.SelectedIndex = index;
         }
 

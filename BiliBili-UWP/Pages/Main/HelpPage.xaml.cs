@@ -25,20 +25,52 @@ namespace BiliBili_UWP.Pages.Main
     public sealed partial class HelpPage : Page
     {
         private bool _isInit = false;
+        Guid guid = Guid.NewGuid();
         public HelpPage()
         {
             this.InitializeComponent();
             NavigationCacheMode = NavigationCacheMode.Enabled;
+
         }
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
             if (e.NavigationMode == NavigationMode.Back || _isInit)
                 return;
-            var file = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Others/Introduce.txt"));
-            string content = await FileIO.ReadTextAsync(file);
-            RenderBlock.Text = content;
+            var introduceFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Others/Introduce.txt"));
+            string introduce = await FileIO.ReadTextAsync(introduceFile);
+            RenderBlock.Text = introduce;
+            var shortcutFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Others/Shortcut.txt"));
+            string shortcut = await FileIO.ReadTextAsync(shortcutFile);
+            ShortcutBlock.Text = shortcut;
+            App.AppViewModel.WindowsSizeChangedNotify.Add(new Tuple<Guid, Action<Size>>(guid, (size) =>
+            {
+                CheckLayout(size);
+            }));
+            CheckLayout(new Size(Window.Current.Bounds.Width, Window.Current.Bounds.Height));
             base.OnNavigatedTo(e);
             _isInit = true;
+        }
+
+        private void CheckLayout(Size size)
+        {
+            if (size.Width < 1100 && Grid.GetRow(SubContainer) != 1)
+            {
+                Grid.SetRow(SubContainer, 1);
+                Grid.SetColumn(SubContainer, 0);
+                SubContainer.Margin = new Thickness(0, 20, 0, 0);
+            }
+            else if (size.Width >= 1100 && Grid.GetRow(SubContainer) == 1)
+            {
+                Grid.SetRow(SubContainer, 0);
+                Grid.SetColumn(SubContainer, 1);
+                SubContainer.Margin = new Thickness(0, 0, 0, 0);
+            }
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            App.AppViewModel.WindowsSizeChangedNotify.RemoveAll(p => p.Item1 == guid);
+            base.OnNavigatedFrom(e);
         }
         private async void ToBiliButton_Click(object sender, RoutedEventArgs e)
         {
@@ -52,6 +84,11 @@ namespace BiliBili_UWP.Pages.Main
             SendMailButton.IsLoading = true;
             await Launcher.LaunchUriAsync(new Uri("mailto://thansy@foxmail.com"));
             SendMailButton.IsLoading = false;
+        }
+
+        private async void RenderBlock_LinkClicked(object sender, Microsoft.Toolkit.Uwp.UI.Controls.LinkClickedEventArgs e)
+        {
+            await Launcher.LaunchUriAsync(new Uri(e.Link));
         }
     }
 }

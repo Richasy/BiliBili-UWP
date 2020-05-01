@@ -11,6 +11,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -35,6 +36,7 @@ namespace BiliBili_UWP.Components.Layout
         {
             this.InitializeComponent();
             App.AppViewModel.CurrentPagePanel = this;
+            SystemNavigationManager.GetForCurrentView().BackRequested += OnBackrequested;
         }
         public new Thickness Padding
         {
@@ -73,6 +75,13 @@ namespace BiliBili_UWP.Components.Layout
                 var instance = d as PagePanel;
                 instance.HolderContainer.Visibility = isDefault ? Visibility.Visible : Visibility.Collapsed;
             }
+        }
+        private void OnBackrequested(object sender, BackRequestedEventArgs e)
+        {
+            // 判断应用当前是否有页面可以回退，没有则继续冒泡
+            bool result = AutoJudgeBack();
+            if (result)
+                e.Handled = true;
         }
         public void NavigateToPage(SideMenuItemType type, object parameter = null, bool isBack = false)
         {
@@ -378,18 +387,30 @@ namespace BiliBili_UWP.Components.Layout
             if (e.GetCurrentPoint(this).Properties.PointerUpdateKind == Windows.UI.Input.PointerUpdateKind.XButton1Released)
             {
                 e.Handled = true;
-                if (SubFrameHistoryList.Count > 1
-                    && PageSplitView.IsPaneOpen 
-                    && PageSplitView.DisplayMode==SplitViewDisplayMode.CompactOverlay)
-                {
-                    SubPageBack();
-                }
-                else if (MainFrameHistoryList.Count>1)
-                {
-                    MainPageBack();
-                }
+                AutoJudgeBack();
             }
             base.OnPointerReleased(e);
+        }
+
+        /// <summary>
+        /// 判断当前是主页回退还是副页回退
+        /// </summary>
+        private bool AutoJudgeBack()
+        {
+            bool result = false;
+            if (SubFrameHistoryList.Count > 1
+                    && PageSplitView.IsPaneOpen
+                    && PageSplitView.DisplayMode == SplitViewDisplayMode.CompactOverlay)
+            {
+                result = true;
+                SubPageBack();
+            }
+            else if (MainFrameHistoryList.Count > 1)
+            {
+                result = true;
+                MainPageBack();
+            }
+            return result;
         }
     }
 }

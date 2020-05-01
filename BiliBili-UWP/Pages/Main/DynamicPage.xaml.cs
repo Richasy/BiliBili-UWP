@@ -165,11 +165,12 @@ namespace BiliBili_UWP.Pages.Main
                         }
                         DynamicCollectionInit();
                     }
+                    _isDynamicRequesting = false;
                 }
             }
         }
 
-        private void ToggleSwitch_Toggled(object sender, RoutedEventArgs e)
+        private async void ToggleSwitch_Toggled(object sender, RoutedEventArgs e)
         {
             if (!_isInit)
                 return;
@@ -181,6 +182,9 @@ namespace BiliBili_UWP.Pages.Main
                     if (DynamicCollection[i].desc.type != 8)
                         DynamicCollection.RemoveAt(i);
                 }
+                //判断过滤后的动态是否能让滚动条显示，不能则再请求一次
+                if (DynamicCollection.Count < 10)
+                    await LoadDynamic();
             }
             else
             {

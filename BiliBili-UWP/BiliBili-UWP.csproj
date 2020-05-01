@@ -219,6 +219,9 @@
     <Compile Include="Components\Widgets\LevelBlock.xaml.cs">
       <DependentUpon>LevelBlock.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Components\Widgets\NumberBox.xaml.cs">
+      <DependentUpon>NumberBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Components\Widgets\TipPopup.xaml.cs">
       <DependentUpon>TipPopup.xaml</DependentUpon>
     </Compile>
@@ -443,6 +446,7 @@
     <Content Include="Components\HTML\Light.css" />
     <Content Include="Components\HTML\ShowPage.html" />
     <Content Include="Others\Introduce.txt" />
+    <Content Include="Others\Shortcut.txt" />
     <Content Include="Others\Update.txt" />
     <None Include="BiliBili-UWP_TemporaryKey.pfx" />
     <None Include="Package.StoreAssociation.xml" />
@@ -577,6 +581,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Components\Widgets\LevelBlock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\Widgets\NumberBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

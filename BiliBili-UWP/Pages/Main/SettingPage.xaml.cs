@@ -49,6 +49,8 @@ namespace BiliBili_UWP.Pages.Main
             AutoPlaySwitch.IsOn = isAutoPlay;
             bool isManualMTC = AppTool.GetBoolSetting(Settings.IsManualMediaTransportControls,false);
             ManualMTCSwitch.IsOn = isManualMTC;
+            double playerSkipStep = Convert.ToDouble(AppTool.GetLocalSetting(Settings.PlayerSkipStep, "30"));
+            PlayerSkipStepBox.Value = playerSkipStep;
 
             base.OnNavigatedTo(e);
             _isInit = true;
@@ -124,6 +126,13 @@ namespace BiliBili_UWP.Pages.Main
             if (!_isInit)
                 return;
             AppTool.WriteLocalSetting(Settings.IsManualMediaTransportControls, ManualMTCSwitch.IsOn.ToString());
+        }
+
+        private void PlayerSkipStepBox_ValueChanged(object sender, double e)
+        {
+            if (!_isInit)
+                return;
+            AppTool.WriteLocalSetting(Settings.PlayerSkipStep, e.ToString());
         }
     }
 }

@@ -21,6 +21,8 @@ namespace BiliBili_Lib.Enums
         IsAutoPlay,
         MaxDanmuNumber,
         IsInitEmoji,
-        IsManualMediaTransportControls
+        IsManualMediaTransportControls,
+        PlayerSkipStep,
+        PlayerLastVolume
     }
 }
