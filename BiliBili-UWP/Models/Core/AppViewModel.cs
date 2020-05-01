@@ -68,7 +68,7 @@ namespace BiliBili_UWP.Models.Core
         {
             string localVersion = AppTool.GetLocalSetting(Settings.LocalVersion, "");
             string nowVersion = string.Format("{0}.{1}.{2}.{3}", Package.Current.Id.Version.Major, Package.Current.Id.Version.Minor, Package.Current.Id.Version.Build, Package.Current.Id.Version.Revision);
-            if (localVersion == nowVersion)
+            if (localVersion != nowVersion)
             {
                 var updateFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri($"ms-appx:///Others/Update.txt"));
                 string updateInfo = await FileIO.ReadTextAsync(updateFile);

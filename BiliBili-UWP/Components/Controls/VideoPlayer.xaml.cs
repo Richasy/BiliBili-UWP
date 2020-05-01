@@ -165,11 +165,20 @@ namespace BiliBili_UWP.Components.Controls
             _player = new MediaPlayer();
             _player.MediaEnded += Media_Ended;
             _player.MediaFailed += Media_Failed;
+            _player.MediaOpened += Media_Opened;
             _player.VolumeChanged += Volume_Changed;
             mediaElement.SetMediaPlayer(_player);
             if (DanmakuControls != null)
                 DanmakuControls.ClearAll();
             _danmaTimer.Start();
+        }
+
+        private async void Media_Opened(MediaPlayer sender, object args)
+        {
+            await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
+            {
+                ErrorContainer.Visibility = Visibility.Collapsed;
+            });
         }
 
         private async void Media_Failed(MediaPlayer sender, MediaPlayerFailedEventArgs args)

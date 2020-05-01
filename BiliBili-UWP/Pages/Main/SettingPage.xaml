@@ -38,7 +38,8 @@
                 <ToggleSwitch Style="{StaticResource BasicToggleSwitchStyle}" HeaderTemplate="{StaticResource TipHeaderStyle}"
                               Header="手动控制媒体传输控件" x:Name="ManualMTCSwitch" Toggled="ManualMTCSwitch_Toggled"  Margin="0,15,0,0"/>
                 <widgets:NumberBox HeaderTemplate="{StaticResource TipHeaderStyle}" Header="播放器跳跃步长(秒)" MaxWidth="150" HorizontalAlignment="Left"
-                                   x:Name="PlayerSkipStepBox" Margin="0,15,0,0" ValueChanged="PlayerSkipStepBox_ValueChanged"/>
+                                   x:Name="PlayerSkipStepBox" Margin="0,15,0,0" ValueChanged="PlayerSkipStepBox_ValueChanged"
+                                   Minimum="1" Maximum="120"/>
             </StackPanel>
         </Grid>
     </Grid>
