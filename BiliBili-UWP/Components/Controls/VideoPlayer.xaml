@@ -19,8 +19,14 @@
     PointerMoved="UserControl_PointerMoved"
     PointerExited="UserControl_PointerExited">
     <UserControl.Resources>
-        <Flyout x:Name="DanmakuFlyout">
-            <Grid Width="200">
+        <DataTemplate x:Key="FontItemTemplate" x:DataType="others:SystemFont">
+            <Grid Padding="3,5,8,5">
+                <TextBlock Style="{StaticResource SmallTipTextStyle}" FontFamily="{x:Bind FontFamily}"
+                           Foreground="{ThemeResource NormalTextColor}" Text="{x:Bind Name}"/>
+            </Grid>
+        </DataTemplate>
+        <Flyout x:Name="DanmakuFlyout" FlyoutPresenterStyle="{StaticResource BasicFlyoutStyle}">
+            <Grid Width="230" Padding="15">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -76,6 +82,37 @@
                 </StackPanel>
             </Grid>
         </Flyout>
+        <Flyout x:Name="DanmakuOptionFlyout" FlyoutPresenterStyle="{StaticResource BasicFlyoutStyle}" Placement="Left">
+            <StackPanel Width="250" Padding="15">
+                <Slider x:Name="OpacitySlider" Style="{StaticResource BasicSliderStyle}" HorizontalAlignment="Stretch" StepFrequency="0.1"
+                        Maximum="1" Minimum="0" ValueChanged="OpacitySlider_ValueChanged" HeaderTemplate="{StaticResource TipHeaderStyle}"
+                        Header="弹幕透明度"/>
+                <Slider x:Name="FontSizeSlider" Style="{StaticResource BasicSliderStyle}" HorizontalAlignment="Stretch" StepFrequency="0.1"
+                        Maximum="1.6" Minimum="0.4" ValueChanged="FontSizeSlider_ValueChanged" HeaderTemplate="{StaticResource TipHeaderStyle}"
+                        Header="弹幕缩放大小" Margin="0,15,0,0"/>
+                <Slider x:Name="SpeedSlider" Style="{StaticResource BasicSliderStyle}" HorizontalAlignment="Stretch" StepFrequency="0.1"
+                        Maximum="2" Minimum="0.4" ValueChanged="SpeedSlider_ValueChanged" HeaderTemplate="{StaticResource TipHeaderStyle}"
+                        Header="弹幕速度" Margin="0,15,0,0"/>
+                <Slider x:Name="MaxinumSlider" Style="{StaticResource BasicSliderStyle}" HorizontalAlignment="Stretch" StepFrequency="10"
+                        Maximum="1000" Minimum="10" ValueChanged="MaxinumSlider_ValueChanged"  HeaderTemplate="{StaticResource TipHeaderStyle}"
+                        Header="同屏弹幕密度" Margin="0,15,0,0"/>
+                <ComboBox Style="{StaticResource BasicComboBoxStyle}" ItemContainerStyle="{StaticResource BasicComboBoxItemContainerStyle}"
+                          HeaderTemplate="{StaticResource TipHeaderStyle}" Header="弹幕字体" x:Name="FontComboBox" SelectionChanged="FontComboBox_SelectionChanged"
+                          ItemTemplate="{StaticResource FontItemTemplate}" Margin="0,15,0,0" ItemsSource="{x:Bind FontCollection}"/>
+                <ComboBox Style="{StaticResource BasicComboBoxStyle}" ItemContainerStyle="{StaticResource BasicComboBoxItemContainerStyle}"
+                          HeaderTemplate="{StaticResource TipHeaderStyle}" Header="弹幕样式" x:Name="BorderStyleComboBox" SelectionChanged="BorderStyleComboBox_SelectionChanged"
+                          Margin="0,15,0,0" FontSize="12" FontFamily="{CustomResource Basic}">
+                    <ComboBoxItem Content="默认"/>
+                    <ComboBoxItem Content="无边框"/>
+                    <ComboBoxItem Content="阴影"/>
+                    <ComboBoxItem Content="边框"/>
+                </ComboBox>
+                <ToggleSwitch Style="{StaticResource BasicToggleSwitchStyle}" Header="弹幕合并" HeaderTemplate="{StaticResource TipHeaderStyle}"
+                              x:Name="MergeDanmakuSwitch" Toggled="MergeDanmakuSwitch_Toggled" Margin="0,15,0,0"/>
+                <ToggleSwitch Style="{StaticResource BasicToggleSwitchStyle}" Header="防挡字幕" HeaderTemplate="{StaticResource TipHeaderStyle}"
+                              x:Name="ProtectSubtitleSwitch" Toggled="ProtectSubtitleSwitch_Toggled"  Margin="0,15,0,0"/>
+            </StackPanel>
+        </Flyout>
     </UserControl.Resources>
     <Grid Background="{ThemeResource PageBackground}">
         <Grid.RowDefinitions>
@@ -130,8 +167,8 @@
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="ErrorContainer" Visibility="Collapsed">
             <TextBlock Style="{StaticResource BasicIconTextStyle}" FontSize="20" HorizontalAlignment="Center"
                        Text="&#xE903;" Foreground="{ThemeResource TipTextColor}"/>
-            <TextBlock Text="嗨呀！加载失败了，就问你气不气？" HorizontalAlignment="Center"
-                       TextAlignment="Center" Margin="0,10,0,0"/>
+            <TextBlock HorizontalAlignment="Center"
+                       TextAlignment="Center" Margin="0,10,0,0" x:Name="ErrorBlock"/>
         </StackPanel>
         <Grid Grid.Row="1" Visibility="{x:Bind DanmakuBarVisibility,Mode=OneWay}" Background="{ThemeResource MediaTransportControlsPanelBackground}"
               Padding="15,5">
@@ -143,11 +180,13 @@
             <StackPanel Orientation="Horizontal">
                 <Button Style="{StaticResource TransparentButtonStyle}" x:Name="DanmakuVisibilityButton" Content="&#xEA43;"
                     FontFamily="{StaticResource Icon}" Click="DanmakuVisibilityButton_Click" FontSize="25" ToolTipService.ToolTip="弹幕开关"/>
-                <Button Style="{StaticResource TransparentButtonStyle}" x:Name="DanmakuSettingButton" Content="&#xEA24;" ToolTipService.ToolTip="弹幕参数"
+                <Button Style="{StaticResource TransparentButtonStyle}" x:Name="DanmakuOptionButton" Content="&#xE9E0;" ToolTipService.ToolTip="弹幕显示设置"
+                    FontFamily="{StaticResource Icon}" Flyout="{StaticResource DanmakuOptionFlyout}" FontSize="19" Margin="10,0,0,0"/>
+                <Button Style="{StaticResource TransparentButtonStyle}" x:Name="DanmakuSettingButton" Content="&#xEA24;" ToolTipService.ToolTip="弹幕发送参数"
                     FontFamily="{StaticResource Icon}" Flyout="{StaticResource DanmakuFlyout}" FontSize="25" Margin="10,0,0,0"/>
             </StackPanel>
             <TextBox Style="{StaticResource TransparentTextBoxStyle}" Margin="15,0" VerticalAlignment="Center" PlaceholderText="哔哩哔哩 (゜-゜)つロ 干杯~-bilibili"
-                     Grid.Column="1" x:Name="DanmakuBox" AcceptsReturn="False" HorizontalAlignment="Stretch" KeyDown="DanmakuBox_KeyDown" Padding="6,5"/>
+                     Grid.Column="1" x:Name="DanmakuBox" AcceptsReturn="False" HorizontalAlignment="Stretch" KeyDown="DanmakuBox_KeyDown" Padding="6,7"/>
             <Button Style="{StaticResource TransparentButtonStyle}" x:Name="SendDanmakuButton" Content="&#xE9D1;" Grid.Column="2" VerticalAlignment="Center"
                     FontFamily="{StaticResource Icon}" Click="SendDanmakuButton_Click"/>
         </Grid>

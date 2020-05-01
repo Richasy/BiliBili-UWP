@@ -44,6 +44,7 @@ namespace BiliBili_UWP.Components.Controls
         private AnimeService _animeService = App.BiliViewModel._client.Anime;
         private ObservableCollection<Tuple<int, string>> QualityCollection = new ObservableCollection<Tuple<int, string>>();
         private ObservableCollection<Choice> ChoiceCollection = new ObservableCollection<Choice>();
+        private ObservableCollection<SystemFont> FontCollection = App.AppViewModel.FontCollection;
         private List<DanmakuColor> DanmakuColors = DanmakuColor.GetColorList();
         private DanmakuParse _danmakuParse = new DanmakuParse();
         private int _currentQn = 64;
@@ -83,6 +84,8 @@ namespace BiliBili_UWP.Components.Controls
         private bool _isMTCShow = false;
 
         public int _skipStep = 0;
+
+        private bool _isDanmakuOptionsInit = false;
 
         public int CurrentProgress
         {
@@ -131,6 +134,7 @@ namespace BiliBili_UWP.Components.Controls
         private void Reset()
         {
             ErrorContainer.Visibility = Visibility.Collapsed;
+            ErrorBlock.Text = "嗨呀，加载失败啦！";
             bool isAutoPlay = AppTool.GetBoolSetting(Settings.IsAutoPlay);
             mediaElement.AutoPlay = isAutoPlay;
             bool isShowDanmaku = AppTool.GetBoolSetting(Settings.IsDanmakuOpen);
@@ -144,7 +148,6 @@ namespace BiliBili_UWP.Components.Controls
             _skipStep = Convert.ToInt32(AppTool.GetLocalSetting(Settings.PlayerSkipStep, "30"));
             double volume = Convert.ToDouble(AppTool.GetLocalSetting(Settings.PlayerLastVolume, "100"));
             _player.Volume = volume;
-            _maxDanmakuNumber = Convert.ToInt32(AppTool.GetLocalSetting(Settings.MaxDanmuNumber, "200"));
 
             _playData = null;
             QualityCollection.Clear();
@@ -161,11 +164,21 @@ namespace BiliBili_UWP.Components.Controls
             }
             _player = new MediaPlayer();
             _player.MediaEnded += Media_Ended;
+            _player.MediaFailed += Media_Failed;
             _player.VolumeChanged += Volume_Changed;
             mediaElement.SetMediaPlayer(_player);
             if (DanmakuControls != null)
                 DanmakuControls.ClearAll();
             _danmaTimer.Start();
+        }
+
+        private async void Media_Failed(MediaPlayer sender, MediaPlayerFailedEventArgs args)
+        {
+            await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
+            {
+                ErrorBlock.Text = args.ErrorMessage;
+                ErrorContainer.Visibility = Visibility.Visible;
+            });
         }
 
         private void Volume_Changed(MediaPlayer sender, object args)
@@ -490,6 +503,31 @@ namespace BiliBili_UWP.Components.Controls
         {
             DanmakuControls = e;
             VideoMTC.MediaPlayerElement = mediaElement;
+
+            _isDanmakuOptionsInit = false;
+            _maxDanmakuNumber = Convert.ToInt32(AppTool.GetLocalSetting(Settings.DanmakuMaxNumber, "200"));
+            MaxinumSlider.Value = _maxDanmakuNumber;
+            double danmakuOpacity = Convert.ToDouble(AppTool.GetLocalSetting(Settings.DanmakuOpacity, "1.0"));
+            OpacitySlider.Value = danmakuOpacity;
+            DanmakuControls.Opacity = danmakuOpacity;
+            double danmakuSize = Convert.ToDouble(AppTool.GetLocalSetting(Settings.DanmakuFontSize, "1.0"));
+            FontSizeSlider.Value = danmakuSize;
+            DanmakuControls.sizeZoom = danmakuSize;
+            double danmakuSpeed = Convert.ToDouble(AppTool.GetLocalSetting(Settings.DanmakuSpeed, "1.0"));
+            SpeedSlider.Value = danmakuSpeed;
+            DanmakuControls.speed = 25-Convert.ToInt32(12 * danmakuSpeed);
+            FontInit();
+            bool isProtect = AppTool.GetBoolSetting(Settings.DanmakuProtectSubtitle, false);
+            ProtectSubtitleSwitch.IsOn = isProtect;
+            DanmakuControls.notHideSubtitle = isProtect;
+            bool isMerge = AppTool.GetBoolSetting(Settings.DanmakuMerge, false);
+            _isMergeSameDanmaku = isMerge;
+            MergeDanmakuSwitch.IsOn = isMerge;
+            int borderStyle = Convert.ToInt32(AppTool.GetLocalSetting(Settings.DanmakuBorderStyle, "0"));
+            DanmakuControls.borderStyle = (DanmakuBorderStyle)borderStyle;
+            BorderStyleComboBox.SelectedIndex = borderStyle;
+            
+            _isDanmakuOptionsInit = true;
         }
 
         private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -799,6 +837,105 @@ namespace BiliBili_UWP.Components.Controls
                 else
                     target = position - _skipStep;
                 _player.PlaybackSession.Position = TimeSpan.FromSeconds(target);
+            }
+        }
+
+        private void OpacitySlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
+        {
+            if (_isDanmakuOptionsInit)
+            {
+                double v = OpacitySlider.Value;
+                DanmakuControls.Opacity = v;
+                AppTool.WriteLocalSetting(Settings.DanmakuOpacity, v.ToString());
+            }
+        }
+
+        private void FontSizeSlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
+        {
+            if (_isDanmakuOptionsInit)
+            {
+                double v = FontSizeSlider.Value;
+                DanmakuControls.sizeZoom = v;
+                AppTool.WriteLocalSetting(Settings.DanmakuFontSize, v.ToString());
+            }
+        }
+
+        private void SpeedSlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
+        {
+            if (_isDanmakuOptionsInit)
+            {
+                double v = SpeedSlider.Value;
+                DanmakuControls.speed = 25 - Convert.ToInt32(v * 12);
+                AppTool.WriteLocalSetting(Settings.DanmakuSpeed, v.ToString());
+            }
+        }
+
+        private void MaxinumSlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
+        {
+            if (_isDanmakuOptionsInit)
+            {
+                double v = MaxinumSlider.Value;
+                _maxDanmakuNumber = Convert.ToInt32(v);
+                AppTool.WriteLocalSetting(Settings.DanmakuMaxNumber, v.ToString("0"));
+            }
+        }
+        private void FontInit()
+        {
+            FontComboBox.IsEnabled = false;
+            if (FontCollection != null && FontCollection.Count > 0)
+            {
+                string fontName = AppTool.GetLocalSetting(Settings.DanmakuFontFamily, "微软雅黑");
+                var font = FontCollection.Where(p => p.Name == fontName).FirstOrDefault();
+                if (font != null)
+                {
+                    FontComboBox.SelectedItem = font;
+                }
+            }
+            FontComboBox.IsEnabled = true;
+        }
+        private void FontComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (_isDanmakuOptionsInit)
+            {
+                var item = FontComboBox.SelectedItem as SystemFont;
+                string oldFont = AppTool.GetLocalSetting(Settings.DanmakuFontFamily, "微软雅黑");
+                if (item.Name != oldFont)
+                {
+                    AppTool.WriteLocalSetting(Settings.DanmakuFontFamily, item.Name);
+                    DanmakuControls.font = item.Name;
+                }
+            }
+        }
+
+        private void MergeDanmakuSwitch_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (_isDanmakuOptionsInit)
+            {
+                bool isMerge = MergeDanmakuSwitch.IsOn;
+                _isMergeSameDanmaku = isMerge;
+                AppTool.WriteLocalSetting(Settings.DanmakuMerge, isMerge.ToString());
+            }
+        }
+
+        private void ProtectSubtitleSwitch_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (_isDanmakuOptionsInit)
+            {
+                bool isProtect = ProtectSubtitleSwitch.IsOn;
+                DanmakuControls.notHideSubtitle = isProtect;
+                AppTool.WriteLocalSetting(Settings.DanmakuProtectSubtitle, isProtect.ToString());
+            }
+        }
+
+        private void BorderStyleComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (_isDanmakuOptionsInit)
+            {
+                int index = BorderStyleComboBox.SelectedIndex;
+                if (index == -1)
+                    return;
+                DanmakuControls.borderStyle = (DanmakuBorderStyle)index;
+                AppTool.WriteLocalSetting(Settings.DanmakuBorderStyle, index.ToString());
             }
         }
     }

@@ -10,9 +10,6 @@
     Loaded="Page_Loaded"
     mc:Ignorable="d">
     <Page.Resources>
-        <DataTemplate x:Key="TipHeaderStyle">
-            <TextBlock Style="{StaticResource SmallTipTextStyle}" Text="{Binding}" Margin="0,0,0,5"/>
-        </DataTemplate>
         <DataTemplate x:Key="FontItemTemplate" x:DataType="others:SystemFont">
             <Grid Padding="3,5,8,5">
                 <TextBlock Style="{StaticResource SmallTipTextStyle}" FontFamily="{x:Bind FontFamily}"

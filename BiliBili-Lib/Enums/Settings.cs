@@ -19,10 +19,17 @@ namespace BiliBili_Lib.Enums
         IsDanmakuOpen,
         IsUseHevc,
         IsAutoPlay,
-        MaxDanmuNumber,
+        DanmakuMaxNumber,
         IsInitEmoji,
         IsManualMediaTransportControls,
         PlayerSkipStep,
-        PlayerLastVolume
+        PlayerLastVolume,
+        DanmakuOpacity,
+        DanmakuFontSize,
+        DanmakuSpeed,
+        DanmakuFontFamily,
+        DanmakuMerge,
+        DanmakuProtectSubtitle,
+        DanmakuBorderStyle
     }
 }

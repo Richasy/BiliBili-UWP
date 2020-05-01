@@ -49,6 +49,7 @@ namespace BiliBili_UWP
             try
             {
                 await App.BiliViewModel.GetRegionsAsync();
+                App.AppViewModel.FontInit();
                 Window.Current.Dispatcher.AcceleratorKeyActivated += AccelertorKeyActivedHandle;
                 PagePanel.NavigateToPage(Models.Enums.SideMenuItemType.Home);
             }

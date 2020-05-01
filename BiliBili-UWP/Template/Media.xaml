@@ -587,18 +587,18 @@
                                     <RowDefinition Height="*" />
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
-                                <Border x:Name="ErrorBorder"
-                    Width="320"
-                    Height="96"
-                    Grid.ColumnSpan="3"
-                    HorizontalAlignment="Center"
-                    Background="{ThemeResource MediaTransportControlsPanelBackground}"
-                    Visibility="Collapsed">
+                                <!--<Border x:Name="ErrorBorder"
+                                        Width="320"
+                                        Height="96"
+                                        Grid.ColumnSpan="3"
+                                        HorizontalAlignment="Center"
+                                        Background="{ThemeResource MediaTransportControlsPanelBackground}"
+                                        Visibility="Collapsed">
                                     <TextBlock x:Name="ErrorTextBlock"
-                      Style="{StaticResource MediaTextBlockStyle}"
-                      TextWrapping="WrapWholeWords"
-                      Margin="12" />
-                                </Border>
+                                               Style="{StaticResource MediaTextBlockStyle}"
+                                               TextWrapping="WrapWholeWords"
+                                               Margin="12" />
+                                </Border>-->
                                 <Border x:Name="MediaTransportControls_Timeline_Border" Grid.Column="1" Grid.Row="1">
                                     <Grid x:Name="MediaTransportControls_Timeline_Grid">
                                         <Grid.ColumnDefinitions>
@@ -677,7 +677,7 @@
                                                                 </AppBarButton.Icon>
                                                             </AppBarButton>
                                                             <Slider x:Name='VolumeSlider'
-                                                                    Value='50'
+                                                                    Value='50' Style="{StaticResource BasicSliderStyle}"
                                                                     IsThumbToolTipEnabled='False'
                                                                     Width='{ThemeResource MTCHorizontalVolumeSliderWidth}'
                                                                     VerticalAlignment='Center'

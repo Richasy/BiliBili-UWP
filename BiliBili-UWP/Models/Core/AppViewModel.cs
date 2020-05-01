@@ -13,6 +13,7 @@ using BiliBili_UWP.Pages.Main;
 using Microsoft.QueryStringDotNET;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -45,6 +46,7 @@ namespace BiliBili_UWP.Models.Core
         public UpdatePopup _updatePopup;
 
         public List<Tuple<Guid, Action<Size>>> WindowsSizeChangedNotify { get; set; } = new List<Tuple<Guid, Action<Size>>>();
+        public ObservableCollection<SystemFont> FontCollection = new ObservableCollection<SystemFont>();
         public AppViewModel()
         {
             Window.Current.SizeChanged += WindowSizeChangedHandle;
@@ -286,6 +288,12 @@ namespace BiliBili_UWP.Models.Core
                 _replyDetailPopup = new ReplyDetailPopup();
             _replyDetailPopup.ShowPopup();
             await _replyDetailPopup.Init(replyId, oid, type);
+        }
+        public void FontInit()
+        {
+            var fonts = SystemFont.GetFonts();
+            if (fonts != null && fonts.Count > 0)
+                fonts.ForEach(p => FontCollection.Add(p));
         }
     }
 }

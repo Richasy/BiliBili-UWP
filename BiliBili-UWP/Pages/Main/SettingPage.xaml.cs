@@ -31,7 +31,7 @@ namespace BiliBili_UWP.Pages.Main
     public sealed partial class SettingPage : Page
     {
         private bool _isInit = false;
-        private ObservableCollection<SystemFont> FontCollection = new ObservableCollection<SystemFont>();
+        private ObservableCollection<SystemFont> FontCollection = App.AppViewModel.FontCollection;
 
         public SettingPage()
         {
@@ -59,11 +59,9 @@ namespace BiliBili_UWP.Pages.Main
         private void FontInit()
         {
             FontComboBox.IsEnabled = false;
-            var fonts = SystemFont.GetFonts();
-            if (fonts != null && fonts.Count > 0)
+            if (FontCollection != null && FontCollection.Count > 0)
             {
                 string fontName = AppTool.GetLocalSetting(Settings.FontFamily, "微软雅黑");
-                fonts.ForEach(p => FontCollection.Add(p));
                 var font = FontCollection.Where(p => p.Name == fontName).FirstOrDefault();
                 if (font != null)
                 {
