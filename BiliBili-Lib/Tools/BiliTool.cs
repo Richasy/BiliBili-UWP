@@ -47,9 +47,11 @@ namespace BiliBili_Lib.Tools
                     if (response.IsSuccessStatusCode)
                     {
                         string res = await response.Content.ReadAsStringAsync();
+                        if (total)
+                            return res;
                         var jobj = JObject.Parse(res);
                         string content = string.Empty;
-                        if (jobj.SelectToken(path) != null && !total)
+                        if (jobj.SelectToken(path) != null)
                             content = jobj.SelectToken(path).ToString();
                         else
                             content = res;

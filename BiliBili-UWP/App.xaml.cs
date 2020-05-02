@@ -44,9 +44,28 @@ namespace BiliBili_UWP
             CustomXamlResourceLoader.Current = new CustomResourceLoader();   
             this.Suspending += OnSuspending;
             UnhandledException += OnUnhandleException;
-            string theme = AppTool.GetLocalSetting(Settings.Theme, "Light");
-            RequestedTheme = theme == "Light" ? ApplicationTheme.Light : ApplicationTheme.Dark;
+            EnteredBackground += App_EnteredBackground;
+            LeavingBackground += App_LeavingBackground;
+            bool isThemeWithSystem = AppTool.GetBoolSetting(Settings.IsThemeWithSystem);
+            if (!isThemeWithSystem)
+            {
+                string theme = AppTool.GetLocalSetting(Settings.Theme, "Light");
+                RequestedTheme = theme == "Light" ? ApplicationTheme.Light : ApplicationTheme.Dark;
+            }
         }
+
+        private void App_LeavingBackground(object sender, LeavingBackgroundEventArgs e)
+        {
+            AppViewModel.IsInBackground = false;
+            AppViewModel.CheckPlayerOnBackgroundChanged();
+        }
+
+        private void App_EnteredBackground(object sender, EnteredBackgroundEventArgs e)
+        {
+            AppViewModel.IsInBackground = true;
+            AppViewModel.CheckPlayerOnBackgroundChanged();
+        }
+
         private void OnUnhandleException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
         {
             e.Handled = true;

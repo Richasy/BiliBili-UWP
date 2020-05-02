@@ -45,9 +45,11 @@ namespace BiliBili_UWP.Components.Controls
         private ObservableCollection<Tuple<int, string>> QualityCollection = new ObservableCollection<Tuple<int, string>>();
         private ObservableCollection<Choice> ChoiceCollection = new ObservableCollection<Choice>();
         private ObservableCollection<SystemFont> FontCollection = App.AppViewModel.FontCollection;
+        private ObservableCollection<SubtitleIndexItem> SubtitleIndexCollection = new ObservableCollection<SubtitleIndexItem>();
         private List<DanmakuColor> DanmakuColors = DanmakuColor.GetColorList();
+        private List<SubtitleItem> Subtitles = new List<SubtitleItem>();
         private DanmakuParse _danmakuParse = new DanmakuParse();
-        private int _currentQn = 64;
+        private int _currentQn = 0;
         private MediaPlayer _player = new MediaPlayer();
         private MediaSource _tempSource = null;
         private NSDanmaku.Controls.Danmaku DanmakuControls = null;
@@ -55,6 +57,7 @@ namespace BiliBili_UWP.Components.Controls
         private List<string> ShieldTextLish = new List<string>(); //屏蔽关键字列表
         private List<string> SendDanmakuList = new List<string>();
         private DispatcherTimer _danmaTimer = new DispatcherTimer();
+        private DispatcherTimer _subtitleTimer = new DispatcherTimer();
         private int _pointerHoldCount = 0; // 光标保持不动的持续时间
         private int _heartBeatCount = 0;
         private bool _isCatchPointer = false;
@@ -97,9 +100,12 @@ namespace BiliBili_UWP.Components.Controls
             this.InitializeComponent();
             _danmaTimer.Interval = TimeSpan.FromSeconds(1);
             _danmaTimer.Tick += DanmuTimer_Tick;
+            _subtitleTimer.Interval = TimeSpan.FromSeconds(0.1);
+            _subtitleTimer.Tick += SubtitleTimer_Tick;
             DanmakuControls = VideoMTC.DanmakuControls;
             MTC = VideoMTC;
         }
+
 
         public async Task Init(VideoDetail detail, int cid = 0)
         {
@@ -108,17 +114,28 @@ namespace BiliBili_UWP.Components.Controls
             isBangumi = false;
             if (cid == 0)
             {
-                if (detail != null && detail.pages != null)
+                if (detail != null && detail.history != null)
+                    cid = detail.history.cid;
+                else if (detail != null && detail.pages != null)
                     cid = detail.pages.First().cid;
             }
             if (detail.interaction != null)
             {
-                await InitInteraction(cid, 0);
+                int nodeId = 0;
+                if (detail.interaction.history_node != null)
+                {
+                    cid = detail.interaction.history_node.cid;
+                    nodeId = detail.interaction.history_node.node_id;
+                }
+                await InitInteraction(cid, nodeId);
             }
             else
             {
                 Reset();
-                await RefreshVideoSource(cid);
+                int progress = 0;
+                if (detail.history != null)
+                    progress = detail.history.progress;
+                await RefreshVideoSource(cid, progress);
             }
         }
 
@@ -135,8 +152,8 @@ namespace BiliBili_UWP.Components.Controls
         {
             ErrorContainer.Visibility = Visibility.Collapsed;
             ErrorBlock.Text = "嗨呀，加载失败啦！";
-            bool isAutoPlay = AppTool.GetBoolSetting(Settings.IsAutoPlay);
-            mediaElement.AutoPlay = isAutoPlay;
+            InteractionHomeButton.Visibility = Visibility.Collapsed;
+
             bool isShowDanmaku = AppTool.GetBoolSetting(Settings.IsDanmakuOpen);
             DanmakuVisibilityButton.Content = isShowDanmaku ? "" : "";
             DanmakuColorItemsControl.ItemsSource = DanmakuColors;
@@ -146,13 +163,15 @@ namespace BiliBili_UWP.Components.Controls
             ColorViewBorder.Background = new SolidColorBrush(Windows.UI.Colors.White);
             DanmakuBox.Text = "";
             _skipStep = Convert.ToInt32(AppTool.GetLocalSetting(Settings.PlayerSkipStep, "30"));
-            double volume = Convert.ToDouble(AppTool.GetLocalSetting(Settings.PlayerLastVolume, "100"));
-            _player.Volume = volume;
 
             _playData = null;
+            _currentQn = 0;
             QualityCollection.Clear();
             DanmakuList.Clear();
             SendDanmakuList.Clear();
+            Subtitles.Clear();
+            SubtitleIndexCollection.Clear();
+            HideSubtitle();
             if (mediaElement.MediaPlayer != null)
             {
                 mediaElement.MediaPlayer.Pause();
@@ -163,9 +182,15 @@ namespace BiliBili_UWP.Components.Controls
                 }
             }
             _player = new MediaPlayer();
+            double volume = Convert.ToDouble(AppTool.GetLocalSetting(Settings.PlayerLastVolume, "1"));
+            _player.Volume = volume;
+            bool isAutoPlay = AppTool.GetBoolSetting(Settings.IsAutoPlay);
+            _player.AutoPlay = isAutoPlay;
             _player.MediaEnded += Media_Ended;
             _player.MediaFailed += Media_Failed;
             _player.MediaOpened += Media_Opened;
+            _player.PlaybackSession.PositionChanged += Media_PositionChanged;
+            //_player.PlaybackSession.PlaybackStateChanged += Media_StatusChanged;
             _player.VolumeChanged += Volume_Changed;
             mediaElement.SetMediaPlayer(_player);
             if (DanmakuControls != null)
@@ -173,10 +198,42 @@ namespace BiliBili_UWP.Components.Controls
             _danmaTimer.Start();
         }
 
+        private async void Media_PositionChanged(MediaPlaybackSession sender, object args)
+        {
+            await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
+            {
+                if (_videoDetail != null && _videoDetail.interaction != null)
+                {
+                    if (sender.Position < sender.NaturalDuration && ChoiceItemsControl.Visibility == Visibility.Visible)
+                    {
+                        ChoiceItemsControl.Visibility = Visibility.Collapsed;
+                    }
+                }
+            });
+        }
+
+        private async void Media_StatusChanged(MediaPlaybackSession sender, object args)
+        {
+            await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
+            {
+                if (sender.PlaybackState == MediaPlaybackState.Paused && VideoMTC.IsPlaying)
+                    VideoMTC.IsPlaying = false;
+                else if (sender.PlaybackState == MediaPlaybackState.Playing && !VideoMTC.IsPlaying)
+                    VideoMTC.IsPlaying = true;
+            });
+        }
+
         private async void Media_Opened(MediaPlayer sender, object args)
         {
             await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
             {
+                bool isAutoPlay = AppTool.GetBoolSetting(Settings.IsAutoPlay);
+                if (isAutoPlay)
+                {
+                    MTC.IsPlaying = true;
+                    _player.Play();
+                    HideMTC();
+                }
                 ErrorContainer.Visibility = Visibility.Collapsed;
             });
         }
@@ -210,6 +267,10 @@ namespace BiliBili_UWP.Components.Controls
                         else
                             ChoiceItemsControl.Visibility = Visibility.Visible;
                     }
+                    else
+                    {
+                        InteractionEndContainer.Visibility = Visibility.Visible;
+                    }
                 }
                 else
                 {
@@ -221,7 +282,7 @@ namespace BiliBili_UWP.Components.Controls
             });
         }
 
-        public async Task RefreshVideoSource(int partId)
+        public async Task RefreshVideoSource(int partId, int progress = 0)
         {
             LoadingBar.Visibility = Visibility.Visible;
             var _mediaPlayer = mediaElement.MediaPlayer;
@@ -237,13 +298,30 @@ namespace BiliBili_UWP.Components.Controls
                         QualityCollection.Add(new Tuple<int, string>(_playData.accept_quality[i], _playData.accept_description[i]));
                     }
                     VideoMTC._qualityListView.SelectedIndex = -1;
-                    _currentQn = QualityCollection.First().Item1;
-                    VideoMTC._qualityListView.SelectedIndex = 0;
+                    int firstQn = Convert.ToInt32(AppTool.GetLocalSetting(Settings.FirstQuality, "0"));
+                    if (firstQn > 0)
+                    {
+                        for (int i = 0; i < QualityCollection.Count; i++)
+                        {
+                            if (QualityCollection[i].Item1 == firstQn)
+                            {
+                                _currentQn = firstQn;
+                                VideoMTC._qualityListView.SelectedIndex = i;
+                                break;
+                            }
+                        }
+                    }
+                    if (_currentQn == 0)
+                    {
+                        _currentQn = QualityCollection.First().Item1;
+                        VideoMTC._qualityListView.SelectedIndex = 0;
+                    }
                 }
             }
             if (_playData != null)
             {
                 await LoadDanmaku();
+                await LoadSubtitle();
                 MediaSource mediaSource = null;
                 if (_playData is VideoPlayDash)
                     mediaSource = await HandleDashSource();
@@ -251,18 +329,19 @@ namespace BiliBili_UWP.Components.Controls
                     mediaSource = await HandleFlvSource(_videoId);
                 if (mediaSource != null)
                 {
-                    var offset = TimeSpan.FromSeconds(_mediaPlayer.PlaybackSession.Position.TotalSeconds);
+                    TimeSpan offset = TimeSpan.FromSeconds(progress);
+                    if (progress == 0)
+                        offset = TimeSpan.FromSeconds(_mediaPlayer.PlaybackSession.Position.TotalSeconds);
                     var other = _tempSource;
                     _tempSource = mediaSource;
                     _mediaPlayer.Source = new MediaPlaybackItem(mediaSource);
                     if (offset.TotalSeconds > 0)
                         _player.PlaybackSession.Position = offset;
                     other?.Dispose();
-
                     VideoMTC.IsInit = false;
-                    VideoMTC.IsPlaying = mediaElement.AutoPlay;
+                    VideoMTC.IsPlaying = _player.AutoPlay;
                     VideoMTC.IsInit = true;
-                    if (mediaElement.AutoPlay)
+                    if (_player.AutoPlay)
                         Resume();
                 }
                 else
@@ -295,7 +374,21 @@ namespace BiliBili_UWP.Components.Controls
                     {
                         QualityCollection.Add(new Tuple<int, string>(_playData.accept_quality[i], _playData.accept_description[i]));
                     }
-                    _currentQn = QualityCollection.First().Item1;
+                    int firstQn = Convert.ToInt32(AppTool.GetLocalSetting(Settings.FirstQuality, "0"));
+                    if (firstQn > 0)
+                    {
+                        for (int i = 0; i < QualityCollection.Count; i++)
+                        {
+                            if (QualityCollection[i].Item1 == firstQn)
+                            {
+                                _currentQn = firstQn;
+                                VideoMTC._qualityListView.SelectedIndex = i;
+                                break;
+                            }
+                        }
+                    }
+                    if (_currentQn == 0)
+                        _currentQn = QualityCollection.First().Item1;
                     VideoMTC.QualitySelectIndex = 0;
                 }
             }
@@ -313,9 +406,10 @@ namespace BiliBili_UWP.Components.Controls
                 other?.Dispose();
 
                 VideoMTC.IsInit = false;
-                VideoMTC.IsPlaying = mediaElement.AutoPlay;
+                VideoMTC.IsPlaying = _player.AutoPlay;
                 VideoMTC.IsInit = true;
-                Resume();
+                if (_player.AutoPlay)
+                    Resume();
             }
             else
             {
@@ -343,6 +437,46 @@ namespace BiliBili_UWP.Components.Controls
             }
         }
 
+        private async Task LoadSubtitle()
+        {
+            SubtitleIndexCollection.Clear();
+            var index = await _videoService.GetVideoSubtitleIndexAsync(_videoId, _partId);
+            if (index != null)
+            {
+                index.ForEach(p => SubtitleIndexCollection.Add(p));
+            }
+            if (SubtitleIndexCollection.Count > 0)
+            {
+                SubtitleIndexCollection.Insert(0, SubtitleIndexItem.UnSelected);
+                VideoMTC._subtitleListView.SelectedIndex = -1;
+                await SubtitleInit(SubtitleIndexCollection[1]);
+                VideoMTC._subtitleListView.SelectedIndex = 1;
+                VideoMTC.SubtitleHolderVisibility = Visibility.Collapsed;
+            }
+            else
+                VideoMTC.SubtitleHolderVisibility = Visibility.Visible;
+        }
+
+        private async Task SubtitleInit(SubtitleIndexItem item)
+        {
+            _subtitleTimer.Stop();
+            Subtitles.Clear();
+            HideSubtitle();
+            if (string.IsNullOrEmpty(item.subtitle_url))
+                return;
+            var response = await _videoService.GetSubtitlesAsync(item.subtitle_url);
+            var subtitles = response.body;
+            if (subtitles != null)
+            {
+                subtitles.ForEach(p => Subtitles.Add(p));
+                _subtitleTimer.Start();
+            }
+            else
+            {
+                new TipPopup("字幕加载异常").ShowError();
+            }
+        }
+
         private void DanmuTimer_Tick(object sender, object e)
         {
             if (_pointerHoldCount >= 3)
@@ -353,7 +487,7 @@ namespace BiliBili_UWP.Components.Controls
                 if (_isMTCShow && !isManual)
                 {
                     _isMTCShow = false;
-                    VideoMTC.Hide();
+                    HideMTC();
                 }
             }
             if (_pointerHoldCount < 3)
@@ -407,6 +541,35 @@ namespace BiliBili_UWP.Components.Controls
             {
 
             }
+        }
+
+        private void SubtitleTimer_Tick(object sender, object e)
+        {
+            if (_player.PlaybackSession.PlaybackState == MediaPlaybackState.Playing)
+            {
+                var time = _player.PlaybackSession.Position.TotalSeconds;
+                var subtitle = Subtitles.FirstOrDefault(p => p.from <= time && p.to >= time);
+                if (subtitle != null)
+                {
+                    ShowSubtitle(subtitle.content);
+                }
+                else
+                {
+                    HideSubtitle();
+                }
+            }
+        }
+
+        private void ShowSubtitle(string content)
+        {
+            SubtitleContainer.Visibility = Visibility.Visible;
+            SubtitleContentBlock.Text = content;
+        }
+
+        private void HideSubtitle()
+        {
+            SubtitleContainer.Visibility = Visibility.Collapsed;
+            SubtitleContentBlock.Text = string.Empty;
         }
 
         private async void HeartBeat()
@@ -524,7 +687,7 @@ namespace BiliBili_UWP.Components.Controls
             DanmakuControls.sizeZoom = danmakuSize;
             double danmakuSpeed = Convert.ToDouble(AppTool.GetLocalSetting(Settings.DanmakuSpeed, "1.0"));
             SpeedSlider.Value = danmakuSpeed;
-            DanmakuControls.speed = 25-Convert.ToInt32(12 * danmakuSpeed);
+            DanmakuControls.speed = 25 - Convert.ToInt32(12 * danmakuSpeed);
             FontInit();
             bool isProtect = AppTool.GetBoolSetting(Settings.DanmakuProtectSubtitle, false);
             ProtectSubtitleSwitch.IsOn = isProtect;
@@ -535,7 +698,7 @@ namespace BiliBili_UWP.Components.Controls
             int borderStyle = Convert.ToInt32(AppTool.GetLocalSetting(Settings.DanmakuBorderStyle, "0"));
             DanmakuControls.borderStyle = (DanmakuBorderStyle)borderStyle;
             BorderStyleComboBox.SelectedIndex = borderStyle;
-            
+
             _isDanmakuOptionsInit = true;
         }
 
@@ -547,6 +710,8 @@ namespace BiliBili_UWP.Components.Controls
 
         private void VideoMTC_FullWindowChanged(object sender, bool e)
         {
+            bool isShowDanmakuBar = AppTool.GetBoolSetting(Settings.IsShowDanmakuBarInFullWindow, false);
+            DanmakuBarVisibility = isShowDanmakuBar ? Visibility.Visible : Visibility.Collapsed;
             FullWindowChanged?.Invoke(this, e);
         }
 
@@ -584,6 +749,8 @@ namespace BiliBili_UWP.Components.Controls
 
         private void VideoMTC_CinemaChanged(object sender, bool e)
         {
+            bool isShowDanmakuBar = AppTool.GetBoolSetting(Settings.IsShowDanmakuBarInCinema, false);
+            DanmakuBarVisibility = isShowDanmakuBar ? Visibility.Visible : Visibility.Collapsed;
             CinemaChanged?.Invoke(this, e);
         }
 
@@ -592,12 +759,15 @@ namespace BiliBili_UWP.Components.Controls
             if (_currentQn != e)
             {
                 _currentQn = e;
+                AppTool.WriteLocalSetting(Settings.FirstQuality, e.ToString());
                 await RefreshVideoSource(_partId);
             }
         }
 
         private void VideoMTC_CompactOverlayButtonClick(object sender, bool e)
         {
+            bool isShowDanmakuBar = AppTool.GetBoolSetting(Settings.IsShowDanmakuBarInCompactOverlay, false);
+            DanmakuBarVisibility = isShowDanmakuBar ? Visibility.Visible : Visibility.Collapsed;
             CompactOverlayChanged?.Invoke(this, e);
         }
 
@@ -651,16 +821,6 @@ namespace BiliBili_UWP.Components.Controls
         public static readonly DependencyProperty SeparateButtonVisibilityProperty =
             DependencyProperty.Register("SeparateButtonVisibility", typeof(Visibility), typeof(VideoPlayer), new PropertyMetadata(Visibility.Visible));
 
-        public int ChoiceRows
-        {
-            get { return (int)GetValue(ChoiceRowsProperty); }
-            set { SetValue(ChoiceRowsProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for ChoiceRows.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ChoiceRowsProperty =
-            DependencyProperty.Register("ChoiceRows", typeof(int), typeof(VideoPlayer), new PropertyMetadata(1));
-
 
 
         private void VideoMTC_Loaded(object sender, RoutedEventArgs e)
@@ -674,6 +834,7 @@ namespace BiliBili_UWP.Components.Controls
                 return;
             _isChoiceHandling = true;
             Reset();
+            InteractionHomeButton.Visibility = Visibility.Visible;
             var data = await _videoService.GetInteractionVideoAsync(_videoId, _videoDetail.interaction.graph_version, edgeId);
             ChoiceItemsControl.Visibility = Visibility.Collapsed;
             await RefreshVideoSource(cid);
@@ -789,8 +950,7 @@ namespace BiliBili_UWP.Components.Controls
             bool isManual = AppTool.GetBoolSetting(Settings.IsManualMediaTransportControls, false);
             if (!_isMTCShow && !isManual)
             {
-                _isMTCShow = true;
-                VideoMTC.Show();
+                ShowMTC();
             }
             Window.Current.CoreWindow.PointerCursor = new Windows.UI.Core.CoreCursor(Windows.UI.Core.CoreCursorType.Arrow, 0);
         }
@@ -809,9 +969,9 @@ namespace BiliBili_UWP.Components.Controls
             {
                 _isMTCShow = !_isMTCShow;
                 if (_isMTCShow)
-                    VideoMTC.Show();
+                    ShowMTC();
                 else
-                    VideoMTC.Hide();
+                    HideMTC();
             }
         }
 
@@ -946,6 +1106,39 @@ namespace BiliBili_UWP.Components.Controls
                 DanmakuControls.borderStyle = (DanmakuBorderStyle)index;
                 AppTool.WriteLocalSetting(Settings.DanmakuBorderStyle, index.ToString());
             }
+        }
+
+        public void HideMTC()
+        {
+            _isMTCShow = false;
+            VideoMTC.Hide();
+            SubtitleContainer.Margin = new Thickness(20, 0, 20, 20);
+            if (MTC.IsFullWindow || MTC.IsCinema || MTC.IsCompactOverlay)
+                DanmakuBarVisibility = Visibility.Collapsed;
+        }
+
+        public void ShowMTC()
+        {
+            bool isShowBarInFullWindow = AppTool.GetBoolSetting(Settings.IsShowDanmakuBarInFullWindow);
+            bool isShowBarInCinema = AppTool.GetBoolSetting(Settings.IsShowDanmakuBarInCinema);
+            bool isShowBarInCompact = AppTool.GetBoolSetting(Settings.IsShowDanmakuBarInCompactOverlay);
+            _isMTCShow = true;
+            SubtitleContainer.Margin = new Thickness(20, 0, 20, 100);
+            VideoMTC.Show();
+            if ((MTC.IsFullWindow && isShowBarInFullWindow) || (MTC.IsCinema && isShowBarInCinema) || (MTC.IsCompactOverlay && isShowBarInCompact))
+                DanmakuBarVisibility = Visibility.Visible;
+        }
+
+        private async void VideoMTC_SubtitleChanged(object sender, SubtitleIndexItem e)
+        {
+            await SubtitleInit(e);
+        }
+
+        private async void InteractionHomeButton_Click(object sender, RoutedEventArgs e)
+        {
+            ChoiceCollection.Clear();
+            ChoiceItemsControl.Visibility = Visibility.Collapsed;
+            await InitInteraction(_videoDetail.pages.First().cid, 0);
         }
     }
 }

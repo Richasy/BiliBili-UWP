@@ -213,6 +213,14 @@ namespace BiliBili_UWP.Components.Widgets
 
 
 
+        public double BoxWidth
+        {
+            get { return (double)GetValue(BoxWidthProperty); }
+            set { SetValue(BoxWidthProperty, value); }
+        }
 
+        // Using a DependencyProperty as the backing store for BoxWidth.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty BoxWidthProperty =
+            DependencyProperty.Register("BoxWidth", typeof(double), typeof(NumberBox), new PropertyMetadata(150d));
     }
 }

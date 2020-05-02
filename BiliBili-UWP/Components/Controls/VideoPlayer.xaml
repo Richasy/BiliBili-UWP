@@ -13,7 +13,6 @@
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400"
-    
     SizeChanged="UserControl_SizeChanged"
     PointerEntered="UserControl_PointerEntered"
     PointerMoved="UserControl_PointerMoved"
@@ -134,6 +133,8 @@
                                                FullWindowButtonVisibility="{x:Bind FullWindowButtonVisibility,Mode=OneWay}"
                                                CompactOverlayButtonVisibility="{x:Bind CompactOverlayButtonVisibility,Mode=OneWay}"
                                                SeparateButtonVisibility="{x:Bind SeparateButtonVisibility,Mode=OneWay}"
+                                               SubtitleItemsSource="{x:Bind SubtitleIndexCollection}"
+                                               SubtitleChanged="VideoMTC_SubtitleChanged"
                                                CompactOverlayButtonClick="VideoMTC_CompactOverlayButtonClick"
                                                SeparateButtonClick="VideoMTC_SeparateButtonClick"
                                                Loaded="VideoMTC_Loaded"
@@ -162,6 +163,17 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
+        <Border Background="{ThemeResource MediaTransportControlsPanelBackground}" Padding="8,5" CornerRadius="3" Margin="20,0,20,100"
+                x:Name="SubtitleContainer" Visibility="Collapsed" VerticalAlignment="Bottom" HorizontalAlignment="Center">
+            <TextBlock Style="{StaticResource CaptionTextStyle}" FontSize="20" x:Name="SubtitleContentBlock" TextWrapping="Wrap"/>
+        </Border>
+        <Button Style="{StaticResource PrimaryCircleButtonStyle}" Background="{ThemeResource MaskAcrylicBackground}" Foreground="{ThemeResource ImportantTextColor}"
+                x:Name="InteractionHomeButton" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="Collapsed" Click="InteractionHomeButton_Click"
+                Margin="20,20,0,0" ToolTipService.ToolTip="返回互动视频起点" Content="&#xE9CB;"/>
+        <StackPanel Padding="20" CornerRadius="4" HorizontalAlignment="Center" VerticalAlignment="Center" Background="{ThemeResource PaneBackground}"
+                Name="InteractionEndContainer" Visibility="Collapsed">
+            <TextBlock Style="{StaticResource TipWrapTextStyle}" Text="互动视频已经结束，点击左上方按钮可返回起点"/>
+        </StackPanel>
         <ProgressBar IsIndeterminate="True" Foreground="{ThemeResource PrimaryColor}" Visibility="Collapsed"
                      VerticalAlignment="Bottom" HorizontalAlignment="Stretch" x:Name="LoadingBar"/>
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="ErrorContainer" Visibility="Collapsed">

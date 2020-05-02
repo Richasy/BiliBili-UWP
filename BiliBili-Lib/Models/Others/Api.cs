@@ -331,6 +331,10 @@ namespace BiliBili_Lib.Models.Others
         /// 发送弹幕
         /// </summary>
         public const string VIDEO_SEND_DANMAKU = _apiBase + "/x/v2/dm/post";
+        /// <summary>
+        /// 获取视频字幕
+        /// </summary>
+        public const string VIDEO_SUBTITLE = _apiBase + "/x/player.so";
         #endregion
 
         #region 话题及动态 Topic Dynamic

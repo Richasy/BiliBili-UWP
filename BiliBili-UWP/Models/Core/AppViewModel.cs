@@ -44,6 +44,7 @@ namespace BiliBili_UWP.Models.Core
         public DocumentPopup _documentPopup;
         public ReplyDetailPopup _replyDetailPopup;
         public UpdatePopup _updatePopup;
+        public bool IsInBackground;
 
         public List<Tuple<Guid, Action<Size>>> WindowsSizeChangedNotify { get; set; } = new List<Tuple<Guid, Action<Size>>>();
         public ObservableCollection<SystemFont> FontCollection = new ObservableCollection<SystemFont>();
@@ -151,7 +152,6 @@ namespace BiliBili_UWP.Models.Core
             {
                 page.RemovePlayer();
                 MainPage.Current.InsertPlayer();
-                CurrentVideoPlayer.DanmakuBarVisibility = Visibility.Collapsed;
                 ApplicationView.GetForCurrentView().TryEnterFullScreenMode();
             }
             else
@@ -197,7 +197,6 @@ namespace BiliBili_UWP.Models.Core
             {
                 page.RemovePlayer();
                 MainPage.Current.InsertPlayer();
-                CurrentVideoPlayer.DanmakuBarVisibility = Visibility.Collapsed;
                 await ApplicationView.GetForCurrentView().TryEnterViewModeAsync(ApplicationViewMode.CompactOverlay);
             }
             else
@@ -294,6 +293,21 @@ namespace BiliBili_UWP.Models.Core
             var fonts = SystemFont.GetFonts();
             if (fonts != null && fonts.Count > 0)
                 fonts.ForEach(p => FontCollection.Add(p));
+        }
+
+        public void CheckPlayerOnBackgroundChanged()
+        {
+            bool isStopInBackground = AppTool.GetBoolSetting(Settings.IsStopInBackground, false);
+            if (IsInBackground)
+            {
+                if(isStopInBackground && CurrentVideoPlayer != null)
+                    CurrentVideoPlayer.MTC.IsPlaying = false;
+            }
+            else
+            {
+                if (isStopInBackground && CurrentVideoPlayer != null)
+                    CurrentVideoPlayer.MTC.IsPlaying = true;
+            }
         }
     }
 }

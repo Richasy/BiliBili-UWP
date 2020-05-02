@@ -43,14 +43,36 @@ namespace BiliBili_UWP.Pages.Main
             if (_isInit || e.NavigationMode == NavigationMode.Back)
                 return;
 
+            #region 基础设置
+            bool isThemeWithSystem = AppTool.GetBoolSetting(Settings.IsThemeWithSystem);
+            ThemeWithSystemSwitch.IsOn = isThemeWithSystem;
+            ThemeComboBox.Visibility = isThemeWithSystem ? Visibility.Collapsed : Visibility.Visible;
             string theme = AppTool.GetLocalSetting(Settings.Theme, "Light");
             ThemeComboBox.SelectedIndex = theme == "Light" ? 0 : 1;
+            double pageBreakpoint = Convert.ToDouble(AppTool.GetLocalSetting(Settings.PagePanelDisplayBreakpoint, "1500"));
+            PagePaneDisplayBreakpointBox.Value = pageBreakpoint;
+            #endregion
+
+            #region 播放器设置
             bool isAutoPlay = AppTool.GetBoolSetting(Settings.IsAutoPlay);
             AutoPlaySwitch.IsOn = isAutoPlay;
-            bool isManualMTC = AppTool.GetBoolSetting(Settings.IsManualMediaTransportControls,false);
+            bool isManualMTC = AppTool.GetBoolSetting(Settings.IsManualMediaTransportControls, false);
             ManualMTCSwitch.IsOn = isManualMTC;
             double playerSkipStep = Convert.ToDouble(AppTool.GetLocalSetting(Settings.PlayerSkipStep, "30"));
             PlayerSkipStepBox.Value = playerSkipStep;
+            bool isShowDanmakuBarInFullWindow = AppTool.GetBoolSetting(Settings.IsShowDanmakuBarInFullWindow);
+            OpenDanmakuBarInFullWindowSwitch.IsOn = isShowDanmakuBarInFullWindow;
+            bool isShowDanmakuBarInCinema = AppTool.GetBoolSetting(Settings.IsShowDanmakuBarInCinema);
+            OpenDanmakuBarInCinemaSwitch.IsOn = isShowDanmakuBarInCinema;
+            bool isShowDanmakuBarInCompact = AppTool.GetBoolSetting(Settings.IsShowDanmakuBarInCompactOverlay);
+            OpenDanmakuBarInCompactSwitch.IsOn = isShowDanmakuBarInCompact;
+            bool isShowDanmakuBarInSeparate = AppTool.GetBoolSetting(Settings.IsShowDanmakuBarInSeparate);
+            OpenDanmakuBarInSeparateSwitch.IsOn = isShowDanmakuBarInSeparate;
+            bool isShowDanmakuInCompact = AppTool.GetBoolSetting(Settings.IsShowDanmakuInCompactOverlay);
+            OpenDanmakuInCompactSwitch.IsOn = isShowDanmakuInCompact;
+            bool isStopInBackground = AppTool.GetBoolSetting(Settings.IsStopInBackground);
+            StopPlayInBackgroundSwitch.IsOn = isStopInBackground;
+            #endregion
 
             base.OnNavigatedTo(e);
             _isInit = true;
@@ -131,6 +153,65 @@ namespace BiliBili_UWP.Pages.Main
             if (!_isInit)
                 return;
             AppTool.WriteLocalSetting(Settings.PlayerSkipStep, e.ToString());
+        }
+
+        private void StopPlayInBackgroundSwitch_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (!_isInit)
+                return;
+            AppTool.WriteLocalSetting(Settings.IsStopInBackground, StopPlayInBackgroundSwitch.IsOn.ToString());
+        }
+
+        private void OpenDanmakuBarInFullWindowSwitch_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (!_isInit)
+                return;
+            AppTool.WriteLocalSetting(Settings.IsShowDanmakuBarInFullWindow, OpenDanmakuBarInFullWindowSwitch.IsOn.ToString());
+        }
+
+        private void OpenDanmakuBarInCinemaSwitch_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (!_isInit)
+                return;
+            AppTool.WriteLocalSetting(Settings.IsShowDanmakuBarInCinema, OpenDanmakuBarInCinemaSwitch.IsOn.ToString());
+        }
+
+        private void OpenDanmakuBarInCompactSwitch_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (!_isInit)
+                return;
+            AppTool.WriteLocalSetting(Settings.IsShowDanmakuBarInCompactOverlay, OpenDanmakuBarInCompactSwitch.IsOn.ToString());
+        }
+
+        private void OpenDanmakuBarInSeparateSwitch_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (!_isInit)
+                return;
+            AppTool.WriteLocalSetting(Settings.IsShowDanmakuBarInSeparate, OpenDanmakuBarInSeparateSwitch.IsOn.ToString());
+        }
+
+        private void OpenDanmakuInCompactSwitch_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (!_isInit)
+                return;
+            AppTool.WriteLocalSetting(Settings.IsShowDanmakuInCompactOverlay, OpenDanmakuInCompactSwitch.IsOn.ToString());
+        }
+
+        private void PagePaneDisplayBreakpointBox_ValueChanged(object sender, double e)
+        {
+            if (!_isInit)
+                return;
+            AppTool.WriteLocalSetting(Settings.PagePanelDisplayBreakpoint, e.ToString());
+        }
+
+        private async void ThemeWithSystemSwitch_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (!_isInit)
+                return;
+            bool ison = ThemeWithSystemSwitch.IsOn;
+            AppTool.WriteLocalSetting(Settings.IsThemeWithSystem, ison.ToString());
+            ThemeComboBox.Visibility = ison ? Visibility.Collapsed : Visibility.Visible;
+            await ShowRestartDialog();
         }
     }
 }

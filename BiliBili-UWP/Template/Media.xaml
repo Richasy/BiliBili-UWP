@@ -49,6 +49,7 @@
                                 <Setter Property="Height" Value="{ThemeResource MTCMediaButtonHeight}" />
                                 <Setter Property="AllowFocusOnInteraction" Value="True" />
                                 <Setter Property="CornerRadius" Value="4" />
+                                <Setter Property="FontSize" Value="14" />
                             </Style>
                             <!-- New AppBarToggle button style 48x48 pixels in size -->
                             <Style x:Key="AppBarToggleButtonStyle" TargetType="AppBarToggleButton" BasedOn="{StaticResource AppBarToggleButtonRevealStyle}">
@@ -58,7 +59,7 @@
                             </Style>
                             <!-- New CommandBar Style -->
                             <Style x:Key="CommandBarStyle" TargetType="CommandBar">
-                                <Setter Property="Height" Value="{ThemeResource MTCMediaButtonHeight}" />
+                                <Setter Property="Height" Value="40" />
                                 <Setter Property="Background" Value="Transparent" />
                             </Style>
                             <!-- Style for Error Message text -->
@@ -261,9 +262,9 @@
                                                             <ColumnDefinition Width="*" />
                                                         </Grid.ColumnDefinitions>
                                                         <Grid.RowDefinitions>
-                                                            <RowDefinition Height="18" />
+                                                            <RowDefinition Height="6" />
                                                             <RowDefinition Height="Auto" />
-                                                            <RowDefinition Height="18" />
+                                                            <RowDefinition Height="6" />
                                                         </Grid.RowDefinitions>
                                                         <Rectangle x:Name="HorizontalTrackRect"
                                                                    Fill="{TemplateBinding Background}"
@@ -587,9 +588,9 @@
                                     <RowDefinition Height="*" />
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
-                                <!--<Border x:Name="ErrorBorder"
-                                        Width="320"
-                                        Height="96"
+                                <Border x:Name="ErrorBorder"
+                                        Width="0"
+                                        Height="1"
                                         Grid.ColumnSpan="3"
                                         HorizontalAlignment="Center"
                                         Background="{ThemeResource MediaTransportControlsPanelBackground}"
@@ -598,7 +599,7 @@
                                                Style="{StaticResource MediaTextBlockStyle}"
                                                TextWrapping="WrapWholeWords"
                                                Margin="12" />
-                                </Border>-->
+                                </Border>
                                 <Border x:Name="MediaTransportControls_Timeline_Border" Grid.Column="1" Grid.Row="1">
                                     <Grid x:Name="MediaTransportControls_Timeline_Grid">
                                         <Grid.ColumnDefinitions>
@@ -706,6 +707,38 @@
                                                 <AppBarButton.Icon>
                                                     <FontIcon Glyph="&#xE94B;" FontFamily="{StaticResource Icon}" />
                                                 </AppBarButton.Icon>
+                                            </AppBarButton>
+                                            <AppBarButton x:Name="SubtitleButton" ToolTipService.ToolTip="字幕选择"
+                                                          Style="{StaticResource AppBarButtonStyle}"
+                                                          MediaTransportControlsHelper.DropoutOrder="12">
+                                                <AppBarButton.Icon>
+                                                    <FontIcon Glyph="&#xED1E;" />
+                                                </AppBarButton.Icon>
+                                                <AppBarButton.Flyout>
+                                                    <Flyout FlyoutPresenterStyle="{StaticResource NoPaddingFlyoutStyle}">
+                                                        <Grid>
+                                                            <ListView x:Name="SubtitleListView"
+                                                                  ItemsSource="{TemplateBinding SubtitleItemsSource}"
+                                                                  IsItemClickEnabled="True"
+                                                                  Style="{StaticResource BasicListView}"
+                                                                  Width="200"
+                                                                  ItemContainerStyle="{StaticResource BasicListViewContainerStyle}"
+                                                                  SelectedIndex="{TemplateBinding SubtitleSelectIndex}"
+                                                                  >
+                                                                <ListView.ItemTemplate>
+                                                                    <DataTemplate>
+                                                                        <ListViewItem x:Name="SubtitleItem" Padding="10,6">
+                                                                            <RadioButton Style="{StaticResource BasicRadioButtonStyle}" IsChecked="{Binding ElementName=SubtitleItem,Path=IsSelected}"
+                                                                                     GroupName="Subtitle" Content="{Binding lan_doc}" IsEnabled="False"/>
+                                                                        </ListViewItem>
+                                                                    </DataTemplate>
+                                                                </ListView.ItemTemplate>
+                                                            </ListView>
+                                                            <TextBlock Style="{StaticResource SmallTipTextStyle}" Text="当前视频没有字幕" x:Name="SubtitleHolderText"
+                                                                       Visibility="{TemplateBinding SubtitleHolderVisibility}" Margin="10"/>
+                                                        </Grid>
+                                                    </Flyout>
+                                                </AppBarButton.Flyout>
                                             </AppBarButton>
                                             <AppBarButton x:Name='CCSelectionButton'
                         Style='{StaticResource AppBarButtonStyle}'

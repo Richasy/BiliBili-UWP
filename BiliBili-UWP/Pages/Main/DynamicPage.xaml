@@ -27,7 +27,7 @@
             </Grid.ColumnDefinitions>
             <TextBlock Text="动态" Style="{StaticResource TitleTextStyle}" Margin="0,0,0,15"/>
             <ToggleSwitch Style="{StaticResource BasicToggleSwitchStyle}" VerticalAlignment="Center" OnContent="只看视频" OffContent="只看视频"
-                          Grid.Column="1" Toggled="ToggleSwitch_Toggled"/>
+                          Grid.Column="1" Toggled="OnlyVideoSwitch_Toggled"  x:Name="OnlyVideoSwitch"/>
         </Grid>
         
         <Grid Grid.Row="1">

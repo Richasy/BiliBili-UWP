@@ -166,8 +166,13 @@ namespace BiliBili_UWP.Pages.Main
             UPNameBlock.Text = _detail.owner.name;
 
             _detail.pages.ForEach(p => VideoPartCollection.Add(p));
-            PartListView.SelectedIndex = 0;
-            _currentPartId = _detail.pages.First().cid;
+            if (_detail.history != null)
+            {
+                var historyPart = VideoPartCollection.Where(p => p.cid == _detail.history.cid).FirstOrDefault();
+                PartListView.SelectedItem = historyPart;
+            }
+            else
+                PartListView.SelectedIndex = 0;
             PartListView.Visibility = _detail.pages.Count > 1 ? Visibility.Visible : Visibility.Collapsed;
 
             if (_detail.tag != null && _detail.tag.Count > 0)

@@ -29,7 +29,7 @@
         <TextBox Style="{StaticResource BasicTextBoxStyle}" x:Name="InputBox" HorizontalAlignment="Stretch"
                  GotFocus="InputBox_GotFocus" LostFocus="InputBox_LostFocus" KeyDown="InputBox_KeyDown"
                  Text="{x:Bind Value}" PlaceholderText="{x:Bind PlaceholderText,Mode=OneWay}" Header="{x:Bind Header,Mode=OneWay}"
-                     HeaderTemplate="{x:Bind HeaderTemplate,Mode=OneWay}"/>
+                     HeaderTemplate="{x:Bind HeaderTemplate,Mode=OneWay}" MaxWidth="{x:Bind BoxWidth,Mode=OneWay}"/>
         <Popup x:Name="UpDownPopup"
                Grid.Column="1"
                VerticalOffset="8"

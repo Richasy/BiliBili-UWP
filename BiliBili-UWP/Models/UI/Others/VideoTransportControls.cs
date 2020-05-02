@@ -1,4 +1,6 @@
-﻿using NSDanmaku.Controls;
+﻿using BiliBili_Lib.Models.BiliBili.Video;
+using BiliBili_Lib.Tools;
+using NSDanmaku.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +22,7 @@ namespace BiliBili_UWP.Models.UI.Others
         private AppBarButton _cinemaButton;
         private AppBarButton _separateButton;
         public ListView _qualityListView;
+        public ListView _subtitleListView;
         public bool IsInit = false;
 
         public VideoTransportControls()
@@ -32,6 +35,7 @@ namespace BiliBili_UWP.Models.UI.Others
         public event EventHandler<bool> PlayButtonClick;
         public event EventHandler<bool> CompactOverlayButtonClick;
         public event EventHandler<int> QualityChanged;
+        public event EventHandler<SubtitleIndexItem> SubtitleChanged;
         public event RoutedEventHandler SeparateButtonClick;
         public MediaPlayerElement MediaPlayerElement;
         protected override void OnApplyTemplate()
@@ -54,8 +58,16 @@ namespace BiliBili_UWP.Models.UI.Others
 
             _qualityListView = GetTemplateChild("QualityListView") as ListView;
             _qualityListView.ItemClick += QualityListView_ItemClick;
+            _subtitleListView= GetTemplateChild("SubtitleListView") as ListView;
+            _subtitleListView.ItemClick += SubtitleListView_ItemClick;
 
             base.OnApplyTemplate();
+        }
+
+        private void SubtitleListView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            var item = e.ClickedItem as SubtitleIndexItem;
+            SubtitleChanged?.Invoke(this, item);
         }
 
         private void QualityListView_ItemClick(object sender, ItemClickEventArgs e)
@@ -286,7 +298,11 @@ namespace BiliBili_UWP.Models.UI.Others
                 instance.IsCinema = false;
             if (instance.DanmakuControls != null)
             {
-                instance.DanmakuControls.Visibility = v ? Visibility.Collapsed : Visibility.Visible;
+                bool isShow = AppTool.GetBoolSetting(BiliBili_Lib.Enums.Settings.IsShowDanmakuInCompactOverlay, false);
+                if (!isShow && v)
+                    instance.DanmakuControls.Visibility = Visibility.Collapsed;
+                else
+                    instance.DanmakuControls.Visibility = Visibility.Visible;
             }
             instance.CompactOverlayButtonClick?.Invoke(instance, v);
             instance.DanmakuControls.UpdateLayout();
@@ -311,5 +327,37 @@ namespace BiliBili_UWP.Models.UI.Others
         // Using a DependencyProperty as the backing store for QualitySelectIndex.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty QualitySelectIndexProperty =
             DependencyProperty.Register("QualitySelectIndex", typeof(int), typeof(VideoTransportControls), new PropertyMetadata(-1));
+
+        public object SubtitleItemsSource
+        {
+            get { return (object)GetValue(SubtitleItemsSourceProperty); }
+            set { SetValue(SubtitleItemsSourceProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for SubtitleItemsSource.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SubtitleItemsSourceProperty =
+            DependencyProperty.Register("SubtitleItemsSource", typeof(object), typeof(VideoTransportControls), new PropertyMetadata(null));
+
+        public int SubtitleSelectIndex
+        {
+            get { return (int)GetValue(SubtitleSelectIndexProperty); }
+            set { SetValue(SubtitleSelectIndexProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for SubtitleSelectIndex.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SubtitleSelectIndexProperty =
+            DependencyProperty.Register("SubtitleSelectIndex", typeof(int), typeof(VideoTransportControls), new PropertyMetadata(-1));
+
+        public Visibility SubtitleHolderVisibility
+        {
+            get { return (Visibility)GetValue(SubtitleHolderVisibilityProperty); }
+            set { SetValue(SubtitleHolderVisibilityProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for SubtitleHolderVisibility.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SubtitleHolderVisibilityProperty =
+            DependencyProperty.Register("SubtitleHolderVisibility", typeof(Visibility), typeof(VideoTransportControls), new PropertyMetadata(Visibility.Collapsed));
+
+
     }
 }

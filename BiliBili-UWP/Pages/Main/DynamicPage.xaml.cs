@@ -1,5 +1,6 @@
 ﻿using BiliBili_Lib.Models.BiliBili;
 using BiliBili_Lib.Service;
+using BiliBili_Lib.Tools;
 using BiliBili_UWP.Models.Core;
 using BiliBili_UWP.Models.UI.Interface;
 using System;
@@ -60,7 +61,6 @@ namespace BiliBili_UWP.Pages.Main
                 return;
             }
             await Refresh();
-            _isInit = true;
         }
 
 
@@ -77,13 +77,17 @@ namespace BiliBili_UWP.Pages.Main
             TotalList.Clear();
             offset = "";
             _scrollOffset = 0;
+            _isOnlyVideo = AppTool.GetBoolSetting(BiliBili_Lib.Enums.Settings.IsDynamicOnlyVideo);
+            OnlyVideoSwitch.IsOn = _isOnlyVideo;
             HolderText.Visibility = Visibility.Collapsed;
             DynamicLoadingBar.Visibility = Visibility.Collapsed;
         }
         public async Task Refresh()
         {
+            _isInit = false;
             Reset();
             await LoadDynamic();
+            _isInit = true;
         }
 
         private async Task LoadDynamic()
@@ -170,11 +174,12 @@ namespace BiliBili_UWP.Pages.Main
             }
         }
 
-        private async void ToggleSwitch_Toggled(object sender, RoutedEventArgs e)
+        private async void OnlyVideoSwitch_Toggled(object sender, RoutedEventArgs e)
         {
             if (!_isInit)
                 return;
             _isOnlyVideo = (sender as ToggleSwitch).IsOn;
+            AppTool.WriteLocalSetting(BiliBili_Lib.Enums.Settings.IsDynamicOnlyVideo, _isOnlyVideo.ToString());
             if (_isOnlyVideo)
             {
                 for (int i = DynamicCollection.Count - 1; i >= 0; i--)

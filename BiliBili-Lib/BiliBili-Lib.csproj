@@ -158,6 +158,7 @@
     <Compile Include="Models\BiliBili\Video\VideoPart.cs" />
     <Compile Include="Models\BiliBili\Video\VideoPlay.cs" />
     <Compile Include="Models\BiliBili\Favorite.cs" />
+    <Compile Include="Models\BiliBili\Video\VideoSubtitle.cs" />
     <Compile Include="Models\Interface\IAlphaBackground.cs" />
     <Compile Include="Models\Others\Api.cs" />
     <Compile Include="Models\Others\ApiKeyInfo.cs" />

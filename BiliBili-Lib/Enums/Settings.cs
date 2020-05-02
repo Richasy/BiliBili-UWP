@@ -30,6 +30,16 @@ namespace BiliBili_Lib.Enums
         DanmakuFontFamily,
         DanmakuMerge,
         DanmakuProtectSubtitle,
-        DanmakuBorderStyle
+        DanmakuBorderStyle,
+        IsStopInBackground,
+        IsDynamicOnlyVideo,
+        IsShowDanmakuBarInFullWindow,
+        IsShowDanmakuBarInCinema,
+        IsShowDanmakuBarInCompactOverlay,
+        IsShowDanmakuBarInSeparate,
+        IsShowDanmakuInCompactOverlay,
+        FirstQuality,
+        PagePanelDisplayBreakpoint,
+        IsThemeWithSystem
     }
 }
