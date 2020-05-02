@@ -40,6 +40,7 @@ namespace BiliBili_Lib.Enums
         IsShowDanmakuInCompactOverlay,
         FirstQuality,
         PagePanelDisplayBreakpoint,
-        IsThemeWithSystem
+        IsThemeWithSystem,
+        IsLastSidePanelOpen
     }
 }

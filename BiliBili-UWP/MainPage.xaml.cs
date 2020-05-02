@@ -1,4 +1,5 @@
-﻿using BiliBili_UWP.Components.Widgets;
+﻿using BiliBili_Lib.Tools;
+using BiliBili_UWP.Components.Widgets;
 using BiliBili_UWP.Models.Core;
 using System;
 using System.Collections.Generic;
@@ -43,6 +44,8 @@ namespace BiliBili_UWP
             {
                 return;
             }
+            bool isSideOpen=AppTool.GetBoolSetting(BiliBili_Lib.Enums.Settings.IsLastSidePanelOpen);
+            AppSplitView.IsPaneOpen = isSideOpen;
             App.AppViewModel.CheckAppUpdate();
             var popup = new WaitingPopup("正在初始化");
             popup.ShowPopup();
@@ -128,11 +131,6 @@ namespace BiliBili_UWP
                     }
                 }
             }
-        }
-
-        private void SidePanel_PaneButtonClick(object sender, bool e)
-        {
-            AppSplitView.IsPaneOpen = e;
         }
 
         private void SidePanel_SideMenuItemClick(object sender, Models.UI.SideMenuItem e)

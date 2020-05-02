@@ -1,4 +1,5 @@
 ﻿using BiliBili_Lib.Models.BiliBili;
+using BiliBili_Lib.Tools;
 using BiliBili_UWP.Models.Enums;
 using BiliBili_UWP.Models.UI;
 using System;
@@ -78,6 +79,7 @@ namespace BiliBili_UWP.Components.Layout
         private void PaneButton_Click(object sender, RoutedEventArgs e)
         {
             IsWide = !IsWide;
+            AppTool.WriteLocalSetting(BiliBili_Lib.Enums.Settings.IsLastSidePanelOpen, IsWide.ToString());
         }
 
         public void SetSelectedItem(SideMenuItemType type)
