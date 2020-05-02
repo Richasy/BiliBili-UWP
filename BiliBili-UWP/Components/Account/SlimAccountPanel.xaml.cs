@@ -26,6 +26,13 @@ namespace BiliBili_UWP.Components.Account
             this.InitializeComponent();
             App.BiliViewModel.IsLoginChanged -= LoginStatusChanged;
             App.BiliViewModel.IsLoginChanged += LoginStatusChanged;
+            App.BiliViewModel.MyInfoChanged -= MyInfoChanged;
+            App.BiliViewModel.MyInfoChanged += MyInfoChanged;
+        }
+
+        private void MyInfoChanged(object sender, EventArgs e)
+        {
+            MyInfoInit();
         }
 
         private void LoginStatusChanged(object sender, bool e)
@@ -33,32 +40,37 @@ namespace BiliBili_UWP.Components.Account
             CheckElementStatus();
             if (e)
             {
-                var me = App.BiliViewModel._client.Account.Me;
-                if (me != null)
-                {
-                    UserAvatar.ProfilePicture = new BitmapImage(new Uri(me.face)) { DecodePixelWidth = 55 };
-                    UserAvatarNarrrow.ProfilePicture = new BitmapImage(new Uri(me.face)) { DecodePixelWidth = 55 };
-                    UserNameBlock.Text = me.name;
-                    LevelBlock.Level = me.level;
-                    DynamicBlock.Text = AppTool.GetNumberAbbreviation(me.dynamic);
-                    FollowBlock.Text = AppTool.GetNumberAbbreviation(me.following);
-                    FanBlock.Text = AppTool.GetNumberAbbreviation(me.follower);
-                    if (me.pendant != null && !string.IsNullOrEmpty(me.pendant.image))
-                    {
-                        PendantImage.Visibility = Visibility.Visible;
-                        PendantImage.Source = new BitmapImage(new Uri(me.pendant.image));
-                        UserNameBlock.Margin = new Thickness(0);
-                    }
-                    else
-                    {
-                        PendantImage.Visibility = Visibility.Collapsed;
-                        UserNameBlock.Margin = new Thickness(0, 20, 0, 0);
-                    }
-                }
+                MyInfoInit();
             }
             else
             {
                 UserAvatarNarrrow.ProfilePicture = null;
+            }
+        }
+
+        private void MyInfoInit()
+        {
+            var me = App.BiliViewModel._client.Account.Me;
+            if (me != null)
+            {
+                UserAvatar.ProfilePicture = new BitmapImage(new Uri(me.face)) { DecodePixelWidth = 55 };
+                UserAvatarNarrrow.ProfilePicture = new BitmapImage(new Uri(me.face)) { DecodePixelWidth = 55 };
+                UserNameBlock.Text = me.name;
+                LevelBlock.Level = me.level;
+                DynamicBlock.Text = AppTool.GetNumberAbbreviation(me.dynamic);
+                FollowBlock.Text = AppTool.GetNumberAbbreviation(me.following);
+                FanBlock.Text = AppTool.GetNumberAbbreviation(me.follower);
+                if (me.pendant != null && !string.IsNullOrEmpty(me.pendant.image))
+                {
+                    PendantImage.Visibility = Visibility.Visible;
+                    PendantImage.Source = new BitmapImage(new Uri(me.pendant.image));
+                    UserNameBlock.Margin = new Thickness(0);
+                }
+                else
+                {
+                    PendantImage.Visibility = Visibility.Collapsed;
+                    UserNameBlock.Margin = new Thickness(0, 20, 0, 0);
+                }
             }
         }
 

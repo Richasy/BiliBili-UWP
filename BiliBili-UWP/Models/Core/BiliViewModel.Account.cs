@@ -18,6 +18,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.Security.Cryptography.Core;
 using Windows.Storage.Streams;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace BiliBili_UWP.Models.Core
@@ -39,15 +40,27 @@ namespace BiliBili_UWP.Models.Core
         }
 
         public bool IsLogining = false;
-        
+
         public event EventHandler<bool> IsLoginChanged;
+        public event EventHandler MyInfoChanged;
         public LoginPopup LoginPopup;
+        private DispatcherTimer _myInfoTimer = new DispatcherTimer() { Interval = TimeSpan.FromSeconds(30) };
         public void ShowLoginPopup()
         {
             if (LoginPopup == null)
                 LoginPopup = new LoginPopup();
             LoginPopup.ShowPopup();
         }
+
+        private async void MyInfoTimer_Tick(object sender, object e)
+        {
+            if (IsLogin)
+            {
+                await GetMeAsync();
+                MyInfoChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
         /// <summary>
         /// 获取我的个人信息
         /// </summary>
@@ -58,10 +71,13 @@ namespace BiliBili_UWP.Models.Core
             if (data != null)
             {
                 if (!IsLogin)
+                {
                     IsLogin = true;
+                    _myInfoTimer.Start();
+                } 
             }
         }
-        
+
         public void ClearAccountInformation()
         {
             IsLogin = false;
@@ -71,8 +87,9 @@ namespace BiliBili_UWP.Models.Core
             AppTool.WriteLocalSetting(Settings.UserId, "");
             _client.Account = new AccountService(new TokenPackage());
             BiliTool.ClearCookies();
+            _myInfoTimer.Stop();
         }
-        
+
         /// <summary>
         /// 自动登录
         /// </summary>
@@ -96,7 +113,7 @@ namespace BiliBili_UWP.Models.Core
             {
                 await _client.Account.SSO();
                 IsLogin = false;
-            }  
+            }
         }
         /// <summary>
         /// 检查用户是否登录

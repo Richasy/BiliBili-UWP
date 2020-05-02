@@ -90,5 +90,10 @@ namespace BiliBili_UWP.Pages.Main
         {
             await Launcher.LaunchUriAsync(new Uri(e.Link));
         }
+
+        private async void UpdateHistoryButton_Click(object sender, RoutedEventArgs e)
+        {
+            await Launcher.LaunchUriAsync(new Uri("https://www.richasy.cn/document/bilibili/update.html"));
+        }
     }
 }

@@ -46,6 +46,7 @@ namespace BiliBili_UWP.Models.Core
         {
             _channelChangeTimer.Tick += ChannelChangTimer_Tick;
             _channelChangeTimer.Start();
+            _myInfoTimer.Tick += MyInfoTimer_Tick;
         }
 
         private void TokenChanged(object sender, TokenPackage e)
