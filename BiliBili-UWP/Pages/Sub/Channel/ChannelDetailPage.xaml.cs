@@ -203,7 +203,7 @@ namespace BiliBili_UWP.Pages.Sub.Channel
         {
             var data = e.ClickedItem as VideoChannel;
             if (data.@goto == "av")
-                App.AppViewModel.PlayVideo(Convert.ToInt32(data.param),null, "traffic.new-channel-detail-all.0.0.0.0");
+                App.AppViewModel.PlayVideo(Convert.ToInt32(data.param),null, StaticString.SIGN_CHANNEL);
             else if (data.@goto == "bangumi")
                 App.AppViewModel.PlayBangumi(Convert.ToInt32(data.param), null, true);
         }

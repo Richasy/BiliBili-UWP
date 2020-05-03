@@ -189,7 +189,7 @@ namespace BiliBili_UWP.Components.Controls
                 }
                 else if (data.desc.type == 4200)
                 {
-                    //音频
+                    //直播
                     var info = JsonConvert.DeserializeObject<LiveDynamic>(data.card);
                     instance.DescriptionBlock.Visibility = Visibility.Collapsed;
                     instance.CommentBlock.Text = "";

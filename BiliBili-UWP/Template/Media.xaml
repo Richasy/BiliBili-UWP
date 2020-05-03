@@ -567,7 +567,6 @@
                         </VisualStateManager.VisualStateGroups>
                         <c:Danmaku x:Name="DanmakuControls" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                    />
-
                         <Border x:Name="ControlPanel_ControlPanelVisibilityStates_Border">
                             <Grid x:Name="ControlPanelGrid" IsTapEnabled="False" IsDoubleTapEnabled="False"
                   Background="{ThemeResource MediaTransportControlsPanelBackground}"

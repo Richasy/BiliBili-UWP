@@ -1,6 +1,7 @@
 ﻿using BiliBili_Lib.Enums;
 using BiliBili_Lib.Tools;
 using BiliBili_UWP.Dialogs;
+using BiliBili_UWP.Models.UI;
 using BiliBili_UWP.Models.UI.Others;
 using Microsoft.Toolkit.Uwp.Helpers;
 using System;
@@ -72,6 +73,11 @@ namespace BiliBili_UWP.Pages.Main
             OpenDanmakuInCompactSwitch.IsOn = isShowDanmakuInCompact;
             bool isStopInBackground = AppTool.GetBoolSetting(Settings.IsStopInBackground);
             StopPlayInBackgroundSwitch.IsOn = isStopInBackground;
+            #endregion
+
+            #region 通知设置
+            bool isOpenDynamicToast = AppTool.GetBoolSetting(Settings.IsOpenNewDynamicNotification, false);
+            NewDynamicToastSwitch.IsOn = isOpenDynamicToast;
             #endregion
 
             base.OnNavigatedTo(e);
@@ -212,6 +218,27 @@ namespace BiliBili_UWP.Pages.Main
             AppTool.WriteLocalSetting(Settings.IsThemeWithSystem, ison.ToString());
             ThemeComboBox.Visibility = ison ? Visibility.Collapsed : Visibility.Visible;
             await ShowRestartDialog();
+        }
+
+        private async void NewDynamicToastSwitch_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (!_isInit)
+                return;
+            if (NewDynamicToastSwitch.IsOn)
+            {
+                bool isSuccess = await App.AppViewModel.RegisterBackgroundTask(StaticString.NOTIFICATION_NEWDYNAMIC);
+                if (isSuccess)
+                    AppTool.WriteLocalSetting(Settings.IsOpenNewDynamicNotification, "True");
+                else
+                {
+                    AppTool.WriteLocalSetting(Settings.IsOpenNewDynamicNotification, "False");
+                    NewDynamicToastSwitch.IsOn = false;
+                }
+            }
+            else
+            {
+                App.AppViewModel.UnRegisterBackgroundTask(StaticString.NOTIFICATION_NEWDYNAMIC);
+            }
         }
     }
 }

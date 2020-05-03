@@ -75,6 +75,7 @@ namespace BiliBili_UWP.Pages.Main
         {
             DynamicCollection.Clear();
             TotalList.Clear();
+            LoadingRing.IsActive = false;
             offset = "";
             _scrollOffset = 0;
             _isOnlyVideo = AppTool.GetBoolSetting(BiliBili_Lib.Enums.Settings.IsDynamicOnlyVideo);
@@ -86,7 +87,11 @@ namespace BiliBili_UWP.Pages.Main
         {
             _isInit = false;
             Reset();
+            LoadingRing.IsActive = true;
             await LoadDynamic();
+            if (DynamicCollection.Count < 10)
+                await LoadDynamic();
+            LoadingRing.IsActive = false;
             _isInit = true;
         }
 
@@ -98,7 +103,11 @@ namespace BiliBili_UWP.Pages.Main
             Tuple<string, List<Topic>> data = null;
             DynamicLoadingBar.Visibility = Visibility.Visible;
             if (string.IsNullOrEmpty(offset))
-                data = await _topicService.GetNewDynamicAsync();
+            {
+                string lastSeemId = AppTool.GetLocalSetting(BiliBili_Lib.Enums.Settings.LastSeemDynamicId,"0");
+                var temp = await _topicService.GetNewDynamicAsync(lastSeemId);
+                data = new Tuple<string, List<Topic>>(temp.history_offset, temp.cards);
+            }
             else
                 data = await _topicService.GetHistoryDynamicAsync(offset);
             if (data != null)
@@ -124,7 +133,7 @@ namespace BiliBili_UWP.Pages.Main
                         index = DynamicCollection.IndexOf(temp);
                     else
                         index = DynamicCollection.Count;
-                    if ((_isOnlyVideo && item.desc.type == 8) || !_isOnlyVideo)
+                    if ((_isOnlyVideo && (item.desc.type == 8)||(item.desc.type==512)) || !_isOnlyVideo)
                     {
                         DynamicCollection.Insert(index, item);
                     }
@@ -159,13 +168,14 @@ namespace BiliBili_UWP.Pages.Main
                     if (_isDynamicRequesting)
                         return;
                     _isDynamicRequesting = true;
-                    var data = await _topicService.GetNewDynamicAsync();
+                    string lastSeemId = AppTool.GetLocalSetting(BiliBili_Lib.Enums.Settings.LastSeemDynamicId, "0");
+                    var data = await _topicService.GetNewDynamicAsync(lastSeemId);
                     if (data != null)
                     {
-                        for (int i = data.Item2.Count - 1; i >= 0; i--)
+                        for (int i = data.cards.Count - 1; i >= 0; i--)
                         {
-                            if (!TotalList.Contains(data.Item2[i]))
-                                TotalList.Insert(0, data.Item2[i]);
+                            if (!TotalList.Contains(data.cards[i]))
+                                TotalList.Insert(0, data.cards[i]);
                         }
                         DynamicCollectionInit();
                     }

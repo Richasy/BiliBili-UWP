@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BiliBili_Notification
 {
-    public sealed class Class1
+    public sealed class MessageNotification
     {
     }
 }

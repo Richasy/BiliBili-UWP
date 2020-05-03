@@ -13,5 +13,11 @@ namespace BiliBili_UWP.Models.UI
         public const string TAG_DETAIL = "标签详情";
         public const string SEARCH_RESULT = "搜索结果";
         public const string REPLY_LIST = "评论列表";
+
+        public const string NOTIFICATION_NEWDYNAMIC = "NewDynamic";
+
+        public const string SIGN_DYNAMIC = "dynamic.dt.0.0";
+        public const string SIGN_RECOMMEND = "tm.recommend.0.0";
+        public const string SIGN_CHANNEL = "traffic.new-channel-detail-all.0.0.0.0";
     }
 }

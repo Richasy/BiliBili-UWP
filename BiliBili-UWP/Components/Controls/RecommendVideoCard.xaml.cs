@@ -48,11 +48,12 @@ namespace BiliBili_UWP.Components.Controls
                 var card = instance.VideoCard;
                 card.Cover = data.cover;
                 card.Title = data.title;
-                card.Tip = string.IsNullOrEmpty(data.args?.up_name) ? "--" : data.args.up_name;
-                card.FirstSectionContent = data.cover_left_text_1;
-                card.SecondSectionContent = data.cover_left_text_2;
-                card.Duration = data.cover_right_text;
-                card.RightBottomText = data.rcmd_reason ?? "";
+                //card.Tip = string.IsNullOrEmpty(data.args?.up_name) ? "--" : data.args.up_name;
+                card.Tip = data.desc;
+                card.FirstSectionContent = data.cover_left_text_2.Replace("观看","");
+                card.SecondSectionContent = data.cover_left_text_3.Replace("弹幕", "");
+                card.Duration = data.cover_left_text_1;
+                card.RightBottomText = data.top_rcmd_reason ?? "";
                 if (data.card_goto == "bangumi")
                     card.ExtraFlyout = instance.BangumiFlyout;
                 else

@@ -5,12 +5,14 @@ using BiliBili_Lib.Tools;
 using BiliBili_UWP.Components.Controls;
 using BiliBili_UWP.Components.Layout;
 using BiliBili_UWP.Components.Others;
+using BiliBili_UWP.Components.Widgets;
 using BiliBili_UWP.Models.Enums;
 using BiliBili_UWP.Models.UI;
 using BiliBili_UWP.Models.UI.Interface;
 using BiliBili_UWP.Models.UI.Others;
 using BiliBili_UWP.Pages.Main;
 using Microsoft.QueryStringDotNET;
+using Microsoft.Toolkit.Uwp.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -18,6 +20,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
+using Windows.ApplicationModel.Background;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.Storage;
@@ -63,7 +66,19 @@ namespace BiliBili_UWP.Models.Core
         {
             QueryString args = QueryString.Parse(argument);
             args.TryGetValue("action", out string action);
-
+            switch (action)
+            {
+                case "video":
+                    args.TryGetValue("aid", out string videoAid);
+                    PlayVideo(Convert.ToInt32(videoAid),fromSign:StaticString.SIGN_DYNAMIC);
+                    break;
+                case "bangumi":
+                    args.TryGetValue("epid", out string AnimeEpid);
+                    PlayBangumi(Convert.ToInt32(AnimeEpid), isEp: true);
+                    break;
+                default:
+                    break;
+            }
         }
         public async void CheckAppUpdate()
         {
@@ -90,11 +105,11 @@ namespace BiliBili_UWP.Models.Core
             if (CurrentPagePanel.IsSubPageOpen)
                 CurrentPagePanel.IsSubPageOpen = false;
             SelectedSideMenuItem = null;
-            if (sender != null)
-            {
-                var image = VisualTreeExtension.VisualTreeFindName<FrameworkElement>((FrameworkElement)sender, "VideoCover");
-                ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("VideoConnectedAnimation", image);
-            }
+            //if (sender != null)
+            //{
+            //    var image = VisualTreeExtension.VisualTreeFindName<FrameworkElement>((FrameworkElement)sender, "VideoCover");
+            //    ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("VideoConnectedAnimation", image);
+            //}
             CurrentSidePanel.SetSelectedItem(SideMenuItemType.Line);
             CurrentPagePanel.NavigateToPage(SideMenuItemType.VideoPlayer, new Tuple<int, string>(aid, fromSign));
         }
@@ -108,11 +123,11 @@ namespace BiliBili_UWP.Models.Core
             if (CurrentPagePanel.IsSubPageOpen)
                 CurrentPagePanel.IsSubPageOpen = false;
             SelectedSideMenuItem = null;
-            if (sender != null)
-            {
-                var image = VisualTreeExtension.VisualTreeFindName<FrameworkElement>((FrameworkElement)sender, "VideoCover");
-                ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("VideoConnectedAnimation", image);
-            }
+            //if (sender != null)
+            //{
+            //    var image = VisualTreeExtension.VisualTreeFindName<FrameworkElement>((FrameworkElement)sender, "VideoCover");
+            //    ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("VideoConnectedAnimation", image);
+            //}
             CurrentSidePanel.SetSelectedItem(SideMenuItemType.Line);
             if (isEp)
                 CurrentPagePanel.NavigateToPage(SideMenuItemType.BangumiPlayer, new Tuple<int, bool>(epid, isEp));
@@ -308,6 +323,42 @@ namespace BiliBili_UWP.Models.Core
                 if (isStopInBackground && CurrentVideoPlayer != null)
                     CurrentVideoPlayer.MTC.IsPlaying = true;
             }
+        }
+
+        /// <summary>
+        /// 注册后台任务
+        /// </summary>
+        /// <param name="type">注册类型</param>
+        /// <returns></returns>
+        public async Task<bool> RegisterBackgroundTask(string type)
+        {
+            string backgroundTaskName = $"{type}NotificationTask";
+
+            if (BackgroundTaskHelper.IsBackgroundTaskRegistered(backgroundTaskName))
+            {
+                return true;
+            }
+            var status = await BackgroundExecutionManager.RequestAccessAsync();
+            if (status.ToString().Contains("Allowed"))
+            {
+                BackgroundTaskHelper.Register(backgroundTaskName, $"BiliBili_Notification.{type}Notification", new TimeTrigger(15, false), false, true, new SystemCondition(SystemConditionType.InternetAvailable));
+                return true;
+            }
+            else
+            {
+                new TipPopup("需要开启后台通知").ShowError();
+                return false;
+            }
+        }
+        /// <summary>
+        /// 注销后台任务
+        /// </summary>
+        /// <param name="type">类型</param>
+        public void UnRegisterBackgroundTask(string type)
+        {
+            string backgroundTaskName = $"{type}NotificationTask";
+            if (BackgroundTaskHelper.IsBackgroundTaskRegistered(backgroundTaskName))
+                BackgroundTaskHelper.Unregister(backgroundTaskName);
         }
     }
 }

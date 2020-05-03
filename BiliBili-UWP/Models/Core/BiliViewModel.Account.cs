@@ -44,7 +44,6 @@ namespace BiliBili_UWP.Models.Core
         public event EventHandler<bool> IsLoginChanged;
         public event EventHandler MyInfoChanged;
         public LoginPopup LoginPopup;
-        private DispatcherTimer _myInfoTimer = new DispatcherTimer() { Interval = TimeSpan.FromSeconds(30) };
         public void ShowLoginPopup()
         {
             if (LoginPopup == null)
@@ -52,14 +51,6 @@ namespace BiliBili_UWP.Models.Core
             LoginPopup.ShowPopup();
         }
 
-        private async void MyInfoTimer_Tick(object sender, object e)
-        {
-            if (IsLogin)
-            {
-                await GetMeAsync();
-                MyInfoChanged?.Invoke(this, EventArgs.Empty);
-            }
-        }
 
         /// <summary>
         /// 获取我的个人信息
@@ -73,9 +64,14 @@ namespace BiliBili_UWP.Models.Core
                 if (!IsLogin)
                 {
                     IsLogin = true;
-                    _myInfoTimer.Start();
                 } 
             }
+        }
+
+        public async void ChangeMyInfo()
+        {
+            await GetMeAsync();
+            MyInfoChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public void ClearAccountInformation()
@@ -85,9 +81,9 @@ namespace BiliBili_UWP.Models.Core
             AppTool.WriteLocalSetting(Settings.RefreshToken, "");
             AppTool.WriteLocalSetting(Settings.TokenExpiry, "0");
             AppTool.WriteLocalSetting(Settings.UserId, "");
+            AppTool.WriteLocalSetting(Settings.LastSeemDynamicId, "");
             _client.Account = new AccountService(new TokenPackage());
             BiliTool.ClearCookies();
-            _myInfoTimer.Stop();
         }
 
         /// <summary>

@@ -72,6 +72,15 @@
                               Header="独立模式显示弹幕控制条" x:Name="OpenDanmakuBarInSeparateSwitch" Toggled="OpenDanmakuBarInSeparateSwitch_Toggled" Margin="0,15,0,0"/>
                     </StackPanel>
                 </PivotItem>
+                <PivotItem>
+                    <PivotItem.Header>
+                        <TextBlock Style="{StaticResource CaptionTextStyle}" Text="通知设置"/>
+                    </PivotItem.Header>
+                    <StackPanel Margin="0,15,0,0">
+                        <ToggleSwitch Style="{StaticResource BasicToggleSwitchStyle}" HeaderTemplate="{StaticResource TipHeaderStyle}"
+                              Header="新动态推送（仅限视频和动漫/电影电视剧）" x:Name="NewDynamicToastSwitch" Toggled="NewDynamicToastSwitch_Toggled"/>
+                    </StackPanel>
+                </PivotItem>
             </Pivot>
         </Grid>
     </Grid>

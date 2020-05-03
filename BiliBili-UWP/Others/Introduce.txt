@@ -16,6 +16,10 @@
 
 ---
 
+如果你播放视频比较卡，请在你的显卡设置中开启垂直同步
+
+---
+
 ## 开发人员
 
 [云之幻](https://github.com/Richasy) | [蓝火火](https://github.com/cnbluefire)

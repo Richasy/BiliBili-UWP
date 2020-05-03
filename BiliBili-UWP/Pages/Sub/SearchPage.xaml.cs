@@ -374,7 +374,7 @@ namespace BiliBili_UWP.Pages.Sub
         private void UserListView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var user = e.ClickedItem as SearchUser;
-            App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Pages.Sub.Account.DetailPage), user.mid);
+            App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Account.DetailPage), user.mid);
         }
 
         private void DocumentListView_ItemClick(object sender, ItemClickEventArgs e)

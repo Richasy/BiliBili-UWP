@@ -6,6 +6,14 @@ using System.Threading.Tasks;
 
 namespace BiliBili_Lib.Models.BiliBili
 {
+    public class NewDynamicResponse
+    {
+        public int new_num { get; set; }
+        public int update_num { get; set; }
+        public List<Topic> cards { get; set; }
+        public string max_dynamic_id { get; set; }
+        public string history_offset { get; set; }
+    }
     public class Topic
     {
         public TopicDescription desc { get; set; }

@@ -41,6 +41,8 @@ namespace BiliBili_Lib.Enums
         FirstQuality,
         PagePanelDisplayBreakpoint,
         IsThemeWithSystem,
-        IsLastSidePanelOpen
+        IsLastSidePanelOpen,
+        LastSeemDynamicId,
+        IsOpenNewDynamicNotification
     }
 }

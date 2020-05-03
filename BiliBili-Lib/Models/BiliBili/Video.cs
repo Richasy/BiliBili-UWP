@@ -23,6 +23,7 @@ namespace BiliBili_Lib.Models.BiliBili
         public int cover_left_icon_1 { get; set; }
         public string cover_left_text_2 { get; set; }
         public int cover_left_icon_2 { get; set; }
+        public string cover_left_text_3 { get; set; }
 
         public override bool Equals(object obj)
         {
@@ -51,8 +52,7 @@ namespace BiliBili_Lib.Models.BiliBili
         public string uri { get; set; }
         public Args args { get; set; }
         public List<ThreePointV2> three_point_v2 { get; set; }
-        public string cover_right_text { get; set; }
-        public string rcmd_reason { get; set; }
+        public string top_rcmd_reason { get; set; }
         public int official_icon { get; set; }
         public int can_play { get; set; }
         public string desc { get; set; }
@@ -61,7 +61,6 @@ namespace BiliBili_Lib.Models.BiliBili
     public class VideoChannel : VideoBase
     {
         public string @goto { get; set; }
-        public string cover_left_text_3 { get; set; }
         public string sort { get; set; }
     }
 

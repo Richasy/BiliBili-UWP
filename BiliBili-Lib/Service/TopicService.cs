@@ -43,8 +43,8 @@ namespace BiliBili_Lib.Service
         /// <summary>
         /// 获取新动态
         /// </summary>
-        /// <returns>Item1:下次偏移值;Item2:视频列表</returns>
-        public async Task<Tuple<string, List<Topic>>> GetNewDynamicAsync()
+        /// <returns>动态响应</returns>
+        public async Task<NewDynamicResponse> GetNewDynamicAsync(string lastSeemId="0")
         {
             var param = new Dictionary<string, string>();
             param.Add("cold_start", "1");
@@ -52,23 +52,15 @@ namespace BiliBili_Lib.Service
             param.Add("rsp_type", "2");
             param.Add("type_list", "268435455");
             param.Add("uid", BiliTool.mid);
-            string url = BiliTool.UrlContact(Api.DYNAMIC_NEW, param, true);
-            var data = await BiliTool.GetTextFromWebAsync(url);
-            if (!string.IsNullOrEmpty(data))
+            if (!string.IsNullOrEmpty(lastSeemId)&& lastSeemId!="0")
             {
-                try
-                {
-                    var jobj = JObject.Parse(data);
-                    string nextOffset = jobj["history_offset"].ToString();
-                    var topics = JsonConvert.DeserializeObject<List<Topic>>(jobj["cards"].ToString());
-                    topics.RemoveAll(p => p == null || p.card == null || p.card.Length < 10 || p.desc.status != 1);
-                    return new Tuple<string, List<Topic>>(nextOffset, topics);
-                }
-                catch (Exception)
-                {
-                }
+                param.Add("update_num_dy_id", lastSeemId);
             }
-            return null;
+            string url = BiliTool.UrlContact(Api.DYNAMIC_NEW, param, true, useiPhone: true);
+            var data = await BiliTool.ConvertEntityFromWebAsync<NewDynamicResponse>(url);
+            data.cards.RemoveAll(p => p == null || p.card == null || p.card.Length < 10 || p.desc.status != 1);
+            AppTool.WriteLocalSetting(Enums.Settings.LastSeemDynamicId, data.max_dynamic_id);
+            return data;
         }
         /// <summary>
         /// 获取历史动态

@@ -239,6 +239,7 @@ namespace BiliBili_UWP.Pages.Main
             if (VideoContainer.Children.Count == 0)
                 VideoContainer.Children.Add(App.AppViewModel.CurrentVideoPlayer);
             App.AppViewModel.CurrentVideoPlayer.Focus(FocusState.Programmatic);
+            App.AppViewModel.CurrentVideoPlayer.ResetDanmakuStatus();
         }
 
         private void VideoPlayer_FullWindowChanged(object sender, bool e)

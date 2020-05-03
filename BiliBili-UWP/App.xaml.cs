@@ -122,9 +122,16 @@ namespace BiliBili_UWP
                 }
                 else
                 {
-                    
+                    AppViewModel.AppInitByActivated(toastActivationArgs.Argument);
                 }
                 Window.Current.Activate();
+            }
+            if (e.PreviousExecutionState == ApplicationExecutionState.Running)
+            {
+                if (BiliViewModel != null && BiliViewModel.IsLogin)
+                {
+                    BiliViewModel.ChangeMyInfo();
+                }
             }
             UIHelper.SetTitleBarColor();
         }

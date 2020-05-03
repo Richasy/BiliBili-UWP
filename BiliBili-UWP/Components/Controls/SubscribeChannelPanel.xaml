@@ -12,8 +12,9 @@
     d:DesignWidth="400">
     <UserControl.Resources>
         <DataTemplate x:DataType="channels:ChannelBase" x:Key="ChannelItemTemplate">
-            <controls:ImageEx DecodePixelWidth="40" Width="40" Height="40" CornerRadius="6" Stretch="UniformToFill"
-                              Source="{x:Bind render_cover,Converter={StaticResource ChannelCoverConverter}}" ToolTipService.ToolTip="{x:Bind title}"/>
+            <controls:ImageEx DecodePixelWidth="40" Width="40" Height="40" CornerRadius="6" Stretch="UniformToFill" PlaceholderSource="ms-appx:///Assets/img_holder_rect.png"
+                              PlaceholderStretch="Uniform"
+                              Source="{x:Bind render_cover}" ToolTipService.ToolTip="{x:Bind title}"/>
         </DataTemplate>
     </UserControl.Resources>
     <StackPanel>

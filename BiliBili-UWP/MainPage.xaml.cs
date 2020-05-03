@@ -28,6 +28,7 @@ namespace BiliBili_UWP
     public sealed partial class MainPage : Page
     {
         private bool _isInit = false;
+        string tempArgument = string.Empty;
         public static MainPage Current;
         public MainPage()
         {
@@ -64,6 +65,10 @@ namespace BiliBili_UWP
             finally
             {
                 popup.HidePopup();
+            }
+            if (e.Parameter != null && e.Parameter is string argument)
+            {
+                tempArgument = argument;
             }
             _isInit = true;
         }
@@ -136,6 +141,11 @@ namespace BiliBili_UWP
         private void SidePanel_SideMenuItemClick(object sender, Models.UI.SideMenuItem e)
         {
             PagePanel.NavigateToPage(e.Type);
+            if (!string.IsNullOrEmpty(tempArgument))
+            {
+                App.AppViewModel.AppInitByActivated(tempArgument);
+                tempArgument = string.Empty;
+            }
         }
 
         private void SidePanel_RegionSelected(object sender, BiliBili_Lib.Models.BiliBili.Region e)
@@ -166,6 +176,7 @@ namespace BiliBili_UWP
             if (FullWindowContainer.Children.Count == 0)
                 FullWindowContainer.Children.Add(App.AppViewModel.CurrentVideoPlayer);
             App.AppViewModel.CurrentVideoPlayer.Focus(FocusState.Programmatic);
+            App.AppViewModel.CurrentVideoPlayer.ResetDanmakuStatus();
         }
         public void RemovePlayer()
         {

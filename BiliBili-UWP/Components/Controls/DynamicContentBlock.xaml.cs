@@ -1,5 +1,6 @@
 ﻿using BiliBili_Lib.Models.BiliBili;
 using BiliBili_UWP.Dialogs;
+using BiliBili_UWP.Models.UI;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -128,7 +129,7 @@ namespace BiliBili_UWP.Components.Controls
         private void MainContentControl_Tapped(object sender, TappedRoutedEventArgs e)
         {
             if (_cardType == "video")
-                App.AppViewModel.PlayVideo((Data as VideoDynamic).aid, sender, "dynamic.dt.0.0");
+                App.AppViewModel.PlayVideo((Data as VideoDynamic).aid, sender, StaticString.SIGN_DYNAMIC);
             else if (_cardType == "web")
             {
                 var item = Data as WebDynamic;

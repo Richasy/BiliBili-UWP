@@ -36,13 +36,15 @@ namespace BiliBili_Lib.Tools
         {
             HttpBaseProtocolFilter filter = new HttpBaseProtocolFilter();
             filter.IgnorableServerCertificateErrors.Add(ChainValidationResult.Expired);
+            filter.AllowAutoRedirect = false;
             var client = new HttpClient(filter);
             using (client)
+            using (filter)
             {
                 try
                 {
                     client.DefaultRequestHeaders.Add("user-agent", "Mozilla/5.0 BiliDroid/4.34.0 (bbcallen@gmail.com)");
-                    client.DefaultRequestHeaders.Referer = new Uri("https://www.bilibili.com/");
+                    client.DefaultRequestHeaders.Referer = new Uri("http://www.bilibili.com/");
                     var response = await client.GetAsync(new Uri(url));
                     if (response.IsSuccessStatusCode)
                     {
@@ -56,6 +58,11 @@ namespace BiliBili_Lib.Tools
                         else
                             content = res;
                         return content;
+                    }
+                    else if(response.StatusCode==Windows.Web.Http.HttpStatusCode.TemporaryRedirect || response.StatusCode==Windows.Web.Http.HttpStatusCode.MovedPermanently)
+                    {
+                        string tempUrl = response.Headers.Location.AbsoluteUri;
+                        return await GetTextFromWebAsync(tempUrl, total, path);
                     }
                     else
                     {
@@ -183,7 +190,7 @@ namespace BiliBili_Lib.Tools
                 apiKeyInfo = AndroidKey;
             }
             string result;
-            if(url.StartsWith("http"))
+            if (url.StartsWith("http"))
                 url.Substring(url.IndexOf("?", 4) + 1);
             List<string> list = url.Split('&').ToList();
             list.Sort();
@@ -204,13 +211,21 @@ namespace BiliBili_Lib.Tools
         /// <param name="parameters">查询参数</param>
         /// <param name="hasAccessKey">是否包含令牌</param>
         /// <returns></returns>
-        public static string UrlContact(string _baseUrl, Dictionary<string, string> parameters = null, bool hasAccessKey = false,bool useWeb=false)
+        public static string UrlContact(string _baseUrl, Dictionary<string, string> parameters = null, bool hasAccessKey = false, bool useWeb = false,
+            bool useiPhone = false)
         {
             if (parameters == null)
                 parameters = new Dictionary<string, string>();
-            
+
             parameters.Add("build", BuildNumber);
-            if (!useWeb)
+            if (useiPhone)
+            {
+                parameters.Add("appkey", IosKey.Appkey);
+                parameters.Add("mobi_app", "iphone");
+                parameters.Add("platform", "ios");
+                parameters.Add("ts", AppTool.GetNowSeconds().ToString());
+            }
+            else if (!useWeb)
             {
                 parameters.Add("appkey", AndroidKey.Appkey);
                 parameters.Add("mobi_app", "android");
@@ -232,7 +247,7 @@ namespace BiliBili_Lib.Tools
             param = param.TrimEnd('&');
             string sign = useWeb ? GetSign(param, WebVideoKey) : GetSign(param);
             param += $"&sign={sign}";
-            return !string.IsNullOrEmpty(_baseUrl)?_baseUrl + $"?{param}":param;
+            return !string.IsNullOrEmpty(_baseUrl) ? _baseUrl + $"?{param}" : param;
         }
     }
 }

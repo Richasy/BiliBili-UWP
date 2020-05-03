@@ -46,7 +46,6 @@ namespace BiliBili_UWP.Models.Core
         {
             _channelChangeTimer.Tick += ChannelChangTimer_Tick;
             _channelChangeTimer.Start();
-            _myInfoTimer.Tick += MyInfoTimer_Tick;
         }
 
         private void TokenChanged(object sender, TokenPackage e)
@@ -111,7 +110,6 @@ namespace BiliBili_UWP.Models.Core
             else if (type == 4200)
                 return JsonConvert.DeserializeObject<LiveDynamic>(content);
             return null;
-            //4200
         }
 
         /// <summary>

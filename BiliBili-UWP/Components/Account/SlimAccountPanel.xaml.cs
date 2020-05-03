@@ -32,7 +32,7 @@ namespace BiliBili_UWP.Components.Account
 
         private void MyInfoChanged(object sender, EventArgs e)
         {
-            MyInfoInit();
+            MyInfoInit(true);
         }
 
         private void LoginStatusChanged(object sender, bool e)
@@ -48,29 +48,32 @@ namespace BiliBili_UWP.Components.Account
             }
         }
 
-        private void MyInfoInit()
+        private void MyInfoInit(bool isSlimRefresh=false)
         {
             var me = App.BiliViewModel._client.Account.Me;
             if (me != null)
             {
-                UserAvatar.ProfilePicture = new BitmapImage(new Uri(me.face)) { DecodePixelWidth = 55 };
-                UserAvatarNarrrow.ProfilePicture = new BitmapImage(new Uri(me.face)) { DecodePixelWidth = 55 };
+                if (!isSlimRefresh)
+                {
+                    UserAvatar.ProfilePicture = new BitmapImage(new Uri(me.face)) { DecodePixelWidth = 55 };
+                    UserAvatarNarrrow.ProfilePicture = new BitmapImage(new Uri(me.face)) { DecodePixelWidth = 55 };
+                    if (me.pendant != null && !string.IsNullOrEmpty(me.pendant.image))
+                    {
+                        PendantImage.Visibility = Visibility.Visible;
+                        PendantImage.Source = new BitmapImage(new Uri(me.pendant.image));
+                        UserNameBlock.Margin = new Thickness(0);
+                    }
+                    else
+                    {
+                        PendantImage.Visibility = Visibility.Collapsed;
+                        UserNameBlock.Margin = new Thickness(0, 20, 0, 0);
+                    }
+                }
                 UserNameBlock.Text = me.name;
                 LevelBlock.Level = me.level;
                 DynamicBlock.Text = AppTool.GetNumberAbbreviation(me.dynamic);
                 FollowBlock.Text = AppTool.GetNumberAbbreviation(me.following);
                 FanBlock.Text = AppTool.GetNumberAbbreviation(me.follower);
-                if (me.pendant != null && !string.IsNullOrEmpty(me.pendant.image))
-                {
-                    PendantImage.Visibility = Visibility.Visible;
-                    PendantImage.Source = new BitmapImage(new Uri(me.pendant.image));
-                    UserNameBlock.Margin = new Thickness(0);
-                }
-                else
-                {
-                    PendantImage.Visibility = Visibility.Collapsed;
-                    UserNameBlock.Margin = new Thickness(0, 20, 0, 0);
-                }
             }
         }
 

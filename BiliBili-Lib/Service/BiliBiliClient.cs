@@ -50,8 +50,10 @@ namespace BiliBili_Lib.Service
             var param = new Dictionary<string, string>();
             param.Add("idx", idx.ToString());
             param.Add("flush", "0");
+            param.Add("column", "4");
+            param.Add("device", "pad");
             param.Add("pull", (idx == 0).ToString().ToLower());
-            string url = BiliTool.UrlContact(Api.VIDEO_RECOMMEND, param, true);
+            string url = BiliTool.UrlContact(Api.VIDEO_RECOMMEND, param, true,useiPhone:true);
             var data = await BiliTool.ConvertEntityFromWebAsync<List<VideoRecommend>>(url, "data.items");
             if (data != null && data.Count > 0)
             {
