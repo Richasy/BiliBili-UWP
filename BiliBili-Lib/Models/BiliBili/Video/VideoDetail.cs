@@ -39,11 +39,24 @@ namespace BiliBili_Lib.Models.BiliBili.Video
         public BangumiSlim bangumi { get; set; }
         public string redirect_url { get; set; }
         public History history { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            return obj is VideoDetail detail &&
+                   aid == detail.aid;
+        }
+
+        public override int GetHashCode()
+        {
+            return 1525766729 + aid.GetHashCode();
+        }
+
         public class History
         {
             public int cid { get; set; }
             public int progress { get; set; }
         }
+
     }
     public class ReqestUser
     {

@@ -18,8 +18,9 @@
                                          Tip="{x:Bind ctime,Converter={StaticResource RelateTimeConverter}}"
                                          FirstSectionContent="{x:Bind play,Converter={StaticResource NumberAbbrConverter}}"
                                          SecondSectionContent="{x:Bind danmaku,Converter={StaticResource NumberAbbrConverter}}"
-                                         Margin="0,0,0,10"
+                                         Margin="0,0,0,10" ExtraButtonVisibility="Visible" VideoId="{x:Bind param}"
                                          />
+
         </DataTemplate>
         <DataTemplate x:DataType="bilibili1:Topic" x:Key="DynamicItemTemplate">
             <controls1:TopicCard Data="{Binding}" Margin="0,0,0,10"/>

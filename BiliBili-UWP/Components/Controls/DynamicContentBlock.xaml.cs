@@ -158,7 +158,7 @@ namespace BiliBili_UWP.Components.Controls
         {
             e.Handled = true;
             var data = Data as RepostDynamic;
-            App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Pages.Sub.Account.DetailPage), data.origin_user.mid);
+            App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Pages.Sub.Account.DetailPage), data.origin_user.info.uid);
         }
     }
 }

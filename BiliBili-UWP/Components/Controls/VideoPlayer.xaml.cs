@@ -107,6 +107,7 @@ namespace BiliBili_UWP.Components.Controls
         public event EventHandler<bool> CompactOverlayChanged;
         public event RoutedEventHandler SeparateButtonClick;
         public event EventHandler MTCLoaded;
+        public event EventHandler<int> MediaEnded;
         #endregion
 
         public VideoPlayer()
@@ -153,7 +154,7 @@ namespace BiliBili_UWP.Components.Controls
                     progress = detail.history.progress;
                 await RefreshVideoSource(cid, progress);
             }
-            UpdateMediaProperties(detail.title, detail.owner.name, detail.pic);
+            UpdateMediaProperties(detail.title, "", detail.pic);
         }
 
         public async Task Init(BangumiDetail detail, Episode part)
@@ -293,14 +294,26 @@ namespace BiliBili_UWP.Components.Controls
                     else
                     {
                         InteractionEndContainer.Visibility = Visibility.Visible;
+                        MediaEnded?.Invoke(this, _videoId);
                     }
                 }
                 else
                 {
-                    if (VideoMTC.IsFullWindow)
-                        VideoMTC.IsFullWindow = false;
-                    else if (VideoMTC.IsCinema)
-                        VideoMTC.IsCinema = false;
+                    if (IsAutoReturnWhenEnd)
+                    {
+                        if (VideoMTC.IsFullWindow)
+                            VideoMTC.IsFullWindow = false;
+                        else if (VideoMTC.IsCinema)
+                            VideoMTC.IsCinema = false;
+                        else if (VideoMTC.IsCompactOverlay)
+                            VideoMTC.IsCompactOverlay = false;
+                    }
+                    int id = 0;
+                    if (isBangumi)
+                        id = _bangumiPart.id;
+                    else
+                        id = _videoId;
+                    MediaEnded?.Invoke(this, id);
                 }
             });
         }
@@ -1174,6 +1187,21 @@ namespace BiliBili_UWP.Components.Controls
         // Using a DependencyProperty as the backing store for DanmakuBarVisibility.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty DanmakuBarVisibilityProperty =
             DependencyProperty.Register("DanmakuBarVisibility", typeof(Visibility), typeof(VideoPlayer), new PropertyMetadata(Visibility.Visible));
+
+        /// <summary>
+        /// 播放完成后是否自动解除全屏/影院/小窗模式
+        /// </summary>
+        public bool IsAutoReturnWhenEnd
+        {
+            get { return (bool)GetValue(IsAutoReturnWhenEndProperty); }
+            set { SetValue(IsAutoReturnWhenEndProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for IsAutoReturnWhenEnd.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty IsAutoReturnWhenEndProperty =
+            DependencyProperty.Register("IsAutoReturnWhenEnd", typeof(bool), typeof(VideoPlayer), new PropertyMetadata(true));
+
+
         #endregion
 
         #region 其它

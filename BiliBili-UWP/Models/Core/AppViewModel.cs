@@ -70,7 +70,7 @@ namespace BiliBili_UWP.Models.Core
             {
                 case "video":
                     args.TryGetValue("aid", out string videoAid);
-                    PlayVideo(Convert.ToInt32(videoAid),fromSign:StaticString.SIGN_DYNAMIC);
+                    PlayVideo(Convert.ToInt32(videoAid), fromSign: StaticString.SIGN_DYNAMIC);
                     break;
                 case "bangumi":
                     args.TryGetValue("epid", out string AnimeEpid);
@@ -112,6 +112,19 @@ namespace BiliBili_UWP.Models.Core
             //}
             CurrentSidePanel.SetSelectedItem(SideMenuItemType.Line);
             CurrentPagePanel.NavigateToPage(SideMenuItemType.VideoPlayer, new Tuple<int, string>(aid, fromSign));
+        }
+        /// <summary>
+        /// 播放视频列表
+        /// </summary>
+        /// <param name="aid">AV号</param>
+        /// <param name="videoList">播放列表</param>
+        public void PlayVideoList(int aid, List<VideoDetail> videoList)
+        {
+            if (CurrentPagePanel.IsSubPageOpen)
+                CurrentPagePanel.IsSubPageOpen = false;
+            SelectedSideMenuItem = null;
+            CurrentSidePanel.SetSelectedItem(SideMenuItemType.Line);
+            CurrentPagePanel.NavigateToPage(SideMenuItemType.VideoPlayer, new Tuple<int, List<VideoDetail>>(aid, videoList));
         }
         /// <summary>
         /// 播放番剧
@@ -230,7 +243,7 @@ namespace BiliBili_UWP.Models.Core
         /// </summary>
         /// <param name="video">视频ID</param>
         /// <param name="cid">分片ID</param>
-        public async void PlayVideoSeparate(VideoDetail video, int cid)
+        public async void PlayVideoSeparate(VideoDetail video, int cid, bool isCloseCurrentPage = true)
         {
             CoreApplicationView newView = CoreApplication.CreateNewView();
             int newViewId = 0;
@@ -244,7 +257,7 @@ namespace BiliBili_UWP.Models.Core
                 newViewId = ApplicationView.GetForCurrentView().Id;
             });
             bool viewShown = await ApplicationViewSwitcher.TryShowAsStandaloneAsync(newViewId);
-            if (CurrentPageType == typeof(VideoPage))
+            if (CurrentPageType == typeof(VideoPage) && isCloseCurrentPage)
                 CurrentPagePanel.MainPageBack();
         }
         /// <summary>
@@ -315,7 +328,7 @@ namespace BiliBili_UWP.Models.Core
             bool isStopInBackground = AppTool.GetBoolSetting(Settings.IsStopInBackground, false);
             if (IsInBackground)
             {
-                if(isStopInBackground && CurrentVideoPlayer != null)
+                if (isStopInBackground && CurrentVideoPlayer != null)
                     CurrentVideoPlayer.MTC.IsPlaying = false;
             }
             else

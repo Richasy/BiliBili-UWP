@@ -126,7 +126,10 @@ namespace BiliBili_UWP.Pages.Main
             if (item.bangumi != null)
                 App.AppViewModel.PlayBangumi(item.bangumi.ep_id, ele, true);
             else
-                App.AppViewModel.PlayVideo(item.aid, ele);
+            {
+                var videos = ViewLaterCollection.Where(p => p.bangumi == null).ToList();
+                App.AppViewModel.PlayVideoList(item.aid, videos);
+            } 
         }
 
         private async void RemoveItem_Click(object sender, RoutedEventArgs e)

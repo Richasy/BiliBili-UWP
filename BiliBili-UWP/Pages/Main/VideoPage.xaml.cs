@@ -4,6 +4,7 @@ using BiliBili_Lib.Models.BiliBili.Video;
 using BiliBili_Lib.Service;
 using BiliBili_Lib.Tools;
 using BiliBili_UWP.Components.Widgets;
+using BiliBili_UWP.Dialogs;
 using BiliBili_UWP.Models.UI;
 using BiliBili_UWP.Models.UI.Interface;
 using NSDanmaku.Helper;
@@ -47,12 +48,14 @@ namespace BiliBili_UWP.Pages.Main
         private ObservableCollection<VideoTag> TagCollection = new ObservableCollection<VideoTag>();
         private ObservableCollection<Staff> StaffCollection = new ObservableCollection<Staff>();
         private VideoService _videoService = App.BiliViewModel._client.Video;
+        private ObservableCollection<VideoDetail> PlayBackupCollection = new ObservableCollection<VideoDetail>();
 
         private int _currentPartId = 0;
         private int videoId = 0;
         public static VideoPage Current;
         private List<FavoriteItem> _tempFavorites = new List<FavoriteItem>();
         private string _fromSign = "";
+        private bool _isPlayList = false;
 
         public VideoPage()
         {
@@ -63,18 +66,27 @@ namespace BiliBili_UWP.Pages.Main
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if (e.Parameter != null && e.Parameter is Tuple<int,string> data)
+            if (e.Parameter != null)
             {
-                int aid = data.Item1;
-                _fromSign = data.Item2;
-                var anim = ConnectedAnimationService.GetForCurrentView().GetAnimation("VideoConnectedAnimation");
-                if (anim != null)
-                {
-                    anim.TryStart(VideoPlayer);
-                }
                 App.AppViewModel.CurrentVideoPlayer = VideoPlayer;
                 App.AppViewModel.CurrentPlayerType = Models.Enums.PlayerType.Video;
-                videoId = aid;
+                PlayBackupCollection.Clear();
+                if (e.Parameter is Tuple<int, string> data)
+                {
+                    int aid = data.Item1;
+                    _fromSign = data.Item2;
+                    videoId = aid;
+                    PlayListContainer.Visibility = Visibility.Collapsed;
+                    _isPlayList = false;
+                }
+                else if (e.Parameter is Tuple<int, List<VideoDetail>> videoList)
+                {
+                    PlayListContainer.Visibility = Visibility.Visible;
+                    videoList.Item2.ForEach(p => PlayBackupCollection.Add(p));
+                    videoId = videoList.Item1;
+                    _isPlayList = true;
+                    _fromSign = "";
+                }
                 await Refresh();
             }
         }
@@ -113,15 +125,25 @@ namespace BiliBili_UWP.Pages.Main
             SelectLikeCheckBox.IsChecked = true;
             FavoriteListView.ItemsSource = null;
 
+            VideoPlayer.IsAutoReturnWhenEnd = !_isPlayList;
+
             FollowButton.Style = UIHelper.GetStyle("PrimaryAsyncButtonStyle");
             FollowButton.Text = "关注";
+
+            if (_isPlayList)
+            {
+                int index = PlayBackupCollection.IndexOf(PlayBackupCollection.Where(p => p.aid == videoId).FirstOrDefault());
+                PlayListContainer.ShowListView.SelectedIndex = index;
+                if (index != -1)
+                    PlayListContainer.ShowListView.ScrollIntoView(PlayBackupCollection[index], ScrollIntoViewAlignment.Leading);
+            }
         }
         public async Task Refresh()
         {
             Reset();
             var tip = new WaitingPopup("加载视频中...");
             tip.ShowPopup();
-            var detail = await _videoService.GetVideoDetailAsync(videoId,_fromSign);
+            var detail = await _videoService.GetVideoDetailAsync(videoId, _fromSign);
             if (detail != null)
             {
                 _detail = detail;
@@ -143,7 +165,7 @@ namespace BiliBili_UWP.Pages.Main
                     videoId = 0;
                     _currentPartId = 0;
                     App.AppViewModel.CurrentPagePanel.MainPageBack();
-                    App.AppViewModel.PlayBangumi(Convert.ToInt32(epId),null,true);
+                    App.AppViewModel.PlayBangumi(Convert.ToInt32(epId), null, true);
                     return false;
                 }
             }
@@ -393,10 +415,19 @@ namespace BiliBili_UWP.Pages.Main
             App.AppViewModel.PlayVideoCompactOverlay(e);
         }
 
-        private void VideoPlayer_SeparateButtonClick(object sender, RoutedEventArgs e)
+        private async void VideoPlayer_SeparateButtonClick(object sender, RoutedEventArgs e)
         {
             VideoPlayer.Close();
-            App.AppViewModel.PlayVideoSeparate(_detail, _currentPartId);
+            App.AppViewModel.PlayVideoSeparate(_detail, _currentPartId, !_isPlayList);
+            if (_isPlayList)
+            {
+                var dialog = new ConfirmDialog("您为一个视频开启了单独窗口播放，是否在当前页继续播放下一个视频？");
+                var result = await dialog.ShowAsync();
+                if (result == ContentDialogResult.Primary)
+                {
+                    await PlayNextVideo();
+                }
+            }
         }
 
         private void SingleUserContainer_Tapped(object sender, TappedRoutedEventArgs e)
@@ -411,6 +442,31 @@ namespace BiliBili_UWP.Pages.Main
             param.Add("oid", _detail.aid.ToString());
             param.Add("type", "1");
             App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Sub.ReplyPage), param);
+        }
+
+        private async void PlayListContainer_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            var item = e.ClickedItem as VideoDetail;
+            videoId = item.aid;
+            await Refresh();
+        }
+
+        private async void VideoPlayer_MediaEnded(object sender, int e)
+        {
+            await PlayNextVideo();
+        }
+
+        private async Task PlayNextVideo()
+        {
+            int index = PlayBackupCollection.IndexOf(PlayBackupCollection.Where(p => p.aid == videoId).FirstOrDefault());
+            if (index >= PlayBackupCollection.Count - 1)
+                new TipPopup("播放列表内的视频已经全部播放完啦~").ShowMessage();
+            else
+            {
+                var item = PlayBackupCollection[index + 1];
+                videoId = item.aid;
+                await Refresh();
+            }
         }
     }
 }

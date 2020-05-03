@@ -32,6 +32,17 @@ namespace BiliBili_Lib.Models.BiliBili.Account
         public string author { get; set; }
         public bool state { get; set; }
         public string bvid { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            return obj is ArchiveVideo video &&
+                   bvid == video.bvid;
+        }
+
+        public override int GetHashCode()
+        {
+            return 1061302348 + EqualityComparer<string>.Default.GetHashCode(bvid);
+        }
     }
 
 }

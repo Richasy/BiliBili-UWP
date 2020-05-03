@@ -46,11 +46,12 @@ namespace BiliBili_Lib.Tools
                             },
                             AppLogoOverride = new ToastGenericAppLogo()
                             {
-                                Source = item.Logo
+                                Source = item.Logo,
+                                HintCrop = ToastGenericAppLogoCrop.Circle
                             },
-                            Attribution=new ToastGenericAttributionText()
+                            Attribution = new ToastGenericAttributionText()
                             {
-                                Text="动态"
+                                Text = "动态"
                             }
                         },
                     }
@@ -64,7 +65,7 @@ namespace BiliBili_Lib.Tools
                     };
                 }
                 index++;
-                ShowToast(content, group:"Dynamic");
+                ShowToast(content, group: "Dynamic");
             }
         }
         public static ToastContent GetOverflowToast(string title)
@@ -119,7 +120,7 @@ namespace BiliBili_Lib.Tools
         {
 
         }
-        public NotificationModel(string t, string d, string img, string arg, string l="")
+        public NotificationModel(string t, string d, string img, string arg, string l = "")
         {
             Title = t;
             Description = d;
