@@ -453,7 +453,10 @@ namespace BiliBili_UWP.Pages.Main
 
         private async void VideoPlayer_MediaEnded(object sender, int e)
         {
-            await PlayNextVideo();
+            if (_isPlayList)
+            {
+                await PlayNextVideo();
+            }
         }
 
         private async Task PlayNextVideo()

@@ -399,6 +399,11 @@ namespace BiliBili_UWP.Components.Layout
         /// </summary>
         private bool AutoJudgeBack()
         {
+            if (App.AppViewModel.CurrentVideoPlayer != null)
+            {
+                if (App.AppViewModel.CurrentVideoPlayer.ExitCurrentStatus())
+                    return true;
+            }
             bool result = false;
             if (SubFrameHistoryList.Count > 1
                     && PageSplitView.IsPaneOpen

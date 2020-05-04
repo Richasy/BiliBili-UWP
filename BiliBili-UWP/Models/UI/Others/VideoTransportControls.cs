@@ -21,6 +21,8 @@ namespace BiliBili_UWP.Models.UI.Others
         private AppBarButton _compactOverlayButton;
         private AppBarButton _cinemaButton;
         private AppBarButton _separateButton;
+        private AppBarButton _forwardButton;
+        private AppBarButton _rewindButton;
         public ListView _qualityListView;
         public ListView _subtitleListView;
         public bool IsInit = false;
@@ -35,6 +37,8 @@ namespace BiliBili_UWP.Models.UI.Others
         public event EventHandler<bool> PlayButtonClick;
         public event EventHandler<bool> CompactOverlayButtonClick;
         public event EventHandler<int> QualityChanged;
+        public event RoutedEventHandler ForwardButtonClick;
+        public event RoutedEventHandler RewindButtonClick;
         public event EventHandler<SubtitleIndexItem> SubtitleChanged;
         public event RoutedEventHandler SeparateButtonClick;
         public MediaPlayerElement MediaPlayerElement;
@@ -55,6 +59,10 @@ namespace BiliBili_UWP.Models.UI.Others
             _cinemaButton.Click += CinemaButtonClick;
             _separateButton = GetTemplateChild("SeparateButton") as AppBarButton;
             _separateButton.Click += SeparateButtonClick;
+            _forwardButton = GetTemplateChild("CustomForwardButton") as AppBarButton;
+            _forwardButton.Click += ForwardButton_Click;
+            _rewindButton = GetTemplateChild("CustomRewindButton") as AppBarButton;
+            _rewindButton.Click += RewindButton_Click;
 
             _qualityListView = GetTemplateChild("QualityListView") as ListView;
             _qualityListView.ItemClick += QualityListView_ItemClick;
@@ -62,6 +70,16 @@ namespace BiliBili_UWP.Models.UI.Others
             _subtitleListView.ItemClick += SubtitleListView_ItemClick;
 
             base.OnApplyTemplate();
+        }
+
+        private void RewindButton_Click(object sender, RoutedEventArgs e)
+        {
+            RewindButtonClick?.Invoke(this, e);
+        }
+
+        private void ForwardButton_Click(object sender, RoutedEventArgs e)
+        {
+            ForwardButtonClick?.Invoke(this, e);
         }
 
         private void SubtitleListView_ItemClick(object sender, ItemClickEventArgs e)

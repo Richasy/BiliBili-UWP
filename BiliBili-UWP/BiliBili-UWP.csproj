@@ -26,7 +26,7 @@
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x86|x64|arm|arm64</AppxBundlePlatforms>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
-    <PackageCertificateThumbprint>19DE3251AB16B9B0D867892B047B3BB7FF135FF9</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>0E7ED18011FC63CD2CB3C169F18C73B761B5BCD0</PackageCertificateThumbprint>
     <AppxSymbolPackageEnabled>True</AppxSymbolPackageEnabled>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
@@ -243,6 +243,7 @@
     <Compile Include="Models\Core\BiliViewModel.Channel.cs" />
     <Compile Include="Models\Enums\ColorType.cs" />
     <Compile Include="Models\Enums\InputBoxType.cs" />
+    <Compile Include="Models\Enums\PlayerManipulationType.cs" />
     <Compile Include="Models\Enums\PlayerType.cs" />
     <Compile Include="Models\Enums\SideMenuGroupType.cs" />
     <Compile Include="Models\Enums\SideMenuItemType.cs" />

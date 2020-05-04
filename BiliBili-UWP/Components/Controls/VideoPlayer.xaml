@@ -10,6 +10,8 @@
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:bilibili="using:BiliBili_Lib.Models.BiliBili"
     xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
+    xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
+    xmlns:extensions="using:Microsoft.Toolkit.Uwp.UI.Extensions"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400"
@@ -139,46 +141,65 @@
                                                SeparateButtonClick="VideoMTC_SeparateButtonClick"
                                                Loaded="VideoMTC_Loaded"
                                                ShowAndHideAutomatically="False"
-                                               IsFastForwardButtonVisible="True"
-                                               IsFastRewindButtonVisible="True"
-                                               IsFastForwardEnabled="True"
-                                               IsFastRewindEnabled="True"
+                                               ForwardButtonClick="VideoMTC_ForwardButtonClick"
+                                               RewindButtonClick="VideoMTC_RewindButtonClick"
                                                />
             </MediaPlayerElement.TransportControls>
         </MediaPlayerElement>
-        <ItemsControl x:Name="ChoiceItemsControl" ItemsSource="{x:Bind ChoiceCollection}" HorizontalAlignment="Center"
+        <Grid x:Name="InteractionContainer">
+            <ItemsControl x:Name="ChoiceItemsControl" ItemsSource="{x:Bind ChoiceCollection}" HorizontalAlignment="Center"
                       Visibility="Collapsed" VerticalAlignment="Bottom" Margin="0,0,0,100" SizeChanged="ChoiceItemsControl_SizeChanged">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <ItemsWrapGrid Orientation="Horizontal"/>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate x:DataType="bilibili:Choice">
-                    <Grid Background="{ThemeResource MaskAcrylicBackground}" CornerRadius="4" HorizontalAlignment="Stretch"
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsWrapGrid Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="bilibili:Choice">
+                        <Grid Background="{ThemeResource MaskAcrylicBackground}" CornerRadius="4" HorizontalAlignment="Stretch"
                               VerticalAlignment="Stretch" Padding="20,30" Tapped="Choice_Tapped" Margin="12">
-                        <TextBlock Text="{x:Bind option}" HorizontalAlignment="Center" VerticalAlignment="Center"
+                            <TextBlock Text="{x:Bind option}" HorizontalAlignment="Center" VerticalAlignment="Center"
                                        FontSize="15" Foreground="{ThemeResource ImportantTextColor}" FontWeight="Bold"/>
-                    </Grid>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-        <Border Background="{ThemeResource MediaTransportControlsPanelBackground}" Padding="8,5" CornerRadius="3" Margin="20,0,20,100"
-                x:Name="SubtitleContainer" Visibility="Collapsed" VerticalAlignment="Bottom" HorizontalAlignment="Center">
-            <TextBlock Style="{StaticResource CaptionTextStyle}" FontSize="20" x:Name="SubtitleContentBlock" TextWrapping="Wrap"/>
-        </Border>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,20,0,0">
-            <Button Style="{StaticResource DefaultCircleButtonStyle}" Background="{ThemeResource MaskAcrylicBackground}" Foreground="{ThemeResource ImportantTextColor}"
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,20,0,0">
+                <Button Style="{StaticResource DefaultCircleButtonStyle}" Background="{ThemeResource MaskAcrylicBackground}" Foreground="{ThemeResource ImportantTextColor}"
                     x:Name="ExitScreenButton" ToolTipService.ToolTip="返回" Content="&#xE914;" Click="ExitScreenButton_Click" Visibility="Collapsed" Margin="0,0,15,0"/>
-            <Button Style="{StaticResource PrimaryCircleButtonStyle}" Background="{ThemeResource MaskAcrylicBackground}" Foreground="{ThemeResource ImportantTextColor}"
+                <Button Style="{StaticResource PrimaryCircleButtonStyle}" Background="{ThemeResource MaskAcrylicBackground}" Foreground="{ThemeResource ImportantTextColor}"
                 x:Name="InteractionHomeButton" Visibility="Collapsed" Click="InteractionHomeButton_Click"
                 ToolTipService.ToolTip="返回互动视频起点" Content="&#xE9CB;"/>
-        </StackPanel>
-        
-        <StackPanel Padding="20" CornerRadius="4" HorizontalAlignment="Center" VerticalAlignment="Center" Background="{ThemeResource PaneBackground}"
+            </StackPanel>
+            <StackPanel Padding="20" CornerRadius="4" HorizontalAlignment="Center" VerticalAlignment="Center" Background="{ThemeResource PaneBackground}"
                 Name="InteractionEndContainer" Visibility="Collapsed">
-            <TextBlock Style="{StaticResource TipWrapTextStyle}" Text="互动视频已经结束，点击左上方按钮可返回起点"/>
-        </StackPanel>
+                <TextBlock Style="{StaticResource TipWrapTextStyle}" Text="互动视频已经结束，点击左上方按钮可返回起点"/>
+            </StackPanel>
+        </Grid>
+        <Grid x:Name="PopupContainer">
+            <Border Background="{ThemeResource MediaTransportControlsPanelBackground}" Padding="8,5" CornerRadius="3" Margin="20,0,20,100"
+                x:Name="SubtitleContainer" Visibility="Collapsed" VerticalAlignment="Bottom" HorizontalAlignment="Center">
+                <TextBlock Style="{StaticResource CaptionTextStyle}" FontSize="20" x:Name="SubtitleContentBlock" TextWrapping="Wrap"/>
+            </Border>
+            <Border x:Name="TipContainer" Background="{ThemeResource PaneBackground}" Padding="12,8" CornerRadius="4" Margin="20,0,20,100"
+                    HorizontalAlignment="Left" VerticalAlignment="Bottom" Visibility="Collapsed"
+                    extensions:VisualExtensions.CenterPoint="20,20,0">
+                <TextBlock Style="{StaticResource CaptionTextStyle}" x:Name="TipContentBlock" TextWrapping="Wrap"
+                           MaxWidth="250"/>
+                <animations:Implicit.ShowAnimations>
+                    <animations:TranslationAnimation Duration="0:0:.5" From="0, -50, 0" To="0" ></animations:TranslationAnimation>
+                    <animations:OpacityAnimation Duration="0:0:.5" From="0" To="1.0"></animations:OpacityAnimation>
+                </animations:Implicit.ShowAnimations>
+
+                <animations:Implicit.HideAnimations>
+                    <animations:ScalarAnimation Target="Opacity" Duration="0:0:.5" To="0.0"></animations:ScalarAnimation>
+                    <animations:ScalarAnimation Target="Translation.Y" Duration="0:0:1" To="-50">
+                        <animations:ScalarKeyFrame Key="0.1" Value="30"></animations:ScalarKeyFrame>
+                        <animations:ScalarKeyFrame Key="0.5" Value="0.0"></animations:ScalarKeyFrame>
+                    </animations:ScalarAnimation>
+                </animations:Implicit.HideAnimations>
+            </Border>
+        </Grid>
         <ProgressBar IsIndeterminate="True" Foreground="{ThemeResource PrimaryColor}" Visibility="Collapsed"
                      VerticalAlignment="Bottom" HorizontalAlignment="Stretch" x:Name="LoadingBar"/>
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="ErrorContainer" Visibility="Collapsed">

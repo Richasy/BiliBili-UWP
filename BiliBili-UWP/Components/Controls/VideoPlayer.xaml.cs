@@ -5,6 +5,7 @@ using BiliBili_Lib.Models.BiliBili.Video;
 using BiliBili_Lib.Service;
 using BiliBili_Lib.Tools;
 using BiliBili_UWP.Components.Widgets;
+using BiliBili_UWP.Models.Enums;
 using BiliBili_UWP.Models.UI;
 using BiliBili_UWP.Models.UI.Others;
 using Microsoft.Toolkit.Uwp.Helpers;
@@ -15,12 +16,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.Media;
 using Windows.Media.Core;
 using Windows.Media.Playback;
@@ -30,11 +28,9 @@ using Windows.System.Display;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
-using Windows.UI.Xaml.Navigation;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -67,6 +63,7 @@ namespace BiliBili_UWP.Components.Controls
         public bool IsFocus = false;
         private DisplayRequest dispRequest = null;
         private InteractionVideo _interaction = null;
+        private bool _isMediaElementLoaded = false;
 
         private int _videoId = 0;
         private int _partId = 0;
@@ -80,12 +77,22 @@ namespace BiliBili_UWP.Components.Controls
         private bool _isMTCShow = false;
 
         public int _skipStep = 0;
-
         private bool _isDanmakuOptionsInit = false;
+
+        private double _playRate = 1;
+        private int _tipShowSeconds = 0;
         public int CurrentProgress
         {
             get => Convert.ToInt32(_player.PlaybackSession.Position.TotalSeconds);
         }
+
+        private Point _manipulationStartPoint = new Point(0, 0);
+        private double _manipulationDeltaX = 0;
+        private double _manipulationDeltaY = 0;
+        private double _manipulationProgress = 0;
+        private double _manipulationVolume = 0;
+        private bool _manipulationBeforeIsPlay = false;
+        private PlayerManipulationType _manipulationType = PlayerManipulationType.None;
         #endregion
 
         #region 服务及控件
@@ -135,7 +142,7 @@ namespace BiliBili_UWP.Components.Controls
                     cid = detail.pages.First().cid;
             }
             mediaElement.PosterSource = new BitmapImage(new Uri(detail.pic));
-            
+
             if (detail.interaction != null)
             {
                 int nodeId = 0;
@@ -156,7 +163,6 @@ namespace BiliBili_UWP.Components.Controls
             }
             UpdateMediaProperties(detail.title, "", detail.pic);
         }
-
         public async Task Init(BangumiDetail detail, Episode part)
         {
             isBangumi = true;
@@ -167,7 +173,6 @@ namespace BiliBili_UWP.Components.Controls
             await RefreshVideoSource(part);
             UpdateMediaProperties(part.title, part.subtitle, detail.cover);
         }
-
         private void Reset()
         {
             ErrorContainer.Visibility = Visibility.Collapsed;
@@ -186,6 +191,7 @@ namespace BiliBili_UWP.Components.Controls
 
             _playData = null;
             _currentQn = 0;
+            _playRate = 1;
             QualityCollection.Clear();
             DanmakuList.Clear();
             SendDanmakuList.Clear();
@@ -483,7 +489,7 @@ namespace BiliBili_UWP.Components.Controls
         /// <param name="title">标题</param>
         /// <param name="subtitle">副标题</param>
         /// <param name="cover">封面</param>
-        private void UpdateMediaProperties(string title,string subtitle,string cover)
+        private void UpdateMediaProperties(string title, string subtitle, string cover)
         {
             SystemMediaTransportControlsDisplayUpdater updater = _player.SystemMediaTransportControls.DisplayUpdater;
             updater.Type = MediaPlaybackType.Video;
@@ -527,6 +533,10 @@ namespace BiliBili_UWP.Components.Controls
             }
             if (_pointerHoldCount < 2)
                 _pointerHoldCount++;
+            if (_tipShowSeconds >= 2)
+                HideTip();
+            else if (_tipShowSeconds != -1)
+                _tipShowSeconds++;
             if (_heartBeatCount >= 10)
             {
                 HeartBeat();
@@ -804,7 +814,7 @@ namespace BiliBili_UWP.Components.Controls
             {
                 var time = _player.PlaybackSession.Position.TotalSeconds;
                 var subtitle = Subtitles.FirstOrDefault(p => p.from <= time && p.to >= time);
-                if (subtitle != null)
+                if (subtitle != null && !string.IsNullOrEmpty(subtitle.content))
                 {
                     ShowSubtitle(subtitle.content);
                 }
@@ -885,6 +895,65 @@ namespace BiliBili_UWP.Components.Controls
                     target = position - _skipStep;
                 _player.PlaybackSession.Position = TimeSpan.FromSeconds(target);
             }
+        }
+        private void MediaPresenter_ManipulationCompleted(object sender, ManipulationCompletedRoutedEventArgs e)
+        {
+            _manipulationVolume = 0;
+            _manipulationProgress = 0;
+            _manipulationDeltaX = 0;
+            _manipulationDeltaY = 0;
+            _manipulationStartPoint = new Point(0, 0);
+            _manipulationType = PlayerManipulationType.None;
+            if(_manipulationBeforeIsPlay)
+                Resume();
+            _manipulationBeforeIsPlay = false;
+        }
+
+        private void MediaPresenter_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
+        {
+            _manipulationDeltaX += e.Delta.Translation.X;
+            _manipulationDeltaY -= e.Delta.Translation.Y;
+            Debug.WriteLine(_manipulationDeltaX);
+            Debug.WriteLine(_manipulationDeltaY);
+            if (_manipulationDeltaX > 15 || _manipulationDeltaY > 15 || _manipulationDeltaX < -15 || _manipulationDeltaY < -15)
+            {
+                if (_manipulationType == PlayerManipulationType.None)
+                {
+                    bool isVolume = _manipulationDeltaY > _manipulationDeltaX * _manipulationDeltaX;
+                    _manipulationType = isVolume ? PlayerManipulationType.Volume : PlayerManipulationType.Progress;
+                }
+                if (_manipulationType == PlayerManipulationType.Volume)
+                {
+                    var volume = _manipulationVolume + _manipulationDeltaY / 2.0;
+                    if (volume > 100)
+                        volume = 100;
+                    else if (volume < 0)
+                        volume = 0;
+                    ShowTip($"当前音量: {Math.Round(volume)}");
+                    _player.Volume = volume/100.0;
+                    if (volume == 0)
+                        Debug.WriteLine("静音了！");
+                }
+                else
+                {
+                    var progress = _manipulationProgress + (_manipulationDeltaX / 2.5);
+                    if (progress > _player.PlaybackSession.NaturalDuration.TotalSeconds)
+                        progress = _player.PlaybackSession.NaturalDuration.TotalSeconds;
+                    else if (progress < 0)
+                        progress = 0;
+                    ShowTip($"当前进度: {AppTool.GetReadDuration(Convert.ToInt32(progress))}");
+                    _player.PlaybackSession.Position = TimeSpan.FromSeconds(progress);
+                }
+            }
+        }
+
+        private void MediaPresenter_ManipulationStarted(object sender, ManipulationStartedRoutedEventArgs e)
+        {
+            _manipulationStartPoint = e.Position;
+            _manipulationProgress = CurrentProgress;
+            _manipulationVolume = _player.Volume;
+            _manipulationBeforeIsPlay = VideoMTC.IsPlaying;
+            Pause();
         }
         #endregion
 
@@ -1009,12 +1078,7 @@ namespace BiliBili_UWP.Components.Controls
         }
         private void ExitScreenButton_Click(object sender, RoutedEventArgs e)
         {
-            if (VideoMTC.IsFullWindow)
-                VideoMTC.IsFullWindow = false;
-            else if (VideoMTC.IsCinema)
-                VideoMTC.IsCinema = false;
-            else if (VideoMTC.IsCompactOverlay)
-                VideoMTC.IsCompactOverlay = false;
+            ExitCurrentStatus();
         }
         #endregion
 
@@ -1053,8 +1117,17 @@ namespace BiliBili_UWP.Components.Controls
         }
         private void VideoMTC_Loaded(object sender, RoutedEventArgs e)
         {
+            if (!_isMediaElementLoaded)
+            {
+                mediaElement.ManipulationMode = ManipulationModes.TranslateX | ManipulationModes.TranslateY;
+                mediaElement.ManipulationStarted += MediaPresenter_ManipulationStarted;
+                mediaElement.ManipulationDelta += MediaPresenter_ManipulationDelta;
+                mediaElement.ManipulationCompleted += MediaPresenter_ManipulationCompleted;
+                _isMediaElementLoaded = true;
+            }
             MTCLoaded?.Invoke(this, EventArgs.Empty);
         }
+
         private void VideoMTC_PlayButtonClick(object sender, bool e)
         {
             if (e)
@@ -1110,6 +1183,38 @@ namespace BiliBili_UWP.Components.Controls
         {
             await SubtitleInit(e);
         }
+        private void VideoMTC_ForwardButtonClick(object sender, RoutedEventArgs e)
+        {
+            if (_playData != null && _player != null && _player.PlaybackSession != null)
+            {
+                if (_playRate < 2)
+                    _playRate += 0.25;
+                else
+                {
+                    ShowTip("已达2倍的最大播放倍率");
+                    return;
+                }
+                ShowTip($"播放倍率：{_playRate}");
+                _player.PlaybackSession.PlaybackRate = _playRate;
+            }
+        }
+        private void VideoMTC_RewindButtonClick(object sender, RoutedEventArgs e)
+        {
+            if (_playData != null && _player != null && _player.PlaybackSession != null)
+            {
+                if (_playRate > 0.5)
+                    _playRate -= 0.25;
+                else
+                {
+                    ShowTip("已达0.5倍的最小播放倍率");
+                    return;
+                }
+                if (_playRate < 0.5)
+                    _playRate = 0.5;
+                ShowTip($"播放倍率：{_playRate}");
+                _player.PlaybackSession.PlaybackRate = _playRate;
+            }
+        }
         #endregion
 
         #region MTC状态控制
@@ -1119,6 +1224,7 @@ namespace BiliBili_UWP.Components.Controls
             VideoMTC.Hide();
             ExitScreenButton.Visibility = Visibility.Collapsed;
             SubtitleContainer.Margin = new Thickness(20, 0, 20, 20);
+            TipContainer.Margin = new Thickness(20, 0, 20, 20);
             if (MTC.IsFullWindow || MTC.IsCinema || MTC.IsCompactOverlay)
                 DanmakuBarVisibility = Visibility.Collapsed;
         }
@@ -1238,8 +1344,35 @@ namespace BiliBili_UWP.Components.Controls
                 DanmakuControls.Width = double.NaN;
             }
         }
-        #endregion
+        public bool ExitCurrentStatus()
+        {
+            bool isHandled = true;
+            if (VideoMTC.IsFullWindow)
+                VideoMTC.IsFullWindow = false;
+            else if (VideoMTC.IsCinema)
+                VideoMTC.IsCinema = false;
+            else if (VideoMTC.IsCompactOverlay)
+                VideoMTC.IsCompactOverlay = false;
+            else
+                isHandled = false;
+            return isHandled;
+        }
+        public void ShowTip(string content)
+        {
+            if (TipContainer.Visibility == Visibility.Collapsed)
+                TipContainer.Visibility = Visibility.Visible;
+            TipContentBlock.Text = content;
+            _tipShowSeconds = 0;
+        }
+        public void HideTip()
+        {
+            if (TipContainer.Visibility == Visibility.Visible)
+                TipContainer.Visibility = Visibility.Collapsed;
+            TipContentBlock.Text = "";
+            _tipShowSeconds = -1;
+        }
 
+        #endregion
 
     }
 }
