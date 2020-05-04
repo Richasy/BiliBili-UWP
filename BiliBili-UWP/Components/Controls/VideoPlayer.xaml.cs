@@ -846,8 +846,8 @@ namespace BiliBili_UWP.Components.Controls
             if (dispRequest != null)
             {
                 dispRequest.RequestRelease();
-                dispRequest = null;
             }
+            dispRequest = null;
         }
 
         public void Resume()
@@ -858,8 +858,8 @@ namespace BiliBili_UWP.Components.Controls
             {
                 // 用户观看视频，需要保持屏幕的点亮状态
                 dispRequest = new DisplayRequest();
-                dispRequest.RequestActive(); // 激活显示请求
             }
+            dispRequest.RequestActive();
         }
 
         public void Close()
