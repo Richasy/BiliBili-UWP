@@ -104,7 +104,7 @@ namespace BiliBili_UWP
                 }
                 else if (space.HasFlag(CoreVirtualKeyStates.Down))
                 {
-                    if (player != null && (player.IsFocus || player.MTC.IsFullWindow || player.MTC.IsCinema))
+                    if (player != null && player.IsFocus && (player.MTC.IsFullWindow || player.MTC.IsCinema))
                     {
                         args.Handled = true;
                         player.MTC.IsPlaying = !player.MTC.IsPlaying;
