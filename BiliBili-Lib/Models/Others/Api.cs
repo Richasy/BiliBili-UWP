@@ -155,6 +155,10 @@ namespace BiliBili_Lib.Models.Others
         /// </summary>
         public const string ACCOUNT_FAVORITE_INFO = _apiBase + "/medialist/gateway/base/resource/infos";
         /// <summary>
+        /// 删除收藏夹内视频
+        /// </summary>
+        public const string ACCOUNT_FAVORITE_VIDEO_DELETE = _apiBase + "/medialist/gateway/coll/resource/batch/del";
+        /// <summary>
         /// 用户空间
         /// </summary>
         public const string ACCOUNT_USER_SPACE = _appBase + "/x/v2/space";

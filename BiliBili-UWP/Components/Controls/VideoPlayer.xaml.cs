@@ -915,11 +915,11 @@ namespace BiliBili_UWP.Components.Controls
             _manipulationDeltaY -= e.Delta.Translation.Y;
             Debug.WriteLine(_manipulationDeltaX);
             Debug.WriteLine(_manipulationDeltaY);
-            if (_manipulationDeltaX > 15 || _manipulationDeltaY > 15 || _manipulationDeltaX < -15 || _manipulationDeltaY < -15)
+            if (Math.Abs(_manipulationDeltaX) > 15 || Math.Abs(_manipulationDeltaY) > 15)
             {
                 if (_manipulationType == PlayerManipulationType.None)
                 {
-                    bool isVolume = _manipulationDeltaY > _manipulationDeltaX * _manipulationDeltaX;
+                    bool isVolume = Math.Abs(_manipulationDeltaY) > Math.Abs(_manipulationDeltaX);
                     _manipulationType = isVolume ? PlayerManipulationType.Volume : PlayerManipulationType.Progress;
                 }
                 if (_manipulationType == PlayerManipulationType.Volume)
@@ -951,7 +951,7 @@ namespace BiliBili_UWP.Components.Controls
         {
             _manipulationStartPoint = e.Position;
             _manipulationProgress = CurrentProgress;
-            _manipulationVolume = _player.Volume;
+            _manipulationVolume = _player.Volume*100.0;
             _manipulationBeforeIsPlay = VideoMTC.IsPlaying;
             Pause();
         }

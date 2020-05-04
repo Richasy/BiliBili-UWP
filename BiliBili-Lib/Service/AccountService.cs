@@ -546,5 +546,26 @@ namespace BiliBili_Lib.Service
             var data = await BiliTool.ConvertEntityFromWebAsync<List<RelationUser>>(url);
             return data;
         }
+        /// <summary>
+        /// 删除收藏夹内视频
+        /// </summary>
+        /// <param name="aid">视频ID</param>
+        /// <param name="videoType">视频类型</param>
+        /// <param name="listId">收藏夹ID</param>
+        /// <returns></returns>
+        public async Task<bool> RemoveFavoriteVideoAsync(int aid,int videoType,int listId)
+        {
+            var param = new Dictionary<string, string>();
+            param.Add("media_id", listId.ToString());
+            param.Add("resources", $"{aid}:{videoType}");
+            var req = BiliTool.UrlContact("", param, true);
+            var data = await BiliTool.PostContentToWebAsync(Api.ACCOUNT_FAVORITE_VIDEO_DELETE, req);
+            if (!string.IsNullOrEmpty(data))
+            {
+                var jobj = JObject.Parse(data);
+                return jobj["code"].ToString() == "0";
+            }
+            return false;
+        }
     }
 }
