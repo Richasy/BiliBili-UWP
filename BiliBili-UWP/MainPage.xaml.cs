@@ -55,7 +55,14 @@ namespace BiliBili_UWP
                 await App.BiliViewModel.GetRegionsAsync();
                 App.AppViewModel.FontInit();
                 Window.Current.Dispatcher.AcceleratorKeyActivated += AccelertorKeyActivedHandle;
-                PagePanel.NavigateToPage(Models.Enums.SideMenuItemType.Home);
+                if (e.Parameter != null && e.Parameter is string argument && !string.IsNullOrEmpty(argument))
+                {
+                    App.AppViewModel.AppInitByActivated(argument);
+                }
+                else
+                {
+                    PagePanel.NavigateToPage(Models.Enums.SideMenuItemType.Home);
+                }
             }
             catch (Exception)
             {
@@ -66,10 +73,7 @@ namespace BiliBili_UWP
             {
                 popup.HidePopup();
             }
-            if (e.Parameter != null && e.Parameter is string argument)
-            {
-                tempArgument = argument;
-            }
+            
             _isInit = true;
         }
 
@@ -141,11 +145,6 @@ namespace BiliBili_UWP
         private void SidePanel_SideMenuItemClick(object sender, Models.UI.SideMenuItem e)
         {
             PagePanel.NavigateToPage(e.Type);
-            if (!string.IsNullOrEmpty(tempArgument))
-            {
-                App.AppViewModel.AppInitByActivated(tempArgument);
-                tempArgument = string.Empty;
-            }
         }
 
         private void SidePanel_RegionSelected(object sender, BiliBili_Lib.Models.BiliBili.Region e)
