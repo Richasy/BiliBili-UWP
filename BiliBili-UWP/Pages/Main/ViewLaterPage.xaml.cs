@@ -96,6 +96,8 @@ namespace BiliBili_UWP.Pages.Main
         {
             if (!biliVM.CheckAccoutStatus())
                 return;
+            if (ViewLaterCollection.Count == 0)
+                return;
             var dialog = new ConfirmDialog("您确认清空稍后观看记录吗？");
             dialog.PrimaryButtonClick += async (_s, _e) =>
             {
@@ -107,6 +109,7 @@ namespace BiliBili_UWP.Pages.Main
                 {
                     new TipPopup("清空成功").ShowMessage();
                     ViewLaterCollection.Clear();
+                    HolderText.Visibility = Visibility.Visible;
                     dialog.Hide();
                 }
                 else
@@ -126,7 +129,10 @@ namespace BiliBili_UWP.Pages.Main
             if (item.bangumi != null)
                 App.AppViewModel.PlayBangumi(item.bangumi.ep_id, ele, true);
             else
-                App.AppViewModel.PlayVideo(item.aid, ele);
+            {
+                var videos = ViewLaterCollection.Where(p => p.bangumi == null).ToList();
+                App.AppViewModel.PlayVideoList(item.aid, videos);
+            } 
         }
 
         private async void RemoveItem_Click(object sender, RoutedEventArgs e)

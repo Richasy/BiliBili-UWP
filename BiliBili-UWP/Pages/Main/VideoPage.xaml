@@ -51,6 +51,16 @@
                 </Border>
             </Grid>
         </DataTemplate>
+        <DataTemplate x:DataType="video:VideoDetail" x:Key="PlayListItemTemplate">
+            <ListViewItem x:Name="Container">
+                <Grid BorderBrush="{Binding ElementName=Container,Path=IsSelected,Converter={StaticResource SelectedColorConverter}}" CornerRadius="4"
+                      BorderThickness="2" Background="{ThemeResource CardBackground}" Padding="5">
+                    <controls:DefaultVideoPanel Cover="{x:Bind pic}" Title="{x:Bind title}"
+                                                UserName="{x:Bind owner.name}" SectionVisibility="Collapsed"
+                                                Width="280" Duration="{x:Bind duration,Converter={StaticResource DurationConverter}}"/>
+                </Grid>
+            </ListViewItem>
+        </DataTemplate>
         <Flyout FlyoutPresenterStyle="{StaticResource BasicFlyoutStyle}" x:Name="CoinFlyout">
             <StackPanel Padding="10">
                 <StackPanel Orientation="Horizontal">
@@ -70,7 +80,7 @@
                              IsIndeterminate="True" x:Name="FavoriteProgressBar" Visibility="Collapsed"/>
                 <StackPanel x:Name="FavoriteContainer">
                     <ListView Style="{StaticResource BasicListView}" ItemContainerStyle="{StaticResource BasicListViewContainerStyle}"
-                          SelectionMode="Multiple" x:Name="FavoriteListView" MaxHeight="300" Width="300">
+                          SelectionMode="Multiple" IsItemClickEnabled="True" x:Name="FavoriteListView" MaxHeight="300" Width="300">
                         <ListView.ItemTemplate>
                             <DataTemplate x:DataType="bilibili:FavoriteItem">
                                 <ListViewItem IsSelected="{x:Bind fav_state,Converter={StaticResource IntBoolConverter}}">
@@ -105,7 +115,8 @@
             <controls:VideoPlayer x:Name="VideoPlayer" FullWindowChanged="VideoPlayer_FullWindowChanged"
                                   CinemaButtonVisibility="Visible" CinemaChanged="VideoPlayer_CinemaChanged"
                                   CompactOverlayChanged="VideoPlayer_CompactOverlayChanged"
-                                  SeparateButtonClick="VideoPlayer_SeparateButtonClick"/>
+                                  SeparateButtonClick="VideoPlayer_SeparateButtonClick"
+                                  MediaEnded="VideoPlayer_MediaEnded"/>
         </Grid>
         <Grid Grid.Row="1" Padding="0,10,20,20">
             <Grid.RowDefinitions>
@@ -144,18 +155,18 @@
             <ListView ItemTemplate="{StaticResource PartItemTemplate}" ItemsSource="{x:Bind VideoPartCollection}"
                       IsItemClickEnabled="True" ItemContainerStyle="{StaticResource TransparentListViewContainerStyle}"
                       Style="{StaticResource BasicListView}" Padding="0,0,0,5" ItemsPanel="{StaticResource HorizontalListViewItemsPanel}"
-                      x:Name="PartListView" ItemClick="PartListView_ItemClick" Grid.Row="1"/>
+                      x:Name="PartListView" ItemClick="PartListView_ItemClick" Grid.Row="1" ScrollViewer.VerticalScrollMode="Disabled"/>
             <Grid Grid.Row="2" Margin="0,10,0,0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <TextBlock Style="{StaticResource SmallTipTextStyle}" TextWrapping="Wrap" LineHeight="20" x:Name="DescriptionBlock"
-                       MaxLines="3" HorizontalAlignment="Left"/>
+                       MaxLines="3" HorizontalAlignment="Left" IsTextSelectionEnabled="True"/>
                 <ListView ItemTemplate="{StaticResource TagItemTemplate}" ItemsSource="{x:Bind TagCollection}"
                       IsItemClickEnabled="True" ItemContainerStyle="{StaticResource TransparentListViewContainerStyle}"
                       Style="{StaticResource BasicListView}" Padding="0,0,0,5" Margin="0,5,0,0" ItemsPanel="{StaticResource HorizontalListViewItemsPanel}"
-                      x:Name="TagListView" ItemClick="TagListView_ItemClick"  Grid.Row="1"/>
+                      x:Name="TagListView" ItemClick="TagListView_ItemClick"  Grid.Row="1" ScrollViewer.VerticalScrollMode="Disabled"/>
             </Grid>
             <Grid Grid.Row="3" Margin="0,15,0,0">
                 <Grid.ColumnDefinitions>
@@ -182,11 +193,15 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <StackPanel BorderBrush="{ThemeResource LineColor}" BorderThickness="0,1,0,0" Margin="0,25"/>
+                <controls:HorizontalScrollSectionPanel Title="播放列表" ItemsSource="{x:Bind PlayBackupCollection}" x:Name="PlayListContainer"
+                                                       ItemTemplate="{StaticResource PlayListItemTemplate}" ItemClick="PlayListContainer_ItemClick"
+                                                       HoldText="播放列表内木有视频" Grid.Row="1" Margin="0,0,0,20"/>
                 <controls:HorizontalScrollSectionPanel Title="相关视频" ItemsSource="{x:Bind RelatedCollection}" x:Name="RelateVideoContainer"
                                                        ItemTemplate="{StaticResource RelatedVideoItemTemplate}" ItemClick="RelateVideoContainer_ItemClick"
-                                                       HoldText="查询不到相关视频" Grid.Row="1"/>
+                                                       HoldText="查询不到相关视频" Grid.Row="2"/>
             </Grid>
         </Grid>
     </Grid>

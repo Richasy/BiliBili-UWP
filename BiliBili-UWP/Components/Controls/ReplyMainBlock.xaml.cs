@@ -73,7 +73,7 @@ namespace BiliBili_UWP.Components.Controls
             if (result)
             {
                 Data.action = Data.action == 0 ? 1 : 0;
-                LikeIcon.Foreground = Data.up_action.like ? UIHelper.GetThemeBrush(Models.Enums.ColorType.PrimaryColor) : UIHelper.GetThemeBrush(Models.Enums.ColorType.TipTextColor);
+                LikeIcon.Foreground = Data.action==1 ? UIHelper.GetThemeBrush(Models.Enums.ColorType.PrimaryColor) : UIHelper.GetThemeBrush(Models.Enums.ColorType.TipTextColor);
                 if (isLike)
                     Data.like += 1;
                 else

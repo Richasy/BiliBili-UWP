@@ -19,6 +19,7 @@
                                          UserName="{x:Bind author}"
                                          FirstSectionContent="{x:Bind play,Converter={StaticResource NumberAbbrConverter}}"
                                          SecondSectionContent="{x:Bind danmaku,Converter={StaticResource NumberAbbrConverter}}"
+                                     VideoId="{x:Bind param}" ExtraButtonVisibility="Visible"
                                          />
         </DataTemplate>
         <DataTemplate x:DataType="bilibili:SearchAnime" x:Name="AnimeTemplate">

@@ -1,4 +1,5 @@
-﻿using BiliBili_UWP.Components.Widgets;
+﻿using BiliBili_Lib.Tools;
+using BiliBili_UWP.Components.Widgets;
 using BiliBili_UWP.Models.Core;
 using System;
 using System.Collections.Generic;
@@ -27,6 +28,7 @@ namespace BiliBili_UWP
     public sealed partial class MainPage : Page
     {
         private bool _isInit = false;
+        string tempArgument = string.Empty;
         public static MainPage Current;
         public MainPage()
         {
@@ -43,13 +45,31 @@ namespace BiliBili_UWP
             {
                 return;
             }
+            bool isSideOpen=AppTool.GetBoolSetting(BiliBili_Lib.Enums.Settings.IsLastSidePanelOpen);
+            AppSplitView.IsPaneOpen = isSideOpen;
             App.AppViewModel.CheckAppUpdate();
             var popup = new WaitingPopup("正在初始化");
             popup.ShowPopup();
-            await App.BiliViewModel.GetRegionsAsync();
-            Window.Current.Dispatcher.AcceleratorKeyActivated += AccelertorKeyActivedHandle;
-            PagePanel.NavigateToPage(Models.Enums.SideMenuItemType.Home);
-            popup.HidePopup();
+            try
+            {
+                await App.BiliViewModel.GetRegionsAsync();
+                App.AppViewModel.FontInit();
+                Window.Current.Dispatcher.AcceleratorKeyActivated += AccelertorKeyActivedHandle;
+                PagePanel.NavigateToPage(Models.Enums.SideMenuItemType.Home);
+            }
+            catch (Exception)
+            {
+                var rootFrame = Window.Current.Content as Frame;
+                rootFrame.Navigate(typeof(Pages.Main.NetworkErrorPage));
+            }
+            finally
+            {
+                popup.HidePopup();
+            }
+            if (e.Parameter != null && e.Parameter is string argument)
+            {
+                tempArgument = argument;
+            }
             _isInit = true;
         }
 
@@ -59,7 +79,11 @@ namespace BiliBili_UWP
             {
                 var esc = Window.Current.CoreWindow.GetKeyState(VirtualKey.Escape);
                 var space = Window.Current.CoreWindow.GetKeyState(VirtualKey.Space);
+                var f11= Window.Current.CoreWindow.GetKeyState(VirtualKey.F11);
+                var left = Window.Current.CoreWindow.GetKeyState(VirtualKey.Left);
+                var right = Window.Current.CoreWindow.GetKeyState(VirtualKey.Right);
                 var player = App.AppViewModel.CurrentVideoPlayer;
+                
                 if (esc.HasFlag(CoreVirtualKeyStates.Down))
                 {
                     if (player != null)
@@ -80,24 +104,48 @@ namespace BiliBili_UWP
                 }
                 else if (space.HasFlag(CoreVirtualKeyStates.Down))
                 {
-                    if (player != null && (player.IsFocus || player.MTC.IsFullWindow || player.MTC.IsCinema))
+                    if (player != null && player.IsFocus && (player.MTC.IsFullWindow || player.MTC.IsCinema))
                     {
                         args.Handled = true;
                         player.MTC.IsPlaying = !player.MTC.IsPlaying;
                         player.Focus(FocusState.Programmatic);
                     }
                 }
+                else if (f11.HasFlag(CoreVirtualKeyStates.Down))
+                {
+                    if(player != null && player.IsFocus)
+                    {
+                        args.Handled = true;
+                        player.MTC.IsFullWindow = !player.MTC.IsFullWindow;
+                    }
+                }
+                else if (left.HasFlag(CoreVirtualKeyStates.Down))
+                {
+                    if (player != null && player.IsFocus)
+                    {
+                        args.Handled = true;
+                        player.SkipRewind();
+                    }
+                }
+                else if (right.HasFlag(CoreVirtualKeyStates.Down))
+                {
+                    if (player != null && player.IsFocus)
+                    {
+                        args.Handled = true;
+                        player.SkipForward();
+                    }
+                }
             }
-        }
-
-        private void SidePanel_PaneButtonClick(object sender, bool e)
-        {
-            AppSplitView.IsPaneOpen = e;
         }
 
         private void SidePanel_SideMenuItemClick(object sender, Models.UI.SideMenuItem e)
         {
             PagePanel.NavigateToPage(e.Type);
+            if (!string.IsNullOrEmpty(tempArgument))
+            {
+                App.AppViewModel.AppInitByActivated(tempArgument);
+                tempArgument = string.Empty;
+            }
         }
 
         private void SidePanel_RegionSelected(object sender, BiliBili_Lib.Models.BiliBili.Region e)
@@ -112,13 +160,13 @@ namespace BiliBili_UWP
             double width = e.NewSize.Width;
             if (width < 1000)
             {
-                AppSplitView.IsPaneOpen = false;
-                AppSplitView.DisplayMode = SplitViewDisplayMode.CompactOverlay;
+                if (AppSplitView.DisplayMode != SplitViewDisplayMode.CompactOverlay)
+                    AppSplitView.DisplayMode = SplitViewDisplayMode.CompactOverlay;
             }
             else
             {
-                AppSplitView.IsPaneOpen = true;
-                AppSplitView.DisplayMode = SplitViewDisplayMode.CompactInline;
+                if (AppSplitView.DisplayMode != SplitViewDisplayMode.CompactInline)
+                    AppSplitView.DisplayMode = SplitViewDisplayMode.CompactInline;
             }
         }
 
@@ -128,6 +176,7 @@ namespace BiliBili_UWP
             if (FullWindowContainer.Children.Count == 0)
                 FullWindowContainer.Children.Add(App.AppViewModel.CurrentVideoPlayer);
             App.AppViewModel.CurrentVideoPlayer.Focus(FocusState.Programmatic);
+            App.AppViewModel.CurrentVideoPlayer.ResetDanmakuStatus();
         }
         public void RemovePlayer()
         {

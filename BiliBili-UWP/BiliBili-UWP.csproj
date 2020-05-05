@@ -22,12 +22,12 @@
     <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
     <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
     <AppxPackageDir>E:\Package\BiliBili\</AppxPackageDir>
-    <GenerateTestArtifacts>True</GenerateTestArtifacts>
+    <GenerateTestArtifacts>False</GenerateTestArtifacts>
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x86|x64|arm|arm64</AppxBundlePlatforms>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
-    <PackageCertificateThumbprint>19DE3251AB16B9B0D867892B047B3BB7FF135FF9</PackageCertificateThumbprint>
-    <AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
+    <PackageCertificateThumbprint>5C64608C23240E78AAE6E79FEAEDDAE0A3624CC0</PackageCertificateThumbprint>
+    <AppxSymbolPackageEnabled>True</AppxSymbolPackageEnabled>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -219,6 +219,9 @@
     <Compile Include="Components\Widgets\LevelBlock.xaml.cs">
       <DependentUpon>LevelBlock.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Components\Widgets\NumberBox.xaml.cs">
+      <DependentUpon>NumberBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Components\Widgets\TipPopup.xaml.cs">
       <DependentUpon>TipPopup.xaml</DependentUpon>
     </Compile>
@@ -240,6 +243,7 @@
     <Compile Include="Models\Core\BiliViewModel.Channel.cs" />
     <Compile Include="Models\Enums\ColorType.cs" />
     <Compile Include="Models\Enums\InputBoxType.cs" />
+    <Compile Include="Models\Enums\PlayerManipulationType.cs" />
     <Compile Include="Models\Enums\PlayerType.cs" />
     <Compile Include="Models\Enums\SideMenuGroupType.cs" />
     <Compile Include="Models\Enums\SideMenuItemType.cs" />
@@ -265,7 +269,7 @@
     <Compile Include="Models\UI\Others\IndicatorHelper.cs" />
     <Compile Include="Models\UI\Others\NotifyPropertyBase.cs" />
     <Compile Include="Models\UI\Others\SearchItemTemplateSelector.cs" />
-    <Compile Include="Models\UI\Converter\SelectedBackgroundConverter.cs" />
+    <Compile Include="Models\UI\Converter\SelectedColorConverter.cs" />
     <Compile Include="Models\UI\Others\SideMenuItemTemplateSelector.cs" />
     <Compile Include="Models\UI\Others\SystemFont.cs" />
     <Compile Include="Models\UI\Others\VideoTransportControls.cs" />
@@ -303,6 +307,9 @@
     <Compile Include="Pages\Main\MiniPlayerPage.xaml.cs">
       <DependentUpon>MiniPlayerPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\Main\NetworkErrorPage.xaml.cs">
+      <DependentUpon>NetworkErrorPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Main\SettingPage.xaml.cs">
       <DependentUpon>SettingPage.xaml</DependentUpon>
     </Compile>
@@ -318,8 +325,14 @@
     <Compile Include="Pages\Sub\Account\DetailPage.xaml.cs">
       <DependentUpon>DetailPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\Sub\Account\FansPage.xaml.cs">
+      <DependentUpon>FansPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Sub\Account\FavoritePage.xaml.cs">
       <DependentUpon>FavoritePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Sub\Account\FollowPage.xaml.cs">
+      <DependentUpon>FollowPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Sub\Anime\IndexPage.xaml.cs">
       <DependentUpon>IndexPage.xaml</DependentUpon>
@@ -421,6 +434,8 @@
     <Content Include="Assets\Logo\Wide310x150Logo.scale-150.png" />
     <Content Include="Assets\Logo\Wide310x150Logo.scale-200.png" />
     <Content Include="Assets\Logo\Wide310x150Logo.scale-400.png" />
+    <Content Include="Assets\logo_small.png" />
+    <Content Include="Assets\null.png" />
     <Content Include="Assets\Rank\ic_live_guard_1.png" />
     <Content Include="Assets\Rank\ic_live_guard_2.png" />
     <Content Include="Assets\Rank\ic_live_guard_3.png" />
@@ -439,6 +454,7 @@
     <Content Include="Components\HTML\Light.css" />
     <Content Include="Components\HTML\ShowPage.html" />
     <Content Include="Others\Introduce.txt" />
+    <Content Include="Others\Shortcut.txt" />
     <Content Include="Others\Update.txt" />
     <None Include="BiliBili-UWP_TemporaryKey.pfx" />
     <None Include="Package.StoreAssociation.xml" />
@@ -576,6 +592,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Components\Widgets\NumberBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Components\Widgets\TipPopup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -636,6 +656,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\Main\NetworkErrorPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\Main\SettingPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -656,7 +680,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\Sub\Account\FansPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\Sub\Account\FavoritePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Sub\Account\FollowPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

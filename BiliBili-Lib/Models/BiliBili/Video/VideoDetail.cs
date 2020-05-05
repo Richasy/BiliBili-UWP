@@ -38,6 +38,25 @@ namespace BiliBili_Lib.Models.BiliBili.Video
         public InteractionPart interaction { get; set; }
         public BangumiSlim bangumi { get; set; }
         public string redirect_url { get; set; }
+        public History history { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            return obj is VideoDetail detail &&
+                   aid == detail.aid;
+        }
+
+        public override int GetHashCode()
+        {
+            return 1525766729 + aid.GetHashCode();
+        }
+
+        public class History
+        {
+            public int cid { get; set; }
+            public int progress { get; set; }
+        }
+
     }
     public class ReqestUser
     {
@@ -73,21 +92,7 @@ namespace BiliBili_Lib.Models.BiliBili.Video
         public int dislike { get; set; }
         public string evaluation { get; set; }
     }
-    /// <summary>
-    /// 字幕
-    /// </summary>
-    public class VideoSubtitle
-    {
-        public bool allow_submit { get; set; }
-        public List<SubtitleItem> list { get; set; }
-    }
-    public class SubtitleItem
-    {
-        public long id { get; set; }
-        public string lan { get; set; }
-        public string lan_doc { get; set; }
-        public string subtitle_url { get; set; }
-    }
+    
     public class VideoTag
     {
         public int tag_id { get; set; }

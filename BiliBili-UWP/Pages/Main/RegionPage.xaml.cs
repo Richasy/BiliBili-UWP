@@ -1,5 +1,6 @@
 ﻿using BiliBili_Lib.Models.BiliBili;
 using BiliBili_Lib.Service;
+using BiliBili_UWP.Components.Widgets;
 using BiliBili_UWP.Models.Core;
 using BiliBili_UWP.Models.UI.Interface;
 using System;
@@ -165,6 +166,12 @@ namespace BiliBili_UWP.Pages.Main
             {
                 App.AppViewModel.CurrentPagePanel.PageScrollViewer.ChangeView(0, _scrollOffset, 1);
             }
+        }
+
+        private async void LaterViewButton_Click(object sender, RoutedEventArgs e)
+        {
+            var data = (sender as FrameworkElement).DataContext as RegionVideo;
+            await App.BiliViewModel.AddViewLater(sender, Convert.ToInt32(data.param));
         }
     }
 }

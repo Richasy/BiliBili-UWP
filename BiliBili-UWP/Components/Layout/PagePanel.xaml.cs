@@ -1,4 +1,6 @@
-﻿using BiliBili_Lib.Models.BiliBili;
+﻿using BiliBili_Lib.Enums;
+using BiliBili_Lib.Models.BiliBili;
+using BiliBili_Lib.Tools;
 using BiliBili_UWP.Components.Widgets;
 using BiliBili_UWP.Models.Enums;
 using BiliBili_UWP.Models.UI.Interface;
@@ -11,6 +13,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -35,6 +38,7 @@ namespace BiliBili_UWP.Components.Layout
         {
             this.InitializeComponent();
             App.AppViewModel.CurrentPagePanel = this;
+            SystemNavigationManager.GetForCurrentView().BackRequested += OnBackrequested;
         }
         public new Thickness Padding
         {
@@ -74,6 +78,13 @@ namespace BiliBili_UWP.Components.Layout
                 instance.HolderContainer.Visibility = isDefault ? Visibility.Visible : Visibility.Collapsed;
             }
         }
+        private void OnBackrequested(object sender, BackRequestedEventArgs e)
+        {
+            // 判断应用当前是否有页面可以回退，没有则继续冒泡
+            bool result = AutoJudgeBack();
+            if (result)
+                e.Handled = true;
+        }
         public void NavigateToPage(SideMenuItemType type, object parameter = null, bool isBack = false)
         {
             PageSplitView.IsPaneOpen = false;
@@ -86,9 +97,10 @@ namespace BiliBili_UWP.Components.Layout
             {
                 App.AppViewModel.CurrentPageType = page;
                 PageFrame.Navigate(page, parameter, new DrillInNavigationTransitionInfo());
-
                 if (!isBack)
                 {
+                    if (page.Equals(typeof(Pages.Main.VideoPage)) || page.Equals(typeof(Pages.Main.BangumiPage)))
+                        MainFrameHistoryList.RemoveAll(p => p.Item1 == page);
                     if (!isRepeat)
                     {
                         MainFrameHistoryList.Add(new Tuple<Type, object>(page, parameter));
@@ -270,7 +282,8 @@ namespace BiliBili_UWP.Components.Layout
         private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             var width = e.NewSize.Width;
-            PageSplitView.DisplayMode = width < 1500 ? SplitViewDisplayMode.CompactOverlay : SplitViewDisplayMode.CompactInline;
+            double breakpoint = Convert.ToDouble(AppTool.GetLocalSetting(Settings.PagePanelDisplayBreakpoint, "1500"));
+            PageSplitView.DisplayMode = width < breakpoint ? SplitViewDisplayMode.CompactOverlay : SplitViewDisplayMode.CompactInline;
             PageSplitView.OpenPaneLength = width < 600 ? width : 400;
         }
 
@@ -302,9 +315,7 @@ namespace BiliBili_UWP.Components.Layout
                 if (!isRepeat)
                 {
                     if (page.Equals(typeof(Pages.Sub.ReplyPage)))
-                    {
                         SubFrameHistoryList.RemoveAll(p => p.Item1 == page);
-                    }
                     SubFrameHistoryList.Add(new Tuple<Type, object>(page, parameter));
                 }
                 if (SubFrameHistoryList.Count > 1)
@@ -378,16 +389,35 @@ namespace BiliBili_UWP.Components.Layout
             if (e.GetCurrentPoint(this).Properties.PointerUpdateKind == Windows.UI.Input.PointerUpdateKind.XButton1Released)
             {
                 e.Handled = true;
-                if (SubBackButton.Visibility == Visibility.Visible)
-                {
-                    SubPageBack();
-                }
-                else if (BackButton.Visibility == Visibility.Visible)
-                {
-                    MainPageBack();
-                }
+                AutoJudgeBack();
             }
             base.OnPointerReleased(e);
+        }
+
+        /// <summary>
+        /// 判断当前是主页回退还是副页回退
+        /// </summary>
+        private bool AutoJudgeBack()
+        {
+            if (App.AppViewModel.CurrentVideoPlayer != null)
+            {
+                if (App.AppViewModel.CurrentVideoPlayer.ExitCurrentStatus())
+                    return true;
+            }
+            bool result = false;
+            if (SubFrameHistoryList.Count > 1
+                    && PageSplitView.IsPaneOpen
+                    && PageSplitView.DisplayMode == SplitViewDisplayMode.CompactOverlay)
+            {
+                result = true;
+                SubPageBack();
+            }
+            else if (MainFrameHistoryList.Count > 1)
+            {
+                result = true;
+                MainPageBack();
+            }
+            return result;
         }
     }
 }

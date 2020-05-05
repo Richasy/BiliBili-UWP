@@ -83,16 +83,6 @@ namespace BiliBili_Lib.Models.Others
         /// </summary>
         public const string ACCOUNT_MINE = _appBase + "/x/v2/account/mine";
         /// <summary>
-        /// 关注列表
-        /// @分组索引使用vmid
-        /// @分组详情用mid,pn,ps,tagid
-        /// </summary>
-        public const string ACCOUNT_FOLLOWING = _apiBase + "/x/relation/tags";
-        /// <summary>
-        /// 粉丝列表，使用vmid
-        /// </summary>
-        public const string ACCOUNT_FAN = _apiBase + "/x/relation/followers";
-        /// <summary>
         /// 查询用户信息，使用vmid
         /// </summary>
         public const string ACCOUNT_INFO = _appBase + "/x/v2/space";
@@ -165,6 +155,10 @@ namespace BiliBili_Lib.Models.Others
         /// </summary>
         public const string ACCOUNT_FAVORITE_INFO = _apiBase + "/medialist/gateway/base/resource/infos";
         /// <summary>
+        /// 删除收藏夹内视频
+        /// </summary>
+        public const string ACCOUNT_FAVORITE_VIDEO_DELETE = _apiBase + "/medialist/gateway/coll/resource/batch/del";
+        /// <summary>
         /// 用户空间
         /// </summary>
         public const string ACCOUNT_USER_SPACE = _appBase + "/x/v2/space";
@@ -180,6 +174,18 @@ namespace BiliBili_Lib.Models.Others
         /// 获取账户的未读消息
         /// </summary>
         public const string ACCOUNT_UNREAD = _apiBase + "/x/msgfeed/unread";
+        /// <summary>
+        /// 获取我的粉丝
+        /// </summary>
+        public const string ACCOUNT_RELATION_FANS = _apiBase + "/x/relation/followers";
+        /// <summary>
+        /// 获取关注列表的标签
+        /// </summary>
+        public const string ACCOUNT_RELATION_FOLLOW_TAGS = _apiBase + "/x/relation/tags";
+        /// <summary>
+        /// 获取关注列表的详情
+        /// </summary>
+        public const string ACCOUNT_RELATION_FOLLOW_DETAIL = _apiBase + "/x/relation/tag";
         #endregion
 
         #region 频道 Channel
@@ -329,6 +335,10 @@ namespace BiliBili_Lib.Models.Others
         /// 发送弹幕
         /// </summary>
         public const string VIDEO_SEND_DANMAKU = _apiBase + "/x/v2/dm/post";
+        /// <summary>
+        /// 获取视频字幕
+        /// </summary>
+        public const string VIDEO_SUBTITLE = _apiBase + "/x/player.so";
         #endregion
 
         #region 话题及动态 Topic Dynamic

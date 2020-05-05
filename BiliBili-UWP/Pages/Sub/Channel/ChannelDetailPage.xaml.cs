@@ -203,7 +203,7 @@ namespace BiliBili_UWP.Pages.Sub.Channel
         {
             var data = e.ClickedItem as VideoChannel;
             if (data.@goto == "av")
-                App.AppViewModel.PlayVideo(Convert.ToInt32(data.param),null, "traffic.new-channel-detail-all.0.0.0.0");
+                App.AppViewModel.PlayVideo(Convert.ToInt32(data.param),null, StaticString.SIGN_CHANNEL);
             else if (data.@goto == "bangumi")
                 App.AppViewModel.PlayBangumi(Convert.ToInt32(data.param), null, true);
         }
@@ -285,6 +285,12 @@ namespace BiliBili_UWP.Pages.Sub.Channel
             {
                 App.AppViewModel.PlayVideo(Convert.ToInt32(_header.param));
             }
+        }
+
+        private async void LaterViewButton_Click(object sender, RoutedEventArgs e)
+        {
+            var data = (sender as FrameworkElement).DataContext as VideoChannel;
+            await App.BiliViewModel.AddViewLater(sender, Convert.ToInt32(data.param));
         }
     }
 }

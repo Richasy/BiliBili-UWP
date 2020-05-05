@@ -40,10 +40,10 @@
                     <TextBlock Text="{x:Bind Tip,Mode=OneWay}" FontSize="10" Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource PrimaryColor}"/>
                 </Border>
             </StackPanel>
-            <StackPanel Grid.Row="1" Margin="0,5,0,0" Visibility="{x:Bind SectionVisibility,Mode=OneWay}">
+            <StackPanel Grid.Row="1" Margin="0,5,0,0">
                 <widgets:IconTextBlock Icon="&#xEA31;" GutterWidth="5" Text="{x:Bind UserName,Mode=OneWay}" FontSize="10"
                                        Visibility="{x:Bind UserName,Mode=OneWay,Converter={StaticResource StringVisibilityConverter}}"/>
-                <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                <StackPanel Orientation="Horizontal" Margin="0,5,0,0" Visibility="{x:Bind SectionVisibility,Mode=OneWay}">
                     <widgets:IconTextBlock GutterWidth="5" Icon="{x:Bind FirstSectionIcon,Mode=OneWay}" Text="{x:Bind FirstSectionContent,Mode=OneWay}" FontSize="10"/>
                     <widgets:IconTextBlock GutterWidth="5" Icon="{x:Bind SecondSectionIcon,Mode=OneWay}" Text="{x:Bind SecondSectionContent,Mode=OneWay}" Margin="10,0,0,0" FontSize="10"/>
                 </StackPanel>
@@ -53,5 +53,19 @@
         </Grid>
         <controls:ImageEx Width="20" Grid.Column="2" VerticalAlignment="Top" Margin="10,0,0,0" Source="{x:Bind RightTopImage,Mode=OneWay}"
                Visibility="{x:Bind RightTopImage,Mode=OneWay,Converter={StaticResource StringVisibilityConverter}}"/>
+        <Button Style="{StaticResource TransparentButtonStyle}" x:Name="ExtraButton" Content="&#xE9A9;" Grid.Column="2"
+                VerticalAlignment="Bottom" FontFamily="{StaticResource Icon}" FontSize="13" Visibility="{x:Bind ExtraButtonVisibility,Mode=OneWay}">
+            <Button.Flyout>
+                <CommandBarFlyout>
+                    <CommandBarFlyout.SecondaryCommands>
+                        <AppBarButton Label="加入稍后再看" FontSize="12" FontFamily="{CustomResource Basic}" x:Name="LaterViewButton" Click="LaterViewButton_Click">
+                            <AppBarButton.Icon>
+                                <FontIcon FontFamily="{StaticResource Icon}" Glyph="&#xEA3B;"/>
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+                    </CommandBarFlyout.SecondaryCommands>
+                </CommandBarFlyout>
+            </Button.Flyout>
+        </Button>
     </Grid>
 </UserControl>

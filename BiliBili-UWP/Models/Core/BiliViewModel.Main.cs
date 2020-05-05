@@ -3,6 +3,7 @@ using BiliBili_Lib.Models.BiliBili;
 using BiliBili_Lib.Models.Others;
 using BiliBili_Lib.Service;
 using BiliBili_Lib.Tools;
+using BiliBili_UWP.Components.Widgets;
 using BiliBili_UWP.Models.UI.Others;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -12,6 +13,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Xaml.Controls;
 
 namespace BiliBili_UWP.Models.Core
 {
@@ -108,7 +110,6 @@ namespace BiliBili_UWP.Models.Core
             else if (type == 4200)
                 return JsonConvert.DeserializeObject<LiveDynamic>(content);
             return null;
-            //4200
         }
 
         /// <summary>
@@ -139,6 +140,22 @@ namespace BiliBili_UWP.Models.Core
                 var emojis = await IOTool.GetLocalDataAsync<List<EmojiItem>>("emoji.json");
                 _emojis = emojis;
             }
+        }
+
+        public async Task AddViewLater(object sender,int id)
+        {
+            var LaterViewButton = sender as AppBarButton;
+            LaterViewButton.IsEnabled = false;
+            bool result = await App.BiliViewModel._client.Account.AddViewLaterAsync(id);
+            if (result)
+            {
+                new TipPopup("已添加至稍后观看").ShowMessage();
+            }
+            else
+            {
+                new TipPopup("添加失败").ShowError();
+            }
+            LaterViewButton.IsEnabled = true;
         }
     }
 }

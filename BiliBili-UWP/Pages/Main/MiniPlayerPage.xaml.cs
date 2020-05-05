@@ -1,5 +1,7 @@
-﻿using BiliBili_Lib.Models.BiliBili.Anime;
+﻿using BiliBili_Lib.Enums;
+using BiliBili_Lib.Models.BiliBili.Anime;
 using BiliBili_Lib.Models.BiliBili.Video;
+using BiliBili_Lib.Tools;
 using BiliBili_UWP.Models.UI;
 using BiliBili_UWP.Models.UI.Others;
 using System;
@@ -43,6 +45,8 @@ namespace BiliBili_UWP.Pages.Main
                     await VideoPlayer.Init(data.Item1, data.Item2);
                 else if (e.Parameter is Tuple<BangumiDetail, Episode> bangu)
                     await VideoPlayer.Init(bangu.Item1, bangu.Item2);
+                bool isShowDanmakuBar = AppTool.GetBoolSetting(Settings.IsShowDanmakuBarInSeparate, false);
+                VideoPlayer.DanmakuBarVisibility = isShowDanmakuBar ? Visibility.Visible : Visibility.Collapsed;
                 UIHelper.SetTitleBarColor();
             }
         }

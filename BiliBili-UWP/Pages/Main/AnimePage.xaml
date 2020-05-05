@@ -44,7 +44,7 @@
                 </Grid.RowDefinitions>
                 <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="13" Margin="0,0,0,10"
                            Text="{x:Bind title}" FontWeight="Bold"/>
-                <ItemsControl Grid.Row="1" MaxHeight="250" ItemsSource="{x:Bind cards}"
+                <ItemsControl Grid.Row="1" Height="250" ItemsSource="{x:Bind cards}"
                               ScrollViewer.VerticalScrollBarVisibility="Visible">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate x:DataType="bilibili:Card">

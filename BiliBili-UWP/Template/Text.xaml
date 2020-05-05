@@ -55,4 +55,7 @@
     <Style x:Key="CaptionTextStyle" TargetType="TextBlock" BasedOn="{StaticResource TipTextStyle}">
         <Setter Property="Foreground" Value="{ThemeResource ImportantTextColor}"/>
     </Style>
+    <DataTemplate x:Key="TipHeaderStyle">
+        <TextBlock Style="{StaticResource SmallTipTextStyle}" Text="{Binding}" Margin="0,0,0,5"/>
+    </DataTemplate>
 </ResourceDictionary>

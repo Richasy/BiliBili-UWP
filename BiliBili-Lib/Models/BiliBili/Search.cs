@@ -54,10 +54,6 @@ namespace BiliBili_Lib.Models.BiliBili
     public class SearchBase
     {
         public string title { get; set; }
-        //public string display_title
-        //{
-        //    get => Uri.UnescapeDataString(title).Replace("<em class=\"keyword\">", "").Replace("</em>", "");
-        //}
         public string trackid { get; set; }
         public string linktype { get; set; }
         public int position { get; set; }
@@ -71,19 +67,11 @@ namespace BiliBili_Lib.Models.BiliBili
     public class SearchVideo : SearchBase
     {
         public int play { get; set; }
-        public string render_play
-        {
-            get => AppTool.GetNumberAbbreviation(play);
-        }
         public string author { get; set; }
         public string desc { get; set; }
         public string duration { get; set; }
         public string face { get; set; }
         public int danmaku { get; set; }
-        public string render_danmaku
-        {
-            get => AppTool.GetNumberAbbreviation(danmaku);
-        }
     }
     public class SearchDocument : SearchBase
     {

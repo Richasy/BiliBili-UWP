@@ -1,6 +1,7 @@
 ﻿using BiliBili_Lib.Models.BiliBili;
 using BiliBili_Lib.Tools;
 using BiliBili_UWP.Models.Core;
+using BiliBili_UWP.Models.UI;
 using BiliBili_UWP.Models.UI.Interface;
 using Microsoft.Toolkit.Uwp.Helpers;
 using System;
@@ -105,7 +106,7 @@ namespace BiliBili_UWP.Pages.Main
             var item = e.ClickedItem as VideoRecommend;
             var container = RecommendVideoView.ContainerFromItem(item);
             if(item.card_goto=="av")
-                App.AppViewModel.PlayVideo(item.args.aid,container, "tm.recommend.0.0");
+                App.AppViewModel.PlayVideo(item.args.aid,container, StaticString.SIGN_RECOMMEND);
             else if(item.card_goto=="bangumi")
             {
                 var sp = item.uri.Split("#");

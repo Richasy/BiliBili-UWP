@@ -4,9 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BiliBili_Notification
+namespace BiliBili_UWP.Models.Enums
 {
-    public sealed class Class1
+    public enum PlayerManipulationType
     {
+        None,
+        Volume,
+        Progress
     }
 }

@@ -4,12 +4,13 @@
   xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
   xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
   xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
-  IgnorableNamespaces="uap mp">
+  xmlns:uap3="http://schemas.microsoft.com/appx/manifest/uap/windows10/3"
+  IgnorableNamespaces="uap mp uap3">
 
   <Identity
     Name="60520B029E250.4264454043325"
     Publisher="CN=9EFA2047-A580-400B-A5B2-0C7ABB0DB5C0"
-    Version="1.0.2.0" />
+    Version="1.0.6.0" />
 
   <mp:PhoneIdentity PhoneProductId="3e10de2d-fe15-4e8a-9d72-30e9209c46ea" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
@@ -46,10 +47,19 @@
         </uap:DefaultTile >
         <uap:SplashScreen Image="Assets\Logo\SplashScreen.png"  BackgroundColor="transparent"/>
       </uap:VisualElements>
+      <Extensions>
+        <Extension Category="windows.backgroundTasks" EntryPoint="BiliBili_Notification.NewDynamicNotification">
+          <BackgroundTasks>
+            <Task Type="timer"/>
+            <Task Type="pushNotification"/>
+          </BackgroundTasks>
+        </Extension>
+      </Extensions>
     </Application>
   </Applications>
 
   <Capabilities>
     <Capability Name="internetClient" />
+    <uap3:Capability Name="backgroundMediaPlayback"/>
   </Capabilities>
 </Package>

@@ -10,18 +10,24 @@
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:bilibili="using:BiliBili_Lib.Models.BiliBili"
     xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
+    xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
+    xmlns:extensions="using:Microsoft.Toolkit.Uwp.UI.Extensions"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400"
-    GotFocus="UserControl_GotFocus"
-    LostFocus="UserControl_LostFocus"
     SizeChanged="UserControl_SizeChanged"
     PointerEntered="UserControl_PointerEntered"
     PointerMoved="UserControl_PointerMoved"
     PointerExited="UserControl_PointerExited">
     <UserControl.Resources>
-        <Flyout x:Name="DanmakuFlyout">
-            <Grid Width="200">
+        <DataTemplate x:Key="FontItemTemplate" x:DataType="others:SystemFont">
+            <Grid Padding="3,5,8,5">
+                <TextBlock Style="{StaticResource SmallTipTextStyle}" FontFamily="{x:Bind FontFamily}"
+                           Foreground="{ThemeResource NormalTextColor}" Text="{x:Bind Name}"/>
+            </Grid>
+        </DataTemplate>
+        <Flyout x:Name="DanmakuFlyout" FlyoutPresenterStyle="{StaticResource BasicFlyoutStyle}">
+            <Grid Width="230" Padding="15">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -77,14 +83,46 @@
                 </StackPanel>
             </Grid>
         </Flyout>
+        <Flyout x:Name="DanmakuOptionFlyout" FlyoutPresenterStyle="{StaticResource BasicFlyoutStyle}" Placement="Left">
+            <StackPanel Width="250" Padding="15">
+                <Slider x:Name="OpacitySlider" Style="{StaticResource BasicSliderStyle}" HorizontalAlignment="Stretch" StepFrequency="0.1"
+                        Maximum="1" Minimum="0" ValueChanged="OpacitySlider_ValueChanged" HeaderTemplate="{StaticResource TipHeaderStyle}"
+                        Header="弹幕透明度"/>
+                <Slider x:Name="FontSizeSlider" Style="{StaticResource BasicSliderStyle}" HorizontalAlignment="Stretch" StepFrequency="0.1"
+                        Maximum="1.6" Minimum="0.4" ValueChanged="FontSizeSlider_ValueChanged" HeaderTemplate="{StaticResource TipHeaderStyle}"
+                        Header="弹幕缩放大小" Margin="0,15,0,0"/>
+                <Slider x:Name="SpeedSlider" Style="{StaticResource BasicSliderStyle}" HorizontalAlignment="Stretch" StepFrequency="0.1"
+                        Maximum="2" Minimum="0.4" ValueChanged="SpeedSlider_ValueChanged" HeaderTemplate="{StaticResource TipHeaderStyle}"
+                        Header="弹幕速度" Margin="0,15,0,0"/>
+                <Slider x:Name="MaxinumSlider" Style="{StaticResource BasicSliderStyle}" HorizontalAlignment="Stretch" StepFrequency="10"
+                        Maximum="1000" Minimum="10" ValueChanged="MaxinumSlider_ValueChanged"  HeaderTemplate="{StaticResource TipHeaderStyle}"
+                        Header="同屏弹幕密度" Margin="0,15,0,0"/>
+                <ComboBox Style="{StaticResource BasicComboBoxStyle}" ItemContainerStyle="{StaticResource BasicComboBoxItemContainerStyle}"
+                          HeaderTemplate="{StaticResource TipHeaderStyle}" Header="弹幕字体" x:Name="FontComboBox" SelectionChanged="FontComboBox_SelectionChanged"
+                          ItemTemplate="{StaticResource FontItemTemplate}" Margin="0,15,0,0" ItemsSource="{x:Bind FontCollection}"/>
+                <ComboBox Style="{StaticResource BasicComboBoxStyle}" ItemContainerStyle="{StaticResource BasicComboBoxItemContainerStyle}"
+                          HeaderTemplate="{StaticResource TipHeaderStyle}" Header="弹幕样式" x:Name="BorderStyleComboBox" SelectionChanged="BorderStyleComboBox_SelectionChanged"
+                          Margin="0,15,0,0" FontSize="12" FontFamily="{CustomResource Basic}">
+                    <ComboBoxItem Content="默认"/>
+                    <ComboBoxItem Content="无边框"/>
+                    <ComboBoxItem Content="阴影"/>
+                    <ComboBoxItem Content="边框"/>
+                </ComboBox>
+                <ToggleSwitch Style="{StaticResource BasicToggleSwitchStyle}" Header="弹幕合并" HeaderTemplate="{StaticResource TipHeaderStyle}"
+                              x:Name="MergeDanmakuSwitch" Toggled="MergeDanmakuSwitch_Toggled" Margin="0,15,0,0"/>
+                <ToggleSwitch Style="{StaticResource BasicToggleSwitchStyle}" Header="防挡字幕" HeaderTemplate="{StaticResource TipHeaderStyle}"
+                              x:Name="ProtectSubtitleSwitch" Toggled="ProtectSubtitleSwitch_Toggled"  Margin="0,15,0,0"/>
+            </StackPanel>
+        </Flyout>
     </UserControl.Resources>
     <Grid Background="{ThemeResource PageBackground}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <MediaPlayerElement x:Name="mediaElement"  AreTransportControlsEnabled="True"
-                            Background="{ThemeResource PageBackground}">
+        <MediaPlayerElement x:Name="mediaElement"  AreTransportControlsEnabled="True" GotFocus="UserControl_GotFocus" LostFocus="UserControl_LostFocus"
+                            Background="{ThemeResource PageBackground}" Tapped="mediaElement_Tapped" IsDoubleTapEnabled="True"
+                            DoubleTapped="mediaElement_DoubleTapped" Style="{StaticResource BasicMediaStyle}">
             <MediaPlayerElement.TransportControls>
                 <others:VideoTransportControls x:Name="VideoMTC"
                                                FontSize="15" DanmakuLoaded="VideoMTC_DanmakuLoaded"
@@ -97,40 +135,81 @@
                                                FullWindowButtonVisibility="{x:Bind FullWindowButtonVisibility,Mode=OneWay}"
                                                CompactOverlayButtonVisibility="{x:Bind CompactOverlayButtonVisibility,Mode=OneWay}"
                                                SeparateButtonVisibility="{x:Bind SeparateButtonVisibility,Mode=OneWay}"
+                                               SubtitleItemsSource="{x:Bind SubtitleIndexCollection}"
+                                               SubtitleChanged="VideoMTC_SubtitleChanged"
                                                CompactOverlayButtonClick="VideoMTC_CompactOverlayButtonClick"
                                                SeparateButtonClick="VideoMTC_SeparateButtonClick"
                                                Loaded="VideoMTC_Loaded"
                                                ShowAndHideAutomatically="False"
+                                               ForwardButtonClick="VideoMTC_ForwardButtonClick"
+                                               RewindButtonClick="VideoMTC_RewindButtonClick"
                                                />
             </MediaPlayerElement.TransportControls>
         </MediaPlayerElement>
-        <ItemsControl x:Name="ChoiceItemsControl" ItemsSource="{x:Bind ChoiceCollection}" HorizontalAlignment="Center"
+        <Grid x:Name="InteractionContainer">
+            <ItemsControl x:Name="ChoiceItemsControl" ItemsSource="{x:Bind ChoiceCollection}" HorizontalAlignment="Center"
                       Visibility="Collapsed" VerticalAlignment="Bottom" Margin="0,0,0,100" SizeChanged="ChoiceItemsControl_SizeChanged">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <ItemsWrapGrid Orientation="Horizontal"/>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate x:DataType="bilibili:Choice">
-                    <Grid Background="{ThemeResource MaskAcrylicBackground}" CornerRadius="4" HorizontalAlignment="Stretch"
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsWrapGrid Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="bilibili:Choice">
+                        <Grid Background="{ThemeResource MaskAcrylicBackground}" CornerRadius="4" HorizontalAlignment="Stretch"
                               VerticalAlignment="Stretch" Padding="20,30" Tapped="Choice_Tapped" Margin="12">
-                        <TextBlock Text="{x:Bind option}" HorizontalAlignment="Center" VerticalAlignment="Center"
+                            <TextBlock Text="{x:Bind option}" HorizontalAlignment="Center" VerticalAlignment="Center"
                                        FontSize="15" Foreground="{ThemeResource ImportantTextColor}" FontWeight="Bold"/>
-                    </Grid>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,20,0,0">
+                <Button Style="{StaticResource DefaultCircleButtonStyle}" Background="{ThemeResource MaskAcrylicBackground}" Foreground="{ThemeResource ImportantTextColor}"
+                    x:Name="ExitScreenButton" ToolTipService.ToolTip="返回" Content="&#xE914;" Click="ExitScreenButton_Click" Visibility="Collapsed" Margin="0,0,15,0"/>
+                <Button Style="{StaticResource PrimaryCircleButtonStyle}" Background="{ThemeResource MaskAcrylicBackground}" Foreground="{ThemeResource ImportantTextColor}"
+                x:Name="InteractionHomeButton" Visibility="Collapsed" Click="InteractionHomeButton_Click"
+                ToolTipService.ToolTip="返回互动视频起点" Content="&#xE9CB;"/>
+            </StackPanel>
+            <StackPanel Padding="20" CornerRadius="4" HorizontalAlignment="Center" VerticalAlignment="Center" Background="{ThemeResource PaneBackground}"
+                Name="InteractionEndContainer" Visibility="Collapsed">
+                <TextBlock Style="{StaticResource TipWrapTextStyle}" Text="互动视频已经结束，点击左上方按钮可返回起点"/>
+            </StackPanel>
+        </Grid>
+        <Grid x:Name="PopupContainer">
+            <Border Background="{ThemeResource MediaTransportControlsPanelBackground}" Padding="8,5" CornerRadius="3" Margin="20,0,20,100"
+                x:Name="SubtitleContainer" Visibility="Collapsed" VerticalAlignment="Bottom" HorizontalAlignment="Center">
+                <TextBlock Style="{StaticResource CaptionTextStyle}" FontSize="20" x:Name="SubtitleContentBlock" TextWrapping="Wrap"/>
+            </Border>
+            <Border x:Name="TipContainer" Background="{ThemeResource PaneBackground}" Padding="12,8" CornerRadius="4" Margin="20,0,20,100"
+                    HorizontalAlignment="Left" VerticalAlignment="Bottom" Visibility="Collapsed"
+                    extensions:VisualExtensions.CenterPoint="20,20,0">
+                <TextBlock Style="{StaticResource CaptionTextStyle}" x:Name="TipContentBlock" TextWrapping="Wrap"
+                           MaxWidth="250"/>
+                <animations:Implicit.ShowAnimations>
+                    <animations:TranslationAnimation Duration="0:0:.5" From="0, -50, 0" To="0" ></animations:TranslationAnimation>
+                    <animations:OpacityAnimation Duration="0:0:.5" From="0" To="1.0"></animations:OpacityAnimation>
+                </animations:Implicit.ShowAnimations>
+
+                <animations:Implicit.HideAnimations>
+                    <animations:ScalarAnimation Target="Opacity" Duration="0:0:.5" To="0.0"></animations:ScalarAnimation>
+                    <animations:ScalarAnimation Target="Translation.Y" Duration="0:0:1" To="-50">
+                        <animations:ScalarKeyFrame Key="0.1" Value="30"></animations:ScalarKeyFrame>
+                        <animations:ScalarKeyFrame Key="0.5" Value="0.0"></animations:ScalarKeyFrame>
+                    </animations:ScalarAnimation>
+                </animations:Implicit.HideAnimations>
+            </Border>
+        </Grid>
         <ProgressBar IsIndeterminate="True" Foreground="{ThemeResource PrimaryColor}" Visibility="Collapsed"
                      VerticalAlignment="Bottom" HorizontalAlignment="Stretch" x:Name="LoadingBar"/>
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="ErrorContainer" Visibility="Collapsed">
             <TextBlock Style="{StaticResource BasicIconTextStyle}" FontSize="20" HorizontalAlignment="Center"
                        Text="&#xE903;" Foreground="{ThemeResource TipTextColor}"/>
-            <TextBlock Text="嗨呀！加载失败了，就问你气不气？" HorizontalAlignment="Center"
-                       TextAlignment="Center" Margin="0,10,0,0"/>
+            <TextBlock HorizontalAlignment="Center"
+                       TextAlignment="Center" Margin="0,10,0,0" x:Name="ErrorBlock"/>
         </StackPanel>
         <Grid Grid.Row="1" Visibility="{x:Bind DanmakuBarVisibility,Mode=OneWay}" Background="{ThemeResource MediaTransportControlsPanelBackground}"
-              Padding="15,5">
+              Padding="15,5" x:Name="DanmakuBarContainer" VerticalAlignment="Bottom">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
@@ -139,11 +218,13 @@
             <StackPanel Orientation="Horizontal">
                 <Button Style="{StaticResource TransparentButtonStyle}" x:Name="DanmakuVisibilityButton" Content="&#xEA43;"
                     FontFamily="{StaticResource Icon}" Click="DanmakuVisibilityButton_Click" FontSize="25" ToolTipService.ToolTip="弹幕开关"/>
-                <Button Style="{StaticResource TransparentButtonStyle}" x:Name="DanmakuSettingButton" Content="&#xEA24;" ToolTipService.ToolTip="弹幕参数"
+                <Button Style="{StaticResource TransparentButtonStyle}" x:Name="DanmakuOptionButton" Content="&#xE9E0;" ToolTipService.ToolTip="弹幕显示设置"
+                    FontFamily="{StaticResource Icon}" Flyout="{StaticResource DanmakuOptionFlyout}" FontSize="19" Margin="10,0,0,0"/>
+                <Button Style="{StaticResource TransparentButtonStyle}" x:Name="DanmakuSettingButton" Content="&#xEA24;" ToolTipService.ToolTip="弹幕发送参数"
                     FontFamily="{StaticResource Icon}" Flyout="{StaticResource DanmakuFlyout}" FontSize="25" Margin="10,0,0,0"/>
             </StackPanel>
             <TextBox Style="{StaticResource TransparentTextBoxStyle}" Margin="15,0" VerticalAlignment="Center" PlaceholderText="哔哩哔哩 (゜-゜)つロ 干杯~-bilibili"
-                     Grid.Column="1" x:Name="DanmakuBox" AcceptsReturn="False" HorizontalAlignment="Stretch" KeyDown="DanmakuBox_KeyDown" Padding="6,5"/>
+                     Grid.Column="1" x:Name="DanmakuBox" AcceptsReturn="False" HorizontalAlignment="Stretch" KeyDown="DanmakuBox_KeyDown" Padding="6,7"/>
             <Button Style="{StaticResource TransparentButtonStyle}" x:Name="SendDanmakuButton" Content="&#xE9D1;" Grid.Column="2" VerticalAlignment="Center"
                     FontFamily="{StaticResource Icon}" Click="SendDanmakuButton_Click"/>
         </Grid>

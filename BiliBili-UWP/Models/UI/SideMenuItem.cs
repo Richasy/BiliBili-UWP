@@ -73,7 +73,7 @@ namespace BiliBili_UWP.Models.UI
                     break;
                 case SideMenuItemType.ViewLater:
                     Name = "稍后再看";
-                    Icon = "";
+                    Icon = "";
                     Group = SideMenuGroupType.My;
                     break;
                 case SideMenuItemType.Settings:

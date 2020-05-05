@@ -90,7 +90,7 @@
                         </Button>
                     </StackPanel>
                     <TextBlock x:Name="BasicInfoBlock" Style="{StaticResource SmallTipTextStyle}" FontSize="10" Margin="0,10,0,0"
-                               LineHeight="20"/>
+                               LineHeight="20" IsTextSelectionEnabled="True"/>
                     <ListView ItemTemplate="{StaticResource TagItemTemplate}" ItemsSource="{x:Bind TagCollection}"
                       IsItemClickEnabled="True" ItemContainerStyle="{StaticResource TransparentListViewContainerStyle}"
                       Style="{StaticResource BasicListView}" Padding="-5,0,0,5" ItemsPanel="{StaticResource HorizontalListViewItemsPanel}"

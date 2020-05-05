@@ -39,7 +39,7 @@
                                          UserName="{x:Bind name}"
                                          FirstSectionContent="{x:Bind play,Converter={StaticResource NumberAbbrConverter}}"
                                          SecondSectionContent="{x:Bind danmaku,Converter={StaticResource NumberAbbrConverter}}"
-                                         Margin="0,0,0,10"
+                                         Margin="0,0,0,10" VideoId="{x:Bind param}" ExtraButtonVisibility="Visible"
                                          />
         </DataTemplate>
     </Page.Resources>

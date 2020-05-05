@@ -16,6 +16,17 @@ namespace BiliBili_Lib.Models.BiliBili.Video
         public int duration { get; set; }
         public string vid { get; set; }
         public string weblink { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            return obj is VideoPart part &&
+                   cid == part.cid;
+        }
+
+        public override int GetHashCode()
+        {
+            return 422245175 + cid.GetHashCode();
+        }
     }
 
 }

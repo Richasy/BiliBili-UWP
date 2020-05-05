@@ -118,10 +118,10 @@
         <Grid x:Name="WebContainer" Visibility="Collapsed" Background="{ThemeResource ScreenMaskColor}">
             <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                 <WebView x:Name="BackupWebView" NavigationStarting="BackupWebView_NavigationStarting"  NavigationCompleted="BackupWebView_NavigationCompleted"
-                 VerticalAlignment="Center" HorizontalAlignment="Center"
+                 VerticalAlignment="Center" HorizontalAlignment="Center" 
                  Width="400" Height="360" DefaultBackgroundColor="Beige"/>
                 <Button Style="{StaticResource DefaultGhostCircleButtonStyle}" Content="&#xEA15;" VerticalAlignment="Top"
-                        HorizontalAlignment="Right" x:Name="WebCloseButton" Click="WebCloseButton_Click"/>
+                        HorizontalAlignment="Right" x:Name="WebCloseButton" Click="WebCloseButton_Click" Margin="10"/>
             </Grid>
         </Grid>
     </Grid>

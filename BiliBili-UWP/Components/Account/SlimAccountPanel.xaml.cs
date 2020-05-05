@@ -26,6 +26,13 @@ namespace BiliBili_UWP.Components.Account
             this.InitializeComponent();
             App.BiliViewModel.IsLoginChanged -= LoginStatusChanged;
             App.BiliViewModel.IsLoginChanged += LoginStatusChanged;
+            App.BiliViewModel.MyInfoChanged -= MyInfoChanged;
+            App.BiliViewModel.MyInfoChanged += MyInfoChanged;
+        }
+
+        private void MyInfoChanged(object sender, EventArgs e)
+        {
+            MyInfoInit(true);
         }
 
         private void LoginStatusChanged(object sender, bool e)
@@ -33,17 +40,24 @@ namespace BiliBili_UWP.Components.Account
             CheckElementStatus();
             if (e)
             {
-                var me = App.BiliViewModel._client.Account.Me;
-                if (me != null)
+                MyInfoInit();
+            }
+            else
+            {
+                UserAvatarNarrrow.ProfilePicture = null;
+            }
+        }
+
+        private void MyInfoInit(bool isSlimRefresh=false)
+        {
+            var me = App.BiliViewModel._client.Account.Me;
+            if (me != null)
+            {
+                if (!isSlimRefresh)
                 {
                     UserAvatar.ProfilePicture = new BitmapImage(new Uri(me.face)) { DecodePixelWidth = 55 };
                     UserAvatarNarrrow.ProfilePicture = new BitmapImage(new Uri(me.face)) { DecodePixelWidth = 55 };
-                    UserNameBlock.Text = me.name;
-                    LevelBlock.Level = me.level;
-                    DynamicBlock.Text = AppTool.GetNumberAbbreviation(me.dynamic);
-                    FollowBlock.Text = AppTool.GetNumberAbbreviation(me.following);
-                    FanBlock.Text = AppTool.GetNumberAbbreviation(me.follower);
-                    if (me.pendant!=null && !string.IsNullOrEmpty(me.pendant.image))
+                    if (me.pendant != null && !string.IsNullOrEmpty(me.pendant.image))
                     {
                         PendantImage.Visibility = Visibility.Visible;
                         PendantImage.Source = new BitmapImage(new Uri(me.pendant.image));
@@ -55,10 +69,11 @@ namespace BiliBili_UWP.Components.Account
                         UserNameBlock.Margin = new Thickness(0, 20, 0, 0);
                     }
                 }
-            }
-            else
-            {
-                UserAvatarNarrrow.ProfilePicture = null;
+                UserNameBlock.Text = me.name;
+                LevelBlock.Level = me.level;
+                DynamicBlock.Text = AppTool.GetNumberAbbreviation(me.dynamic);
+                FollowBlock.Text = AppTool.GetNumberAbbreviation(me.following);
+                FanBlock.Text = AppTool.GetNumberAbbreviation(me.follower);
             }
         }
 
@@ -70,7 +85,7 @@ namespace BiliBili_UWP.Components.Account
 
         // Using a DependencyProperty as the backing store for IsOnlyAvatar.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty IsOnlyAvatarProperty =
-            DependencyProperty.Register("IsOnlyAvatar", typeof(bool), typeof(SlimAccountPanel), new PropertyMetadata(false,new PropertyChangedCallback(IsOnlyAvatar_Changed)));
+            DependencyProperty.Register("IsOnlyAvatar", typeof(bool), typeof(SlimAccountPanel), new PropertyMetadata(false, new PropertyChangedCallback(IsOnlyAvatar_Changed)));
 
         private static void IsOnlyAvatar_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -136,9 +151,25 @@ namespace BiliBili_UWP.Components.Account
             }
             else
             {
-                if(!LoginButton.IsLoading)
+                if (!LoginButton.IsLoading)
                     App.BiliViewModel.ShowLoginPopup();
             }
+        }
+
+        private void Dynamic_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var me = App.BiliViewModel._client.Account.Me;
+            App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Pages.Sub.Account.DetailPage), new Tuple<int, bool>(me.mid, true));
+        }
+
+        private void Fans_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Pages.Sub.Account.FansPage));
+        }
+
+        private void Follow_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Pages.Sub.Account.FollowPage));
         }
     }
 }

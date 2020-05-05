@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,9 +15,10 @@ namespace BiliBili_UWP.Models.UI.Converter
         {
             if(value!=null && value is string url && !string.IsNullOrEmpty(url))
             {
+                string ext = Path.GetExtension(url);
                 string suffix = "";
-                if (parameter != null && !url.Contains("w.jpg"))
-                    suffix = $"@{parameter.ToString()}w.jpg";
+                if (parameter != null && !url.Contains($"w{ext}"))
+                    suffix = $"@{parameter.ToString()}w{ext}";
                 return url + suffix;
             }
             return null;

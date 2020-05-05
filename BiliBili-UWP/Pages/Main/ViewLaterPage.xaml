@@ -52,13 +52,17 @@
         <Grid Grid.Row="1">
             <controls1:AdaptiveGridView x:Name="HistoryVideoView"
                               HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Stretch"
                           DesiredWidth="200"
-                          ItemHeight="185"
+                          ItemHeight="185" StretchContentForSingleRow="False"
                           ItemTemplate="{StaticResource VideoItemTemplate}"
                           ItemContainerStyle="{StaticResource TransparentGridViewItemContainerStyle}"
                           Style="{StaticResource NoScrollGridView}"
                           SelectionMode="None" IsItemClickEnabled="True"
                           ItemClick="HistoryVideoView_ItemClick"
+                                        CanReorderItems="True"
+                                        AllowDrop="True"
+                                        IsSwipeEnabled="True"
                           ItemsSource="{x:Bind ViewLaterCollection}"
                           />
             <TextBlock Style="{StaticResource TipTextStyle}" Text="暂无稍后再看记录" FontWeight="Bold" VerticalAlignment="Center"

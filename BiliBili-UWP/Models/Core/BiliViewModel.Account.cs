@@ -18,6 +18,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.Security.Cryptography.Core;
 using Windows.Storage.Streams;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace BiliBili_UWP.Models.Core
@@ -39,8 +40,9 @@ namespace BiliBili_UWP.Models.Core
         }
 
         public bool IsLogining = false;
-        
+
         public event EventHandler<bool> IsLoginChanged;
+        public event EventHandler MyInfoChanged;
         public LoginPopup LoginPopup;
         public void ShowLoginPopup()
         {
@@ -48,6 +50,8 @@ namespace BiliBili_UWP.Models.Core
                 LoginPopup = new LoginPopup();
             LoginPopup.ShowPopup();
         }
+
+
         /// <summary>
         /// 获取我的个人信息
         /// </summary>
@@ -58,10 +62,18 @@ namespace BiliBili_UWP.Models.Core
             if (data != null)
             {
                 if (!IsLogin)
+                {
                     IsLogin = true;
+                } 
             }
         }
-        
+
+        public async void ChangeMyInfo()
+        {
+            await GetMeAsync();
+            MyInfoChanged?.Invoke(this, EventArgs.Empty);
+        }
+
         public void ClearAccountInformation()
         {
             IsLogin = false;
@@ -69,10 +81,11 @@ namespace BiliBili_UWP.Models.Core
             AppTool.WriteLocalSetting(Settings.RefreshToken, "");
             AppTool.WriteLocalSetting(Settings.TokenExpiry, "0");
             AppTool.WriteLocalSetting(Settings.UserId, "");
+            AppTool.WriteLocalSetting(Settings.LastSeemDynamicId, "");
             _client.Account = new AccountService(new TokenPackage());
             BiliTool.ClearCookies();
         }
-        
+
         /// <summary>
         /// 自动登录
         /// </summary>
@@ -96,7 +109,7 @@ namespace BiliBili_UWP.Models.Core
             {
                 await _client.Account.SSO();
                 IsLogin = false;
-            }  
+            }
         }
         /// <summary>
         /// 检查用户是否登录

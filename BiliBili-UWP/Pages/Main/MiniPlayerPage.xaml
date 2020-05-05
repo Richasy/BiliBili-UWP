@@ -11,6 +11,6 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource PageBackground}">
-        <controls:VideoPlayer x:Name="VideoPlayer" MTCLoaded="VideoPlayer_MTCLoaded" DanmakuBarVisibility="Collapsed"/>
+        <controls:VideoPlayer x:Name="VideoPlayer" MTCLoaded="VideoPlayer_MTCLoaded"/>
     </Grid>
 </Page>

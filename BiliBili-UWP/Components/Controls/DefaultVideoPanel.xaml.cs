@@ -23,15 +23,15 @@ namespace BiliBili_UWP.Components.Controls
         {
             this.InitializeComponent();
         }
-        public int VideoId
+        public string VideoId
         {
-            get { return (int)GetValue(VideoIdProperty); }
+            get { return (string)GetValue(VideoIdProperty); }
             set { SetValue(VideoIdProperty, value); }
         }
 
         // Using a DependencyProperty as the backing store for VideoId.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty VideoIdProperty =
-            DependencyProperty.Register("VideoId", typeof(int), typeof(DefaultVideoPanel), new PropertyMetadata(0));
+            DependencyProperty.Register("VideoId", typeof(string), typeof(DefaultVideoPanel), new PropertyMetadata("0"));
 
         public string Title
         {
@@ -150,6 +150,38 @@ namespace BiliBili_UWP.Components.Controls
         public static readonly DependencyProperty UserNameProperty =
             DependencyProperty.Register("UserName", typeof(string), typeof(DefaultVideoPanel), new PropertyMetadata(""));
 
+        public Visibility ExtraButtonVisibility
+        {
+            get { return (Visibility)GetValue(ExtraButtonVisibilityProperty); }
+            set { SetValue(ExtraButtonVisibilityProperty, value); }
+        }
 
+        // Using a DependencyProperty as the backing store for ExtraButtonVisibility.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ExtraButtonVisibilityProperty =
+            DependencyProperty.Register("ExtraButtonVisibility", typeof(Visibility), typeof(DefaultVideoPanel), new PropertyMetadata(Visibility.Collapsed));
+
+        private async void LaterViewButton_Click(object sender, RoutedEventArgs e)
+        {
+            await App.BiliViewModel.AddViewLater(sender, Convert.ToInt32(VideoId));
+        }
+
+        public FlyoutBase ExtraFlyout
+        {
+            get { return (FlyoutBase)GetValue(ExtraFlyoutProperty); }
+            set { SetValue(ExtraFlyoutProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ExtraFlyout.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ExtraFlyoutProperty =
+            DependencyProperty.Register("ExtraFlyout", typeof(FlyoutBase), typeof(DefaultVideoPanel), new PropertyMetadata(null,new PropertyChangedCallback(ExtraFlyout_Changed)));
+
+        private static void ExtraFlyout_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if(e.NewValue !=null && e.NewValue is FlyoutBase flyout)
+            {
+                var instance = d as DefaultVideoPanel;
+                instance.ExtraButton.Flyout = flyout;
+            }
+        }
     }
 }

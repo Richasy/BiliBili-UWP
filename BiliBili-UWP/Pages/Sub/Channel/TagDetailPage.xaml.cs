@@ -212,5 +212,10 @@ namespace BiliBili_UWP.Pages.Sub.Channel
                 SubscribeButton.IsLoading = false;
             }
         }
+        private async void LaterViewButton_Click(object sender, RoutedEventArgs e)
+        {
+            var data = (sender as FrameworkElement).DataContext as VideoRecommend;
+            await App.BiliViewModel.AddViewLater(sender, Convert.ToInt32(data.param));
+        }
     }
 }

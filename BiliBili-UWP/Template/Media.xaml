@@ -4,6 +4,41 @@
     xmlns:control="using:BiliBili_UWP.Models.UI.Others"
     xmlns:c="using:NSDanmaku.Controls"
     xmlns:local="using:BiliBili_UWP.Template">
+    <Style TargetType="MediaPlayerElement" x:Key="BasicMediaStyle">
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="MediaPlayerElement">
+                    <Grid x:Name="LayoutRoot">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="TransportControlsStates">
+                                <VisualState x:Name="DefaultState"/>
+                                <VisualState x:Name="MarginState">
+                                    <VisualState.Setters>
+                                        <Setter Target="TransportControlsPresenter.Margin" Value="0,0,0,45" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Border Background="Transparent" />
+                        <Image  x:Name="PosterImage"
+                Visibility="Collapsed"
+                Source="{TemplateBinding PosterSource}"
+                Stretch="{TemplateBinding Stretch}" />
+                        <MediaPlayerPresenter x:Name="MediaPlayerPresenter"
+                IsFullWindow="{TemplateBinding IsFullWindow}"
+                Stretch="{TemplateBinding Stretch}"
+                MediaPlayer="{TemplateBinding MediaPlayer}" />
+                        <ContentPresenter     x:Name="TransportControlsPresenter"
+                Visibility="{TemplateBinding AreTransportControlsEnabled}"/>
+                        <Grid x:Name="TimedTextSourcePresenter" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     <Style TargetType="control:VideoTransportControls">
         <Setter Property="IsTabStop" Value="False" />
         <Setter Property="Background" Value="Transparent" />
@@ -22,6 +57,7 @@
                                 <Setter Property="Height" Value="{ThemeResource MTCMediaButtonHeight}" />
                                 <Setter Property="AllowFocusOnInteraction" Value="True" />
                                 <Setter Property="CornerRadius" Value="4" />
+                                <Setter Property="FontSize" Value="14" />
                             </Style>
                             <!-- New AppBarToggle button style 48x48 pixels in size -->
                             <Style x:Key="AppBarToggleButtonStyle" TargetType="AppBarToggleButton" BasedOn="{StaticResource AppBarToggleButtonRevealStyle}">
@@ -31,7 +67,7 @@
                             </Style>
                             <!-- New CommandBar Style -->
                             <Style x:Key="CommandBarStyle" TargetType="CommandBar">
-                                <Setter Property="Height" Value="{ThemeResource MTCMediaButtonHeight}" />
+                                <Setter Property="Height" Value="40" />
                                 <Setter Property="Background" Value="Transparent" />
                             </Style>
                             <!-- Style for Error Message text -->
@@ -234,9 +270,9 @@
                                                             <ColumnDefinition Width="*" />
                                                         </Grid.ColumnDefinitions>
                                                         <Grid.RowDefinitions>
-                                                            <RowDefinition Height="18" />
+                                                            <RowDefinition Height="6" />
                                                             <RowDefinition Height="Auto" />
-                                                            <RowDefinition Height="18" />
+                                                            <RowDefinition Height="6" />
                                                         </Grid.RowDefinitions>
                                                         <Rectangle x:Name="HorizontalTrackRect"
                                                                    Fill="{TemplateBinding Background}"
@@ -539,9 +575,8 @@
                         </VisualStateManager.VisualStateGroups>
                         <c:Danmaku x:Name="DanmakuControls" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                    />
-
                         <Border x:Name="ControlPanel_ControlPanelVisibilityStates_Border">
-                            <Grid x:Name="ControlPanelGrid"
+                            <Grid x:Name="ControlPanelGrid" IsTapEnabled="False" IsDoubleTapEnabled="False"
                   Background="{ThemeResource MediaTransportControlsPanelBackground}"
                   VerticalAlignment="Bottom"
                   RenderTransformOrigin="0.5,0.5">
@@ -561,16 +596,16 @@
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
                                 <Border x:Name="ErrorBorder"
-                    Width="320"
-                    Height="96"
-                    Grid.ColumnSpan="3"
-                    HorizontalAlignment="Center"
-                    Background="{ThemeResource MediaTransportControlsPanelBackground}"
-                    Visibility="Collapsed">
+                                        Width="0"
+                                        Height="1"
+                                        Grid.ColumnSpan="3"
+                                        HorizontalAlignment="Center"
+                                        Background="{ThemeResource MediaTransportControlsPanelBackground}"
+                                        Visibility="Collapsed">
                                     <TextBlock x:Name="ErrorTextBlock"
-                      Style="{StaticResource MediaTextBlockStyle}"
-                      TextWrapping="WrapWholeWords"
-                      Margin="12" />
+                                               Style="{StaticResource MediaTextBlockStyle}"
+                                               TextWrapping="WrapWholeWords"
+                                               Margin="12" />
                                 </Border>
                                 <Border x:Name="MediaTransportControls_Timeline_Border" Grid.Column="1" Grid.Row="1">
                                     <Grid x:Name="MediaTransportControls_Timeline_Grid">
@@ -592,7 +627,7 @@
                                                      Height="4"
                                                      IsIndeterminate="True"
                                                      IsHitTestVisible="False"
-                                                     Foreground="{ThemeResource PrimaryColorOpacity}"
+                                                     Foreground="{ThemeResource PrimaryColor}"
                                                      VerticalAlignment="Top"
                                                      Margin="0,2,0,0"
                                                      Visibility="Collapsed" />
@@ -650,7 +685,7 @@
                                                                 </AppBarButton.Icon>
                                                             </AppBarButton>
                                                             <Slider x:Name='VolumeSlider'
-                                                                    Value='50'
+                                                                    Value='50' Style="{StaticResource BasicSliderStyle}"
                                                                     IsThumbToolTipEnabled='False'
                                                                     Width='{ThemeResource MTCHorizontalVolumeSliderWidth}'
                                                                     VerticalAlignment='Center'
@@ -679,6 +714,38 @@
                                                 <AppBarButton.Icon>
                                                     <FontIcon Glyph="&#xE94B;" FontFamily="{StaticResource Icon}" />
                                                 </AppBarButton.Icon>
+                                            </AppBarButton>
+                                            <AppBarButton x:Name="SubtitleButton" ToolTipService.ToolTip="字幕选择"
+                                                          Style="{StaticResource AppBarButtonStyle}"
+                                                          MediaTransportControlsHelper.DropoutOrder="12">
+                                                <AppBarButton.Icon>
+                                                    <FontIcon Glyph="&#xED1E;" />
+                                                </AppBarButton.Icon>
+                                                <AppBarButton.Flyout>
+                                                    <Flyout FlyoutPresenterStyle="{StaticResource NoPaddingFlyoutStyle}">
+                                                        <Grid>
+                                                            <ListView x:Name="SubtitleListView"
+                                                                  ItemsSource="{TemplateBinding SubtitleItemsSource}"
+                                                                  IsItemClickEnabled="True"
+                                                                  Style="{StaticResource BasicListView}"
+                                                                  Width="200"
+                                                                  ItemContainerStyle="{StaticResource BasicListViewContainerStyle}"
+                                                                  SelectedIndex="{TemplateBinding SubtitleSelectIndex}"
+                                                                  >
+                                                                <ListView.ItemTemplate>
+                                                                    <DataTemplate>
+                                                                        <ListViewItem x:Name="SubtitleItem" Padding="10,6">
+                                                                            <RadioButton Style="{StaticResource BasicRadioButtonStyle}" IsChecked="{Binding ElementName=SubtitleItem,Path=IsSelected}"
+                                                                                     GroupName="Subtitle" Content="{Binding lan_doc}" IsEnabled="False"/>
+                                                                        </ListViewItem>
+                                                                    </DataTemplate>
+                                                                </ListView.ItemTemplate>
+                                                            </ListView>
+                                                            <TextBlock Style="{StaticResource SmallTipTextStyle}" Text="当前视频没有字幕" x:Name="SubtitleHolderText"
+                                                                       Visibility="{TemplateBinding SubtitleHolderVisibility}" Margin="10"/>
+                                                        </Grid>
+                                                    </Flyout>
+                                                </AppBarButton.Flyout>
                                             </AppBarButton>
                                             <AppBarButton x:Name='CCSelectionButton'
                         Style='{StaticResource AppBarButtonStyle}'
@@ -718,27 +785,25 @@
                           Style='{StaticResource AppBarButtonStyle}'
                           MediaTransportControlsHelper.DropoutOrder='3'
                           Visibility='Collapsed'/>
-                                            <AppBarButton x:Name='RewindButton'
+                                            <AppBarButton x:Name='CustomRewindButton'
                         Style='{StaticResource AppBarButtonStyle}'
-                        MediaTransportControlsHelper.DropoutOrder='1'
-                        Visibility='Collapsed'>
+                        MediaTransportControlsHelper.DropoutOrder='1'>
                                                 <AppBarButton.Icon>
-                                                    <FontIcon Glyph="&#xEB9E;" />
+                                                    <FontIcon Glyph="&#xE9DC;" FontFamily="{StaticResource Icon}"/>
                                                 </AppBarButton.Icon>
                                             </AppBarButton>
                                             <AppBarButton x:Name='CustomPlayPauseButton'
                           Style='{StaticResource AppBarButtonStyle}'
                           MediaTransportControlsHelper.DropoutOrder='23'>
                                                 <AppBarButton.Icon>
-                                                    <FontIcon FontFamily="{StaticResource Icon}" Glyph="&#xEA22;"/>
+                                                    <FontIcon FontFamily="{StaticResource Icon}" Glyph="&#xE9BE;"/>
                                                 </AppBarButton.Icon>
                                             </AppBarButton>
-                                            <AppBarButton x:Name='FastForwardButton'
+                                            <AppBarButton x:Name='CustomForwardButton'
                         Style='{StaticResource AppBarButtonStyle}'
-                        MediaTransportControlsHelper.DropoutOrder='1'
-                        Visibility='Collapsed'>
+                        MediaTransportControlsHelper.DropoutOrder='1'>
                                                 <AppBarButton.Icon>
-                                                    <FontIcon Glyph="&#xEB9D;" />
+                                                    <FontIcon Glyph="&#xE9DD;" FontFamily="{StaticResource Icon}"/>
                                                 </AppBarButton.Icon>
                                             </AppBarButton>
                                             <AppBarButton x:Name='NextTrackButton'

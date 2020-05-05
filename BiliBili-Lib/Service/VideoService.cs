@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.Media.Core;
 using Windows.Media.Streaming.Adaptive;
@@ -506,6 +507,41 @@ namespace BiliBili_Lib.Service
                 return jobj["code"].ToString() == "0";
             }
             return false;
+        }
+
+        /// <summary>
+        /// 获取字幕文件索引
+        /// </summary>
+        /// <param name="aid">视频ID</param>
+        /// <param name="cid">分PID</param>
+        /// <returns></returns>
+        public async Task<List<SubtitleIndexItem>> GetVideoSubtitleIndexAsync(int aid,int cid)
+        {
+            var param = new Dictionary<string, string>();
+            param.Add("id", $"cid:{cid}");
+            param.Add("aid", aid.ToString());
+            string url = BiliTool.UrlContact(Api.VIDEO_SUBTITLE, param, true);
+            string result = await BiliTool.GetTextFromWebAsync(url, true);
+            if(!string.IsNullOrEmpty(result) && result.Contains("subtitle"))
+            {
+                var json = Regex.Match(result, @"<subtitle>(.*?)</subtitle>").Groups[1].Value;
+                var index = JsonConvert.DeserializeObject<VideoSubtitleIndex>(json);
+                return index.subtitles;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// 获取字幕数据
+        /// </summary>
+        /// <param name="url">网址</param>
+        /// <returns></returns>
+        public async Task<VideoSubtitle> GetSubtitlesAsync(string url)
+        {
+            if (!url.StartsWith("http"))
+                url = "https:" + url;
+            var response = await BiliTool.ConvertEntityFromWebAsync<VideoSubtitle>(url, "");
+            return response;
         }
     }
 }

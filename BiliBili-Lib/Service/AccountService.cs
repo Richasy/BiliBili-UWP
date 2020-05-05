@@ -75,28 +75,35 @@ namespace BiliBili_Lib.Service
             result.Status = LoginResultType.Error;
             if (!string.IsNullOrEmpty(response))
             {
-                var jobj = JObject.Parse(response);
-                int code = Convert.ToInt32(jobj["code"]);
-                if (code == 0)
+                try
                 {
-                    var data = JsonConvert.DeserializeObject<LoginResult>(jobj["data"].ToString());
-                    var package = new TokenPackage(data.token_info.access_token, data.token_info.refresh_token, AppTool.DateToTimeStamp(DateTime.Now.AddSeconds(data.token_info.expires_in)));
-                    InitToken(package);
-                    TokenChanged?.Invoke(this, package);
-                    result.Status = LoginResultType.Success;
-                    await SSO();
+                    var jobj = JObject.Parse(response);
+                    int code = Convert.ToInt32(jobj["code"]);
+                    if (code == 0)
+                    {
+                        var data = JsonConvert.DeserializeObject<LoginResult>(jobj["data"].ToString());
+                        var package = new TokenPackage(data.token_info.access_token, data.token_info.refresh_token, AppTool.DateToTimeStamp(DateTime.Now.AddSeconds(data.token_info.expires_in)));
+                        InitToken(package);
+                        TokenChanged?.Invoke(this, package);
+                        result.Status = LoginResultType.Success;
+                        await SSO();
+                    }
+                    else if (code == -2100)
+                    {
+                        result.Status = LoginResultType.NeedValidate;
+                        result.Url = jobj["url"].ToString();
+                    }
+                    else if (code == -105)
+                        result.Status = LoginResultType.NeedCaptcha;
+                    else if (code == -449)
+                        result.Status = LoginResultType.Busy;
+                    else
+                        result.Status = LoginResultType.Fail;
                 }
-                else if (code == -2100)
+                catch (Exception)
                 {
-                    result.Status = LoginResultType.NeedValidate;
-                    result.Url = jobj["url"].ToString();
+                    return new LoginCallback { Status = LoginResultType.Fail, Url = "" };
                 }
-                else if (code == -105)
-                    result.Status = LoginResultType.NeedCaptcha;
-                else if (code == -449)
-                    result.Status = LoginResultType.Busy;
-                else
-                    result.Status = LoginResultType.Fail;
             }
             return result;
         }
@@ -391,7 +398,7 @@ namespace BiliBili_Lib.Service
         public async Task<List<VideoDetail>> GetViewLaterAsync(int page = 1)
         {
             string url = Api.ACCOUNT_VIEWLATER + $"?pn={page}&ps=40";
-            var data = await BiliTool.ConvertEntityFromWebAsync<List<VideoDetail>>(url,"data.list");
+            var data = await BiliTool.ConvertEntityFromWebAsync<List<VideoDetail>>(url, "data.list");
             return data;
         }
 
@@ -432,7 +439,7 @@ namespace BiliBili_Lib.Service
         public async Task<bool> DeleteViewLaterAsync(params int[] aids)
         {
             var param = new Dictionary<string, string>();
-            param.Add("aid", string.Join(',',aids));
+            param.Add("aid", string.Join(',', aids));
             var data = BiliTool.UrlContact("", param, true);
             string content = await BiliTool.PostContentToWebAsync(Api.ACCOUNT_VIEWLATER_DEL, data);
             if (!string.IsNullOrEmpty(content))
@@ -481,7 +488,7 @@ namespace BiliBili_Lib.Service
         {
             var param = new Dictionary<string, string>();
             param.Add("business", "reply");
-            string url = BiliTool.UrlContact(Api.ACCOUNT_EMOJI_PANEL,param, true);
+            string url = BiliTool.UrlContact(Api.ACCOUNT_EMOJI_PANEL, param, true);
             var items = await BiliTool.ConvertEntityFromWebAsync<List<EmojiReplyContainer>>(url, "data.packages");
             return items;
         }
@@ -494,6 +501,71 @@ namespace BiliBili_Lib.Service
             string url = BiliTool.UrlContact(Api.ACCOUNT_UNREAD, null, true);
             var data = await BiliTool.ConvertEntityFromWebAsync<MyMessage>(url);
             return data;
+        }
+        /// <summary>
+        /// 获取我的粉丝
+        /// </summary>
+        /// <param name="page">页码</param>
+        /// <param name="reversion">刷新标识</param>
+        /// <returns></returns>
+        public async Task<FanResponse> GetMyFansAsync(int page, long reversion = 0)
+        {
+            var param = new Dictionary<string, string>();
+            param.Add("pn", page.ToString());
+            param.Add("vmid", BiliTool.mid);
+            string url = BiliTool.UrlContact(Api.ACCOUNT_RELATION_FANS, param, true);
+            var response = await BiliTool.ConvertEntityFromWebAsync<FanResponse>(url);
+            return response;
+        }
+        /// <summary>
+        /// 获取我的关注的分组
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<FollowTag>> GetMyFollowTagsAsync()
+        {
+            var param = new Dictionary<string, string>();
+            param.Add("vmid", BiliTool.mid);
+            string url = BiliTool.UrlContact(Api.ACCOUNT_RELATION_FOLLOW_TAGS, param, true);
+            var data = await BiliTool.ConvertEntityFromWebAsync<List<FollowTag>>(url);
+            return data;
+        }
+        /// <summary>
+        /// 获取我关注的用户（按分组）
+        /// </summary>
+        /// <param name="tagId">分组ID</param>
+        /// <param name="pn">页码</param>
+        /// <returns></returns>
+        public async Task<List<RelationUser>> GetMyFollowUserAsync(int tagId,int pn)
+        {
+            var param = new Dictionary<string, string>();
+            param.Add("mid", BiliTool.mid);
+            param.Add("ps", "50");
+            param.Add("pn", pn.ToString());
+            param.Add("tagid", tagId.ToString());
+            string url = BiliTool.UrlContact(Api.ACCOUNT_RELATION_FOLLOW_DETAIL, param, true);
+            var data = await BiliTool.ConvertEntityFromWebAsync<List<RelationUser>>(url);
+            return data;
+        }
+        /// <summary>
+        /// 删除收藏夹内视频
+        /// </summary>
+        /// <param name="aid">视频ID</param>
+        /// <param name="videoType">视频类型</param>
+        /// <param name="listId">收藏夹ID</param>
+        /// <returns></returns>
+        public async Task<bool> RemoveFavoriteVideoAsync(int aid,int videoType,int listId)
+        {
+            var param = new Dictionary<string, string>();
+            param.Add("media_id", listId.ToString());
+            param.Add("resources", $"{aid}:{videoType}");
+            var req = BiliTool.UrlContact("", param, true);
+            var data = await BiliTool.PostContentToWebAsync(Api.ACCOUNT_FAVORITE_VIDEO_DELETE, req);
+            if (!string.IsNullOrEmpty(data))
+            {
+                var jobj = JObject.Parse(data);
+                return jobj["code"].ToString() == "0";
+            }
+            return false;
         }
     }
 }

@@ -78,8 +78,10 @@ namespace BiliBili_UWP.Components.Controls
             if (args.ChosenSuggestion != null)
             {
                 BiliSearchBox.ItemsSource = null;
-                string key = key = args.ChosenSuggestion.ToString();
+                string key = args.ChosenSuggestion.ToString();
                 App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Pages.Sub.SearchPage), key);
+                BiliSearchBox.Text = "";
+                BiliSearchBox.ItemsSource = null;
             }
         }
 

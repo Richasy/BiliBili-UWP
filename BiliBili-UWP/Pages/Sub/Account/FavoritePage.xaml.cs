@@ -111,5 +111,23 @@ namespace BiliBili_UWP.Pages.Sub.Account
                 await LoadMoreVideo();
             }
         }
+
+        private async void RemoveButton_Click(object sender, RoutedEventArgs e)
+        {
+            var btn = sender as AppBarButton;
+            btn.IsEnabled = false;
+            var context = btn.DataContext as FavoriteVideo;
+            bool result = await App.BiliViewModel._client.Account.RemoveFavoriteVideoAsync(context.id, context.type, _favoriteId);
+            if (result)
+            {
+                new TipPopup("移除成功").ShowMessage();
+                VideoCollection.Remove(context);
+            }
+            else
+            {
+                new TipPopup("移除失败").ShowError();
+            }
+            btn.IsEnabled = true;
+        }
     }
 }
