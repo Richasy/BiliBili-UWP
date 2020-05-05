@@ -48,7 +48,7 @@
                     </ItemsPanelTemplate>
                 </GridView.ItemsPanel>
             </GridView>
-            <TextBlock Style="{StaticResource TipTextStyle}" Text="无法加载动态列表" FontWeight="Bold" VerticalAlignment="Top"
+            <TextBlock Style="{StaticResource TipTextStyle}" Text="无法加载动态列表，请检查网络或登录后重试" FontWeight="Bold" VerticalAlignment="Top"
                            x:Name="HolderText" Visibility="Collapsed"/>
         </Grid>
         <ProgressRing Style="{StaticResource BasicProgressRingStyle}" x:Name="LoadingRing" Grid.Row="1"/>

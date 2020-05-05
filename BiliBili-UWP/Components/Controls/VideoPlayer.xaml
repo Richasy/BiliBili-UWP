@@ -209,7 +209,7 @@
                        TextAlignment="Center" Margin="0,10,0,0" x:Name="ErrorBlock"/>
         </StackPanel>
         <Grid Grid.Row="1" Visibility="{x:Bind DanmakuBarVisibility,Mode=OneWay}" Background="{ThemeResource MediaTransportControlsPanelBackground}"
-              Padding="15,5">
+              Padding="15,5" x:Name="DanmakuBarContainer" VerticalAlignment="Bottom">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>

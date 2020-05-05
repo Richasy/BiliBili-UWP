@@ -87,11 +87,18 @@ namespace BiliBili_UWP.Pages.Main
         {
             _isInit = false;
             Reset();
-            LoadingRing.IsActive = true;
-            await LoadDynamic();
-            if (DynamicCollection.Count < 10)
+            if (App.BiliViewModel.IsLogin)
+            {
+                LoadingRing.IsActive = true;
                 await LoadDynamic();
-            LoadingRing.IsActive = false;
+                if (DynamicCollection.Count < 10)
+                    await LoadDynamic();
+                LoadingRing.IsActive = false;
+            }
+            else
+            {
+                HolderText.Visibility = Visibility.Visible;
+            }
             _isInit = true;
         }
 

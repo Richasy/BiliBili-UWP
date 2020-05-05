@@ -12,6 +12,16 @@
             <Setter.Value>
                 <ControlTemplate TargetType="MediaPlayerElement">
                     <Grid x:Name="LayoutRoot">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="TransportControlsStates">
+                                <VisualState x:Name="DefaultState"/>
+                                <VisualState x:Name="MarginState">
+                                    <VisualState.Setters>
+                                        <Setter Target="TransportControlsPresenter.Margin" Value="0,0,0,45" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
                         <Border Background="Transparent" />
                         <Image  x:Name="PosterImage"
                 Visibility="Collapsed"
@@ -24,9 +34,7 @@
                         <ContentPresenter     x:Name="TransportControlsPresenter"
                 Visibility="{TemplateBinding AreTransportControlsEnabled}"/>
                         <Grid x:Name="TimedTextSourcePresenter" />
-
                     </Grid>
-
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

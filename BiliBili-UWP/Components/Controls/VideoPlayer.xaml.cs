@@ -218,7 +218,7 @@ namespace BiliBili_UWP.Components.Controls
             _player.MediaFailed += Media_Failed;
             _player.MediaOpened += Media_Opened;
             _player.PlaybackSession.PositionChanged += Media_PositionChanged;
-            //_player.PlaybackSession.PlaybackStateChanged += Media_StatusChanged;
+            _player.PlaybackSession.PlaybackStateChanged += Media_StatusChanged;
             _player.VolumeChanged += Volume_Changed;
             mediaElement.SetMediaPlayer(_player);
             if (DanmakuControls != null)
@@ -234,6 +234,7 @@ namespace BiliBili_UWP.Components.Controls
             {
                 if (_videoDetail != null && _videoDetail.interaction != null)
                 {
+                    InteractionEndContainer.Visibility = Visibility.Collapsed;
                     if (sender.Position < sender.NaturalDuration && ChoiceItemsControl.Visibility == Visibility.Visible)
                     {
                         ChoiceItemsControl.Visibility = Visibility.Collapsed;
@@ -246,6 +247,8 @@ namespace BiliBili_UWP.Components.Controls
         {
             await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
             {
+                if (_playData == null)
+                    return;
                 if (sender.PlaybackState == MediaPlaybackState.Paused && VideoMTC.IsPlaying)
                     VideoMTC.IsPlaying = false;
                 else if (sender.PlaybackState == MediaPlaybackState.Playing && !VideoMTC.IsPlaying)
@@ -904,7 +907,7 @@ namespace BiliBili_UWP.Components.Controls
             _manipulationDeltaY = 0;
             _manipulationStartPoint = new Point(0, 0);
             _manipulationType = PlayerManipulationType.None;
-            if(_manipulationBeforeIsPlay)
+            if (_manipulationBeforeIsPlay)
                 Resume();
             _manipulationBeforeIsPlay = false;
         }
@@ -930,7 +933,7 @@ namespace BiliBili_UWP.Components.Controls
                     else if (volume < 0)
                         volume = 0;
                     ShowTip($"当前音量: {Math.Round(volume)}");
-                    _player.Volume = volume/100.0;
+                    _player.Volume = volume / 100.0;
                     if (volume == 0)
                         Debug.WriteLine("静音了！");
                 }
@@ -951,7 +954,7 @@ namespace BiliBili_UWP.Components.Controls
         {
             _manipulationStartPoint = e.Position;
             _manipulationProgress = CurrentProgress;
-            _manipulationVolume = _player.Volume*100.0;
+            _manipulationVolume = _player.Volume * 100.0;
             _manipulationBeforeIsPlay = VideoMTC.IsPlaying;
             Pause();
         }
@@ -1127,7 +1130,6 @@ namespace BiliBili_UWP.Components.Controls
             }
             MTCLoaded?.Invoke(this, EventArgs.Empty);
         }
-
         private void VideoMTC_PlayButtonClick(object sender, bool e)
         {
             if (e)
@@ -1141,6 +1143,7 @@ namespace BiliBili_UWP.Components.Controls
             bool isShowDanmakuBar = AppTool.GetBoolSetting(Settings.IsShowDanmakuBarInFullWindow, false);
             DanmakuBarVisibility = isShowDanmakuBar ? Visibility.Visible : Visibility.Collapsed;
             ExitScreenButton.Visibility = e ? Visibility.Visible : Visibility.Collapsed;
+            ChangeDanmakuBarDisplayMode(!e, isShowDanmakuBar);
             FullWindowChanged?.Invoke(this, e);
         }
         private void VideoMTC_CinemaChanged(object sender, bool e)
@@ -1148,9 +1151,9 @@ namespace BiliBili_UWP.Components.Controls
             bool isShowDanmakuBar = AppTool.GetBoolSetting(Settings.IsShowDanmakuBarInCinema, false);
             DanmakuBarVisibility = isShowDanmakuBar ? Visibility.Visible : Visibility.Collapsed;
             ExitScreenButton.Visibility = e ? Visibility.Visible : Visibility.Collapsed;
+            ChangeDanmakuBarDisplayMode(!e, isShowDanmakuBar);
             CinemaChanged?.Invoke(this, e);
         }
-
         private async void VideoMTC_QualityChanged(object sender, int e)
         {
             if (_currentQn != e)
@@ -1160,15 +1163,14 @@ namespace BiliBili_UWP.Components.Controls
                 await RefreshVideoSource(_partId);
             }
         }
-
         private void VideoMTC_CompactOverlayButtonClick(object sender, bool e)
         {
             bool isShowDanmakuBar = AppTool.GetBoolSetting(Settings.IsShowDanmakuBarInCompactOverlay, false);
             DanmakuBarVisibility = isShowDanmakuBar ? Visibility.Visible : Visibility.Collapsed;
             ExitScreenButton.Visibility = e ? Visibility.Visible : Visibility.Collapsed;
+            ChangeDanmakuBarDisplayMode(!e, isShowDanmakuBar);
             CompactOverlayChanged?.Invoke(this, e);
         }
-
         private void VideoMTC_SeparateButtonClick(object sender, RoutedEventArgs e)
         {
             if (VideoMTC.IsCompactOverlay)
@@ -1177,6 +1179,7 @@ namespace BiliBili_UWP.Components.Controls
                 VideoMTC.IsFullWindow = false;
             if (VideoMTC.IsCinema)
                 VideoMTC.IsCinema = false;
+            ChangeDanmakuBarDisplayMode(true);
             SeparateButtonClick?.Invoke(this, e);
         }
         private async void VideoMTC_SubtitleChanged(object sender, SubtitleIndexItem e)
@@ -1318,7 +1321,6 @@ namespace BiliBili_UWP.Components.Controls
             else
                 await _videoService.AddVideoHistoryAsync(_videoId, _partId, CurrentProgress);
         }
-
         private void FontInit()
         {
             FontComboBox.IsEnabled = false;
@@ -1333,7 +1335,6 @@ namespace BiliBili_UWP.Components.Controls
             }
             FontComboBox.IsEnabled = true;
         }
-
         public async void ResetDanmakuStatus()
         {
             bool isShow = AppTool.GetBoolSetting(Settings.IsDanmakuOpen);
@@ -1371,7 +1372,28 @@ namespace BiliBili_UWP.Components.Controls
             TipContentBlock.Text = "";
             _tipShowSeconds = -1;
         }
-
+        public void ChangeDanmakuBarDisplayMode(bool isSingleRow = false, bool isShow = true)
+        {
+            if (!isSingleRow)
+            {
+                bool needChange = Grid.GetRow(DanmakuBarContainer) == 1;
+                if (needChange)
+                {
+                    Grid.SetRow(DanmakuBarContainer, 0);
+                    if (isShow)
+                        VisualStateManager.GoToState(mediaElement, "MarginState", false);
+                }
+            }
+            else
+            {
+                bool needChange = Grid.GetRow(DanmakuBarContainer) == 0;
+                if (needChange)
+                {
+                    Grid.SetRow(DanmakuBarContainer, 1);
+                    VisualStateManager.GoToState(mediaElement, "DefaultState", false);
+                }
+            }
+        }
         #endregion
 
     }
