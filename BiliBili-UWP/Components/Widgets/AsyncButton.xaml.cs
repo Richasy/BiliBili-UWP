@@ -32,7 +32,7 @@ namespace BiliBili_UWP.Components.Widgets
 
         // Using a DependencyProperty as the backing store for Padding.  This enables animation, styling, binding, etc...
         public static new readonly DependencyProperty PaddingProperty =
-            DependencyProperty.Register("Padding", typeof(Thickness), typeof(AsyncButton), new PropertyMetadata(new Thickness(6,5,6,5)));
+            DependencyProperty.Register("Padding", typeof(Thickness), typeof(AsyncButton), new PropertyMetadata(new Thickness(6,2,6,5)));
 
 
         public string Icon

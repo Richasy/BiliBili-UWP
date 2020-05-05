@@ -26,7 +26,7 @@
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x86|x64|arm|arm64</AppxBundlePlatforms>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
-    <PackageCertificateThumbprint>5C64608C23240E78AAE6E79FEAEDDAE0A3624CC0</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>2D4891B563F81B9758D3D66947236EE4AD1A0811</PackageCertificateThumbprint>
     <AppxSymbolPackageEnabled>True</AppxSymbolPackageEnabled>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
@@ -268,6 +268,7 @@
     <Compile Include="Models\UI\Others\EmojiTemplateSelector.cs" />
     <Compile Include="Models\UI\Others\IndicatorHelper.cs" />
     <Compile Include="Models\UI\Others\NotifyPropertyBase.cs" />
+    <Compile Include="Models\UI\Others\PressEffect.cs" />
     <Compile Include="Models\UI\Others\SearchItemTemplateSelector.cs" />
     <Compile Include="Models\UI\Converter\SelectedColorConverter.cs" />
     <Compile Include="Models\UI\Others\SideMenuItemTemplateSelector.cs" />

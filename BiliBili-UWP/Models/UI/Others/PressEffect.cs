@@ -27,7 +27,7 @@ namespace BiliBili_UWP.Models.UI.Others
 
         // Using a DependencyProperty as the backing store for TargetElementName.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty TargetElementNameProperty =
-            DependencyProperty.RegisterAttached("TargetElementName", typeof(string), typeof(PressEffect), new PropertyMetadata(null, (s, a) =>
+            DependencyProperty.RegisterAttached("TargetElementName", typeof(string), typeof(PressEffect), new PropertyMetadata("", (s, a) =>
             {
                 if (s is FrameworkElement sender)
                 {

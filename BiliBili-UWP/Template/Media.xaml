@@ -3,6 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:control="using:BiliBili_UWP.Models.UI.Others"
     xmlns:c="using:NSDanmaku.Controls"
+    xmlns:others="using:BiliBili_UWP.Models.UI.Others"
     xmlns:local="using:BiliBili_UWP.Template">
     <Style TargetType="MediaPlayerElement" x:Key="BasicMediaStyle">
         <Setter Property="HorizontalAlignment" Value="Stretch" />
@@ -734,9 +735,10 @@
                                                                   >
                                                                 <ListView.ItemTemplate>
                                                                     <DataTemplate>
-                                                                        <ListViewItem x:Name="SubtitleItem" Padding="10,6">
+                                                                        <ListViewItem x:Name="SubtitleItem" Padding="10,6" others:PressEffect.IsEnabled="True"
+                                                                                      others:PressEffect.TargetElementName="Radio">
                                                                             <RadioButton Style="{StaticResource BasicRadioButtonStyle}" IsChecked="{Binding ElementName=SubtitleItem,Path=IsSelected}"
-                                                                                     GroupName="Subtitle" Content="{Binding lan_doc}" IsEnabled="False"/>
+                                                                                     GroupName="Subtitle" Content="{Binding lan_doc}" IsEnabled="False" x:Name="Radio"/>
                                                                         </ListViewItem>
                                                                     </DataTemplate>
                                                                 </ListView.ItemTemplate>
@@ -871,9 +873,9 @@
                                                                   >
                                                             <ListView.ItemTemplate>
                                                                 <DataTemplate>
-                                                                    <ListViewItem x:Name="QualityItem" Padding="10,6">
+                                                                    <ListViewItem x:Name="QualityItem" Padding="10,6" others:PressEffect.IsEnabled="True" others:PressEffect.TargetElementName="Radio">
                                                                         <RadioButton Style="{StaticResource BasicRadioButtonStyle}" IsChecked="{Binding ElementName=QualityItem,Path=IsSelected}"
-                                                                                     GroupName="Quality" Content="{Binding Item2}" IsEnabled="False"/>
+                                                                                     GroupName="Quality" Content="{Binding Item2}" IsEnabled="False" x:Name="Radio"/>
                                                                     </ListViewItem>
                                                                 </DataTemplate>
                                                             </ListView.ItemTemplate>

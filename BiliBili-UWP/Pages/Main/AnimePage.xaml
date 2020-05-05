@@ -8,6 +8,7 @@
     xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
     xmlns:controls="using:BiliBili_UWP.Components.Controls"
     xmlns:bilibili="using:BiliBili_Lib.Models.BiliBili"
+    xmlns:others="using:BiliBili_UWP.Models.UI.Others"
     xmlns:controls1="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d">
     <Page.Resources>
@@ -77,7 +78,7 @@
             <TextBlock Style="{StaticResource HeaderTextStyle}" x:Name="TitleBlock" Text="--" VerticalAlignment="Center"/>
             <StackPanel Orientation="Horizontal" Grid.Column="1">
                 <widgets:AsyncButton Style="{StaticResource PrimaryAsyncButtonStyle}" Icon="&#xE926;" Text="索引" Margin="10,0,0,0"
-                                     x:Name="IndexButton" Click="IndexButton_Click"/>
+                                     x:Name="IndexButton" Click="IndexButton_Click" Padding="10,3,10,6"/>
                 <widgets:AsyncButton Style="{StaticResource DefaultAsyncButtonStyle}" Icon="&#xEA3B;" Text="时间表" Margin="10,0,0,0"
                                      x:Name="TimelineButton" Click="TimelineButton_Click"/>
                 <widgets:AsyncButton Style="{StaticResource DefaultAsyncButtonStyle}" Icon="&#xE963;" Text="查看子区" Margin="10,0,0,0"
