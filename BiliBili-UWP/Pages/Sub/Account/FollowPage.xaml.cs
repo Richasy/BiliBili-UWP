@@ -94,13 +94,13 @@ namespace BiliBili_UWP.Pages.Sub.Account
         {
             if (_isRequesting)
                 return;
-            _isRequesting = true;
             var source = FollowList.Where(p => p.TagId == _currentTab).FirstOrDefault();
             var tab = TabCollection.Where(p => p.tagid == _currentTab).FirstOrDefault();
             if (source != null && tab!=null)
             {
                 if (tab.count <= source.Users.Count)
                     return;
+                _isRequesting = true;
                 if (isIncrease)
                     source.Page += 1;
                 var users = await _accountService.GetMyFollowUserAsync(_currentTab, source.Page);
