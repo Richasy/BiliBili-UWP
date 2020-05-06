@@ -59,10 +59,8 @@ namespace BiliBili_UWP.Components.Widgets
                         img.UriSource = new Uri(url);
                     }
                 }
-                else if (e.NewValue is BitmapImage image)
+                else if (e.NewValue is ImageSource image)
                 {
-                    if (instance.DecodePixelWidth > 0)
-                        image.DecodePixelWidth = instance.DecodePixelWidth;
                     instance.DisplayImage.Source = image;
                 }
             }

@@ -33,7 +33,7 @@ namespace BiliBili_UWP.Components.Controls.AdaptiveGridView
         private ItemsWrapGrid _virtualizedPanel;
 
         // Can be made as dependency properties
-        private const int InitialDelay = 700;
+        private const int InitialDelay = 400;
         private const int AnimationDuration = 180;
         private const int AnimationDelay = 100;
         private const double ItemMargin = 6.0d;

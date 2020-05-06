@@ -51,7 +51,7 @@
             <TextBlock Grid.Row="2" Style="{StaticResource SmallTipTextStyle}" FontSize="10" Text="{x:Bind BottomText,Mode=OneWay}"
                        Visibility="{x:Bind BottomText,Mode=OneWay,Converter={StaticResource StringVisibilityConverter}}"/>
         </Grid>
-        <Image Width="20" Grid.Column="2" VerticalAlignment="Top" Margin="10,0,0,0" Source="{x:Bind RightTopImage,Mode=OneWay}"
+        <widgets:BiliImage Width="20" Grid.Column="2" VerticalAlignment="Top" Margin="10,0,0,0" Source="{x:Bind RightTopImage,Mode=OneWay}"
                Visibility="{x:Bind RightTopImage,Mode=OneWay,Converter={StaticResource StringVisibilityConverter}}"/>
         <Button Style="{StaticResource TransparentButtonStyle}" x:Name="ExtraButton" Content="&#xE9A9;" Grid.Column="2"
                 VerticalAlignment="Bottom" FontFamily="{StaticResource Icon}" FontSize="13" Visibility="{x:Bind ExtraButtonVisibility,Mode=OneWay}">

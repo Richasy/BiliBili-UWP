@@ -105,11 +105,11 @@ namespace BiliBili_UWP.Models.Core
             if (CurrentPagePanel.IsSubPageOpen)
                 CurrentPagePanel.IsSubPageOpen = false;
             SelectedSideMenuItem = null;
-            //if (sender != null)
-            //{
-            //    var image = VisualTreeExtension.VisualTreeFindName<FrameworkElement>((FrameworkElement)sender, "VideoCover");
-            //    ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("VideoConnectedAnimation", image);
-            //}
+            if (sender != null)
+            {
+                var image = VisualTreeExtension.VisualTreeFindName<FrameworkElement>((FrameworkElement)sender, "VideoCover");
+                ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("VideoConnectedAnimation", image);
+            }
             CurrentSidePanel.SetSelectedItem(SideMenuItemType.Line);
             CurrentPagePanel.NavigateToPage(SideMenuItemType.VideoPlayer, new Tuple<int, string>(aid, fromSign));
         }
@@ -136,11 +136,11 @@ namespace BiliBili_UWP.Models.Core
             if (CurrentPagePanel.IsSubPageOpen)
                 CurrentPagePanel.IsSubPageOpen = false;
             SelectedSideMenuItem = null;
-            //if (sender != null)
-            //{
-            //    var image = VisualTreeExtension.VisualTreeFindName<FrameworkElement>((FrameworkElement)sender, "VideoCover");
-            //    ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("VideoConnectedAnimation", image);
-            //}
+            if (sender != null)
+            {
+                var image = VisualTreeExtension.VisualTreeFindName<FrameworkElement>((FrameworkElement)sender, "VideoCover");
+                ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("VideoConnectedAnimation", image);
+            }
             CurrentSidePanel.SetSelectedItem(SideMenuItemType.Line);
             if (isEp)
                 CurrentPagePanel.NavigateToPage(SideMenuItemType.BangumiPlayer, new Tuple<int, bool>(epid, isEp));

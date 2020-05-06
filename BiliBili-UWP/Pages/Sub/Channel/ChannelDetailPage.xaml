@@ -135,8 +135,12 @@
             </ScrollViewer>
         </Grid>
         <Grid Grid.Row="3" x:Name="HolderContainer" Visibility="Collapsed">
-            <Image Source="ms-appx:///Assets/bilibili logo.png" Width="50" Height="50" VerticalAlignment="Center"
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Image Source="ms-appx:///Assets/bilibili logo.png" Width="50" Height="50"
                                HorizontalAlignment="Center"/>
+                <TextBlock Text="正在加载..." Style="{StaticResource TipTextStyle}" Margin="0,10,0,0" HorizontalAlignment="Center"
+                           TextAlignment="Center"/>
+            </StackPanel>
         </Grid>
         <ProgressRing Style="{StaticResource BasicProgressRingStyle}" Grid.Row="3" x:Name="LoadingRing"/>
     </Grid>

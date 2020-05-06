@@ -148,7 +148,7 @@
         </MediaPlayerElement>
         <Grid x:Name="InteractionContainer">
             <ItemsControl x:Name="ChoiceItemsControl" ItemsSource="{x:Bind ChoiceCollection}" HorizontalAlignment="Center"
-                      Visibility="Collapsed" VerticalAlignment="Bottom" Margin="0,0,0,100" SizeChanged="ChoiceItemsControl_SizeChanged">
+                      Visibility="Collapsed" VerticalAlignment="Bottom" Margin="0,0,0,140" SizeChanged="ChoiceItemsControl_SizeChanged">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <ItemsWrapGrid Orientation="Horizontal"/>
@@ -176,13 +176,13 @@
                 <TextBlock Style="{StaticResource TipWrapTextStyle}" Text="互动视频已经结束，点击左上方按钮可返回起点"/>
             </StackPanel>
         </Grid>
-        <Grid x:Name="PopupContainer">
+        <Grid x:Name="PopupContainer" VerticalAlignment="Bottom">
             <Border Background="{ThemeResource MediaTransportControlsPanelBackground}" Padding="8,5" CornerRadius="3" Margin="20,0,20,100"
-                x:Name="SubtitleContainer" Visibility="Collapsed" VerticalAlignment="Bottom" HorizontalAlignment="Center">
+                x:Name="SubtitleContainer" Visibility="Collapsed" HorizontalAlignment="Center">
                 <TextBlock Style="{StaticResource CaptionTextStyle}" FontSize="20" x:Name="SubtitleContentBlock" TextWrapping="Wrap"/>
             </Border>
             <Border x:Name="TipContainer" Background="{ThemeResource PaneBackground}" Padding="12,8" CornerRadius="4" Margin="20,0,20,100"
-                    HorizontalAlignment="Left" VerticalAlignment="Bottom" Visibility="Collapsed"
+                    HorizontalAlignment="Left" Visibility="Collapsed"
                     extensions:VisualExtensions.CenterPoint="20,20,0">
                 <TextBlock Style="{StaticResource CaptionTextStyle}" x:Name="TipContentBlock" TextWrapping="Wrap"
                            MaxWidth="250"/>

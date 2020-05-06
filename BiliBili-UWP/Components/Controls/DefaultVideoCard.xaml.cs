@@ -193,9 +193,6 @@ namespace BiliBili_UWP.Components.Controls
 
         // Using a DependencyProperty as the backing store for DecodePixelWidth.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty DecodePixelWidthProperty =
-            DependencyProperty.Register("DecodePixelWidth", typeof(int), typeof(DefaultVideoCard), new PropertyMetadata(195));
-
-
-
+            DependencyProperty.Register("DecodePixelWidth", typeof(int), typeof(DefaultVideoCard), new PropertyMetadata(225));
     }
 }

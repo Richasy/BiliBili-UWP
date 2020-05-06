@@ -20,7 +20,6 @@
                                        Tip="{x:Bind owner.name}"
                                        FirstSectionContent="{x:Bind stat.view,Converter={StaticResource NumberAbbrConverter}}"
                                        SecondSectionContent="{x:Bind stat.danmaku,Converter={StaticResource NumberAbbrConverter}}"
-                                       MaxWidth="215" HorizontalAlignment="Left"
                                        >
                 <controls:DefaultVideoCard.ExtraFlyout>
                     <MenuFlyout MenuFlyoutPresenterStyle="{StaticResource BasicMenuFlyoutStyle}">

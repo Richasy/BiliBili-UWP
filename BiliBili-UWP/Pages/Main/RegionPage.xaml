@@ -7,8 +7,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
     xmlns:bilibili="using:BiliBili_Lib.Models.BiliBili"
-    xmlns:ada="using:BiliBili_UWP.Components.Controls.AdaptiveGridView"
     xmlns:controls="using:BiliBili_UWP.Components.Controls"
+    xmlns:controls1="using:Microsoft.Toolkit.Uwp.UI.Controls"
     Loaded="Page_Loaded"
     mc:Ignorable="d">
     <Page.Resources>
@@ -96,7 +96,7 @@
                                  Click="RefreshButton_Click" Margin="20,0,0,0" VerticalAlignment="Center"/>
             </Grid>
             <Grid Grid.Row="1">
-                <ada:AdaptiveGridView x:Name="RecommendVideoView"
+                <controls1:AdaptiveGridView x:Name="RecommendVideoView"
                           ItemTemplate="{StaticResource VideoItemTemplate}"
                           DesiredWidth="215"
                           ItemContainerStyle="{StaticResource TransparentGridViewItemContainerStyle}"

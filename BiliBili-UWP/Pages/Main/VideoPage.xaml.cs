@@ -87,6 +87,11 @@ namespace BiliBili_UWP.Pages.Main
                     _isPlayList = true;
                     _fromSign = "";
                 }
+                var anim = ConnectedAnimationService.GetForCurrentView().GetAnimation("VideoConnectedAnimation");
+                if (anim != null)
+                {
+                    anim.TryStart(VideoPlayer);
+                }
                 await Refresh();
             }
         }

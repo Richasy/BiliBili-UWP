@@ -24,8 +24,9 @@
 
 [云之幻](https://github.com/Richasy) | [蓝火火](https://github.com/cnbluefire)
 
-## 鸣谢
+## 鸣谢(排名不分先后)
 
 - [NSDanmaku](https://github.com/xiaoyaocz/NSDanmaku)
 - [SYEngine](https://github.com/xqq/SYEngine)
+- [JustinXinLiu/Continuity](https://github.com/JustinXinLiu/Continuity)
 

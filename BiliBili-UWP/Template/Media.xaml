@@ -33,7 +33,7 @@
                 Stretch="{TemplateBinding Stretch}"
                 MediaPlayer="{TemplateBinding MediaPlayer}" />
                         <ContentPresenter     x:Name="TransportControlsPresenter"
-                Visibility="{TemplateBinding AreTransportControlsEnabled}"/>
+                Visibility="{TemplateBinding AreTransportControlsEnabled}" IsTapEnabled="False"/>
                         <Grid x:Name="TimedTextSourcePresenter" />
                     </Grid>
                 </ControlTemplate>

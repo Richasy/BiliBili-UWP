@@ -96,7 +96,17 @@ namespace BiliBili_UWP.Components.Layout
             if (page != null)
             {
                 App.AppViewModel.CurrentPageType = page;
-                PageFrame.Navigate(page, parameter, new DrillInNavigationTransitionInfo());
+                NavigationTransitionInfo transitionInfo = null;
+                if (type == SideMenuItemType.VideoPlayer)
+                    transitionInfo = new SuppressNavigationTransitionInfo();
+                else
+                {
+                    if (isBack)
+                        transitionInfo = new EntranceNavigationTransitionInfo();
+                    else
+                        transitionInfo = new DrillInNavigationTransitionInfo();
+                }
+                PageFrame.Navigate(page, parameter, transitionInfo);
                 if (!isBack)
                 {
                     if (page.Equals(typeof(Pages.Main.VideoPage)) || page.Equals(typeof(Pages.Main.BangumiPage)))

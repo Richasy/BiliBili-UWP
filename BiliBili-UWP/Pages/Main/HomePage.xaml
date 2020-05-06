@@ -54,8 +54,8 @@
             <Grid Grid.Row="1">
                 <others1:AdaptiveGridView x:Name="RecommendVideoView"
                               HorizontalAlignment="Stretch"
-                              DesiredWidth="225"
-                              ItemHeight="195"
+                              DesiredWidth="220"
+                              ItemHeight="190"
                           ItemTemplate="{StaticResource VideoItemTemplate}"
                           ItemContainerStyle="{StaticResource TransparentGridViewItemContainerStyle}"
                           Style="{StaticResource NoScrollGridView}"

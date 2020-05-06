@@ -74,23 +74,25 @@ namespace BiliBili_UWP.Components.Controls
 
         public bool isBangumi = false;
         private bool _isChoiceHandling = false;
-        private bool _isMTCShow = false;
+        private bool _isMTCShow = true;
 
         public int _skipStep = 0;
         private bool _isDanmakuOptionsInit = false;
 
         private double _playRate = 1;
         private int _tipShowSeconds = 0;
+
         public int CurrentProgress
         {
             get => Convert.ToInt32(_player.PlaybackSession.Position.TotalSeconds);
         }
 
         private Point _manipulationStartPoint = new Point(0, 0);
-        private double _manipulationDeltaX = 0;
-        private double _manipulationDeltaY = 0;
-        private double _manipulationProgress = 0;
-        private double _manipulationVolume = 0;
+        private double _manipulationDeltaX = 0d;
+        private double _manipulationDeltaY = 0d;
+        private double _manipulationProgress = 0d;
+        private double _manipulationVolume = 0d;
+        private double _manipulationUnitLength = 0d;
         private bool _manipulationBeforeIsPlay = false;
         private PlayerManipulationType _manipulationType = PlayerManipulationType.None;
         #endregion
@@ -218,7 +220,7 @@ namespace BiliBili_UWP.Components.Controls
             _player.MediaFailed += Media_Failed;
             _player.MediaOpened += Media_Opened;
             _player.PlaybackSession.PositionChanged += Media_PositionChanged;
-            _player.PlaybackSession.PlaybackStateChanged += Media_StatusChanged;
+            //_player.PlaybackSession.PlaybackStateChanged += Media_StatusChanged;
             _player.VolumeChanged += Volume_Changed;
             mediaElement.SetMediaPlayer(_player);
             if (DanmakuControls != null)
@@ -265,7 +267,6 @@ namespace BiliBili_UWP.Components.Controls
                 {
                     MTC.IsPlaying = true;
                     _player.Play();
-                    HideMTC();
                 }
                 ErrorContainer.Visibility = Visibility.Collapsed;
             });
@@ -530,7 +531,6 @@ namespace BiliBili_UWP.Components.Controls
                     Window.Current.CoreWindow.PointerCursor = null;
                 if (_isMTCShow && !isManual)
                 {
-                    _isMTCShow = false;
                     HideMTC();
                 }
             }
@@ -845,7 +845,6 @@ namespace BiliBili_UWP.Components.Controls
         public void Pause()
         {
             VideoMTC.IsPlaying = false;
-            _danmaTimer.Stop();
             if (dispRequest != null)
             {
                 dispRequest.RequestRelease();
@@ -868,6 +867,7 @@ namespace BiliBili_UWP.Components.Controls
         public void Close()
         {
             Pause();
+            _danmaTimer.Stop();
             DanmakuList.Clear();
             if (_tempSource != null)
                 _tempSource.Dispose();
@@ -914,6 +914,8 @@ namespace BiliBili_UWP.Components.Controls
 
         private void MediaPresenter_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
         {
+            if (_playData == null)
+                return;
             _manipulationDeltaX += e.Delta.Translation.X;
             _manipulationDeltaY -= e.Delta.Translation.Y;
             Debug.WriteLine(_manipulationDeltaX);
@@ -924,6 +926,8 @@ namespace BiliBili_UWP.Components.Controls
                 {
                     bool isVolume = Math.Abs(_manipulationDeltaY) > Math.Abs(_manipulationDeltaX);
                     _manipulationType = isVolume ? PlayerManipulationType.Volume : PlayerManipulationType.Progress;
+                    if (!isVolume)
+                        Pause();
                 }
                 if (_manipulationType == PlayerManipulationType.Volume)
                 {
@@ -939,7 +943,7 @@ namespace BiliBili_UWP.Components.Controls
                 }
                 else
                 {
-                    var progress = _manipulationProgress + (_manipulationDeltaX / 2.5);
+                    var progress = _manipulationProgress + (_manipulationDeltaX * _manipulationUnitLength);
                     if (progress > _player.PlaybackSession.NaturalDuration.TotalSeconds)
                         progress = _player.PlaybackSession.NaturalDuration.TotalSeconds;
                     else if (progress < 0)
@@ -956,7 +960,12 @@ namespace BiliBili_UWP.Components.Controls
             _manipulationProgress = CurrentProgress;
             _manipulationVolume = _player.Volume * 100.0;
             _manipulationBeforeIsPlay = VideoMTC.IsPlaying;
-            Pause();
+            if (_player.PlaybackSession != null && _player.PlaybackSession.NaturalDuration.TotalSeconds > 0)
+            {
+                //获取单位像素对应的时长
+                double unit = _player.PlaybackSession.NaturalDuration.TotalSeconds / mediaElement.ActualWidth;
+                _manipulationUnitLength = unit / 1.5;
+            }
         }
         #endregion
 
@@ -1240,7 +1249,8 @@ namespace BiliBili_UWP.Components.Controls
             _isMTCShow = true;
             if (VideoMTC.IsFullWindow || VideoMTC.IsCinema || VideoMTC.IsCompactOverlay)
                 ExitScreenButton.Visibility = Visibility.Visible;
-            SubtitleContainer.Margin = new Thickness(20, 0, 20, 100);
+            SubtitleContainer.Margin = new Thickness(20, 0, 20, 140);
+            TipContainer.Margin = new Thickness(20, 0, 20, 140);
             VideoMTC.Show();
             if ((MTC.IsFullWindow && isShowBarInFullWindow) || (MTC.IsCinema && isShowBarInCinema) || (MTC.IsCompactOverlay && isShowBarInCompact))
                 DanmakuBarVisibility = Visibility.Visible;
