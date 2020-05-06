@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:converter="using:BiliBili_UWP.Models.UI.Converter"
     xmlns:bilibili="using:BiliBili_Lib.Models.BiliBili"
-    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls" xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -19,7 +19,7 @@
                     <RowDefinition Height="1*" />
                 </Grid.RowDefinitions>
                 <Grid>
-                    <controls:ImageEx Source="{x:Bind render_background}" Stretch="UniformToFill" DecodePixelWidth="105"
+                    <widgets:BiliImage Source="{x:Bind render_background}" DecodePixelWidth="105"
                                       CornerRadius="4,4,0,0" Height="40"/>
                     <Border Background="{Binding Converter={StaticResource ChannelHeaderMaskConverter}}" CornerRadius="4,4,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
                 </Grid>

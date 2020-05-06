@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
-    xmlns:controls1="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:ada="using:BiliBili_UWP.Components.Controls.AdaptiveGridView"
     xmlns:bilibili="using:BiliBili_Lib.Models.BiliBili.Video"
     xmlns:controls="using:BiliBili_UWP.Components.Controls"
     Loaded="Page_Loaded"
@@ -39,7 +39,7 @@
                                  Click="ClearButton_Click"  Margin="20,0,0,0"/>
         </Grid>
         <Grid Grid.Row="1">
-            <controls1:AdaptiveGridView x:Name="HistoryVideoView"
+            <ada:AdaptiveGridView x:Name="HistoryVideoView"
                           DesiredWidth="215"
                           ItemHeight="180" StretchContentForSingleRow="False"
                           ItemTemplate="{StaticResource VideoItemTemplate}"

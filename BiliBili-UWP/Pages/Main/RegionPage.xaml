@@ -7,16 +7,15 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
     xmlns:bilibili="using:BiliBili_Lib.Models.BiliBili"
-    xmlns:controls1="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:ada="using:BiliBili_UWP.Components.Controls.AdaptiveGridView"
     xmlns:controls="using:BiliBili_UWP.Components.Controls"
     Loaded="Page_Loaded"
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:DataType="bilibili:RegionBanner" x:Key="BannerItemTemplate">
             <Grid>
-                <controls1:ImageEx Source="{x:Bind image,Converter={StaticResource CoverResolutionConverter},ConverterParameter=400}" 
-                                   Height="100" Stretch="UniformToFill" PlaceholderStretch="Uniform" CornerRadius="4"
-                                   IsCacheEnabled="True" PlaceholderSource="ms-appx:///Assets/img_holder.png"/>
+                <widgets:BiliImage Source="{x:Bind image,Converter={StaticResource CoverResolutionConverter},ConverterParameter=400}" 
+                                   Height="100" CornerRadius="4"/>
                 <Border Background="{ThemeResource MaskAcrylicBackground}" CornerRadius="3" Padding="8,4" HorizontalAlignment="Left"
                         VerticalAlignment="Bottom" Margin="5,0,0,5">
                     <TextBlock Text="{x:Bind title}" Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource ImportantTextColor}"
@@ -97,9 +96,9 @@
                                  Click="RefreshButton_Click" Margin="20,0,0,0" VerticalAlignment="Center"/>
             </Grid>
             <Grid Grid.Row="1">
-                <controls1:AdaptiveGridView x:Name="RecommendVideoView"
+                <ada:AdaptiveGridView x:Name="RecommendVideoView"
                           ItemTemplate="{StaticResource VideoItemTemplate}"
-                                                DesiredWidth="215"
+                          DesiredWidth="215"
                           ItemContainerStyle="{StaticResource TransparentGridViewItemContainerStyle}"
                           Style="{StaticResource NoScrollGridView}"
                           SelectionMode="None" IsItemClickEnabled="True"

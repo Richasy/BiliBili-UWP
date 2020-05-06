@@ -29,8 +29,8 @@
                     <ColumnDefinition Width="1*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <controls:ImageEx Source="{x:Bind cover,Converter={StaticResource CoverResolutionConverter},ConverterParameter=200}" Height="140" IsCacheEnabled="True" Stretch="UniformToFill" VerticalAlignment="Stretch"
-                                  CornerRadius="4" PlaceholderSource="ms-appx:///Assets/img_holder_rect.png" PlaceholderStretch="Uniform"/>
+                <widgets:BiliImage Source="{x:Bind cover,Converter={StaticResource CoverResolutionConverter},ConverterParameter=200}" Height="140" VerticalAlignment="Stretch"
+                                  CornerRadius="4"/>
                 <Grid Grid.Column="1" Margin="10,0,0,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1*" />
@@ -68,8 +68,8 @@
                     <ColumnDefinition Width="1*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <controls:ImageEx Source="{x:Bind cover,Converter={StaticResource CoverResolutionConverter},ConverterParameter=60}" Width="40" Height="40" VerticalAlignment="Center"
-                                  CornerRadius="20" IsCacheEnabled="True" PlaceholderSource="ms-appx:///Assets/img_holder_rect.png"/>
+                <widgets:BiliImage Source="{x:Bind cover,Converter={StaticResource CoverResolutionConverter},ConverterParameter=60}" Width="40" Height="40" VerticalAlignment="Center"
+                                  CornerRadius="20"/>
                 <StackPanel Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="{x:Bind title}" Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource ImportantTextColor}"/>
@@ -97,9 +97,8 @@
                            Text="{x:Bind title}" TextWrapping="Wrap" Margin="15,10,15,6" FontWeight="Bold"/>
                 <TextBlock Style="{StaticResource SmallTipTextStyle}" Grid.Row="1"
                            Text="{x:Bind desc}" LineHeight="16" TextWrapping="Wrap" Margin="15,0,15,5" MaxLines="3" FontSize="10"/>
-                <controls:ImageEx Source="{x:Bind cover,Converter={StaticResource CoverResolutionConverter},ConverterParameter=300}" Visibility="{x:Bind image_urls.Count,Converter={StaticResource IntVisibilityConverter}}"
-                                  PlaceholderStretch="Uniform"
-                                  Grid.Row="2" MaxHeight="90" HorizontalAlignment="Stretch" Stretch="UniformToFill" PlaceholderSource="ms-appx:///Assets/img_holder.png"/>
+                <widgets:BiliImage Source="{x:Bind cover,Converter={StaticResource CoverResolutionConverter},ConverterParameter=300}" Visibility="{x:Bind image_urls.Count,Converter={StaticResource IntVisibilityConverter}}"
+                                  Grid.Row="2" MaxHeight="90" HorizontalAlignment="Stretch"/>
                 <StackPanel Orientation="Horizontal" Grid.Row="3" Margin="15,10">
                     <widgets:IconTextBlock Icon="&#xEA31;" Text="{x:Bind name}" FontSize="10" GutterWidth="5" IconForeground="{ThemeResource TipTextColor}"/>
                     <widgets:IconTextBlock Icon="&#xE963;" Text="{x:Bind view}" FontSize="10" GutterWidth="5" Margin="10,0,0,0" IconForeground="{ThemeResource TipTextColor}"/>

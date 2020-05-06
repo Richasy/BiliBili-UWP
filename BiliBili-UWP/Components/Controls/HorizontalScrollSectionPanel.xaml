@@ -5,7 +5,7 @@
     xmlns:local="using:BiliBili_UWP.Components.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
+    xmlns:widgets="using:BiliBili_UWP.Components.Widgets" xmlns:adaptivegridview="using:BiliBili_UWP.Components.Controls.AdaptiveGridView"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -35,6 +35,7 @@
                       SelectionMode="None" ItemClick="ShowListView_ItemClick"
                       ScrollViewer.VerticalScrollMode="Disabled" x:FieldModifier="Public"
                       x:Name="ShowListView" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+            
             <TextBlock Style="{StaticResource TipTextStyle}" FontWeight="Bold" VerticalAlignment="Center"
                        x:Name="HolderText" Text="{x:Bind HoldText,Mode=OneWay}" Visibility="{x:Bind HolderVisibility,Mode=OneWay}"/>
         </Grid>

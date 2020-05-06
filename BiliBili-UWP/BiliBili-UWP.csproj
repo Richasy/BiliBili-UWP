@@ -135,6 +135,10 @@
     <Compile Include="Components\Account\SlimAccountPanel.xaml.cs">
       <DependentUpon>SlimAccountPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Components\Controls\AdaptiveGridView\AdaptiveGridView.cs" />
+    <Compile Include="Components\Controls\AdaptiveGridView\AdaptiveGridView.Properties.cs" />
+    <Compile Include="Components\Controls\AdaptiveGridView\AdaptiveGridViewItem.cs" />
+    <Compile Include="Components\Controls\AdaptiveGridView\AdaptiveGridViewItem.Properties.cs" />
     <Compile Include="Components\Controls\AppSearchBox.xaml.cs">
       <DependentUpon>AppSearchBox.xaml</DependentUpon>
     </Compile>
@@ -201,6 +205,9 @@
     <Compile Include="Components\Widgets\BannerBlock.xaml.cs">
       <DependentUpon>BannerBlock.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Components\Widgets\BiliImage.xaml.cs">
+      <DependentUpon>BiliImage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Components\Widgets\CaptchaBlock.xaml.cs">
       <DependentUpon>CaptchaBlock.xaml</DependentUpon>
     </Compile>
@@ -241,12 +248,14 @@
     <Compile Include="Models\Core\AppViewModel.cs" />
     <Compile Include="Models\Core\BiliViewModel.Main.cs" />
     <Compile Include="Models\Core\BiliViewModel.Channel.cs" />
+    <Compile Include="Models\Enums\BiliImageDisplayType.cs" />
     <Compile Include="Models\Enums\ColorType.cs" />
     <Compile Include="Models\Enums\InputBoxType.cs" />
     <Compile Include="Models\Enums\PlayerManipulationType.cs" />
     <Compile Include="Models\Enums\PlayerType.cs" />
     <Compile Include="Models\Enums\SideMenuGroupType.cs" />
     <Compile Include="Models\Enums\SideMenuItemType.cs" />
+    <Compile Include="Models\Enums\VisualPropertyType.cs" />
     <Compile Include="Models\UI\Converter\ChannelCoverConverter.cs" />
     <Compile Include="Models\UI\Converter\ChannelHeaderMaskConverter.cs" />
     <Compile Include="Models\UI\Converter\CollectionCountVisibilityConverter.cs" />
@@ -263,6 +272,7 @@
     <Compile Include="Models\UI\Interface\IAppPopup.cs" />
     <Compile Include="Models\UI\Interface\IPlayerPage.cs" />
     <Compile Include="Models\UI\Interface\IRefreshPage.cs" />
+    <Compile Include="Models\UI\Others\CompositionExtension.cs" />
     <Compile Include="Models\UI\Others\CustomResourceLoader.cs" />
     <Compile Include="Models\UI\Others\DanmakuColor.cs" />
     <Compile Include="Models\UI\Others\EmojiTemplateSelector.cs" />
@@ -566,6 +576,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Components\Widgets\BannerBlock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\Widgets\BiliImage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

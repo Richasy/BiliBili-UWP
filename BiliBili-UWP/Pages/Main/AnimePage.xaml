@@ -94,5 +94,7 @@
         <controls:HorizontalScrollSectionPanel Title="榜单" HoldText="获取榜单数据失败" x:Name="RankContainer" ItemsSource="{x:Bind RankCollection}"
                                             ItemTemplate="{StaticResource RankItemTemplate}" IsItemClickEnabled="False"
                                             Grid.Row="3" Margin="0,20,0,0"/>
+        <ProgressBar x:Name="LoadingBar" VerticalAlignment="Top" Foreground="{ThemeResource PrimaryColor}" HorizontalAlignment="Stretch"
+                     Visibility="Collapsed" IsIndeterminate="True"/>
     </Grid>
 </Page>

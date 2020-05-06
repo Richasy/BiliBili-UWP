@@ -8,7 +8,7 @@
     xmlns:bilibili="using:BiliBili_Lib.Models.BiliBili.Video"
     xmlns:controls="using:BiliBili_UWP.Components.Controls"
     xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
-    xmlns:controls1="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:ada="using:BiliBili_UWP.Components.Controls.AdaptiveGridView"
     Loaded="Page_Loaded"
     mc:Ignorable="d">
 
@@ -50,7 +50,7 @@
                                  Click="ClearButton_Click"  Margin="20,0,0,0"/>
         </Grid>
         <Grid Grid.Row="1">
-            <controls1:AdaptiveGridView x:Name="HistoryVideoView"
+            <ada:AdaptiveGridView x:Name="HistoryVideoView"
                               HorizontalAlignment="Stretch"
                                         VerticalAlignment="Stretch"
                           DesiredWidth="200"
