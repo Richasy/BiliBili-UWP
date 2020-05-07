@@ -52,6 +52,8 @@ namespace BiliBili_UWP.Pages.Main
             ThemeComboBox.SelectedIndex = theme == "Light" ? 0 : 1;
             double pageBreakpoint = Convert.ToDouble(AppTool.GetLocalSetting(Settings.PagePanelDisplayBreakpoint, "1500"));
             PagePaneDisplayBreakpointBox.Value = pageBreakpoint;
+            bool isEnableAnimation = AppTool.GetBoolSetting(Settings.EnableAnimation);
+            EnableAnimationSwitch.IsOn = isEnableAnimation;
             #endregion
 
             #region 播放器设置
@@ -239,6 +241,13 @@ namespace BiliBili_UWP.Pages.Main
             {
                 App.AppViewModel.UnRegisterBackgroundTask(StaticString.NOTIFICATION_NEWDYNAMIC);
             }
+        }
+
+        private void EnableAnimationSwitch_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (!_isInit)
+                return;
+            AppTool.WriteLocalSetting(Settings.EnableAnimation, EnableAnimationSwitch.IsOn.ToString());
         }
     }
 }

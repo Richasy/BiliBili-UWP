@@ -24,6 +24,7 @@ namespace BiliBili_UWP.Components.Widgets
         public BiliImage()
         {
             this.InitializeComponent();
+            VisualStateManager.GoToState(this, "Loading", true);
         }
 
         public object Source
@@ -48,16 +49,14 @@ namespace BiliBili_UWP.Components.Widgets
                 }
                 else if (e.NewValue is string url)
                 {
-                    if (string.IsNullOrEmpty(url))
-                        instance.DisplayImage.Source = null;
+                    var img = new BitmapImage() { DecodePixelType = DecodePixelType.Logical };
+                    if (instance.DecodePixelWidth > 0)
+                        img.DecodePixelWidth = instance.DecodePixelWidth;
+                    instance.DisplayImage.Source = img;
+                    if (string.IsNullOrEmpty(url) || !url.StartsWith("http"))
+                        img.UriSource = new Uri("ms-appx:///Assets/img_holder_color.png");
                     else
-                    {
-                        var img = new BitmapImage() { DecodePixelType = DecodePixelType.Logical };
-                        if (instance.DecodePixelWidth > 0)
-                            img.DecodePixelWidth = instance.DecodePixelWidth;
-                        instance.DisplayImage.Source = img;
                         img.UriSource = new Uri(url);
-                    }
                 }
                 else if (e.NewValue is ImageSource image)
                 {

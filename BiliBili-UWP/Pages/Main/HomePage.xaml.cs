@@ -37,11 +37,13 @@ namespace BiliBili_UWP.Pages.Main
         public ObservableCollection<VideoRecommend> RecommendCollection = App.BiliViewModel.RecommendVideoCollection;
         private bool _isRecommendRequesting = false;
         private double _scrollOffset = 0;
+        
         public HomePage()
         {
             this.InitializeComponent();
             NavigationCacheMode = NavigationCacheMode.Enabled;
             channelVM.IsLoginChanged += IsLoginChanged;
+            
         }
 
         private async void IsLoginChanged(object sender, bool e)
@@ -53,7 +55,7 @@ namespace BiliBili_UWP.Pages.Main
         {
             App.AppViewModel.CurrentPagePanel.ScrollToBottom=ScrollViewerBottomHandle;
             App.AppViewModel.CurrentPagePanel.ScrollChanged = ScrollViewerChanged;
-            
+            RecommendVideoView.EnableAnimation = App.AppViewModel.IsEnableAnimation;
             if (_isInit || e.NavigationMode == NavigationMode.Back)
             {
                 return;

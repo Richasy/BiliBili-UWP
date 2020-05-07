@@ -21,12 +21,12 @@
     <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
     <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
     <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
-    <AppxPackageDir>D:\Package\BiliBili\</AppxPackageDir>
+    <AppxPackageDir>E:\Package\BiliBili\</AppxPackageDir>
     <GenerateTestArtifacts>False</GenerateTestArtifacts>
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x86|x64|arm|arm64</AppxBundlePlatforms>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
-    <PackageCertificateThumbprint>AFF866765A9ED3E4DB9F9DB1F52A52D9FE1CF4DA</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>35B6DA20ADB07C8B2E9A3D4C6FF381BE82AED0D1</PackageCertificateThumbprint>
     <AppxSymbolPackageEnabled>True</AppxSymbolPackageEnabled>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
@@ -372,6 +372,7 @@
     <Content Include="Assets\bilibili logo.png" />
     <Content Include="Assets\captcha_refresh.png" />
     <Content Include="Assets\img_holder.png" />
+    <Content Include="Assets\img_holder_color.png" />
     <Content Include="Assets\img_holder_rect.png" />
     <Content Include="Assets\Level\level_0.png" />
     <Content Include="Assets\Level\level_0.svg" />

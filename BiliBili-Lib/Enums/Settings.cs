@@ -43,6 +43,7 @@ namespace BiliBili_Lib.Enums
         IsThemeWithSystem,
         IsLastSidePanelOpen,
         LastSeemDynamicId,
-        IsOpenNewDynamicNotification
+        IsOpenNewDynamicNotification,
+        EnableAnimation
     }
 }

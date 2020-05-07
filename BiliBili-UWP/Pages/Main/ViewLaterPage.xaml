@@ -49,7 +49,7 @@
                                  Click="ClearButton_Click"  Margin="20,0,0,0"/>
         </Grid>
         <Grid Grid.Row="1">
-            <ada:AdaptiveGridView x:Name="HistoryVideoView"
+            <ada:AdaptiveGridView x:Name="ViewLaterVideoView"
                               HorizontalAlignment="Stretch"
                                         VerticalAlignment="Stretch"
                           DesiredWidth="200"

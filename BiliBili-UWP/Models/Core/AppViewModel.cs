@@ -52,6 +52,7 @@ namespace BiliBili_UWP.Models.Core
 
         public List<Tuple<Guid, Action<Size>>> WindowsSizeChangedNotify { get; set; } = new List<Tuple<Guid, Action<Size>>>();
         public ObservableCollection<SystemFont> FontCollection = new ObservableCollection<SystemFont>();
+        public bool IsEnableAnimation = AppTool.GetBoolSetting(Settings.EnableAnimation);
         public AppViewModel()
         {
             Window.Current.SizeChanged += WindowSizeChangedHandle;
@@ -106,7 +107,7 @@ namespace BiliBili_UWP.Models.Core
             if (CurrentPagePanel.IsSubPageOpen)
                 CurrentPagePanel.IsSubPageOpen = false;
             SelectedSideMenuItem = null;
-            if (sender != null)
+            if (sender != null && IsEnableAnimation)
             {
                 var image = VisualTreeExtension.VisualTreeFindName<FrameworkElement>((FrameworkElement)sender, "VideoCover");
                 ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("VideoConnectedAnimation", image);
@@ -119,11 +120,16 @@ namespace BiliBili_UWP.Models.Core
         /// </summary>
         /// <param name="aid">AV号</param>
         /// <param name="videoList">播放列表</param>
-        public void PlayVideoList(int aid, List<VideoDetail> videoList)
+        public void PlayVideoList(int aid, object sender, List<VideoDetail> videoList)
         {
             if (CurrentPagePanel.IsSubPageOpen)
                 CurrentPagePanel.IsSubPageOpen = false;
             SelectedSideMenuItem = null;
+            if (sender != null && IsEnableAnimation)
+            {
+                var image = VisualTreeExtension.VisualTreeFindName<FrameworkElement>((FrameworkElement)sender, "VideoCover");
+                ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("VideoConnectedAnimation", image);
+            }
             CurrentSidePanel.SetSelectedItem(SideMenuItemType.Line);
             CurrentPagePanel.NavigateToPage(SideMenuItemType.VideoPlayer, new Tuple<int, List<VideoDetail>>(aid, videoList));
         }
@@ -137,7 +143,7 @@ namespace BiliBili_UWP.Models.Core
             if (CurrentPagePanel.IsSubPageOpen)
                 CurrentPagePanel.IsSubPageOpen = false;
             SelectedSideMenuItem = null;
-            if (sender != null)
+            if (sender != null && IsEnableAnimation)
             {
                 var image = VisualTreeExtension.VisualTreeFindName<FrameworkElement>((FrameworkElement)sender, "VideoCover");
                 ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("VideoConnectedAnimation", image);

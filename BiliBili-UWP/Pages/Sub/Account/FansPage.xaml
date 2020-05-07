@@ -17,7 +17,7 @@
                     <ColumnDefinition Width="1*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <controls:ImageEx CornerRadius="15" Width="30" Height="30" Source="{x:Bind face,Converter={StaticResource CoverResolutionConverter},ConverterParameter=40}"
+                <widgets:BiliImage CornerRadius="15" Width="30" Height="30" Source="{x:Bind face,Converter={StaticResource CoverResolutionConverter},ConverterParameter=40}"
                                   VerticalAlignment="Center"/>
                 <StackPanel VerticalAlignment="Center" Grid.Column="1" Margin="10,0,0,0">
                     <TextBlock Style="{StaticResource SmallTipTextStyle}" FontWeight="Bold" Foreground="{ThemeResource NormalTextColor}"

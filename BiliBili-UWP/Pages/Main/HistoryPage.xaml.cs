@@ -45,6 +45,7 @@ namespace BiliBili_UWP.Pages.Main
         }
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
+            HistoryVideoView.EnableAnimation = App.AppViewModel.IsEnableAnimation;
             App.AppViewModel.CurrentPagePanel.ScrollToBottom = ScrollViewerBottomHandle;
             App.AppViewModel.CurrentPagePanel.ScrollChanged = ScrollViewerChanged;
             if (_isInit || e.NavigationMode == NavigationMode.Back)

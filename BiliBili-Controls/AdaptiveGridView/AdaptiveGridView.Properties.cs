@@ -43,6 +43,13 @@ namespace BiliBili_Controls.AdaptiveGridView
         public static readonly DependencyProperty StretchContentForSingleRowProperty =
             DependencyProperty.Register(nameof(StretchContentForSingleRow), typeof(bool), typeof(AdaptiveGridView), new PropertyMetadata(true, OnStretchContentForSingleRowPropertyChanged));
 
+        /// <summary>
+        /// Identifies the <see cref="EnableAnimation"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty EnableAnimationProperty =
+            DependencyProperty.Register(nameof(EnableAnimation), typeof(bool), typeof(AdaptiveGridView), new PropertyMetadata(true));
+
+
         private static void OnOneRowModeEnabledChanged(DependencyObject d, object newValue)
         {
             var self = d as AdaptiveGridView;
@@ -132,6 +139,12 @@ namespace BiliBili_Controls.AdaptiveGridView
         {
             get => (double)GetValue(ItemWidthProperty);
             set => SetValue(ItemWidthProperty, value);
+        }
+
+        public bool EnableAnimation
+        {
+            get { return (bool)GetValue(EnableAnimationProperty); }
+            set { SetValue(EnableAnimationProperty, value); }
         }
 
         private static int CalculateColumns(double containerWidth, double itemWidth)

@@ -38,6 +38,8 @@
                             <ComboBoxItem Content="白昼主题" Tag="Light"/>
                             <ComboBoxItem Content="暗夜主题" Tag="Dark"/>
                         </ComboBox>
+                        <ToggleSwitch Style="{StaticResource BasicToggleSwitchStyle}" HeaderTemplate="{StaticResource TipHeaderStyle}"
+                              Header="启用元素动画" Margin="0,15,0,0" x:Name="EnableAnimationSwitch" Toggled="EnableAnimationSwitch_Toggled"/>
                         <ComboBox Style="{StaticResource BasicComboBoxStyle}" ItemContainerStyle="{StaticResource BasicComboBoxItemContainerStyle}"
                           HeaderTemplate="{StaticResource TipHeaderStyle}" Header="应用字体" x:Name="FontComboBox" SelectionChanged="FontComboBox_SelectionChanged"
                           ItemTemplate="{StaticResource FontItemTemplate}" Margin="0,15,0,0" ItemsSource="{x:Bind FontCollection}"/>

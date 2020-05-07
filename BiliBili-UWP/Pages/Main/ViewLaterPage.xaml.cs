@@ -36,6 +36,7 @@ namespace BiliBili_UWP.Pages.Main
         }
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
+            ViewLaterVideoView.EnableAnimation = App.AppViewModel.IsEnableAnimation;
             App.AppViewModel.CurrentPagePanel.ScrollToBottom = ScrollViewerBottomHandle;
             App.AppViewModel.CurrentPagePanel.ScrollChanged = ScrollViewerChanged;
             if (_isInit || e.NavigationMode == NavigationMode.Back)
@@ -116,13 +117,13 @@ namespace BiliBili_UWP.Pages.Main
         private void HistoryVideoView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var item = e.ClickedItem as VideoDetail;
-            var ele = HistoryVideoView.ContainerFromItem(item);
+            var ele = ViewLaterVideoView.ContainerFromItem(item);
             if (item.bangumi != null)
                 App.AppViewModel.PlayBangumi(item.bangumi.ep_id, ele, true);
             else
             {
                 var videos = ViewLaterCollection.Where(p => p.bangumi == null).ToList();
-                App.AppViewModel.PlayVideoList(item.aid, videos);
+                App.AppViewModel.PlayVideoList(item.aid, ele, videos);
             } 
         }
 

@@ -44,7 +44,7 @@
                 </Grid.ColumnDefinitions>
                 <Grid VerticalAlignment="Center">
                     <PersonPicture x:Name="UserAvatar" Style="{StaticResource BasicPersonPictureStyle}" Width="55"/>
-                    <controls:ImageEx Width="90" Stretch="Uniform" DecodePixelWidth="90" x:Name="PendantImage"/>
+                    <widgets:BiliImage Width="90" DecodePixelWidth="90" x:Name="PendantImage"/>
                 </Grid>
                 <Grid Grid.Column="1" VerticalAlignment="Center">
                     <Grid.RowDefinitions>

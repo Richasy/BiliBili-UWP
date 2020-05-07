@@ -97,7 +97,7 @@ namespace BiliBili_UWP.Components.Layout
             {
                 App.AppViewModel.CurrentPageType = page;
                 NavigationTransitionInfo transitionInfo = null;
-                if (type == SideMenuItemType.VideoPlayer)
+                if (type == SideMenuItemType.VideoPlayer || !App.AppViewModel.IsEnableAnimation)
                     transitionInfo = new SuppressNavigationTransitionInfo();
                 else
                 {
@@ -319,7 +319,12 @@ namespace BiliBili_UWP.Components.Layout
             bool isRepeat = false;
             if (last != null && last.Item1 == page && last.Item2 == parameter)
                 isRepeat = true;
-            SubPageFrame.Navigate(page, parameter, new DrillInNavigationTransitionInfo());
+            NavigationTransitionInfo transitionInfo = null;
+            if (!App.AppViewModel.IsEnableAnimation)
+                transitionInfo = new SuppressNavigationTransitionInfo();
+            else
+                transitionInfo = new DrillInNavigationTransitionInfo();
+            SubPageFrame.Navigate(page, parameter, transitionInfo);
             if (!isBack)
             {
                 if (!isRepeat)

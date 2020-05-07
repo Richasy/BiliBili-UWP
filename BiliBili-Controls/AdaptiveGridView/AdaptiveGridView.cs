@@ -81,7 +81,7 @@ namespace BiliBili_Controls.AdaptiveGridView
         {
             var containerVisual = args.ItemContainer.Visual();
 
-            if (args.InRecycleQueue)
+            if (args.InRecycleQueue || !EnableAnimation)
             {
                 containerVisual.ImplicitAnimations = null;
             }
@@ -132,7 +132,7 @@ namespace BiliBili_Controls.AdaptiveGridView
             }
 
             // Then decide if we should run the animation.
-            if (_virtualizedPanel == null || _isAnimated) return;
+            if (_virtualizedPanel == null || _isAnimated || !EnableAnimation) return;
 
             Opacity = 0;
 
@@ -260,7 +260,7 @@ namespace BiliBili_Controls.AdaptiveGridView
             {
                 RecalculateLayout(e.NewSize.Width);
 
-                if (ItemsPanelRoot is ItemsWrapGrid itemsWrapGrid)
+                if (ItemsPanelRoot is ItemsWrapGrid itemsWrapGrid && EnableAnimation)
                 {
                     for (var i = itemsWrapGrid.FirstVisibleIndex; i <= itemsWrapGrid.LastVisibleIndex; i++)
                     {
