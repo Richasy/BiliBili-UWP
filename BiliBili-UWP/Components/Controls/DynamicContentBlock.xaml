@@ -8,7 +8,7 @@
     xmlns:bilibili="using:BiliBili_Lib.Models.BiliBili"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
-    xmlns:others="using:BiliBili_UWP.Models.UI.Others"
+    xmlns:others="using:BiliBili_Controls.Extensions"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">

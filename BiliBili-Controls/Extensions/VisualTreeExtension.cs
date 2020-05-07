@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
 
-namespace BiliBili_UWP.Models.UI.Others
+namespace BiliBili_Controls.Extensions
 {
     public static class VisualTreeExtension
     {

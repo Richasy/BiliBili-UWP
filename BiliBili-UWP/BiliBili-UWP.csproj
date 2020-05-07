@@ -135,10 +135,6 @@
     <Compile Include="Components\Account\SlimAccountPanel.xaml.cs">
       <DependentUpon>SlimAccountPanel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Components\Controls\AdaptiveGridView\AdaptiveGridView.cs" />
-    <Compile Include="Components\Controls\AdaptiveGridView\AdaptiveGridView.Properties.cs" />
-    <Compile Include="Components\Controls\AdaptiveGridView\AdaptiveGridViewItem.cs" />
-    <Compile Include="Components\Controls\AdaptiveGridView\AdaptiveGridViewItem.Properties.cs" />
     <Compile Include="Components\Controls\AppSearchBox.xaml.cs">
       <DependentUpon>AppSearchBox.xaml</DependentUpon>
     </Compile>
@@ -272,19 +268,15 @@
     <Compile Include="Models\UI\Interface\IAppPopup.cs" />
     <Compile Include="Models\UI\Interface\IPlayerPage.cs" />
     <Compile Include="Models\UI\Interface\IRefreshPage.cs" />
-    <Compile Include="Models\UI\Others\CompositionExtension.cs" />
     <Compile Include="Models\UI\Others\CustomResourceLoader.cs" />
     <Compile Include="Models\UI\Others\DanmakuColor.cs" />
     <Compile Include="Models\UI\Others\EmojiTemplateSelector.cs" />
-    <Compile Include="Models\UI\Others\IndicatorHelper.cs" />
     <Compile Include="Models\UI\Others\NotifyPropertyBase.cs" />
-    <Compile Include="Models\UI\Others\PressEffect.cs" />
     <Compile Include="Models\UI\Others\SearchItemTemplateSelector.cs" />
     <Compile Include="Models\UI\Converter\SelectedColorConverter.cs" />
     <Compile Include="Models\UI\Others\SideMenuItemTemplateSelector.cs" />
     <Compile Include="Models\UI\Others\SystemFont.cs" />
     <Compile Include="Models\UI\Others\VideoTransportControls.cs" />
-    <Compile Include="Models\UI\Others\VisualTreeExtension.cs" />
     <Compile Include="Models\UI\SideMenuItem.cs" />
     <Compile Include="Models\UI\StaticString.cs" />
     <Compile Include="Models\UI\UIHelper.cs" />
@@ -816,6 +808,10 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BiliBili-Controls\BiliBili-Controls.csproj">
+      <Project>{6c6eecb8-f158-4a68-bf22-a5cd7309928e}</Project>
+      <Name>BiliBili-Controls</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BiliBili-Lib\BiliBili-Lib.csproj">
       <Project>{ab5de69b-42e0-4cee-81af-6ab8ee64bf2e}</Project>
       <Name>BiliBili-Lib</Name>

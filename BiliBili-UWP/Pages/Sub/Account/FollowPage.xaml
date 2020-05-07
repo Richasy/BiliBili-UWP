@@ -9,6 +9,7 @@
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
     xmlns:others="using:BiliBili_UWP.Models.UI.Others"
+    xmlns:ext="using:BiliBili_Controls.Extensions"
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:DataType="account:FollowTag" x:Key="TabItemTemplate">
@@ -61,8 +62,8 @@
                   ItemTemplate="{StaticResource TabItemTemplate}"
                   ItemsSource="{x:Bind TabCollection}"
                   SelectionMode="Single"
-                  others:IndicatorService.Name="ItemSign"
-                  others:IndicatorService.IsScaleEnabled="True"
+                  ext:IndicatorService.Name="ItemSign"
+                  ext:IndicatorService.IsScaleEnabled="True"
                   ItemClick="TabListView_ItemClick"
                   ScrollViewer.VerticalScrollMode="Disabled"
                   ScrollViewer.HorizontalScrollBarVisibility="Hidden"

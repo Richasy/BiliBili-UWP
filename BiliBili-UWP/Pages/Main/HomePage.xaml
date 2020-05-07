@@ -9,7 +9,8 @@
     xmlns:controls="using:BiliBili_UWP.Components.Controls"
     xmlns:controls1="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
-    xmlns:others="using:BiliBili_UWP.Models.UI.Others" xmlns:others1="using:BiliBili_UWP.Components.Controls.AdaptiveGridView"
+    xmlns:others="using:BiliBili_UWP.Models.UI.Others"
+    xmlns:adaptivegridview="using:BiliBili_Controls.AdaptiveGridView"
     Loaded="Page_Loaded"
     mc:Ignorable="d">
     <Page.Resources>
@@ -52,7 +53,7 @@
                                  Click="RefreshButton_Click" Margin="20,0,0,0"/>
             </Grid>
             <Grid Grid.Row="1">
-                <others1:AdaptiveGridView x:Name="RecommendVideoView"
+                <adaptivegridview:AdaptiveGridView x:Name="RecommendVideoView"
                               HorizontalAlignment="Stretch"
                               DesiredWidth="220"
                               ItemHeight="190"

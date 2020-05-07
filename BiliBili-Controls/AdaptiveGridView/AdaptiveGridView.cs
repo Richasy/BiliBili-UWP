@@ -1,10 +1,9 @@
-﻿using BiliBili_UWP.Models.Enums;
-using BiliBili_UWP.Models.UI.Others;
+﻿using BiliBili_Controls.Enums;
+using BiliBili_Controls.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using System.Text;
 using System.Threading.Tasks;
 using Windows.Foundation.Collections;
 using Windows.UI.Composition;
@@ -14,7 +13,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Hosting;
 using Windows.UI.Xaml.Media.Animation;
 
-namespace BiliBili_UWP.Components.Controls.AdaptiveGridView
+namespace BiliBili_Controls.AdaptiveGridView
 {
     public partial class AdaptiveGridView : GridView
     {

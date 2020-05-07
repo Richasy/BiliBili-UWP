@@ -1,4 +1,4 @@
-﻿using BiliBili_UWP.Models.Enums;
+﻿using BiliBili_Controls.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +10,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Hosting;
 using Windows.UI.Xaml.Media.Animation;
 
-namespace BiliBili_UWP.Models.UI.Others
+namespace BiliBili_Controls.Extensions
 {
     public static class CompositionExtensions
     {

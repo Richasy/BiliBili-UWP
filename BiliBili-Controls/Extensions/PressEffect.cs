@@ -8,7 +8,7 @@ using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Hosting;
 
-namespace BiliBili_UWP.Models.UI.Others
+namespace BiliBili_Controls.Extensions
 {
     public class PressEffect
     {

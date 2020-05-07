@@ -8,7 +8,7 @@
     xmlns:bilibili="using:BiliBili_Lib.Models.BiliBili.Video"
     xmlns:controls="using:BiliBili_UWP.Components.Controls"
     xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
-    xmlns:ada="using:BiliBili_UWP.Components.Controls.AdaptiveGridView"
+    xmlns:ada="using:BiliBili_Controls.AdaptiveGridView"
     Loaded="Page_Loaded"
     mc:Ignorable="d">
 

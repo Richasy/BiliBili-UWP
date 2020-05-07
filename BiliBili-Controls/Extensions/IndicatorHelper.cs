@@ -10,7 +10,7 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Hosting;
 using Windows.UI.Xaml.Media;
 
-namespace BiliBili_UWP.Models.UI.Others
+namespace BiliBili_Controls.Extensions
 {
     public static class IndicatorService
     {
