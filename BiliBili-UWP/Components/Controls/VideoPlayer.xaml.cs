@@ -220,7 +220,7 @@ namespace BiliBili_UWP.Components.Controls
             _player.MediaFailed += Media_Failed;
             _player.MediaOpened += Media_Opened;
             _player.PlaybackSession.PositionChanged += Media_PositionChanged;
-            //_player.PlaybackSession.PlaybackStateChanged += Media_StatusChanged;
+            _player.PlaybackSession.PlaybackStateChanged += Media_StatusChanged;
             _player.VolumeChanged += Volume_Changed;
             mediaElement.SetMediaPlayer(_player);
             if (DanmakuControls != null)
@@ -251,10 +251,12 @@ namespace BiliBili_UWP.Components.Controls
             {
                 if (_playData == null)
                     return;
+                VideoMTC.IsInit = false;
                 if (sender.PlaybackState == MediaPlaybackState.Paused && VideoMTC.IsPlaying)
                     VideoMTC.IsPlaying = false;
                 else if (sender.PlaybackState == MediaPlaybackState.Playing && !VideoMTC.IsPlaying)
                     VideoMTC.IsPlaying = true;
+                VideoMTC.IsInit = true;
             });
         }
 
@@ -786,9 +788,10 @@ namespace BiliBili_UWP.Components.Controls
             VideoMTC.IsPlaying = false;
         }
 
-        public void Resume()
+        public void Resume(bool isChangePlaying=true)
         {
-            VideoMTC.IsPlaying = true;
+            if(isChangePlaying)
+                VideoMTC.IsPlaying = true;
             _defaultTimer.Start();
             if (dispRequest == null)
             {
@@ -1106,9 +1109,7 @@ namespace BiliBili_UWP.Components.Controls
         private void VideoMTC_PlayButtonClick(object sender, bool e)
         {
             if (e)
-                Pause();
-            else
-                Resume();
+                Resume(false);
             this.Focus(FocusState.Programmatic);
         }
         private void VideoMTC_FullWindowChanged(object sender, bool e)
