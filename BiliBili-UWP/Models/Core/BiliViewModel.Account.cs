@@ -82,6 +82,7 @@ namespace BiliBili_UWP.Models.Core
             AppTool.WriteLocalSetting(Settings.TokenExpiry, "0");
             AppTool.WriteLocalSetting(Settings.UserId, "");
             AppTool.WriteLocalSetting(Settings.LastSeemDynamicId, "");
+            BiliTool.ClearCookies();
             _client.Account = new AccountService(new TokenPackage());
             BiliTool.ClearCookies();
         }
@@ -95,15 +96,17 @@ namespace BiliBili_UWP.Models.Core
             if (!string.IsNullOrEmpty(_client.Account._accessToken))
             {
                 bool isValid = false;
-                bool isExpiry = AppTool.DateToTimeStamp(DateTime.Now) >= _client.Account._expiry;
-                if (isExpiry)
-                    isValid = await _client.Account.RefreshTokenAsync();
-                else
-                    isValid = await _client.Account.CheckTokenStatusAsync();
+                isValid = await _client.Account.CheckTokenStatusAsync();
                 if (isValid)
                     await GetMeAsync();
                 else
-                    ClearAccountInformation();
+                {
+                    isValid = await _client.Account.RefreshTokenAsync();
+                    if (!isValid)
+                        ClearAccountInformation();
+                    else
+                        await GetMeAsync();
+                }
             }
             else
             {

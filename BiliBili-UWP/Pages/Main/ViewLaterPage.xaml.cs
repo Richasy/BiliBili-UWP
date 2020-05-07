@@ -142,6 +142,7 @@ namespace BiliBili_UWP.Pages.Main
             if (result)
             {
                 ViewLaterCollection.Remove(item);
+                HolderText.Visibility = ViewLaterCollection.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
             }
             else
             {
