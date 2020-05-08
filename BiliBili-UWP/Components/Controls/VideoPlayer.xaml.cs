@@ -118,6 +118,7 @@ namespace BiliBili_UWP.Components.Controls
         public event RoutedEventHandler SeparateButtonClick;
         public event EventHandler MTCLoaded;
         public event EventHandler<int> MediaEnded;
+        public event EventHandler<int> PartSwitched;
         #endregion
 
         public VideoPlayer()
@@ -275,7 +276,7 @@ namespace BiliBili_UWP.Components.Controls
                 {
                     if (!isBangumi)
                     {
-                        if (_videoDetail!=null && _videoDetail.history != null)
+                        if (_videoDetail != null && _videoDetail.history != null)
                         {
                             var historyPage = _videoDetail.pages.Where(p => p.cid == _videoDetail.history.cid).FirstOrDefault();
                             if (historyPage != null)
@@ -291,6 +292,7 @@ namespace BiliBili_UWP.Components.Controls
                             }
                         }
                     }
+                    _needShowHistory = false;
                 }
                 ErrorContainer.Visibility = Visibility.Collapsed;
             });
@@ -348,7 +350,7 @@ namespace BiliBili_UWP.Components.Controls
                     else
                         id = _videoId;
                     bool result = await ShowNextPart();
-                    if(!result)
+                    if (!result)
                         MediaEnded?.Invoke(this, id);
                 }
             });
@@ -791,9 +793,9 @@ namespace BiliBili_UWP.Components.Controls
             VideoMTC.IsPlaying = false;
         }
 
-        public void Resume(bool isChangePlaying=true)
+        public void Resume(bool isChangePlaying = true)
         {
-            if(isChangePlaying)
+            if (isChangePlaying)
                 VideoMTC.IsPlaying = true;
             _defaultTimer.Start();
             if (dispRequest == null)
@@ -1048,7 +1050,12 @@ namespace BiliBili_UWP.Components.Controls
                     if (_partId == history.cid)
                         _player.PlaybackSession.Position = TimeSpan.FromSeconds(history.progress);
                     else
+                    {
                         await RefreshVideoSource(history.cid, history.progress);
+                        var index = _videoDetail.pages.IndexOf(_videoDetail.pages.Where(p => p.cid == history.cid).FirstOrDefault());
+                        if (index != -1)
+                            PartSwitched?.Invoke(this, index);
+                    }
                 }
             }
             HideHistory();
@@ -1070,19 +1077,7 @@ namespace BiliBili_UWP.Components.Controls
         private async void NextPartButton_Click(object sender, RoutedEventArgs e)
         {
             int index = GetNextPartIndex();
-            if (index != -1)
-            {
-                if (!isBangumi)
-                {
-                    var next = _videoDetail.pages[index];
-                    await RefreshVideoSource(next.cid);
-                }
-                else
-                {
-                    var next = _bangumiDetail.episodes[index];
-                    await RefreshVideoSource(next);
-                }
-            }
+            await SwitchNextPart(index);
             HideNextPart();
         }
         #endregion
@@ -1543,6 +1538,7 @@ namespace BiliBili_UWP.Components.Controls
                     var next = _bangumiDetail.episodes[index];
                     await RefreshVideoSource(next);
                 }
+                PartSwitched?.Invoke(this, index);
             }
         }
         private int GetNextPartIndex()

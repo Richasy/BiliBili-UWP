@@ -60,7 +60,7 @@
             <controls:VideoPlayer x:Name="VideoPlayer" FullWindowChanged="VideoPlayer_FullWindowChanged"
                                   CinemaButtonVisibility="Visible" CinemaChanged="VideoPlayer_CinemaChanged"
                                   CompactOverlayChanged="VideoPlayer_CompactOverlayChanged"
-                                  SeparateButtonClick="VideoPlayer_SeparateButtonClick"/>
+                                  SeparateButtonClick="VideoPlayer_SeparateButtonClick" PartSwitched="VideoPlayer_PartSwitched"/>
         </Grid>
         <Grid Grid.Row="1" Padding="0,20,20,20">
             <Grid.RowDefinitions>

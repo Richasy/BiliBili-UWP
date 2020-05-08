@@ -368,5 +368,10 @@ namespace BiliBili_UWP.Pages.Main
                 App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Sub.ReplyPage), param);
             }
         }
+
+        private void VideoPlayer_PartSwitched(object sender, int e)
+        {
+            PartListView.SelectedIndex = e;
+        }
     }
 }
