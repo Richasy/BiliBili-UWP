@@ -130,8 +130,6 @@ namespace BiliBili_UWP.Pages.Main
             SelectLikeCheckBox.IsChecked = true;
             FavoriteListView.ItemsSource = null;
 
-            VideoPlayer.IsAutoReturnWhenEnd = !_isPlayList;
-
             FollowButton.Style = UIHelper.GetStyle("PrimaryAsyncButtonStyle");
             FollowButton.Text = "关注";
 
@@ -149,7 +147,7 @@ namespace BiliBili_UWP.Pages.Main
             var tip = new WaitingPopup("加载视频中...");
             tip.ShowPopup();
             var detail = await _videoService.GetVideoDetailAsync(videoId, _fromSign);
-            if (detail != null)
+            if (detail != null && detail.aid > 0)
             {
                 _detail = detail;
                 if (InitDetail())
@@ -162,18 +160,21 @@ namespace BiliBili_UWP.Pages.Main
         {
             if (!string.IsNullOrEmpty(_detail.redirect_url))
             {
-                var regex_ep = new Regex(@"ep(\d+)");
-                if (regex_ep.IsMatch(_detail.redirect_url))
+                var result = BiliTool.GetResultFromUri(_detail.redirect_url);
+                videoId = 0;
+                _currentPartId = 0;
+                if (result.Type == UriType.Bangumi)
                 {
-                    string epId = regex_ep.Match(_detail.redirect_url).Value.Replace("ep", "");
                     new TipPopup("正在转到专题...").ShowMessage();
-                    videoId = 0;
-                    _currentPartId = 0;
-                    App.AppViewModel.CurrentPagePanel.MainPageBack();
-                    App.AppViewModel.PlayBangumi(Convert.ToInt32(epId), null, true);
-                    return false;
+                    App.AppViewModel.PlayBangumi(Convert.ToInt32(result.Param), null, true);
                 }
+                App.AppViewModel.CurrentPagePanel.MainPageBack();
+                return false;
             }
+            if (_isPlayList)
+                VideoPlayer.IsAutoReturnWhenEnd = false;
+            else
+                VideoPlayer.IsAutoReturnWhenEnd = _detail.pages.Count <= 1;
             TitleBlock.Text = _detail.title;
             PlayCountBlock.Text = AppTool.GetNumberAbbreviation(_detail.stat.view);
             DanmukuCountBlock.Text = AppTool.GetNumberAbbreviation(_detail.stat.danmaku);

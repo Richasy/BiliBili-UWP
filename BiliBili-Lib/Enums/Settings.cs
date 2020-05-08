@@ -44,6 +44,7 @@ namespace BiliBili_Lib.Enums
         IsLastSidePanelOpen,
         LastSeemDynamicId,
         IsOpenNewDynamicNotification,
-        EnableAnimation
+        EnableAnimation,
+        IsAutoNextPart
     }
 }

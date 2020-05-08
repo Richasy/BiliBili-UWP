@@ -1,4 +1,5 @@
 ﻿using BiliBili_Lib.Models.BiliBili;
+using BiliBili_Lib.Tools;
 using BiliBili_UWP.Dialogs;
 using BiliBili_UWP.Models.UI;
 using System;
@@ -84,11 +85,11 @@ namespace BiliBili_UWP.Components.Controls
                     }
                     else if (repost.item.orig_type == 4)
                         repost.render_origin_content = (repost.render_origin as TextDynamic).content;
-                    else if(repost.item.orig_type==2)
+                    else if (repost.item.orig_type == 2)
                         repost.render_origin_content = Regex.Replace((repost.render_origin as ImageDynamic).description, @"#(.*?)#", "").Trim();
                     instance.MainContentControl.ContentTemplate = instance.RepostTemplate;
                 }
-                else if(data is AnimeDynamic)
+                else if (data is AnimeDynamic)
                 {
                     instance._cardType = "anime";
                     instance.MainContentControl.ContentTemplate = instance.AnimeTemplate;
@@ -98,7 +99,7 @@ namespace BiliBili_UWP.Components.Controls
                     instance._cardType = "text";
                     instance.MainContentControl.ContentTemplate = instance.TextTemplate;
                 }
-                else if(data is ShortVideoDynamic)
+                else if (data is ShortVideoDynamic)
                 {
                     instance._cardType = "shortVideo";
                     instance.MainContentControl.ContentTemplate = instance.ShortVideoTemplate;
@@ -108,17 +109,17 @@ namespace BiliBili_UWP.Components.Controls
                     instance._cardType = "web";
                     instance.MainContentControl.ContentTemplate = instance.WebTemplate;
                 }
-                else if(data is CourseDynamic)
+                else if (data is CourseDynamic)
                 {
                     instance._cardType = "course";
                     instance.MainContentControl.ContentTemplate = instance.CourseTemplate;
                 }
-                else if(data is MusicDynamic)
+                else if (data is MusicDynamic)
                 {
                     instance._cardType = "music";
                     instance.MainContentControl.ContentTemplate = instance.MusicTemplate;
                 }
-                else if(data is LiveDynamic)
+                else if (data is LiveDynamic)
                 {
                     instance._cardType = "live";
                     instance.MainContentControl.ContentTemplate = instance.LiveTemplate;
@@ -129,7 +130,19 @@ namespace BiliBili_UWP.Components.Controls
         private void MainContentControl_Tapped(object sender, TappedRoutedEventArgs e)
         {
             if (_cardType == "video")
-                App.AppViewModel.PlayVideo((Data as VideoDynamic).aid, sender, StaticString.SIGN_DYNAMIC);
+            {
+                var data = Data as VideoDynamic;
+                if (string.IsNullOrEmpty(data.redirect_url))
+                    App.AppViewModel.PlayVideo(data.aid, sender, StaticString.SIGN_DYNAMIC);
+                else
+                {
+                    var result = BiliTool.GetResultFromUri(data.redirect_url);
+                    if (result.Type == BiliBili_Lib.Enums.UriType.Bangumi)
+                    {
+                        App.AppViewModel.PlayBangumi(Convert.ToInt32(result.Param), sender, true);
+                    }
+                }
+            }
             else if (_cardType == "web")
             {
                 var item = Data as WebDynamic;

@@ -56,6 +56,8 @@
                         <ToggleSwitch Style="{StaticResource BasicToggleSwitchStyle}" HeaderTemplate="{StaticResource TipHeaderStyle}"
                               Header="播放页自动播放" x:Name="AutoPlaySwitch" Toggled="AutoPlaySwitch_Toggled"/>
                         <ToggleSwitch Style="{StaticResource BasicToggleSwitchStyle}" HeaderTemplate="{StaticResource TipHeaderStyle}"
+                              Header="自动播放下一P" x:Name="AutoNextPartSwitch" Toggled="AutoNextPartSwitch_Toggled" Margin="0,15,0,0"/>
+                        <ToggleSwitch Style="{StaticResource BasicToggleSwitchStyle}" HeaderTemplate="{StaticResource TipHeaderStyle}"
                               Header="后台时停止播放视频" x:Name="StopPlayInBackgroundSwitch" Toggled="StopPlayInBackgroundSwitch_Toggled"  Margin="0,15,0,0"/>
                         <ToggleSwitch Style="{StaticResource BasicToggleSwitchStyle}" HeaderTemplate="{StaticResource TipHeaderStyle}"
                               Header="手动控制媒体传输控件" x:Name="ManualMTCSwitch" Toggled="ManualMTCSwitch_Toggled"  Margin="0,15,0,0"/>

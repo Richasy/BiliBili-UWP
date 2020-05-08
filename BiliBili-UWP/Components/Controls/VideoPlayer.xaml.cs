@@ -146,7 +146,7 @@ namespace BiliBili_UWP.Components.Controls
                 }
             }
             mediaElement.PosterSource = new BitmapImage(new Uri(detail.pic));
-
+            HideNextPart();
             if (detail.interaction != null)
             {
                 int nodeId = 0;
@@ -171,6 +171,7 @@ namespace BiliBili_UWP.Components.Controls
             _bangumiDetail = detail;
             _bangumiPart = part;
             Reset();
+            HideNextPart();
             mediaElement.PosterSource = new BitmapImage(new Uri(detail.cover));
             await RefreshVideoSource(part);
             UpdateMediaProperties(part.title, part.subtitle, detail.cover);
@@ -346,7 +347,9 @@ namespace BiliBili_UWP.Components.Controls
                         id = _bangumiPart.id;
                     else
                         id = _videoId;
-                    MediaEnded?.Invoke(this, id);
+                    bool result = await ShowNextPart();
+                    if(!result)
+                        MediaEnded?.Invoke(this, id);
                 }
             });
         }
@@ -1059,6 +1062,29 @@ namespace BiliBili_UWP.Components.Controls
         {
             _historyShowSeconds = 0;
         }
+        private void HideNextPartButton_Click(object sender, RoutedEventArgs e)
+        {
+            HideNextPart();
+        }
+
+        private async void NextPartButton_Click(object sender, RoutedEventArgs e)
+        {
+            int index = GetNextPartIndex();
+            if (index != -1)
+            {
+                if (!isBangumi)
+                {
+                    var next = _videoDetail.pages[index];
+                    await RefreshVideoSource(next.cid);
+                }
+                else
+                {
+                    var next = _bangumiDetail.episodes[index];
+                    await RefreshVideoSource(next);
+                }
+            }
+            HideNextPart();
+        }
         #endregion
 
         #region MTC事件
@@ -1457,6 +1483,30 @@ namespace BiliBili_UWP.Components.Controls
                 HistoryContainer.Visibility = Visibility.Collapsed;
             _historyShowSeconds = -1;
         }
+        public async Task<bool> ShowNextPart()
+        {
+            var index = GetNextPartIndex();
+            if (index != -1)
+            {
+                bool isAutoNext = AppTool.GetBoolSetting(Settings.IsAutoNextPart, false);
+                if (!isAutoNext)
+                {
+                    if (NextPartContainer.Visibility == Visibility.Collapsed)
+                        NextPartContainer.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    await SwitchNextPart(index);
+                }
+                return true;
+            }
+            return false;
+        }
+        public void HideNextPart()
+        {
+            if (NextPartContainer.Visibility == Visibility.Visible)
+                NextPartContainer.Visibility = Visibility.Collapsed;
+        }
         public void ChangeDanmakuBarDisplayMode(bool isSingleRow = false, bool isShow = true)
         {
             if (!isSingleRow)
@@ -1479,9 +1529,42 @@ namespace BiliBili_UWP.Components.Controls
                 }
             }
         }
-
+        public async Task SwitchNextPart(int index)
+        {
+            if (index != -1)
+            {
+                if (!isBangumi)
+                {
+                    var next = _videoDetail.pages[index];
+                    await RefreshVideoSource(next.cid);
+                }
+                else
+                {
+                    var next = _bangumiDetail.episodes[index];
+                    await RefreshVideoSource(next);
+                }
+            }
+        }
+        private int GetNextPartIndex()
+        {
+            if (!isBangumi)
+            {
+                var index = _videoDetail.pages.IndexOf(_videoDetail.pages.Where(p => p.cid == _partId).FirstOrDefault());
+                if (index != -1 && index < _videoDetail.pages.Count - 1)
+                {
+                    return index + 1;
+                }
+            }
+            else
+            {
+                var index = _bangumiDetail.episodes.IndexOf(_bangumiPart);
+                if (index != -1 && index < _bangumiDetail.episodes.Count - 1)
+                {
+                    return index + 1;
+                }
+            }
+            return -1;
+        }
         #endregion
-
-        
     }
 }

@@ -29,6 +29,7 @@ namespace BiliBili_Lib.Models.BiliBili
         public string title { get; set; }
         public string tname { get; set; }
         public int videos { get; set; }
+        public string redirect_url { get; set; }
     }
 
     public class Owner

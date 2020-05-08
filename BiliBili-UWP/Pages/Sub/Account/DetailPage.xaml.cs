@@ -123,6 +123,7 @@ namespace BiliBili_UWP.Pages.Sub.Account
             var acc = detail.card;
             _user = acc;
             UserAvatar.ProfilePicture = new BitmapImage(new Uri(acc.face + "@50w.jpg"));
+            PendantImage.Visibility = Visibility.Collapsed;
             if (acc.pendant != null)
             {
                 PendantImage.Visibility = Visibility.Visible;
@@ -289,7 +290,13 @@ namespace BiliBili_UWP.Pages.Sub.Account
         {
             var data = e.ClickedItem as ArchiveVideo;
             if (data.@goto == "av")
-                App.AppViewModel.PlayVideo(Convert.ToInt32(data.param));
+            {
+                var ana = BiliTool.GetResultFromUri(data.uri);
+                if (ana.Type == BiliBili_Lib.Enums.UriType.Bangumi)
+                    App.AppViewModel.PlayBangumi(Convert.ToInt32(ana.Param), null, true);
+                else
+                    App.AppViewModel.PlayVideo(Convert.ToInt32(data.param));
+            }
             else if (data.@goto == "bangumi")
                 App.AppViewModel.PlayBangumi(Convert.ToInt32(data.param), null, true);
         }

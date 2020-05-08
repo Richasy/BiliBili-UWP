@@ -122,6 +122,7 @@
   <ItemGroup>
     <Compile Include="Enums\LoginResultType.cs" />
     <Compile Include="Enums\Settings.cs" />
+    <Compile Include="Enums\UriType.cs" />
     <Compile Include="Models\BiliBili\Account.cs" />
     <Compile Include="Models\BiliBili\Account\ArchiveVideo.cs" />
     <Compile Include="Models\BiliBili\Account\RelationUser.cs" />
@@ -153,6 +154,7 @@
     <Compile Include="Models\BiliBili\Login.cs" />
     <Compile Include="Models\BiliBili\Others.cs" />
     <Compile Include="Models\BiliBili\Region.cs" />
+    <Compile Include="Models\BiliBili\UriResult.cs" />
     <Compile Include="Models\BiliBili\Video.cs" />
     <Compile Include="Models\BiliBili\Video\VideoDetail.cs" />
     <Compile Include="Models\BiliBili\Video\VideoPart.cs" />

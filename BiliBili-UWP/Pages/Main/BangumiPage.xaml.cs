@@ -125,14 +125,16 @@ namespace BiliBili_UWP.Pages.Main
             if (detail != null && detail.season_id > 0)
             {
                 _detail = detail;
-                InitDetail();
                 CheckCoin();
-                await VideoPlayer.Init(_detail, _currentPart);
+                if (await InitDetail())
+                {
+                    await VideoPlayer.Init(_detail, _currentPart);
+                }
             }
             tip.HidePopup();
         }
 
-        private async void InitDetail()
+        private async Task<bool> InitDetail()
         {
             TitleBlock.Text = _detail.title;
             PlayCountBlock.Text = _detail.stat.play;
@@ -213,7 +215,9 @@ namespace BiliBili_UWP.Pages.Main
             if (_detail.limit != null)
             {
                 await new ConfirmDialog(_detail.limit.content).ShowAsync();
+                return false;
             }
+            return true;
         }
         private void CheckFollowButton()
         {

@@ -53,7 +53,9 @@ namespace BiliBili_UWP.Components.Widgets
                     if (instance.DecodePixelWidth > 0)
                         img.DecodePixelWidth = instance.DecodePixelWidth;
                     instance.DisplayImage.Source = img;
-                    if (string.IsNullOrEmpty(url) || !url.StartsWith("http"))
+                    if (string.IsNullOrEmpty(url))
+                        instance.DisplayImage.Source = null;
+                    else if (!url.StartsWith("http") && !url.StartsWith("ms-appx"))
                         img.UriSource = new Uri("ms-appx:///Assets/img_holder_color.png");
                     else
                         img.UriSource = new Uri(url);
