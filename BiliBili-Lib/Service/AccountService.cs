@@ -298,6 +298,24 @@ namespace BiliBili_Lib.Service
             string content = await BiliTool.PostContentToWebAsync(url, "");
             return content != null;
         }
+        /// <summary>
+        /// 移出稍后再看
+        /// </summary>
+        /// <param name="aids">视频ID组</param>
+        /// <returns></returns>
+        public async Task<bool> DeleteHistoryAsync(params int[] aids)
+        {
+            var param = new Dictionary<string, string>();
+            param.Add("aid", string.Join(',', aids));
+            var data = BiliTool.UrlContact("", param, true);
+            string content = await BiliTool.PostContentToWebAsync(Api.ACCOUNT_HISTORY_DEL, data);
+            if (!string.IsNullOrEmpty(content))
+            {
+                var jobj = JObject.Parse(content);
+                return jobj["code"].ToString() == "0";
+            }
+            return false;
+        }
 
         /// <summary>
         /// 获取我收藏的播单(最多20个)

@@ -22,13 +22,15 @@
                                        SecondSectionContent="{x:Bind stat.danmaku,Converter={StaticResource NumberAbbrConverter}}"
                                        >
                 <controls:DefaultVideoCard.ExtraFlyout>
-                    <MenuFlyout MenuFlyoutPresenterStyle="{StaticResource BasicMenuFlyoutStyle}">
-                        <MenuFlyoutItem Text="移出稍后观看" Click="RemoveItem_Click">
-                            <MenuFlyoutItem.Icon>
-                                <FontIcon FontFamily="{StaticResource Icon}" Glyph="&#xE9F5;"/>
-                            </MenuFlyoutItem.Icon>
-                        </MenuFlyoutItem>
-                    </MenuFlyout>
+                    <CommandBarFlyout>
+                        <CommandBarFlyout.SecondaryCommands>
+                            <AppBarButton Label="移出稍后观看" Click="RemoveItem_Click">
+                                <AppBarButton.Icon>
+                                    <FontIcon FontFamily="{StaticResource Icon}" Glyph="&#xE9F5;"/>
+                                </AppBarButton.Icon>
+                            </AppBarButton>
+                        </CommandBarFlyout.SecondaryCommands>
+                    </CommandBarFlyout>
                 </controls:DefaultVideoCard.ExtraFlyout>
             </controls:DefaultVideoCard>
         </DataTemplate>

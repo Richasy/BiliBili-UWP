@@ -175,7 +175,7 @@ namespace BiliBili_UWP.Components.Controls
             HideNextPart();
             mediaElement.PosterSource = new BitmapImage(new Uri(detail.cover));
             await RefreshVideoSource(part);
-            UpdateMediaProperties(part.title, part.subtitle, detail.cover);
+            
         }
         private void Reset()
         {
@@ -239,9 +239,12 @@ namespace BiliBili_UWP.Components.Controls
                 if (_videoDetail != null && _videoDetail.interaction != null)
                 {
                     InteractionEndContainer.Visibility = Visibility.Collapsed;
-                    if (sender.Position < sender.NaturalDuration && ChoiceItemsControl.Visibility == Visibility.Visible)
+                    if (sender.Position < sender.NaturalDuration)
                     {
-                        ChoiceItemsControl.Visibility = Visibility.Collapsed;
+                        if (ChoiceItemsControl.Visibility == Visibility.Visible)
+                            ChoiceItemsControl.Visibility = Visibility.Collapsed;
+                        if ((sender.NaturalDuration - sender.Position).TotalSeconds > 2)
+                            HideNextPart();
                     }
                 }
             });
@@ -292,7 +295,6 @@ namespace BiliBili_UWP.Components.Controls
                             }
                         }
                     }
-                    _needShowHistory = false;
                 }
                 ErrorContainer.Visibility = Visibility.Collapsed;
             });
@@ -358,10 +360,14 @@ namespace BiliBili_UWP.Components.Controls
         #endregion
 
         #region 播放及刷新
-        public async Task RefreshVideoSource(int partId, int progress = 0)
+        public async Task RefreshVideoSource(int partId, int progress = 0,bool needRefresh=false)
         {
             LoadingBar.Visibility = Visibility.Visible;
             var _mediaPlayer = mediaElement.MediaPlayer;
+            if (needRefresh)
+            {
+                Reset();
+            }
             if (_playData == null || _partId != partId)
             {
                 _partId = partId;
@@ -430,13 +436,15 @@ namespace BiliBili_UWP.Components.Controls
             mediaElement.Focus(FocusState.Programmatic);
             LoadingBar.Visibility = Visibility.Collapsed;
         }
-        public async Task RefreshVideoSource(Episode part)
+        public async Task RefreshVideoSource(Episode part,bool isRefresh=false)
         {
             if (part == null)
             {
                 ErrorContainer.Visibility = Visibility.Visible;
                 return;
             }
+            if (isRefresh)
+                Reset();
             LoadingBar.Visibility = Visibility.Visible;
             if (_playData == null || _bangumiPart.id != part.id)
             {
@@ -490,6 +498,7 @@ namespace BiliBili_UWP.Components.Controls
             {
                 ErrorContainer.Visibility = Visibility.Visible;
             }
+            UpdateMediaProperties(part.title, part.subtitle, _bangumiDetail.cover);
             mediaElement.Focus(FocusState.Programmatic);
             LoadingBar.Visibility = Visibility.Collapsed;
         }
@@ -1051,7 +1060,7 @@ namespace BiliBili_UWP.Components.Controls
                         _player.PlaybackSession.Position = TimeSpan.FromSeconds(history.progress);
                     else
                     {
-                        await RefreshVideoSource(history.cid, history.progress);
+                        await RefreshVideoSource(history.cid, history.progress,true);
                         var index = _videoDetail.pages.IndexOf(_videoDetail.pages.Where(p => p.cid == history.cid).FirstOrDefault());
                         if (index != -1)
                             PartSwitched?.Invoke(this, index);
@@ -1223,7 +1232,6 @@ namespace BiliBili_UWP.Components.Controls
             ExitScreenButton.Visibility = Visibility.Collapsed;
             SubtitleContainer.Margin = new Thickness(20, 0, 20, 20);
             TipContainer.Margin = new Thickness(20, 0, 0, 20);
-            HistoryContainer.Margin = new Thickness(0, 0, 0, 20);
             if (MTC.IsFullWindow || MTC.IsCinema || MTC.IsCompactOverlay)
                 DanmakuBarVisibility = Visibility.Collapsed;
         }
@@ -1238,7 +1246,6 @@ namespace BiliBili_UWP.Components.Controls
                 ExitScreenButton.Visibility = Visibility.Visible;
             SubtitleContainer.Margin = new Thickness(20, 0, 20, 140);
             TipContainer.Margin = new Thickness(20, 0, 0, 140);
-            HistoryContainer.Margin = new Thickness(0, 0, 0, 140);
             VideoMTC.Show();
             if ((MTC.IsFullWindow && isShowBarInFullWindow) || (MTC.IsCinema && isShowBarInCinema) || (MTC.IsCompactOverlay && isShowBarInCompact))
                 DanmakuBarVisibility = Visibility.Visible;
@@ -1477,11 +1484,13 @@ namespace BiliBili_UWP.Components.Controls
             if (HistoryContainer.Visibility == Visibility.Visible)
                 HistoryContainer.Visibility = Visibility.Collapsed;
             _historyShowSeconds = -1;
+            if (!isBangumi)
+                _videoDetail.history = null;
         }
         public async Task<bool> ShowNextPart()
         {
             var index = GetNextPartIndex();
-            if (index != -1)
+            if (index != -1 && CurrentProgress >= _player.PlaybackSession.NaturalDuration.TotalSeconds - 1)
             {
                 bool isAutoNext = AppTool.GetBoolSetting(Settings.IsAutoNextPart, false);
                 if (!isAutoNext)
@@ -1531,12 +1540,12 @@ namespace BiliBili_UWP.Components.Controls
                 if (!isBangumi)
                 {
                     var next = _videoDetail.pages[index];
-                    await RefreshVideoSource(next.cid);
+                    await RefreshVideoSource(next.cid,0,true);
                 }
                 else
                 {
                     var next = _bangumiDetail.episodes[index];
-                    await RefreshVideoSource(next);
+                    await RefreshVideoSource(next,true);
                 }
                 PartSwitched?.Invoke(this, index);
             }

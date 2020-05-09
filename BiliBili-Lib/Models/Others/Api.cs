@@ -111,6 +111,10 @@ namespace BiliBili_Lib.Models.Others
         /// </summary>
         public const string ACCOUNT_HISTORY_CLEAR = _apiBase + "/x/v2/history/clear";
         /// <summary>
+        /// 删除历史记录
+        /// </summary>
+        public const string ACCOUNT_HISTORY_DEL = _apiBase + "/x/v2/history/del";
+        /// <summary>
         /// 稍后观看记录
         /// </summary>
         public const string ACCOUNT_VIEWLATER = _apiBase + "/x/v2/history/toview";

@@ -169,6 +169,19 @@ namespace BiliBili_Lib.Service
             return data;
         }
         /// <summary>
+        /// 获取视频简易信息
+        /// </summary>
+        /// <param name="aid">视频avid</param>
+        /// <returns></returns>
+        public async Task<VideoSlim> GetVideoSlimAsync(int aid)
+        {
+            var param = new Dictionary<string, string>();
+            param.Add("aid", aid.ToString());
+            string url = BiliTool.UrlContact(Api.VIDEO_SLIM_INFO, param, true);
+            var data = await BiliTool.ConvertEntityFromWebAsync<VideoSlim>(url);
+            return data;
+        }
+        /// <summary>
         /// 获取视频相关
         /// </summary>
         /// <param name="aid">视频avid</param>

@@ -143,5 +143,20 @@ namespace BiliBili_UWP.Pages.Main
                 App.AppViewModel.CurrentPagePanel.PageScrollViewer.ChangeView(0, _scrollOffset, 1);
             }
         }
+
+        private async void RemoveItem_Click(object sender, RoutedEventArgs e)
+        {
+            var item = (sender as FrameworkElement).DataContext as VideoDetail;
+            bool result = await _account.DeleteHistoryAsync(item.aid);
+            if (result)
+            {
+                HistoryCollection.Remove(item);
+                HolderText.Visibility = HistoryCollection.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+            }
+            else
+            {
+                new TipPopup("移出失败，请稍后重试").ShowError();
+            }
+        }
     }
 }

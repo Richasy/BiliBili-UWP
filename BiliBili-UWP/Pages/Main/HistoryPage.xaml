@@ -19,7 +19,19 @@
                                        Tip="{x:Bind owner.name}"
                                        FirstSectionContent="{x:Bind stat.view,Converter={StaticResource NumberAbbrConverter}}"
                                        SecondSectionContent="{x:Bind stat.danmaku,Converter={StaticResource NumberAbbrConverter}}"
-                                       />
+                                       >
+                <controls:DefaultVideoCard.ExtraFlyout>
+                    <CommandBarFlyout>
+                        <CommandBarFlyout.SecondaryCommands>
+                            <AppBarButton Label="删除该记录" Click="RemoveItem_Click">
+                                <AppBarButton.Icon>
+                                    <FontIcon FontFamily="{StaticResource Icon}" Glyph="&#xE9F5;"/>
+                                </AppBarButton.Icon>
+                            </AppBarButton>
+                        </CommandBarFlyout.SecondaryCommands>
+                    </CommandBarFlyout>
+                </controls:DefaultVideoCard.ExtraFlyout>
+            </controls:DefaultVideoCard>
         </DataTemplate>
     </Page.Resources>
     <Grid>
@@ -40,7 +52,7 @@
         <Grid Grid.Row="1">
             <ada:AdaptiveGridView x:Name="HistoryVideoView"
                           DesiredWidth="215"
-                          ItemHeight="180" StretchContentForSingleRow="False"
+                          ItemHeight="185" StretchContentForSingleRow="False"
                           ItemTemplate="{StaticResource VideoItemTemplate}"
                           ItemContainerStyle="{StaticResource TransparentGridViewItemContainerStyle}"
                           Style="{StaticResource NoScrollGridView}"

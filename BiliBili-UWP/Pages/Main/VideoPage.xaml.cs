@@ -12,6 +12,7 @@ using SYEngine;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -227,6 +228,7 @@ namespace BiliBili_UWP.Pages.Main
             {
                 _detail.relates.Where(p => p.@goto == "av").Take(10).ToList().ForEach(p => RelatedCollection.Add(p));
             }
+            CheckLikeHoldState();
             return true;
         }
 
@@ -259,7 +261,10 @@ namespace BiliBili_UWP.Pages.Main
         {
             App.AppViewModel.PlayVideoCinema(e);
         }
-
+        private void CheckLikeHoldState()
+        {
+            LikeButton.CanHolding = !(LikeButton.IsCheck && CoinButton.IsCheck && FavoriteButton.IsCheck);
+        }
         private async void LikeButton_Click(object sender, EventArgs e)
         {
             if (App.BiliViewModel.CheckAccoutStatus())
@@ -272,10 +277,12 @@ namespace BiliBili_UWP.Pages.Main
                     string prompt = isLike ? "已点赞" : "已取消点赞";
                     new TipPopup(prompt).ShowMessage();
                     LikeButton.IsCheck = !LikeButton.IsCheck;
+                    UpdateVideoInfo();
                 }
                 else
                     new TipPopup("点赞操作失败").ShowError();
                 LikeButton.IsEnabled = true;
+                CheckLikeHoldState();
             }
         }
 
@@ -313,14 +320,18 @@ namespace BiliBili_UWP.Pages.Main
             if (result)
             {
                 if (Convert.ToBoolean(SelectLikeCheckBox.IsChecked))
+                {
                     LikeButton.IsCheck = true;
+                }
                 new TipPopup("成功投币！").ShowMessage();
+                UpdateVideoInfo();
                 CoinFlyout.Hide();
             }
             else
                 new TipPopup("投币失败").ShowError();
             CoinButton.IsCheck = result;
             CoinButton.IsEnabled = true;
+            CheckLikeHoldState();
         }
 
         private async void FavoriteSureButton_Click(object sender, RoutedEventArgs e)
@@ -351,12 +362,14 @@ namespace BiliBili_UWP.Pages.Main
                     FavoriteFlyout.Hide();
                     FavoriteButton.IsCheck = selectedItems.Count > 0;
                     new TipPopup("已更改收藏夹").ShowMessage();
+                    UpdateVideoInfo();
                 }
                 else
                 {
                     new TipPopup("收藏失败").ShowError();
                 }
             }
+            CheckLikeHoldState();
         }
 
         private async void PartListView_ItemClick(object sender, ItemClickEventArgs e)
@@ -475,6 +488,39 @@ namespace BiliBili_UWP.Pages.Main
         private void VideoPlayer_PartSwitched(object sender, int e)
         {
             PartListView.SelectedIndex = e;
+        }
+
+        private async void LikeButton_Hold(object sender, bool e)
+        {
+            if (e)
+            {
+                if (App.BiliViewModel.CheckAccoutStatus())
+                {
+                    bool result = await _videoService.TripleVideoAsync(_detail.aid);
+                    if (result)
+                    {
+                        LikeButton.IsCheck = true;
+                        CoinButton.IsCheck = true;
+                        FavoriteButton.IsCheck = true;
+                        CoinButton.ShowBubble();
+                        FavoriteButton.ShowBubble();
+                        new TipPopup("已一键三连~").ShowMessage();
+                        UpdateVideoInfo();
+                    }
+                    else
+                    {
+                        new TipPopup("一键三连失败QAQ").ShowError();
+                    }
+                }
+            }
+        }
+
+        private async void UpdateVideoInfo()
+        {
+            var data = await _videoService.GetVideoSlimAsync(_detail.aid);
+            LikeButton.Text = AppTool.GetNumberAbbreviation(data.like);
+            CoinButton.Text = AppTool.GetNumberAbbreviation(data.coin);
+            FavoriteButton.Text = AppTool.GetNumberAbbreviation(data.favorite);
         }
     }
 }

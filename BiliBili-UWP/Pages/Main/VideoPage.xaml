@@ -147,7 +147,7 @@
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Grid.Column="1" VerticalAlignment="Center">
-                    <widgets:CheckButton Icon="&#xE9F0;" x:Name="LikeButton" Click="LikeButton_Click"/>
+                    <widgets:CheckButton Icon="&#xE9F0;" x:Name="LikeButton" Click="LikeButton_Click" Hold="LikeButton_Hold"/>
                     <widgets:CheckButton Margin="15,0,0,0" Icon="&#xEA45;" x:Name="CoinButton" Click="CoinButton_Click" FlyoutBase.AttachedFlyout="{StaticResource CoinFlyout}"/>
                     <widgets:CheckButton Margin="15,0,0,0" Icon="&#xE9E5;" x:Name="FavoriteButton" Click="FavoriteButton_Click" FlyoutBase.AttachedFlyout="{StaticResource FavoriteFlyout}"/>
                 </StackPanel>

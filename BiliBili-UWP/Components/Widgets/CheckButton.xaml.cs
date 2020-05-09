@@ -5,8 +5,10 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI;
 using Windows.UI.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -25,9 +27,12 @@ namespace BiliBili_UWP.Components.Widgets
         public CheckButton()
         {
             this.InitializeComponent();
+            gestureRecognizer.GestureSettings = GestureSettings.HoldWithMouse | GestureSettings.Tap;
         }
-
+        private bool _isAnimateBegin = false;
+        GestureRecognizer gestureRecognizer = new GestureRecognizer();
         public event EventHandler Click;
+        public event EventHandler<bool> Hold;
 
         public bool IsCheck
         {
@@ -43,7 +48,10 @@ namespace BiliBili_UWP.Components.Widgets
         {
             bool v = (bool)e.NewValue;
             var instance = d as CheckButton;
-            instance.HandleButton.Style = v ? UIHelper.GetStyle("PrimaryCircleButtonStyle") : UIHelper.GetStyle("DefaultGhostCircleButtonStyle");
+            if (v)
+                VisualStateManager.GoToState(instance, "Checked", true);
+            else
+                VisualStateManager.GoToState(instance, "Default", true);
         }
 
         public string Icon
@@ -66,13 +74,88 @@ namespace BiliBili_UWP.Components.Widgets
         public static readonly DependencyProperty TextProperty =
             DependencyProperty.Register("Text", typeof(string), typeof(CheckButton), new PropertyMetadata(""));
 
-        
+        public bool CanHolding
+        {
+            get { return (bool)GetValue(CanHoldingProperty); }
+            set { SetValue(CanHoldingProperty, value); }
+        }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        // Using a DependencyProperty as the backing store for CanHolding.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty CanHoldingProperty =
+            DependencyProperty.Register("CanHolding", typeof(bool), typeof(CheckButton), new PropertyMetadata(false));
+
+
+        private void PressStoryBoard_Completed(object sender, object e)
+        {
+            Hold?.Invoke(this, true);
+            ShowBubble();
+            PressProgressBar.Visibility = Visibility.Collapsed;
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            gestureRecognizer.Holding -= gestureRecognizer_Holding;
+            gestureRecognizer.Tapped -= gestureRecognizer_Tapped;
+            gestureRecognizer.Holding += gestureRecognizer_Holding;
+            gestureRecognizer.Tapped += gestureRecognizer_Tapped;
+        }
+
+        private void gestureRecognizer_Tapped(GestureRecognizer sender, TappedEventArgs args)
         {
             Click?.Invoke(this, EventArgs.Empty);
         }
 
-        
+        void gestureRecognizer_Holding(GestureRecognizer sender, HoldingEventArgs args)
+        {
+            if (Hold != null && CanHolding)
+            {
+                if (args.HoldingState == HoldingState.Started)
+                {
+                    PressProgressBar.Visibility = Visibility.Visible;
+                    if (!_isAnimateBegin)
+                    {
+                        _isAnimateBegin = true;
+                        PressStoryBoard.Begin();
+                    }
+                }
+                else
+                {
+                    _isAnimateBegin = false;
+                    PressStoryBoard.Stop();
+                    PressProgressBar.Visibility = Visibility.Collapsed;
+                }
+            }
+        }
+        private void Grid_PointerPressed(object sender, PointerRoutedEventArgs e)
+        {
+            var ps = e.GetIntermediatePoints(null);
+            if (ps != null && ps.Count > 0)
+            {
+                gestureRecognizer.ProcessDownEvent(ps[0]);
+                e.Handled = true;
+            }
+        }
+
+        private void Grid_PointerMoved(object sender, PointerRoutedEventArgs e)
+        {
+            gestureRecognizer.ProcessMoveEvents(e.GetIntermediatePoints(null));
+            e.Handled = true;
+        }
+
+        private void Grid_PointerReleased(object sender, PointerRoutedEventArgs e)
+        {
+            var ps = e.GetIntermediatePoints(null);
+            if (ps != null && ps.Count > 0)
+            {
+                gestureRecognizer.ProcessUpEvent(ps[0]);
+                e.Handled = true;
+                gestureRecognizer.CompleteGesture();
+            }
+        }
+
+        public void ShowBubble()
+        {
+            BubbleView.IsBubbing = true;
+        }
     }
 }

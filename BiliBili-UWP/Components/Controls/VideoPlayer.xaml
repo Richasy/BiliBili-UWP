@@ -231,7 +231,7 @@
         </Grid>
         <StackPanel x:Name="HistoryContainer" Orientation="Horizontal" Background="{ThemeResource PaneBackground}" CornerRadius="4,0,0,4"
                     Padding="10,8" VerticalAlignment="Bottom" HorizontalAlignment="Right" Visibility="Collapsed" PointerMoved="HistoryContainer_PointerMoved"
-                    Margin="0,0,0,140">
+                    Margin="0,0,0,130">
             <Button Style="{StaticResource DefaultGhostCircleButtonStyle}" Content="&#xE934;" Width="30" Height="30" FontFamily="{StaticResource Icon}"
                     Click="HideHistoryButton_Click"/>
             <TextBlock Style="{StaticResource SmallTipTextStyle}" VerticalAlignment="Center" Margin="10,0">
@@ -251,7 +251,7 @@
         </StackPanel>
         <StackPanel x:Name="NextPartContainer" Orientation="Horizontal" Background="{ThemeResource PaneBackground}" CornerRadius="4,0,0,4"
                     Padding="10,8" VerticalAlignment="Bottom" HorizontalAlignment="Right" Visibility="Collapsed" PointerMoved="HistoryContainer_PointerMoved"
-                    Margin="0,0,0,140">
+                    Margin="0,0,0,130">
             <Button Style="{StaticResource DefaultGhostCircleButtonStyle}" Content="&#xE934;" Width="30" Height="30" FontFamily="{StaticResource Icon}"
                     Click="HideNextPartButton_Click"/>
             <TextBlock Style="{StaticResource SmallTipTextStyle}" VerticalAlignment="Center" Margin="10,0"
