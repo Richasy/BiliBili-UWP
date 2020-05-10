@@ -43,9 +43,11 @@
                         <DataTemplate>
                             <ScrollViewer Style="{StaticResource BasicScrollViewer}" ZoomMode="Enabled"
                                       MinZoomFactor="0.5" MaxZoomFactor="3" IsZoomChainingEnabled="True"
-                                      >
-                                <widgets:BiliImage
-                          x:Name="DisplayImage" Source="{Binding img_src}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                                      HorizontalScrollMode="Enabled" HorizontalScrollBarVisibility="Auto"
+                                           Name="ScrollViewerMain">
+                                <Image MaxWidth="{Binding Path=ViewportWidth, ElementName=ScrollViewerMain}"
+                                       MaxHeight="{Binding Path=ViewportHeight, ElementName=ScrollViewerMain}"
+                          x:Name="DisplayImage" Source="{Binding img_src}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </ScrollViewer>
                         </DataTemplate>
                     </FlipView.ItemTemplate>
@@ -73,7 +75,7 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <ContentPresenter x:Name="MainDisplay" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-        <Grid Width="400" Grid.Column="1" Padding="20" Background="{ThemeResource SideBackground}">
+        <Grid Width="400" Grid.Column="1" Padding="20" Background="{ThemeResource SideBackground}" x:Name="ReplyContainer">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="1*" />

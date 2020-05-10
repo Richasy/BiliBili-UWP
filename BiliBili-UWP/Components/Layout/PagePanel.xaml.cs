@@ -434,5 +434,11 @@ namespace BiliBili_UWP.Components.Layout
             }
             return result;
         }
+
+        public void RemoveMainHistory(SideMenuItemType type)
+        {
+            var page = GetPageTypeFromMenuType(type);
+            MainFrameHistoryList.RemoveAll(p => p.Item1 == page);
+        }
     }
 }

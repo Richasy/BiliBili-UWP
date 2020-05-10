@@ -365,11 +365,11 @@ namespace BiliBili_UWP.Components.Controls
         public async Task RefreshVideoSource(int partId, int progress = 0,bool needRefresh=false)
         {
             LoadingBar.Visibility = Visibility.Visible;
-            var _mediaPlayer = mediaElement.MediaPlayer;
             if (needRefresh)
             {
                 Reset();
             }
+            var _mediaPlayer = mediaElement.MediaPlayer;
             if (_playData == null || _partId != partId)
             {
                 _partId = partId;

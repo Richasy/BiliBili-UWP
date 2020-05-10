@@ -37,7 +37,13 @@ namespace BiliBili_UWP.Components.Controls
         }
         public void ShowPopup()
         {
-            UIHelper.PopupShow(this);
+            UIHelper.PopupShow(this,()=>
+            {
+                if (Window.Current.Bounds.Width < 800)
+                    ReplyContainer.Visibility = Visibility.Collapsed;
+                else
+                    ReplyContainer.Visibility = Visibility.Visible;
+            });
             PopupIn.Begin();
         }
         public void HidePopup()

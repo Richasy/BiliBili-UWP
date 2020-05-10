@@ -164,12 +164,12 @@ namespace BiliBili_UWP.Pages.Main
                 var result = BiliTool.GetResultFromUri(_detail.redirect_url);
                 videoId = 0;
                 _currentPartId = 0;
+                App.AppViewModel.CurrentPagePanel.RemoveMainHistory(Models.Enums.SideMenuItemType.VideoPlayer);
                 if (result.Type == UriType.Bangumi)
                 {
                     new TipPopup("正在转到专题...").ShowMessage();
                     App.AppViewModel.PlayBangumi(Convert.ToInt32(result.Param), null, true);
                 }
-                App.AppViewModel.CurrentPagePanel.MainPageBack();
                 return false;
             }
             if (_isPlayList)

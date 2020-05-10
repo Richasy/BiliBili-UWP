@@ -90,6 +90,11 @@ namespace BiliBili_UWP
                 
                 if (esc.HasFlag(CoreVirtualKeyStates.Down))
                 {
+                    if (App.AppViewModel._dynamicDetailPopup != null && App.AppViewModel._dynamicDetailPopup._popup.IsOpen)
+                    {
+                        App.AppViewModel._dynamicDetailPopup.HidePopup();
+                        return;
+                    }
                     if (player != null)
                     {
                         if (player.MTC.IsFullWindow)
@@ -104,7 +109,6 @@ namespace BiliBili_UWP
                         }
                         player.Focus(FocusState.Programmatic);
                     }
-
                 }
                 else if (space.HasFlag(CoreVirtualKeyStates.Down))
                 {
