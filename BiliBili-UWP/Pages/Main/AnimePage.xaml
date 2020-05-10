@@ -31,7 +31,7 @@
                                        Tip="{x:Bind desc}"
                                        Title="{x:Bind title}"
                                        DecodePixelWidth="160"
-                                       Width="180"
+                                       Width="200"
                                        BottomText="{x:Bind stat.follow_view}"
                                        SectionVisibility="Collapsed"
                                        />

@@ -121,7 +121,7 @@ namespace BiliBili_UWP.Pages.Main
 
             PlayCountBlock.Text = "-";
             DanmukuCountBlock.Text = "-";
-            ReplyCountBlock.Text = "-";
+            CommentButton.Text = "评论";
             RepostCountBlock.Text = "-";
 
             DescriptionBlock.Text = "--";
@@ -180,7 +180,7 @@ namespace BiliBili_UWP.Pages.Main
             PlayCountBlock.Text = AppTool.GetNumberAbbreviation(_detail.stat.view);
             DanmukuCountBlock.Text = AppTool.GetNumberAbbreviation(_detail.stat.danmaku);
             RepostCountBlock.Text = AppTool.GetNumberAbbreviation(_detail.stat.share);
-            ReplyCountBlock.Text = AppTool.GetNumberAbbreviation(_detail.stat.reply);
+            CommentButton.Text = AppTool.GetNumberAbbreviation(_detail.stat.reply);
 
             DescriptionBlock.Text = _detail.desc;
             ToolTipService.SetToolTip(DescriptionBlock, _detail.desc);
@@ -449,14 +449,6 @@ namespace BiliBili_UWP.Pages.Main
             App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Pages.Sub.Account.DetailPage), accId);
         }
 
-        private void ReplyButton_Click(object sender, RoutedEventArgs e)
-        {
-            var param = new Dictionary<string, string>();
-            param.Add("oid", _detail.aid.ToString());
-            param.Add("type", "1");
-            App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Sub.ReplyPage), param);
-        }
-
         private async void PlayListContainer_ItemClick(object sender, ItemClickEventArgs e)
         {
             var item = e.ClickedItem as VideoDetail;
@@ -521,6 +513,14 @@ namespace BiliBili_UWP.Pages.Main
             LikeButton.Text = AppTool.GetNumberAbbreviation(data.like);
             CoinButton.Text = AppTool.GetNumberAbbreviation(data.coin);
             FavoriteButton.Text = AppTool.GetNumberAbbreviation(data.favorite);
+        }
+
+        private void CommentButton_Click(object sender, EventArgs e)
+        {
+            var param = new Dictionary<string, string>();
+            param.Add("oid", _detail.aid.ToString());
+            param.Add("type", "1");
+            App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Sub.ReplyPage), param);
         }
     }
 }

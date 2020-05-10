@@ -97,7 +97,7 @@ namespace BiliBili_UWP.Pages.Main
             TitleBlock.Text = "--";
             PlayCountBlock.Text = "-";
             DanmukuCountBlock.Text = "-";
-            ReplyCountBlock.Text = "-";
+            CommentButton.Text = "评论";
             RepostCountBlock.Text = "-";
             BasicInfoBlock.Text = "-";
             Section1Title.Text = "--";
@@ -140,7 +140,7 @@ namespace BiliBili_UWP.Pages.Main
             PlayCountBlock.Text = _detail.stat.play;
             DanmukuCountBlock.Text = AppTool.GetNumberAbbreviation(_detail.stat.danmakus);
             RepostCountBlock.Text = AppTool.GetNumberAbbreviation(_detail.stat.share);
-            ReplyCountBlock.Text = AppTool.GetNumberAbbreviation(_detail.stat.reply);
+            CommentButton.Text = AppTool.GetNumberAbbreviation(_detail.stat.reply);
 
             DescriptionBlock.Text = _detail.evaluate;
             ToolTipService.SetToolTip(DescriptionBlock, _detail.evaluate);
@@ -188,7 +188,6 @@ namespace BiliBili_UWP.Pages.Main
                     }
                 }
                 bangumiId = _detail.season_id;
-                
             }
             else if (_detail.user_status.progress != null)
             {
@@ -358,7 +357,13 @@ namespace BiliBili_UWP.Pages.Main
                 App.AppViewModel.PlayVideoSeparate(_detail, _currentPart);
             }
         }
-        private void ReplyButton_Click(object sender, RoutedEventArgs e)
+
+        private void VideoPlayer_PartSwitched(object sender, int e)
+        {
+            PartListView.SelectedIndex = e;
+        }
+
+        private void CommentButton_Click(object sender, EventArgs e)
         {
             if (_currentPart != null)
             {
@@ -367,11 +372,6 @@ namespace BiliBili_UWP.Pages.Main
                 param.Add("type", "1");
                 App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Sub.ReplyPage), param);
             }
-        }
-
-        private void VideoPlayer_PartSwitched(object sender, int e)
-        {
-            PartListView.SelectedIndex = e;
         }
     }
 }

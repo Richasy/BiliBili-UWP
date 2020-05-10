@@ -138,18 +138,16 @@
                         <widgets:IconTextBlock Icon="&#xEA32;" GutterWidth="5" FontSize="12" IconForeground="{ThemeResource TipTextColor}" x:Name="PlayCountBlock"/>
                         <widgets:IconTextBlock Icon="&#xEA35;" GutterWidth="5" Margin="15,0,0,0" FontSize="12" IconForeground="{ThemeResource TipTextColor}" x:Name="DanmukuCountBlock"/>
                         <widgets:IconTextBlock Icon="&#xEA44;" GutterWidth="5" Margin="15,0,0,0" FontSize="12" IconForeground="{ThemeResource TipTextColor}" x:Name="RepostCountBlock"/>
-                        <Button Style="{StaticResource TransparentButtonStyle}" x:Name="ReplyButton" Padding="0" Click="ReplyButton_Click"  Margin="15,0,0,0" HorizontalAlignment="Stretch">
-                            <TextBlock Style="{StaticResource SmallTipTextStyle}" HorizontalAlignment="Center" FontSize="12">
-                            <Run Text="&#xE99E;" FontFamily="{StaticResource Icon}" Foreground="{ThemeResource PrimaryColor}"/>
-                            <Run x:Name="ReplyCountBlock" Foreground="{ThemeResource NormalTextColor}"/>
-                            </TextBlock>
-                        </Button>
                     </StackPanel>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" Grid.Column="1" VerticalAlignment="Center">
-                    <widgets:CheckButton Icon="&#xE9F0;" x:Name="LikeButton" Click="LikeButton_Click" Hold="LikeButton_Hold"/>
-                    <widgets:CheckButton Margin="15,0,0,0" Icon="&#xEA45;" x:Name="CoinButton" Click="CoinButton_Click" FlyoutBase.AttachedFlyout="{StaticResource CoinFlyout}"/>
-                    <widgets:CheckButton Margin="15,0,0,0" Icon="&#xE9E5;" x:Name="FavoriteButton" Click="FavoriteButton_Click" FlyoutBase.AttachedFlyout="{StaticResource FavoriteFlyout}"/>
+                <StackPanel Grid.Column="1" VerticalAlignment="Top">
+                    <StackPanel Orientation="Horizontal">
+                        <widgets:CheckButton Icon="&#xE9F0;" x:Name="LikeButton" Click="LikeButton_Click" Hold="LikeButton_Hold"/>
+                        <widgets:CheckButton Margin="15,0,0,0" Icon="&#xEA45;" x:Name="CoinButton" Click="CoinButton_Click" FlyoutBase.AttachedFlyout="{StaticResource CoinFlyout}"/>
+                        <widgets:CheckButton Margin="15,0,0,0" Icon="&#xE9E5;" x:Name="FavoriteButton" Click="FavoriteButton_Click" FlyoutBase.AttachedFlyout="{StaticResource FavoriteFlyout}"/>
+                    </StackPanel>
+                    <widgets:CheckButton Icon="&#xE99E;" x:Name="CommentButton" ToolTipService.ToolTip="评论" Click="CommentButton_Click"
+                                         IsCheck="True" Margin="0,10,0,0" HorizontalAlignment="Right"/>
                 </StackPanel>
             </Grid>
             <ListView ItemTemplate="{StaticResource PartItemTemplate}" ItemsSource="{x:Bind VideoPartCollection}"
