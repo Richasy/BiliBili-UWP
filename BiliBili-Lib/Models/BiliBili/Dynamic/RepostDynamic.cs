@@ -17,13 +17,7 @@ namespace BiliBili_Lib.Models.BiliBili
         public string render_origin_content { get; set; }
         public class OriginUser : Author
         {
-            public OriginUserInfo info { get; set; }
-        }
-        public class OriginUserInfo
-        {
-            public int uid { get; set; }
-            public string uname { get; set; }
-            public string face { get; set; }
+            public SlimUserInfo info { get; set; }
         }
     }
 

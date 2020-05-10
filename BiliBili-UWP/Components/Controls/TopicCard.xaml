@@ -58,7 +58,8 @@
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
         </ItemsControl>
-        <local:DynamicContentBlock Grid.Row="3" Margin="0,5,0,0" x:Name="MainDisplay"/>
+        <local:DynamicContentBlock Grid.Row="3" Margin="0,5,0,0" x:Name="MainDisplay" ImageTapped="MainDisplay_ImageTapped"
+                                   DocumentTapped="MainDisplay_DocumentTapped"/>
         <Grid Grid.Row="4">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*" />

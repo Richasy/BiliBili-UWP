@@ -136,6 +136,7 @@
     <Compile Include="Models\BiliBili\Dynamic\LiveDynamic.cs" />
     <Compile Include="Models\BiliBili\Dynamic\MusicDynamic.cs" />
     <Compile Include="Models\BiliBili\Dynamic\RepostDynamic.cs" />
+    <Compile Include="Models\BiliBili\Dynamic\SeriesDynamic.cs" />
     <Compile Include="Models\BiliBili\Dynamic\ShortVideoDynamic.cs" />
     <Compile Include="Models\BiliBili\Dynamic\VideoDynamic.cs" />
     <Compile Include="Models\BiliBili\Channel.cs" />

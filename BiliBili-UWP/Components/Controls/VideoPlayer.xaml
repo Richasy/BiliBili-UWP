@@ -211,6 +211,12 @@
         </StackPanel>
         <Grid Grid.Row="1" Visibility="{x:Bind DanmakuBarVisibility,Mode=OneWay}" Background="{ThemeResource MediaTransportControlsPanelBackground}"
               Padding="15,5" x:Name="DanmakuBarContainer" VerticalAlignment="Bottom">
+            <animations:Implicit.ShowAnimations>
+                <animations:OpacityAnimation Duration="0:0:.3" From="0" To="1.0"></animations:OpacityAnimation>
+            </animations:Implicit.ShowAnimations>
+            <animations:Implicit.HideAnimations>
+                <animations:OpacityAnimation Duration="0:0:.7" From="1.0" To="0"></animations:OpacityAnimation>
+            </animations:Implicit.HideAnimations>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
@@ -225,7 +231,8 @@
                     FontFamily="{StaticResource Icon}" Flyout="{StaticResource DanmakuFlyout}" FontSize="25" Margin="10,0,0,0"/>
             </StackPanel>
             <TextBox Style="{StaticResource TransparentTextBoxStyle}" Margin="15,0" VerticalAlignment="Center" PlaceholderText="哔哩哔哩 (゜-゜)つロ 干杯~-bilibili"
-                     Grid.Column="1" x:Name="DanmakuBox" AcceptsReturn="False" HorizontalAlignment="Stretch" KeyDown="DanmakuBox_KeyDown" Padding="6,7"/>
+                     Grid.Column="1" x:Name="DanmakuBox" AcceptsReturn="False" HorizontalAlignment="Stretch" KeyDown="DanmakuBox_KeyDown" Padding="6,7"
+                     GotFocus="DanmakuBox_GotFocus" LostFocus="DanmakuBox_LostFocus"/>
             <Button Style="{StaticResource TransparentButtonStyle}" x:Name="SendDanmakuButton" Content="&#xE9D1;" Grid.Column="2" VerticalAlignment="Center"
                     FontFamily="{StaticResource Icon}" Click="SendDanmakuButton_Click"/>
         </Grid>

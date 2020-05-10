@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:bilibili="using:BiliBili_Lib.Models.BiliBili"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:hn="using:HN.Controls"
     xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
     xmlns:others="using:BiliBili_Controls.Extensions"
     mc:Ignorable="d"
@@ -21,7 +22,7 @@
                 </Grid.RowDefinitions>
                 <Grid>
                     <widgets:BiliImage Source="{x:Bind pic,Converter={StaticResource CoverResolutionConverter},ConverterParameter=400}" CornerRadius="4" DecodePixelWidth="300" MaxHeight="200"
-                                  x:Name="VideoCover"/>
+                                  x:Name="VideoCover" MinHeight="150"/>
                     <Border Padding="8,3" Background="{ThemeResource PopupBackground}" RequestedTheme="Dark" HorizontalAlignment="Left" VerticalAlignment="Bottom"
                     CornerRadius="3" Margin="10,0,0,10" Visibility="{x:Bind duration,Mode=OneWay,Converter={StaticResource StringVisibilityConverter}}">
                         <TextBlock Text="{x:Bind duration,Converter={StaticResource DurationConverter},Mode=OneWay}" Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource ImportantTextColor}"
@@ -45,7 +46,38 @@
                 </Grid>
             </Grid>
         </DataTemplate>
-
+        <DataTemplate x:DataType="bilibili:SeriesDynamic" x:Name="SeriesTemplate">
+            <Grid others:PressEffect.IsEnabled="True" others:PressEffect.TargetElementName="VideoCover">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid>
+                    <widgets:BiliImage Source="{x:Bind cover,Converter={StaticResource CoverResolutionConverter},ConverterParameter=400}" CornerRadius="4" DecodePixelWidth="300" MaxHeight="200"
+                                  x:Name="VideoCover" MinHeight="150"/>
+                    <Border Padding="8,3" Background="{ThemeResource PopupBackground}" RequestedTheme="Dark" HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                    CornerRadius="3" Margin="10,0,0,10" Visibility="{x:Bind duration,Mode=OneWay,Converter={StaticResource StringVisibilityConverter}}">
+                        <TextBlock Text="{x:Bind duration,Converter={StaticResource DurationConverter},Mode=OneWay}" Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource ImportantTextColor}"
+                           TextTrimming="None"/>
+                    </Border>
+                </Grid>
+                <Border Width="60" Height="60" CornerRadius="30" Background="{ThemeResource MaskAcrylicBackground}" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <TextBlock Text="&#xE9BE;" FontFamily="{StaticResource Icon}" VerticalAlignment="Center" HorizontalAlignment="Center"
+                           Foreground="{ThemeResource PrimaryColor}" FontSize="25" Margin="0,0,-5,0"/>
+                </Border>
+                <Grid Grid.Row="1" Margin="0,5,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="{x:Bind index_title}" ToolTipService.ToolTip="{x:Bind index_title}" Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource NormalTextColor}"/>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="10,0,0,0" Grid.Column="1">
+                        <widgets:IconTextBlock Icon="&#xEA32;" FontSize="10" GutterWidth="5" Text="{x:Bind stat.play,Converter={StaticResource NumberAbbrConverter}}" IconForeground="{ThemeResource TipTextColor}" TextForeground="{ThemeResource TipTextColor}"/>
+                        <widgets:IconTextBlock Icon="&#xEA27;" FontSize="10" GutterWidth="5" Margin="10,0,0,0" Text="{x:Bind stat.danmaku,Converter={StaticResource NumberAbbrConverter}}" IconForeground="{ThemeResource TipTextColor}" TextForeground="{ThemeResource TipTextColor}"/>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </DataTemplate>
         <DataTemplate x:DataType="bilibili:AnimeDynamic" x:Name="AnimeTemplate">
             <Grid others:PressEffect.IsEnabled="True" others:PressEffect.TargetElementName="VideoCover">
                 <Grid.RowDefinitions>
@@ -54,7 +86,7 @@
                 </Grid.RowDefinitions>
                 <Grid>
                     <widgets:BiliImage Source="{x:Bind cover,Converter={StaticResource CoverResolutionConverter},ConverterParameter=300}" CornerRadius="4" DecodePixelWidth="300" MaxHeight="200"
-                                  x:Name="VideoCover"/>
+                                  x:Name="VideoCover" MinHeight="150"/>
                     <Border Padding="8,3" Background="{ThemeResource PopupBackground}" RequestedTheme="Dark" HorizontalAlignment="Left" VerticalAlignment="Bottom"
                     CornerRadius="3" Margin="10,0,0,10" Visibility="{x:Bind duration,Mode=OneWay,Converter={StaticResource StringVisibilityConverter}}">
                         <TextBlock Text="{x:Bind duration,Converter={StaticResource DurationConverter},Mode=OneWay}" Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource ImportantTextColor}"
@@ -89,10 +121,10 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <widgets:BiliImage CornerRadius="5" Margin="2" Tapped="Image_Tapped"
-                                              Source="{Binding img_src,Converter={StaticResource CoverResolutionConverter},ConverterParameter=300}"  
-                                               MaxHeight="200"
-                                               others:PressEffect.IsEnabled="True"/>
+                            <controls:ImageEx CornerRadius="5" Tapped="Image_Tapped" Stretch="UniformToFill" MaxHeight="200"
+                                              PlaceholderSource="ms-appx:///Assets/img_holder_rect.png" PlaceholderStretch="Uniform"
+                                        Source="{Binding img_src,Converter={StaticResource CoverResolutionConverter},ConverterParameter=300}"
+                                        />
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
@@ -131,7 +163,8 @@
                     </StackPanel>
                     <local:RenderTextBlock Text="{x:Bind render_origin_content}" Visibility="{x:Bind render_origin_content,Converter={StaticResource StringVisibilityConverter}}"
                                            />
-                    <local:DynamicContentBlock Data="{x:Bind render_origin}" HorizontalAlignment="Stretch"/>
+                    <local:DynamicContentBlock Data="{x:Bind render_origin}" HorizontalAlignment="Stretch" ImageTapped="MainDisplay_ImageTapped"
+                                               DocumentTapped="MainDisplay_DocumentTapped"/>
                 </StackPanel>
             </StackPanel>
         </DataTemplate>

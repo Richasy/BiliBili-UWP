@@ -66,7 +66,9 @@ namespace BiliBili_UWP.Components.Controls
                     instance.HeaderContainer.Visibility = Visibility.Collapsed;
                 }
                 var me = App.BiliViewModel._client.Account.Me;
-                if ((me != null && me.mid == data.desc.uid) || data.display.relation.is_follow == 1)
+                if (data.desc.type == 512 || data.desc.type == 4101 || data.display == null)
+                    instance.FollowButton.Visibility = Visibility.Collapsed;
+                else if ((me != null && me.mid == data.desc.uid) || data.display.relation.is_follow == 1)
                     instance.FollowButton.Visibility = Visibility.Collapsed;
                 else
                     instance.FollowButton.Visibility = Visibility.Visible;
@@ -195,6 +197,15 @@ namespace BiliBili_UWP.Components.Controls
                     instance.CommentBlock.Text = "";
                     instance.MainDisplay.Data = info;
                 }
+                else if (data.desc.type == 4101)
+                {
+                    //电视剧
+                    var info = JsonConvert.DeserializeObject<SeriesDynamic>(data.card);
+                    if (!string.IsNullOrEmpty(info.new_desc))
+                        instance.DescriptionBlock.Text = info.new_desc;
+                    instance.DescriptionBlock.Visibility = string.IsNullOrEmpty(info.new_desc) ? Visibility.Collapsed : Visibility.Visible;
+                    instance.CommentBlock.Text = AppTool.GetNumberAbbreviation(info.stat.reply);
+                }
                 else
                 {
                     string yo = "";
@@ -219,6 +230,8 @@ namespace BiliBili_UWP.Components.Controls
                 param["oid"] = (MainDisplay.Data as AnimeDynamic).aid.ToString();
                 type = "1";
             }
+            else if (MainDisplay._cardType == "document")
+                type = "12";
             else if (MainDisplay._cardType == "repost" || MainDisplay._cardType == "web" || Data.desc.type == 4)
             {
                 param["oid"] = Data.desc.dynamic_id_str;
@@ -280,6 +293,19 @@ namespace BiliBili_UWP.Components.Controls
         private void Account_Tapped(object sender, TappedRoutedEventArgs e)
         {
             App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Pages.Sub.Account.DetailPage), Data.desc.uid);
+        }
+
+        private void MainDisplay_ImageTapped(object sender, EventArgs e)
+        {
+            var img = MainDisplay.Data as ImageDynamic;
+            App.AppViewModel.ShowDynamicDetailPopup(Data.desc.user_profile.info, img.description, img, Data.desc.rid_str);
+        }
+
+        private void MainDisplay_DocumentTapped(object sender, EventArgs e)
+        {
+            var doc = MainDisplay.Data as DocumentDynamic;
+            string content = string.IsNullOrEmpty(DescriptionBlock.Text) ? doc.title : DescriptionBlock.Text;
+            App.AppViewModel.ShowDynamicDetailPopup(Data.desc.user_profile.info, content, doc, Data.desc.rid_str);
         }
     }
 }

@@ -32,6 +32,9 @@ namespace BiliBili_UWP.Components.Controls
 
         public string _cardType = "";
 
+        public event EventHandler ImageTapped;
+        public event EventHandler DocumentTapped;
+
         public object Data
         {
             get { return (object)GetValue(DataProperty); }
@@ -70,7 +73,7 @@ namespace BiliBili_UWP.Components.Controls
                     repost.render_origin = App.BiliViewModel.DynamicContentConvert(repost.item.orig_type, repost.origin);
                     if (repost.item.orig_type == 512)
                     {
-                        repost.origin_user.info = new RepostDynamic.OriginUserInfo();
+                        repost.origin_user.info = new SlimUserInfo();
                         var anime = repost.render_origin as AnimeDynamic;
                         repost.origin_user.info.face = anime.season.cover;
                         repost.origin_user.info.uname = anime.season.title;
@@ -78,10 +81,19 @@ namespace BiliBili_UWP.Components.Controls
                     }
                     else if (repost.item.orig_type == 4303)
                     {
-                        repost.origin_user.info = new RepostDynamic.OriginUserInfo();
+                        repost.origin_user.info = new SlimUserInfo();
                         var da = repost.render_origin as CourseDynamic;
                         repost.origin_user.info.face = da.up_info.avatar;
                         repost.origin_user.info.uname = da.up_info.name;
+                        repost.origin_user.info.uid = da.up_id;
+                    }
+                    else if (repost.item.orig_type == 4101)
+                    {
+                        repost.origin_user.info = new SlimUserInfo();
+                        var da = repost.render_origin as SeriesDynamic;
+                        repost.origin_user.info.face = da.season.square_cover;
+                        repost.origin_user.info.uname = da.season.title;
+                        repost.origin_user.info.uid = da.season.season_id;
                     }
                     else if (repost.item.orig_type == 4)
                         repost.render_origin_content = (repost.render_origin as TextDynamic).content;
@@ -124,6 +136,11 @@ namespace BiliBili_UWP.Components.Controls
                     instance._cardType = "live";
                     instance.MainContentControl.ContentTemplate = instance.LiveTemplate;
                 }
+                else if (data is SeriesDynamic)
+                {
+                    instance._cardType = "series";
+                    instance.MainContentControl.ContentTemplate = instance.SeriesTemplate;
+                }
             }
         }
 
@@ -155,23 +172,44 @@ namespace BiliBili_UWP.Components.Controls
             }
             else if (_cardType == "document")
             {
-                var item = Data as DocumentDynamic;
-                App.AppViewModel.ShowDoucmentPopup(item.title, item.id);
+                DocumentTapped?.Invoke(this, EventArgs.Empty);
+            }
+            else if (_cardType == "series")
+            {
+                var item = Data as SeriesDynamic;
+                App.AppViewModel.PlayBangumi(item.episode_id, sender, true);
             }
         }
 
-        private async void Image_Tapped(object sender, TappedRoutedEventArgs e)
+        private void Image_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            var images = (Data as ImageDynamic).pictures.Select(p => p.img_src).ToList();
-            var dialog = new ShowImageDialog(images);
-            await dialog.ShowAsync();
+            ImageTapped?.Invoke(this, EventArgs.Empty);
         }
 
         private void Account_Tapped(object sender, TappedRoutedEventArgs e)
         {
             e.Handled = true;
             var data = Data as RepostDynamic;
-            App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Pages.Sub.Account.DetailPage), data.origin_user.info.uid);
+            if (data.item.orig_type != 4101)
+                App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Pages.Sub.Account.DetailPage), data.origin_user.info.uid);
+            else
+                App.AppViewModel.PlayBangumi(data.origin_user.info.uid);
+        }
+        private void MainDisplay_ImageTapped(object sender, EventArgs e)
+        {
+            var MainDisplay = sender as DynamicContentBlock;
+            var img = MainDisplay.Data as ImageDynamic;
+            var rep = Data as RepostDynamic;
+            App.AppViewModel.ShowDynamicDetailPopup(rep.origin_user.info, img.description, img, img.id.ToString());
+        }
+
+        private void MainDisplay_DocumentTapped(object sender, EventArgs e)
+        {
+            var MainDisplay = sender as DynamicContentBlock;
+            var doc = MainDisplay.Data as DocumentDynamic;
+            var rep = Data as RepostDynamic;
+            string content = string.IsNullOrEmpty(rep.render_origin_content) ? doc.title : rep.render_origin_content;
+            App.AppViewModel.ShowDynamicDetailPopup(rep.origin_user.info, content, doc, doc.id.ToString());
         }
     }
 }

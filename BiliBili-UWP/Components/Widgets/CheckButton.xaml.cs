@@ -27,7 +27,7 @@ namespace BiliBili_UWP.Components.Widgets
         public CheckButton()
         {
             this.InitializeComponent();
-            gestureRecognizer.GestureSettings = GestureSettings.HoldWithMouse | GestureSettings.Tap;
+            gestureRecognizer.GestureSettings = GestureSettings.HoldWithMouse | GestureSettings.Tap | GestureSettings.Hold;
         }
         private bool _isAnimateBegin = false;
         GestureRecognizer gestureRecognizer = new GestureRecognizer();

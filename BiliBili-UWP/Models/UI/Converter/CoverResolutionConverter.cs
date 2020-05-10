@@ -15,10 +15,10 @@ namespace BiliBili_UWP.Models.UI.Converter
         {
             if(value!=null && value is string url && !string.IsNullOrEmpty(url))
             {
-                string ext = Path.GetExtension(url);
+                //string ext = Path.GetExtension(url);
                 string suffix = "";
-                if (parameter != null && !url.Contains($"w{ext}"))
-                    suffix = $"@{parameter.ToString()}w{ext}";
+                if (parameter != null)
+                    suffix = $"@{parameter.ToString()}w.jpg";
                 return url + suffix;
             }
             return null;

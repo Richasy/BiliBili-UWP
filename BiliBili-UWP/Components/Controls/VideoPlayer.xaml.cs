@@ -83,6 +83,8 @@ namespace BiliBili_UWP.Components.Controls
         private int _historyShowSeconds = 0;
         private bool _needShowHistory = false;
 
+        private bool _isDanmakuBarFocus = false;
+
         public int CurrentProgress
         {
             get => Convert.ToInt32(_player.PlaybackSession.Position.TotalSeconds);
@@ -595,7 +597,15 @@ namespace BiliBili_UWP.Components.Controls
                 await SendDanmaku();
             }
         }
+        private void DanmakuBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            _isDanmakuBarFocus = true;
+        }
 
+        private void DanmakuBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            _isDanmakuBarFocus = false;
+        }
         private async Task SendDanmaku()
         {
             if (!App.BiliViewModel.CheckAccoutStatus())
@@ -1139,7 +1149,10 @@ namespace BiliBili_UWP.Components.Controls
         private void VideoMTC_PlayButtonClick(object sender, bool e)
         {
             if (e)
+            {
                 Resume(false);
+            }
+            ShowMTC();
             this.Focus(FocusState.Programmatic);
         }
         private void VideoMTC_FullWindowChanged(object sender, bool e)
@@ -1327,7 +1340,7 @@ namespace BiliBili_UWP.Components.Controls
                 bool isManual = AppTool.GetBoolSetting(Settings.IsManualMediaTransportControls, false);
                 if (_isCatchPointer && Window.Current.CoreWindow.PointerCursor != null)
                     Window.Current.CoreWindow.PointerCursor = null;
-                if (_isMTCShow && !isManual)
+                if (_isMTCShow && !isManual && !_isDanmakuBarFocus)
                 {
                     HideMTC();
                 }
@@ -1571,5 +1584,7 @@ namespace BiliBili_UWP.Components.Controls
             return -1;
         }
         #endregion
+
+        
     }
 }
