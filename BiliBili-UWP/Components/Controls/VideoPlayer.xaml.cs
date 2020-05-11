@@ -435,7 +435,7 @@ namespace BiliBili_UWP.Components.Controls
             {
                 ErrorContainer.Visibility = Visibility.Visible;
             }
-            mediaElement.Focus(FocusState.Programmatic);
+            SetFocus();
             LoadingBar.Visibility = Visibility.Collapsed;
         }
         public async Task RefreshVideoSource(Episode part,bool isRefresh=false)
@@ -501,7 +501,7 @@ namespace BiliBili_UWP.Components.Controls
                 ErrorContainer.Visibility = Visibility.Visible;
             }
             UpdateMediaProperties(part.title, part.subtitle, _bangumiDetail.cover);
-            mediaElement.Focus(FocusState.Programmatic);
+            SetFocus();
             LoadingBar.Visibility = Visibility.Collapsed;
         }
         private async Task InitInteraction(int cid, int edgeId)
@@ -993,7 +993,10 @@ namespace BiliBili_UWP.Components.Controls
         {
             _isCatchPointer = true;
         }
-
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            SetFocus();
+        }
         private void UserControl_PointerExited(object sender, PointerRoutedEventArgs e)
         {
             _isCatchPointer = false;
@@ -1002,11 +1005,16 @@ namespace BiliBili_UWP.Components.Controls
 
         private void UserControl_GotFocus(object sender, RoutedEventArgs e)
         {
+            SetFocus();
+        }
+
+        private void MediaPlayerElement_GotFocus(object sender, RoutedEventArgs e)
+        {
             Debug.WriteLine("已获取焦点");
             IsFocus = true;
         }
 
-        private void UserControl_LostFocus(object sender, RoutedEventArgs e)
+        private void MediaPlayerElement_LostFocus(object sender, RoutedEventArgs e)
         {
             Debug.WriteLine("失去焦点");
             IsFocus = false;
@@ -1024,7 +1032,6 @@ namespace BiliBili_UWP.Components.Controls
         private void mediaElement_Tapped(object sender, TappedRoutedEventArgs e)
         {
             bool isManual = AppTool.GetBoolSetting(Settings.IsManualMediaTransportControls, false);
-            Focus(FocusState.Programmatic);
             if (isManual)
             {
                 _isMTCShow = !_isMTCShow;
@@ -1033,6 +1040,7 @@ namespace BiliBili_UWP.Components.Controls
                 else
                     HideMTC();
             }
+            SetFocus();
         }
 
         private void mediaElement_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
@@ -1153,7 +1161,7 @@ namespace BiliBili_UWP.Components.Controls
                 Resume(false);
             }
             ShowMTC();
-            this.Focus(FocusState.Programmatic);
+            SetFocus();
         }
         private void VideoMTC_FullWindowChanged(object sender, bool e)
         {
@@ -1583,8 +1591,12 @@ namespace BiliBili_UWP.Components.Controls
             }
             return -1;
         }
+        public void SetFocus()
+        {
+            mediaElement.Focus(FocusState.Programmatic);
+        }
+
         #endregion
 
-        
     }
 }

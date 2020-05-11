@@ -112,12 +112,12 @@ namespace BiliBili_UWP
                 }
                 else if (space.HasFlag(CoreVirtualKeyStates.Down))
                 {
-                    //if (player != null && player.IsFocus && (player.MTC.IsFullWindow || player.MTC.IsCinema))
-                    //{
-                    //    args.Handled = true;
-                    //    player.MTC.IsPlaying = !player.MTC.IsPlaying;
-                    //    player.Focus(FocusState.Programmatic);
-                    //}
+                    if (player != null && player.IsFocus && (player.MTC.IsFullWindow || player.MTC.IsCinema))
+                    {
+                        args.Handled = true;
+                        player.MTC.IsPlaying = !player.MTC.IsPlaying;
+                        player.Focus(FocusState.Programmatic);
+                    }
                 }
                 else if (f11.HasFlag(CoreVirtualKeyStates.Down))
                 {

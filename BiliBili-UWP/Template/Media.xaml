@@ -60,12 +60,15 @@
                                 <Setter Property="AllowFocusOnInteraction" Value="True" />
                                 <Setter Property="CornerRadius" Value="4" />
                                 <Setter Property="FontSize" Value="14" />
+                                <Setter Property="IsTabStop" Value="False" />
+                                <Setter Property="FocusVisualPrimaryBrush" Value="{ThemeResource PrimaryColor}" />
                             </Style>
                             <!-- New AppBarToggle button style 48x48 pixels in size -->
                             <Style x:Key="AppBarToggleButtonStyle" TargetType="AppBarToggleButton" BasedOn="{StaticResource AppBarToggleButtonRevealStyle}">
                                 <Setter Property="Width" Value="{ThemeResource MTCMediaButtonWidth}" />
                                 <Setter Property="Height" Value="{ThemeResource MTCMediaButtonHeight}" />
                                 <Setter Property="AllowFocusOnInteraction" Value="True" />
+                                <Setter Property="IsTabStop" Value="False" />
                             </Style>
                             <!-- New CommandBar Style -->
                             <Style x:Key="CommandBarStyle" TargetType="CommandBar">
@@ -92,6 +95,7 @@
                                 <Setter Property="UseSystemFocusVisuals" Value="{StaticResource UseSystemFocusVisuals}" />
                                 <Setter Property="FocusVisualMargin" Value="-7,0,-7,0" />
                                 <Setter Property="IsFocusEngagementEnabled" Value="True" />
+                                <Setter Property="IsTabStop" Value="False" />
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate TargetType="Slider">
@@ -797,10 +801,8 @@
                                             </AppBarButton>
                                             <AppBarButton x:Name='CustomPlayPauseButton'
                           Style='{StaticResource AppBarButtonStyle}'
+                                                          IsTabStop="True"
                           MediaTransportControlsHelper.DropoutOrder='23'>
-                                                <AppBarButton.KeyboardAccelerators>
-                                                    <KeyboardAccelerator Key="Space"/>
-                                                </AppBarButton.KeyboardAccelerators>
                                                 <AppBarButton.Icon>
                                                     <FontIcon FontFamily="{StaticResource Icon}" Glyph="&#xE9BE;"/>
                                                 </AppBarButton.Icon>

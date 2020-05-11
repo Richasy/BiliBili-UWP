@@ -15,9 +15,11 @@
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400"
+    Loaded="UserControl_Loaded"
     SizeChanged="UserControl_SizeChanged"
     PointerEntered="UserControl_PointerEntered"
     PointerMoved="UserControl_PointerMoved"
+    GotFocus="UserControl_GotFocus"
     PointerExited="UserControl_PointerExited">
     <UserControl.Resources>
         <DataTemplate x:Key="FontItemTemplate" x:DataType="others:SystemFont">
@@ -120,7 +122,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <MediaPlayerElement x:Name="mediaElement"  AreTransportControlsEnabled="True" GotFocus="UserControl_GotFocus" LostFocus="UserControl_LostFocus"
+        <MediaPlayerElement x:Name="mediaElement"  AreTransportControlsEnabled="True" GotFocus="MediaPlayerElement_GotFocus" LostFocus="MediaPlayerElement_LostFocus"
                             Background="{ThemeResource PageBackground}" Tapped="mediaElement_Tapped" IsDoubleTapEnabled="True"
                             DoubleTapped="mediaElement_DoubleTapped" Style="{StaticResource BasicMediaStyle}">
             <MediaPlayerElement.TransportControls>

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Windows.Media.Playback;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
 
 namespace BiliBili_UWP.Models.UI.Others
 {
