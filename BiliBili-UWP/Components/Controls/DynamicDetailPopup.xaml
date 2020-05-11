@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:bilibili="using:BiliBili_Lib.Models.BiliBili"
     xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls" xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -45,9 +46,11 @@
                                       MinZoomFactor="0.5" MaxZoomFactor="3" IsZoomChainingEnabled="True"
                                       HorizontalScrollMode="Enabled" HorizontalScrollBarVisibility="Auto"
                                            Name="ScrollViewerMain">
-                                <Image MaxWidth="{Binding Path=ViewportWidth, ElementName=ScrollViewerMain}"
+                                <controls:ImageEx MaxWidth="{Binding Path=ViewportWidth, ElementName=ScrollViewerMain}"
                                        MaxHeight="{Binding Path=ViewportHeight, ElementName=ScrollViewerMain}"
-                          x:Name="DisplayImage" Source="{Binding img_src}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                          x:Name="DisplayImage" Source="{Binding img_src}" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                            PlaceholderSource="ms-appx:///Assets/img_holder.png" PlaceholderStretch="Uniform"/>
+
                             </ScrollViewer>
                         </DataTemplate>
                     </FlipView.ItemTemplate>

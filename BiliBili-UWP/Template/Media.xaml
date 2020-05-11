@@ -792,12 +792,15 @@
                         Style='{StaticResource AppBarButtonStyle}'
                         MediaTransportControlsHelper.DropoutOrder='1'>
                                                 <AppBarButton.Icon>
-                                                    <FontIcon Glyph="&#xE9DC;" FontFamily="{StaticResource Icon}"/>
+                                                    <FontIcon Glyph="&#xEB9E;" />
                                                 </AppBarButton.Icon>
                                             </AppBarButton>
                                             <AppBarButton x:Name='CustomPlayPauseButton'
                           Style='{StaticResource AppBarButtonStyle}'
                           MediaTransportControlsHelper.DropoutOrder='23'>
+                                                <AppBarButton.KeyboardAccelerators>
+                                                    <KeyboardAccelerator Key="Space"/>
+                                                </AppBarButton.KeyboardAccelerators>
                                                 <AppBarButton.Icon>
                                                     <FontIcon FontFamily="{StaticResource Icon}" Glyph="&#xE9BE;"/>
                                                 </AppBarButton.Icon>
@@ -806,7 +809,7 @@
                         Style='{StaticResource AppBarButtonStyle}'
                         MediaTransportControlsHelper.DropoutOrder='1'>
                                                 <AppBarButton.Icon>
-                                                    <FontIcon Glyph="&#xE9DD;" FontFamily="{StaticResource Icon}"/>
+                                                    <FontIcon Glyph="&#xEB9D;" />
                                                 </AppBarButton.Icon>
                                             </AppBarButton>
                                             <AppBarButton x:Name='NextTrackButton'
