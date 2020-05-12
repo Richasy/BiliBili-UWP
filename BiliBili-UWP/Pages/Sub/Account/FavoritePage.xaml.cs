@@ -2,6 +2,7 @@
 using BiliBili_Lib.Models.BiliBili.Favorites;
 using BiliBili_Lib.Models.BiliBili.Video;
 using BiliBili_Lib.Service;
+using BiliBili_UWP.Components.Controls;
 using BiliBili_UWP.Components.Widgets;
 using BiliBili_UWP.Models.UI.Interface;
 using System;
@@ -128,6 +129,13 @@ namespace BiliBili_UWP.Pages.Sub.Account
                 new TipPopup("移除失败").ShowError();
             }
             btn.IsEnabled = true;
+        }
+
+        private void FavoriteListView_ContainerContentChanging(ListViewBase sender, ContainerContentChangingEventArgs args)
+        {
+            args.Handled = true;
+            DefaultVideoPanel card = (DefaultVideoPanel)args.ItemContainer.ContentTemplateRoot;
+            card.RenderContainer(args);
         }
     }
 }

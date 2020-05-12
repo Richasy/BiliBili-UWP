@@ -42,174 +42,207 @@ namespace BiliBili_UWP.Components.Controls
 
         // Using a DependencyProperty as the backing store for Data.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty DataProperty =
-            DependencyProperty.Register("Data", typeof(Topic), typeof(TopicCard), new PropertyMetadata(null, new PropertyChangedCallback(Data_Changed)));
+            DependencyProperty.Register("Data", typeof(Topic), typeof(TopicCard), new PropertyMetadata(null,new PropertyChangedCallback(Data_Changed)));
 
         private static void Data_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (e.NewValue != null && e.NewValue is Topic data)
             {
                 var instance = d as TopicCard;
-                if (data.desc.user_profile != null)
+                if (!instance.IsUsePhase)
                 {
-                    instance.HeaderContainer.Visibility = Visibility.Visible;
-                    instance.UserAvatar.ProfilePicture = new BitmapImage(new Uri(data.desc.user_profile.info.face)) { DecodePixelWidth = 40 };
-                    instance.UserNameBlock.Text = data.desc.user_profile.info.uname;
-                    string tip = AppTool.GetReadDateString(data.desc.timestamp);
-                    if (data.display != null && !string.IsNullOrEmpty(data.display.usr_action_txt))
-                        tip += " · " + data.display.usr_action_txt;
-                    if (data.desc.view != 0)
-                        tip += " · " + AppTool.GetNumberAbbreviation(data.desc.view) + "次查看";
-                    instance.TipBlock.Text = tip;
+                    instance.HeaderInit(data);
+                    instance.ButtonInit(data);
+                    instance.TagInit(data);
+                    instance.BodyInit(data);
                 }
-                else
+            }
+        }
+
+        public bool IsUsePhase
+        {
+            get { return (bool)GetValue(IsUsePhaseProperty); }
+            set { SetValue(IsUsePhaseProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for IsUsePhase.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty IsUsePhaseProperty =
+            DependencyProperty.Register("IsUsePhase", typeof(bool), typeof(TopicCard), new PropertyMetadata(true));
+
+        private void HeaderInit(Topic data)
+        {
+            if (data.desc.user_profile != null)
+            {
+                HeaderContainer.Visibility = Visibility.Visible;
+                UserAvatar.ProfilePicture = new BitmapImage(new Uri(data.desc.user_profile.info.face)) { DecodePixelWidth = 40 };
+                UserNameBlock.Text = data.desc.user_profile.info.uname;
+                string tip = AppTool.GetReadDateString(data.desc.timestamp);
+                if (data.display != null && !string.IsNullOrEmpty(data.display.usr_action_txt))
+                    tip += " · " + data.display.usr_action_txt;
+                if (data.desc.view != 0)
+                    tip += " · " + AppTool.GetNumberAbbreviation(data.desc.view) + "次查看";
+                TipBlock.Text = tip;
+            }
+            else
+            {
+                HeaderContainer.Visibility = Visibility.Collapsed;
+            }
+            var me = App.BiliViewModel._client.Account.Me;
+            if (data.desc.type == 512 || data.desc.type == 4101 || data.display == null)
+                FollowButton.Visibility = Visibility.Collapsed;
+            else if ((me != null && me.mid == data.desc.uid) || data.display.relation.is_follow == 1)
+                FollowButton.Visibility = Visibility.Collapsed;
+            else
+                FollowButton.Visibility = Visibility.Visible;
+        }
+
+        private void ButtonInit(Topic data)
+        {
+            LikeBlock.Text = AppTool.GetNumberAbbreviation(data.desc.like);
+            LikeIcon.Foreground = data.desc.is_liked == 1 ? UIHelper.GetThemeBrush(ColorType.PrimaryColor) : UIHelper.GetThemeBrush(ColorType.TipTextColor);
+            RepostBlock.Text = data.desc.repost == 0 ? "转发" : AppTool.GetNumberAbbreviation(data.desc.repost);
+        }
+
+        private void TagInit(Topic data)
+        {
+            TagList.Visibility = Visibility.Visible;
+            if (data.display != null && data.display.topic_info != null && data.display.topic_info.topic_details != null && data.display.topic_info.topic_details.Count > 0)
+                TagList.ItemsSource = data.display.topic_info.topic_details;
+            else
+                TagList.Visibility = Visibility.Collapsed;
+        }
+
+        private void BodyInit(Topic data)
+        {
+            MainDisplay.Visibility = Visibility.Visible;
+            if (data.display != null && data.display.emoji_info != null && data.display.emoji_info.emoji_details.Count > 0)
+            {
+                var dict = new Dictionary<string, Emote>();
+                foreach (var item in data.display.emoji_info.emoji_details)
                 {
-                    instance.HeaderContainer.Visibility = Visibility.Collapsed;
+                    dict.Add(item.text, item);
                 }
-                var me = App.BiliViewModel._client.Account.Me;
-                if (data.desc.type == 512 || data.desc.type == 4101 || data.display == null)
-                    instance.FollowButton.Visibility = Visibility.Collapsed;
-                else if ((me != null && me.mid == data.desc.uid) || data.display.relation.is_follow == 1)
-                    instance.FollowButton.Visibility = Visibility.Collapsed;
-                else
-                    instance.FollowButton.Visibility = Visibility.Visible;
-                instance.LikeBlock.Text = AppTool.GetNumberAbbreviation(data.desc.like);
-                instance.LikeIcon.Foreground = data.desc.is_liked == 1 ? UIHelper.GetThemeBrush(ColorType.PrimaryColor) : UIHelper.GetThemeBrush(ColorType.TipTextColor);
-                instance.RepostBlock.Text = data.desc.repost == 0 ? "转发" : AppTool.GetNumberAbbreviation(data.desc.repost);
-                instance.TagList.Visibility = Visibility.Visible;
-                if (data.display != null && data.display.topic_info != null && data.display.topic_info.topic_details != null && data.display.topic_info.topic_details.Count > 0)
-                    instance.TagList.ItemsSource = data.display.topic_info.topic_details;
-                else
-                    instance.TagList.Visibility = Visibility.Collapsed;
-                instance.MainDisplay.Visibility = Visibility.Visible;
-                if (data.display != null && data.display.emoji_info != null && data.display.emoji_info.emoji_details.Count > 0)
-                {
-                    var dict = new Dictionary<string, Emote>();
-                    foreach (var item in data.display.emoji_info.emoji_details)
-                    {
-                        dict.Add(item.text, item);
-                    }
-                    instance.DescriptionBlock.EmoteSource = dict;
-                }
-                if (data.desc.type == 8)
-                {
-                    //视频
-                    var info = JsonConvert.DeserializeObject<VideoDynamic>(data.card);
-                    info.dynamic = Uri.UnescapeDataString(info.dynamic);
-                    if (!string.IsNullOrEmpty(info.dynamic))
-                        instance.DescriptionBlock.Text = Regex.Replace(info.dynamic, @"#(.*?)#", "").Trim();
-                    instance.DescriptionBlock.Visibility = string.IsNullOrEmpty(instance.DescriptionBlock.Text) ? Visibility.Collapsed : Visibility.Visible;
-                    instance.CommentBlock.Text = AppTool.GetNumberAbbreviation(info.stat.reply);
-                    instance.MainDisplay.Data = info;
-                }
-                else if (data.desc.type == 1)
-                {
-                    //转发
-                    var info = JsonConvert.DeserializeObject<RepostDynamic>(data.card);
-                    instance.DescriptionBlock.Visibility = Visibility.Collapsed;
-                    instance.CommentBlock.Text = AppTool.GetNumberAbbreviation(info.item.reply);
-                    instance.MainDisplay.Data = info;
-                }
-                else if (data.desc.type == 2)
-                {
-                    //图片
-                    var temp = JObject.Parse(data.card);
-                    var info = JsonConvert.DeserializeObject<ImageDynamic>(temp["item"].ToString());
-                    info.description = Uri.UnescapeDataString(info.description);
-                    instance.DescriptionBlock.Text = Regex.Replace(info.description, @"#(.*?)#", "").Trim();
-                    instance.CommentBlock.Text = AppTool.GetNumberAbbreviation(info.reply);
-                    instance.MainDisplay.Data = info;
-                }
-                else if (data.desc.type == 4)
-                {
-                    //纯文本
-                    var temp = JObject.Parse(data.card);
-                    var info = JsonConvert.DeserializeObject<TextDynamic>(temp["item"].ToString());
-                    if (!string.IsNullOrEmpty(info.content))
-                        instance.DescriptionBlock.Text = Regex.Replace(info.content, @"#(.*?)#", "").Trim();
-                    instance.CommentBlock.Text = AppTool.GetNumberAbbreviation(info.reply);
-                    instance.MainDisplay.Visibility = Visibility.Collapsed;
-                }
-                else if (data.desc.type == 64)
-                {
-                    //专栏
-                    var info = JsonConvert.DeserializeObject<DocumentDynamic>(data.card);
-                    if (!string.IsNullOrEmpty(info.dynamic))
-                        instance.DescriptionBlock.Text = Regex.Replace(info.dynamic, @"#(.*?)#", "").Trim();
-                    instance.CommentBlock.Text = AppTool.GetNumberAbbreviation(info.stats.reply);
-                    instance.MainDisplay.Data = info;
-                }
-                else if (data.desc.type == 512)
-                {
-                    //动漫
-                    var info = JsonConvert.DeserializeObject<AnimeDynamic>(data.card);
-                    instance.HeaderContainer.Visibility = Visibility.Visible;
-                    instance.UserAvatar.ProfilePicture = new BitmapImage(new Uri(info.season.square_cover)) { DecodePixelWidth = 40 };
-                    instance.UserNameBlock.Text = info.season.title;
-                    string tip = AppTool.GetReadDateString(data.desc.timestamp);
-                    tip += " · " + "更新了";
-                    instance.TipBlock.Text = tip;
-                    instance.DescriptionBlock.Visibility = Visibility.Collapsed;
-                    instance.FollowButton.Visibility = Visibility.Collapsed;
-                    instance.CommentBlock.Text = AppTool.GetNumberAbbreviation(info.stat.reply);
-                    instance.MainDisplay.Data = info;
-                }
-                else if (data.desc.type == 16)
-                {
-                    //小视频
-                    var info = JsonConvert.DeserializeObject<ShortVideoDynamic>(data.card);
-                    if (!string.IsNullOrEmpty(info.item.description))
-                        instance.DescriptionBlock.Text = Regex.Replace(info.item.description, @"#(.*?)#", "").Trim();
-                    instance.CommentBlock.Text = AppTool.GetNumberAbbreviation(info.item.reply);
-                    instance.MainDisplay.Data = info;
-                }
-                else if (data.desc.type == 2048)
-                {
-                    //网页
-                    var info = JsonConvert.DeserializeObject<WebDynamic>(data.card);
-                    if (!string.IsNullOrEmpty(info.vest.content))
-                        instance.DescriptionBlock.Text = Regex.Replace(info.vest.content, @"#(.*?)#", "").Trim();
-                    instance.CommentBlock.Text = AppTool.GetNumberAbbreviation(data.desc.comment);
-                    instance.MainDisplay.Data = info;
-                }
-                else if (data.desc.type == 4303)
-                {
-                    //视频单
-                    var info = JsonConvert.DeserializeObject<CourseDynamic>(data.card);
-                    if (!string.IsNullOrEmpty(info.new_ep.title))
-                        instance.DescriptionBlock.Text = Regex.Replace(info.new_ep.title, @"#(.*?)#", "").Trim();
-                    instance.CommentBlock.Text = data.desc.comment == 0 ? "" : AppTool.GetNumberAbbreviation(data.desc.comment);
-                    instance.MainDisplay.Data = info;
-                }
-                else if (data.desc.type == 256)
-                {
-                    //音频
-                    var info = JsonConvert.DeserializeObject<MusicDynamic>(data.card);
-                    if (!string.IsNullOrEmpty(info.intro))
-                        instance.DescriptionBlock.Text = Regex.Replace(info.intro, @"#(.*?)#", "").Trim();
-                    instance.CommentBlock.Text = AppTool.GetNumberAbbreviation(info.replyCnt);
-                    instance.MainDisplay.Data = info;
-                }
-                else if (data.desc.type == 4200)
-                {
-                    //直播
-                    var info = JsonConvert.DeserializeObject<LiveDynamic>(data.card);
-                    instance.DescriptionBlock.Visibility = Visibility.Collapsed;
-                    instance.CommentBlock.Text = "";
-                    instance.MainDisplay.Data = info;
-                }
-                else if (data.desc.type == 4101)
-                {
-                    //电视剧
-                    var info = JsonConvert.DeserializeObject<SeriesDynamic>(data.card);
-                    if (!string.IsNullOrEmpty(info.new_desc))
-                        instance.DescriptionBlock.Text = info.new_desc;
-                    instance.DescriptionBlock.Visibility = string.IsNullOrEmpty(info.new_desc) ? Visibility.Collapsed : Visibility.Visible;
-                    instance.CommentBlock.Text = AppTool.GetNumberAbbreviation(info.stat.reply);
-                }
-                else
-                {
-                    string yo = "";
-                }
+                DescriptionBlock.EmoteSource = dict;
+            }
+            if (data.desc.type == 8)
+            {
+                //视频
+                var info = JsonConvert.DeserializeObject<VideoDynamic>(data.card);
+                info.dynamic = Uri.UnescapeDataString(info.dynamic);
+                if (!string.IsNullOrEmpty(info.dynamic))
+                    DescriptionBlock.Text = Regex.Replace(info.dynamic, @"#(.*?)#", "").Trim();
+                DescriptionBlock.Visibility = string.IsNullOrEmpty(DescriptionBlock.Text) ? Visibility.Collapsed : Visibility.Visible;
+                CommentBlock.Text = AppTool.GetNumberAbbreviation(info.stat.reply);
+                MainDisplay.Data = info;
+            }
+            else if (data.desc.type == 1)
+            {
+                //转发
+                var info = JsonConvert.DeserializeObject<RepostDynamic>(data.card);
+                DescriptionBlock.Visibility = Visibility.Collapsed;
+                CommentBlock.Text = AppTool.GetNumberAbbreviation(info.item.reply);
+                MainDisplay.Data = info;
+            }
+            else if (data.desc.type == 2)
+            {
+                //图片
+                var temp = JObject.Parse(data.card);
+                var info = JsonConvert.DeserializeObject<ImageDynamic>(temp["item"].ToString());
+                info.description = Uri.UnescapeDataString(info.description);
+                DescriptionBlock.Text = Regex.Replace(info.description, @"#(.*?)#", "").Trim();
+                CommentBlock.Text = AppTool.GetNumberAbbreviation(info.reply);
+                MainDisplay.Data = info;
+            }
+            else if (data.desc.type == 4)
+            {
+                //纯文本
+                var temp = JObject.Parse(data.card);
+                var info = JsonConvert.DeserializeObject<TextDynamic>(temp["item"].ToString());
+                if (!string.IsNullOrEmpty(info.content))
+                    DescriptionBlock.Text = Regex.Replace(info.content, @"#(.*?)#", "").Trim();
+                CommentBlock.Text = AppTool.GetNumberAbbreviation(info.reply);
+                MainDisplay.Visibility = Visibility.Collapsed;
+            }
+            else if (data.desc.type == 64)
+            {
+                //专栏
+                var info = JsonConvert.DeserializeObject<DocumentDynamic>(data.card);
+                if (!string.IsNullOrEmpty(info.dynamic))
+                    DescriptionBlock.Text = Regex.Replace(info.dynamic, @"#(.*?)#", "").Trim();
+                CommentBlock.Text = AppTool.GetNumberAbbreviation(info.stats.reply);
+                MainDisplay.Data = info;
+            }
+            else if (data.desc.type == 512)
+            {
+                //动漫
+                var info = JsonConvert.DeserializeObject<AnimeDynamic>(data.card);
+                HeaderContainer.Visibility = Visibility.Visible;
+                UserAvatar.ProfilePicture = new BitmapImage(new Uri(info.season.square_cover)) { DecodePixelWidth = 40 };
+                UserNameBlock.Text = info.season.title;
+                string tip = AppTool.GetReadDateString(data.desc.timestamp);
+                tip += " · " + "更新了";
+                TipBlock.Text = tip;
+                DescriptionBlock.Visibility = Visibility.Collapsed;
+                FollowButton.Visibility = Visibility.Collapsed;
+                CommentBlock.Text = AppTool.GetNumberAbbreviation(info.stat.reply);
+                MainDisplay.Data = info;
+            }
+            else if (data.desc.type == 16)
+            {
+                //小视频
+                var info = JsonConvert.DeserializeObject<ShortVideoDynamic>(data.card);
+                if (!string.IsNullOrEmpty(info.item.description))
+                    DescriptionBlock.Text = Regex.Replace(info.item.description, @"#(.*?)#", "").Trim();
+                CommentBlock.Text = AppTool.GetNumberAbbreviation(info.item.reply);
+                MainDisplay.Data = info;
+            }
+            else if (data.desc.type == 2048)
+            {
+                //网页
+                var info = JsonConvert.DeserializeObject<WebDynamic>(data.card);
+                if (!string.IsNullOrEmpty(info.vest.content))
+                    DescriptionBlock.Text = Regex.Replace(info.vest.content, @"#(.*?)#", "").Trim();
+                CommentBlock.Text = AppTool.GetNumberAbbreviation(data.desc.comment);
+                MainDisplay.Data = info;
+            }
+            else if (data.desc.type == 4303)
+            {
+                //视频单
+                var info = JsonConvert.DeserializeObject<CourseDynamic>(data.card);
+                if (!string.IsNullOrEmpty(info.new_ep.title))
+                    DescriptionBlock.Text = Regex.Replace(info.new_ep.title, @"#(.*?)#", "").Trim();
+                CommentBlock.Text = data.desc.comment == 0 ? "" : AppTool.GetNumberAbbreviation(data.desc.comment);
+                MainDisplay.Data = info;
+            }
+            else if (data.desc.type == 256)
+            {
+                //音频
+                var info = JsonConvert.DeserializeObject<MusicDynamic>(data.card);
+                if (!string.IsNullOrEmpty(info.intro))
+                    DescriptionBlock.Text = Regex.Replace(info.intro, @"#(.*?)#", "").Trim();
+                CommentBlock.Text = AppTool.GetNumberAbbreviation(info.replyCnt);
+                MainDisplay.Data = info;
+            }
+            else if (data.desc.type == 4200)
+            {
+                //直播
+                var info = JsonConvert.DeserializeObject<LiveDynamic>(data.card);
+                DescriptionBlock.Visibility = Visibility.Collapsed;
+                CommentBlock.Text = "";
+                MainDisplay.Data = info;
+            }
+            else if (data.desc.type == 4101)
+            {
+                //电视剧
+                var info = JsonConvert.DeserializeObject<SeriesDynamic>(data.card);
+                if (!string.IsNullOrEmpty(info.new_desc))
+                    DescriptionBlock.Text = info.new_desc;
+                DescriptionBlock.Visibility = string.IsNullOrEmpty(info.new_desc) ? Visibility.Collapsed : Visibility.Visible;
+                CommentBlock.Text = AppTool.GetNumberAbbreviation(info.stat.reply);
+            }
+            else
+            {
+                string yo = "";
             }
         }
 
@@ -307,5 +340,50 @@ namespace BiliBili_UWP.Components.Controls
             string content = string.IsNullOrEmpty(DescriptionBlock.Text) ? doc.title : DescriptionBlock.Text;
             App.AppViewModel.ShowDynamicDetailPopup(Data.desc.user_profile.info, content, doc, Data.desc.rid_str);
         }
+        public void RenderContainer(ContainerContentChangingEventArgs args)
+        {
+            HeaderContainer.Opacity = 0;
+            DescriptionBlock.Opacity = 0;
+            TagList.Opacity = 0;
+            MainDisplay.Opacity = 0;
+            ButtonContainer.Opacity = 0;
+
+            args.RegisterUpdateCallback(RenderHeader);
+        }
+
+        private void RenderHeader(ListViewBase sender, ContainerContentChangingEventArgs args)
+        {
+            HeaderContainer.Opacity = 1;
+            HeaderInit(args.Item as Topic);
+            args.RegisterUpdateCallback(RenderButton);
+        }
+
+        private void RenderButton(ListViewBase sender, ContainerContentChangingEventArgs args)
+        {
+            ButtonInit(args.Item as Topic);
+            ButtonContainer.Opacity = 1;
+
+            args.RegisterUpdateCallback(RenderTag);
+        }
+
+        private void RenderTag(ListViewBase sender, ContainerContentChangingEventArgs args)
+        {
+            TagInit(args.Item as Topic);
+            TagList.Opacity = 1;
+
+            args.RegisterUpdateCallback(RenderBody);
+        }
+
+        private void RenderBody(ListViewBase sender, ContainerContentChangingEventArgs args)
+        {
+            BodyInit(args.Item as Topic);
+            DescriptionBlock.Opacity = 1;
+            MainDisplay.Opacity = 1;
+        }
+
+
+        
+
+
     }
 }

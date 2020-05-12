@@ -33,7 +33,7 @@ namespace BiliBili_Controls.AdaptiveGridView
 
         // Can be made as dependency properties
         private const int InitialDelay = 400;
-        private const int AnimationDuration = 180;
+        private const int AnimationDuration = 100;
         private const int AnimationDelay = 100;
         private const double ItemMargin = 6.0d;
 
@@ -260,7 +260,7 @@ namespace BiliBili_Controls.AdaptiveGridView
             {
                 RecalculateLayout(e.NewSize.Width);
 
-                if (ItemsPanelRoot is ItemsWrapGrid itemsWrapGrid && EnableAnimation)
+                if (ItemsPanelRoot is ItemsWrapGrid itemsWrapGrid)
                 {
                     for (var i = itemsWrapGrid.FirstVisibleIndex; i <= itemsWrapGrid.LastVisibleIndex; i++)
                     {

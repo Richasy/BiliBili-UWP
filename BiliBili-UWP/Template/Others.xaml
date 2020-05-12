@@ -592,6 +592,7 @@
     <Style x:Key="MuxcProgressRingStyle" TargetType="muxc:ProgressRing">
         <Setter Property="Width" Value="45"/>
         <Setter Property="Height" Value="45"/>
+        <Setter Property="IsActive" Value="False" />
         <Setter Property="Background" Value="{ThemeResource ProgressColor}" />
         <Setter Property="Foreground" Value="{ThemeResource PrimaryColor}"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
@@ -600,6 +601,7 @@
     <Style x:Key="MuxcProgressBarStyle" TargetType="muxc:ProgressBar">
         <Setter Property="IsIndeterminate" Value="True" />
         <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Visibility" Value="Collapsed" />
         <Setter Property="Foreground" Value="{ThemeResource PrimaryColor}"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="Height" Value="3" />

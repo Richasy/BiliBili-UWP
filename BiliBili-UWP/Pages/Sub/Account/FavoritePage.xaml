@@ -36,7 +36,8 @@
                 <ListView x:Name="FavoriteListView" ItemsSource="{x:Bind VideoCollection}"
                   IsItemClickEnabled="True" ItemClick="FavoriteListView_ItemClick"
                   ItemContainerStyle="{StaticResource TransparentListViewContainerStyle}"
-                  Style="{StaticResource NoScrollListView}" ItemTemplate="{StaticResource VideoItemTemplate}"/>
+                  Style="{StaticResource NoScrollListView}" ItemTemplate="{StaticResource VideoItemTemplate}"
+                          ContainerContentChanging="FavoriteListView_ContainerContentChanging"/>
                 <muxc:ProgressBar Style="{StaticResource MuxcProgressBarStyle}"
                              VerticalAlignment="Bottom" x:Name="LoadingBar" Visibility="Collapsed"/>
             </Grid>

@@ -60,7 +60,7 @@
         </ItemsControl>
         <local:DynamicContentBlock Grid.Row="3" Margin="0,5,0,0" x:Name="MainDisplay" ImageTapped="MainDisplay_ImageTapped"
                                    DocumentTapped="MainDisplay_DocumentTapped"/>
-        <Grid Grid.Row="4">
+        <Grid Grid.Row="4" x:Name="ButtonContainer">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="1*" />

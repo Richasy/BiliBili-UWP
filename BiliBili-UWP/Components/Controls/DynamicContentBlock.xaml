@@ -22,7 +22,7 @@
                 </Grid.RowDefinitions>
                 <Grid>
                     <widgets:BiliImage Source="{x:Bind pic,Converter={StaticResource CoverResolutionConverter},ConverterParameter=400}" CornerRadius="4" DecodePixelWidth="300" MaxHeight="200"
-                                  x:Name="VideoCover" MinHeight="150"/>
+                                  x:Name="VideoCover" MinHeight="150" x:Phase="1"/>
                     <Border Padding="8,3" Background="{ThemeResource PopupBackground}" RequestedTheme="Dark" HorizontalAlignment="Left" VerticalAlignment="Bottom"
                     CornerRadius="3" Margin="10,0,0,10" Visibility="{x:Bind duration,Mode=OneWay,Converter={StaticResource StringVisibilityConverter}}">
                         <TextBlock Text="{x:Bind duration,Converter={StaticResource DurationConverter},Mode=OneWay}" Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource ImportantTextColor}"
@@ -54,7 +54,7 @@
                 </Grid.RowDefinitions>
                 <Grid>
                     <widgets:BiliImage Source="{x:Bind cover,Converter={StaticResource CoverResolutionConverter},ConverterParameter=400}" CornerRadius="4" DecodePixelWidth="300" MaxHeight="200"
-                                  x:Name="VideoCover" MinHeight="150"/>
+                                  x:Name="VideoCover" MinHeight="150" x:Phase="1"/>
                     <Border Padding="8,3" Background="{ThemeResource PopupBackground}" RequestedTheme="Dark" HorizontalAlignment="Left" VerticalAlignment="Bottom"
                     CornerRadius="3" Margin="10,0,0,10" Visibility="{x:Bind duration,Mode=OneWay,Converter={StaticResource StringVisibilityConverter}}">
                         <TextBlock Text="{x:Bind duration,Converter={StaticResource DurationConverter},Mode=OneWay}" Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource ImportantTextColor}"
@@ -86,7 +86,7 @@
                 </Grid.RowDefinitions>
                 <Grid>
                     <widgets:BiliImage Source="{x:Bind cover,Converter={StaticResource CoverResolutionConverter},ConverterParameter=300}" CornerRadius="4" DecodePixelWidth="300" MaxHeight="200"
-                                  x:Name="VideoCover" MinHeight="150"/>
+                                  x:Name="VideoCover" MinHeight="150" x:Phase="1"/>
                     <Border Padding="8,3" Background="{ThemeResource PopupBackground}" RequestedTheme="Dark" HorizontalAlignment="Left" VerticalAlignment="Bottom"
                     CornerRadius="3" Margin="10,0,0,10" Visibility="{x:Bind duration,Mode=OneWay,Converter={StaticResource StringVisibilityConverter}}">
                         <TextBlock Text="{x:Bind duration,Converter={StaticResource DurationConverter},Mode=OneWay}" Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource ImportantTextColor}"
@@ -134,7 +134,7 @@
             <StackPanel others:PressEffect.IsEnabled="True" others:PressEffect.TargetElementName="DocumentCover">
                 <Grid Visibility="{x:Bind banner_url,Converter={StaticResource StringVisibilityConverter}}">
                     <widgets:BiliImage HorizontalAlignment="Stretch" Source="{x:Bind banner_url,Converter={StaticResource CoverResolutionConverter},ConverterParameter=350}" CornerRadius="4" DecodePixelWidth="300" MaxHeight="150"
-                                   x:Name="DocumentCover"/>
+                                   x:Name="DocumentCover" x:Phase="1"/>
                 </Grid>
                 <TextBlock Style="{StaticResource SmallTipTextStyle}" ToolTipService.ToolTip="{x:Bind title}" Margin="0,5" Grid.Row="1"
                            Text="{x:Bind title}" Foreground="{ThemeResource ImportantTextColor}" FontWeight="Bold"/>

@@ -1,5 +1,6 @@
 ﻿using BiliBili_Lib.Models.BiliBili.Video;
 using BiliBili_Lib.Service;
+using BiliBili_UWP.Components.Controls;
 using BiliBili_UWP.Components.Widgets;
 using BiliBili_UWP.Dialogs;
 using BiliBili_UWP.Models.Core;
@@ -157,6 +158,13 @@ namespace BiliBili_UWP.Pages.Main
             {
                 new TipPopup("移出失败，请稍后重试").ShowError();
             }
+        }
+
+        private void HistoryVideoView_ContainerContentChanging(ListViewBase sender, ContainerContentChangingEventArgs args)
+        {
+            args.Handled = true;
+            DefaultVideoCard card = (DefaultVideoCard)args.ItemContainer.ContentTemplateRoot;
+            card.RenderContainer(args);
         }
     }
 }

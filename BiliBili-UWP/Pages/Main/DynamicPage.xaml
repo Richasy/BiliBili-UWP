@@ -12,7 +12,7 @@
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:DataType="bilibili:Topic" x:Key="DynamicItemTemplate">
-            <controls1:TopicCard Data="{Binding}"/>
+            <controls1:TopicCard Data="{Binding}" IsUsePhase="False"/>
         </DataTemplate>
     </Page.Resources>
     <Grid>

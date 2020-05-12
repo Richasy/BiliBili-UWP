@@ -59,12 +59,13 @@
                           SelectionMode="None" IsItemClickEnabled="True"
                           ItemClick="HistoryVideoView_ItemClick"
                           ItemsSource="{x:Bind HistoryCollection}"
+                          ContainerContentChanging="HistoryVideoView_ContainerContentChanging"
                           />
             <TextBlock Style="{StaticResource TipTextStyle}" Text="暂无视频观看历史记录" FontWeight="Bold" VerticalAlignment="Center"
                            x:Name="HolderText" Visibility="Collapsed"/>
         </Grid>
 
         <muxc:ProgressBar Style="{StaticResource MuxcProgressBarStyle}" Grid.Row="2"
-                             x:Name="VideoLoadingBar" Visibility="Collapsed"/>
+                             x:Name="VideoLoadingBar" VerticalAlignment="Bottom"/>
     </Grid>
 </Page>

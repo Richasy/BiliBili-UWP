@@ -17,7 +17,7 @@
             <ColumnDefinition Width="1*" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-        <Grid Height="70" Width="112">
+        <Grid Height="70" Width="112" x:Name="CoverContainer">
             <widgets:BiliImage Source="{x:Bind Cover,Mode=OneWay,Converter={StaticResource CoverResolutionConverter},ConverterParameter=200}" x:Name="VideoCover"
                                        CornerRadius="4"/>
             <Border Padding="5,3" Background="{ThemeResource PopupBackground}" RequestedTheme="Dark" HorizontalAlignment="Left" VerticalAlignment="Bottom"
@@ -26,7 +26,7 @@
                                    Text="{x:Bind Duration,Mode=OneWay}" FontSize="10"/>
             </Border>
         </Grid>
-        <Grid Grid.Column="1" Margin="10,0,0,0">
+        <Grid Grid.Column="1" Margin="10,0,0,0" x:Name="InfoContainer">
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*" />
                 <RowDefinition Height="Auto" />

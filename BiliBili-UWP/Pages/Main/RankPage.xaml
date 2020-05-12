@@ -63,9 +63,10 @@
                                         Style="{StaticResource NoScrollGridView}"
                                         ItemContainerStyle="{StaticResource TransparentGridViewItemContainerStyle}"
                                         StretchContentForSingleRow="False"
-                                               ItemsSource="{x:Bind DisplayCollection}"
-                                               ContainerContentChanging="VideoGridView_ContainerContentChanging"
+                                        ItemsSource="{x:Bind DisplayCollection}"
+                                        ContainerContentChanging="VideoGridView_ContainerContentChanging"
                                         />
+
             <muxc:ProgressRing Foreground="{ThemeResource PrimaryColor}" VerticalAlignment="Center" HorizontalAlignment="Center"
                                Width="40" Height="40" x:Name="LoadingRing"/>
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="NoDataContainer" Visibility="Collapsed">

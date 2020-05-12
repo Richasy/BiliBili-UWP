@@ -26,7 +26,7 @@
         <DataTemplate x:DataType="video:VideoPart" x:Key="PartItemTemplate">
             <ListViewItem x:Name="Container">
                 <Grid Background="{Binding ElementName=Container,Path=IsSelected,Converter={StaticResource SelectedColorConverter}}" CornerRadius="4" Padding="10">
-                    <TextBlock Text="{x:Bind part}" Style="{StaticResource SmallTipTextStyle}" 
+                    <TextBlock Text="{x:Bind part}" Style="{StaticResource SmallTipTextStyle}" MaxLines="2"
                                Foreground="{Binding ElementName=Container,Path=IsSelected,Converter={StaticResource SelectedColorConverter},ConverterParameter='Foreground'}"/>
                 </Grid>
             </ListViewItem>
@@ -161,8 +161,8 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <TextBlock Style="{StaticResource SmallTipTextStyle}" TextWrapping="Wrap" LineHeight="20" x:Name="DescriptionBlock"
-                       MaxLines="3" HorizontalAlignment="Left" IsTextSelectionEnabled="True"/>
+                <widgets:TrimTextBlock x:Name="DescriptionBlock" FontSize="12" Foreground="{ThemeResource TipTextColor}"
+                                       />
                 <ListView ItemTemplate="{StaticResource TagItemTemplate}" ItemsSource="{x:Bind TagCollection}"
                       IsItemClickEnabled="True" ItemContainerStyle="{StaticResource TransparentListViewContainerStyle}"
                       Style="{StaticResource BasicListView}" Padding="0,0,0,5" Margin="0,5,0,0" ItemsPanel="{StaticResource HorizontalListViewItemsPanel}"

@@ -2,6 +2,7 @@
 using BiliBili_Lib.Models.BiliBili.Account;
 using BiliBili_Lib.Service;
 using BiliBili_Lib.Tools;
+using BiliBili_UWP.Components.Controls;
 using BiliBili_UWP.Components.Widgets;
 using BiliBili_UWP.Dialogs;
 using BiliBili_UWP.Models.UI;
@@ -310,6 +311,20 @@ namespace BiliBili_UWP.Pages.Sub.Account
                 App.BiliViewModel.ClearAccountInformation();
                 await Refresh();
             }
+        }
+
+        private void ListView_ContainerContentChanging(ListViewBase sender, ContainerContentChangingEventArgs args)
+        {
+            args.Handled = true;
+            TopicCard card = (TopicCard)args.ItemContainer.ContentTemplateRoot;
+            card.RenderContainer(args);
+        }
+
+        private void VideoListView_ContainerContentChanging(ListViewBase sender, ContainerContentChangingEventArgs args)
+        {
+            args.Handled = true;
+            DefaultVideoPanel card = (DefaultVideoPanel)args.ItemContainer.ContentTemplateRoot;
+            card.RenderContainer(args);
         }
     }
 }

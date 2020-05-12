@@ -105,7 +105,8 @@
                 <Grid>
                     <ListView x:Name="VideoListView" ItemContainerStyle="{StaticResource TransparentListViewContainerStyle}"
                               Style="{StaticResource NoScrollListView}" ItemsSource="{x:Bind VideoCollection}" HorizontalAlignment="Stretch"
-                              ItemTemplate="{StaticResource VideoItemTemplate}" IsItemClickEnabled="True" ItemClick="VideoListView_ItemClick">
+                              ItemTemplate="{StaticResource VideoItemTemplate}" IsItemClickEnabled="True" ItemClick="VideoListView_ItemClick"
+                              ContainerContentChanging="VideoListView_ContainerContentChanging">
                     </ListView>
                     <TextBlock Text="没有找到视频哟~" Style="{StaticResource TitleTextStyle}" FontSize="15" x:Name="VideoHolderText"
                                Visibility="Collapsed"/>
@@ -121,7 +122,7 @@
                               ItemContainerStyle="{StaticResource TransparentListViewContainerStyle}"
                               Style="{StaticResource NoScrollListView}"
                               SelectionMode="None"
-                              Padding="0"
+                              Padding="0" ContainerContentChanging="ListView_ContainerContentChanging"
                               />
                     <TextBlock Text="没有找到动态哟~" Style="{StaticResource TitleTextStyle}" FontSize="15" x:Name="DynamicHolderText"
                                Visibility="Collapsed"/>

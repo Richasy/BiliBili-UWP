@@ -185,7 +185,6 @@ namespace BiliBili_UWP.Pages.Main
             AVBlock.Text = _detail.aid.ToString();
 
             DescriptionBlock.Text = _detail.desc;
-            ToolTipService.SetToolTip(DescriptionBlock, _detail.desc);
 
             LikeButton.Text = AppTool.GetNumberAbbreviation(_detail.stat.like);
             CoinButton.Text = AppTool.GetNumberAbbreviation(_detail.stat.coin);

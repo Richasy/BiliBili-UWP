@@ -1,5 +1,6 @@
 ﻿using BiliBili_Lib.Models.BiliBili;
 using BiliBili_Lib.Tools;
+using BiliBili_UWP.Components.Controls;
 using BiliBili_UWP.Components.Widgets;
 using BiliBili_UWP.Models.UI;
 using BiliBili_UWP.Models.UI.Interface;
@@ -216,6 +217,13 @@ namespace BiliBili_UWP.Pages.Sub.Channel
         {
             var data = (sender as FrameworkElement).DataContext as VideoRecommend;
             await App.BiliViewModel.AddViewLater(sender, Convert.ToInt32(data.param));
+        }
+
+        private void TopicListView_ContainerContentChanging(ListViewBase sender, ContainerContentChangingEventArgs args)
+        {
+            args.Handled = true;
+            TopicCard card = (TopicCard)args.ItemContainer.ContentTemplateRoot;
+            card.RenderContainer(args);
         }
     }
 }

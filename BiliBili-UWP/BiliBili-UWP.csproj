@@ -26,7 +26,7 @@
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x86|x64|arm|arm64</AppxBundlePlatforms>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
-    <PackageCertificateThumbprint>C6892C282395ABA87B3ABE020806A63C5415C128</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>8903EAD53E770908B4AE5D4D2E30396C6BD51262</PackageCertificateThumbprint>
     <AppxSymbolPackageEnabled>True</AppxSymbolPackageEnabled>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
@@ -233,6 +233,9 @@
     </Compile>
     <Compile Include="Components\Widgets\TipPopup.xaml.cs">
       <DependentUpon>TipPopup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Widgets\TrimTextBlock.xaml.cs">
+      <DependentUpon>TrimTextBlock.xaml</DependentUpon>
     </Compile>
     <Compile Include="Components\Widgets\WaitingPopup.xaml.cs">
       <DependentUpon>WaitingPopup.xaml</DependentUpon>
@@ -623,6 +626,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Components\Widgets\TipPopup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\Widgets\TrimTextBlock.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -93,15 +93,16 @@
                           ItemContainerStyle="{StaticResource TransparentGridViewItemContainerStyle}"
                           Style="{StaticResource NoScrollGridView}"
                           SelectionMode="None" IsItemClickEnabled="True"
-                              ItemClick="RecommendVideoView_ItemClick"
+                          ItemClick="RecommendVideoView_ItemClick"
                           ItemsSource="{x:Bind VideoCollection}"
+                          ContainerContentChanging="RecommendVideoView_ContainerContentChanging"
                           />
                 <TextBlock Style="{StaticResource TipTextStyle}" Text="无法加载视频列表" FontWeight="Bold" VerticalAlignment="Center"
                            x:Name="HolderText" Visibility="Collapsed"/>
             </Grid>
 
             <muxc:ProgressBar Style="{StaticResource MuxcProgressBarStyle}" Grid.Row="2"
-                             x:Name="VideLoadingBar" Visibility="Collapsed"/>
+                             x:Name="VideLoadingBar" />
         </Grid>
     </Grid>
 </Page>

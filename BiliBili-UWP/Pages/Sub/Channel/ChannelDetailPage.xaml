@@ -97,7 +97,8 @@
                     </Grid>
                     <GridView x:Name="VideoGridView" ItemContainerStyle="{StaticResource TransparentGridViewItemContainerStyle}" HorizontalAlignment="Center"
                               Style="{StaticResource NoScrollGridView}" ItemsSource="{x:Bind VideoCollection}" Grid.Row="1"
-                              ItemTemplate="{StaticResource ChannelVideoItemTemplate}" IsItemClickEnabled="True" ItemClick="VideoGridView_ItemClick">
+                              ItemTemplate="{StaticResource ChannelVideoItemTemplate}" IsItemClickEnabled="True" ItemClick="VideoGridView_ItemClick"
+                              ContainerContentChanging="VideoGridView_ContainerContentChanging">
                         <GridView.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <controls:UniformGrid Columns="2" Orientation="Horizontal" Padding="0,0,-8,0"/>

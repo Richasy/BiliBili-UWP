@@ -183,5 +183,23 @@ namespace BiliBili_UWP.Components.Controls
                 instance.ExtraButton.Flyout = flyout;
             }
         }
+        public void RenderContainer(ContainerContentChangingEventArgs args)
+        {
+            CoverContainer.Opacity = 0;
+            InfoContainer.Opacity = 0;
+
+            args.RegisterUpdateCallback(RenderInfo);
+        }
+
+        private void RenderInfo(ListViewBase sender, ContainerContentChangingEventArgs args)
+        {
+            InfoContainer.Opacity = 1;
+            args.RegisterUpdateCallback(RenderCover);
+        }
+
+        private void RenderCover(ListViewBase sender, ContainerContentChangingEventArgs args)
+        {
+            CoverContainer.Opacity = 1;
+        }
     }
 }

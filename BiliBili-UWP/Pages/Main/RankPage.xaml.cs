@@ -87,6 +87,7 @@ namespace BiliBili_UWP.Pages.Main
         {
             Reset();
             await LoadRegionRankVideo();
+            VideoGridView.EnableAnimation = false;
         }
 
         private async Task LoadRegionRankVideo()
@@ -120,10 +121,7 @@ namespace BiliBili_UWP.Pages.Main
         {
             var item = e.ClickedItem as RegionContainer;
             _selectRegion = item.tid;
-            VideoGridView.Visibility = Visibility.Collapsed;
             await LoadRegionRankVideo();
-            await Task.Delay(100);
-            VideoGridView.Visibility = Visibility.Visible;
         }
 
         private void VideoGridView_ItemClick(object sender, ItemClickEventArgs e)
