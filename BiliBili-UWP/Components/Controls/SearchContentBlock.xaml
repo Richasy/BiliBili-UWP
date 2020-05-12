@@ -38,15 +38,16 @@
                     </Grid.RowDefinitions>
                     <StackPanel>
                         <TextBlock Text="{x:Bind title}" FontWeight="Bold" Style="{StaticResource SmallTipTextStyle}" FontSize="13" Foreground="{ThemeResource ImportantTextColor}"
-                               TextWrapping="Wrap" ToolTipService.ToolTip="{x:Bind title}"/>
+                               TextWrapping="Wrap" ToolTipService.ToolTip="{x:Bind title}" MaxLines="2"/>
                         <TextBlock Text="{x:Bind styles}" Visibility="{x:Bind styles,Converter={StaticResource StringVisibilityConverter}}" Style="{StaticResource SmallTipTextStyle}" FontSize="10" Margin="0,5"/>
                         <TextBlock Text="{x:Bind label}" Visibility="{x:Bind label,Converter={StaticResource StringVisibilityConverter}}" Style="{StaticResource SmallTipTextStyle}" FontSize="10"/>
                         <TextBlock Text="{x:Bind staff}" Visibility="{x:Bind staff,Converter={StaticResource StringVisibilityConverter}}" Margin="0,10,0,0" Style="{StaticResource SmallTipTextStyle}" MaxLines="2" FontSize="10"/>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" Grid.Row="1">
-                        <widgets:AsyncButton Text="立即观看" Style="{StaticResource PrimaryAsyncButtonStyle}" Padding="2" FontSize="10" x:Name="WatchAnimeButton"
+                    <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0,5,0,0">
+                        <widgets:AsyncButton Text="立即观看" Style="{StaticResource PrimaryAsyncButtonStyle}" Padding="2,0,2,2" FontSize="10" x:Name="WatchAnimeButton"
                                              Click="WatchAnimeButton_Click"/>
-                        <widgets:AsyncButton FontSize="10" Text="{x:Bind render_follow}" Style="{StaticResource DefaultAsyncButtonStyle}" Margin="10,0,0,0"/>
+                        <widgets:AsyncButton FontSize="10" Text="{x:Bind render_follow}" Style="{StaticResource DefaultAsyncButtonStyle}" Margin="10,0,0,0" Padding="2,0,2,2"
+                                             Click="FollowAnimeButton_Click" Visibility="{x:Bind is_atten,Converter={StaticResource IntVisibilityConverter},ConverterParameter=Reverse}"/>
                     </StackPanel>
                 </Grid>
                 <StackPanel Grid.Column="2" Visibility="{x:Bind rating,Converter={StaticResource IntVisibilityConverter}}" HorizontalAlignment="Right">

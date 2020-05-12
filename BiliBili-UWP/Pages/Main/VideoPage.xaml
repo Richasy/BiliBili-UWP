@@ -26,7 +26,7 @@
         <DataTemplate x:DataType="video:VideoPart" x:Key="PartItemTemplate">
             <ListViewItem x:Name="Container">
                 <Grid Background="{Binding ElementName=Container,Path=IsSelected,Converter={StaticResource SelectedColorConverter}}" CornerRadius="4" Padding="10">
-                    <TextBlock Text="{x:Bind part}" Style="{StaticResource SmallTipTextStyle}" MaxLines="2"
+                    <TextBlock Text="{x:Bind part}" Style="{StaticResource SmallTipTextStyle}" MaxLines="1"
                                Foreground="{Binding ElementName=Container,Path=IsSelected,Converter={StaticResource SelectedColorConverter},ConverterParameter='Foreground'}"/>
                 </Grid>
             </ListViewItem>

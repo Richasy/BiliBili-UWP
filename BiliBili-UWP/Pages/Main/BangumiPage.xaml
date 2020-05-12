@@ -22,7 +22,7 @@
                     <TextBlock Text="{x:Bind title}" Visibility="{x:Bind title,Converter={StaticResource StringVisibilityConverter}}" Style="{StaticResource SmallTipTextStyle}" 
                                Foreground="{Binding ElementName=Container,Path=IsSelected,Converter={StaticResource SelectedColorConverter},ConverterParameter='Foreground'}"/>
                     <TextBlock Text="{x:Bind long_title}" Visibility="{x:Bind long_title,Converter={StaticResource StringVisibilityConverter}}" Style="{StaticResource SmallTipTextStyle}" 
-                               Grid.Row="1" Margin="0,5,0,0" TextWrapping="Wrap" MaxWidth="150" HorizontalAlignment="Left" MaxLines="2"
+                               Grid.Row="1" Margin="0,5,0,0" TextWrapping="Wrap" MaxWidth="150" HorizontalAlignment="Left" MaxLines="1"
                                Foreground="{Binding ElementName=Container,Path=IsSelected,Converter={StaticResource SelectedColorConverter},ConverterParameter='Foreground'}"/>
                 </Grid>
             </ListViewItem>
