@@ -19,7 +19,6 @@
     SizeChanged="UserControl_SizeChanged"
     PointerEntered="UserControl_PointerEntered"
     PointerMoved="UserControl_PointerMoved"
-    GotFocus="UserControl_GotFocus"
     PointerExited="UserControl_PointerExited">
     <UserControl.Resources>
         <DataTemplate x:Key="FontItemTemplate" x:DataType="others:SystemFont">

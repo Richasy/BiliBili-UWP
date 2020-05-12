@@ -1002,12 +1002,6 @@ namespace BiliBili_UWP.Components.Controls
             _isCatchPointer = false;
             Window.Current.CoreWindow.PointerCursor = new Windows.UI.Core.CoreCursor(Windows.UI.Core.CoreCursorType.Arrow, 0);
         }
-
-        private void UserControl_GotFocus(object sender, RoutedEventArgs e)
-        {
-            SetFocus();
-        }
-
         private void MediaPlayerElement_GotFocus(object sender, RoutedEventArgs e)
         {
             Debug.WriteLine("已获取焦点");

@@ -26,7 +26,7 @@
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x86|x64|arm|arm64</AppxBundlePlatforms>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
-    <PackageCertificateThumbprint>86C4009ABA8C68A56F8C45BBC2ED25114177F48D</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>9C1AAD4C0E044319F7E424AA63CBCF95500E310A</PackageCertificateThumbprint>
     <AppxSymbolPackageEnabled>True</AppxSymbolPackageEnabled>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
@@ -318,6 +318,9 @@
     </Compile>
     <Compile Include="Pages\Main\NetworkErrorPage.xaml.cs">
       <DependentUpon>NetworkErrorPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Main\RankPage.xaml.cs">
+      <DependentUpon>RankPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Main\SettingPage.xaml.cs">
       <DependentUpon>SettingPage.xaml</DependentUpon>
@@ -680,6 +683,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\Main\NetworkErrorPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Main\RankPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -10,6 +10,7 @@ namespace BiliBili_UWP.Models.Enums
     {
         Home,
         Live,
+        Rank,
         Anime,
         Dynamic,
 

@@ -90,8 +90,11 @@ namespace BiliBili_Lib.Service
         {
             var param = new Dictionary<string, string>();
             param.Add("rid", rid.ToString());
-            string url = BiliTool.UrlContact(Api.REGION_RANK, param, true);
-            var data = await BiliTool.ConvertEntityFromWebAsync<List<WebVideo>>(url);
+            param.Add("day", "3");
+            param.Add("type", "1");
+            param.Add("arc_type", "0");
+            string url = BiliTool.UrlContact(Api.REGION_TOTAL_RANK, param, true);
+            var data = await BiliTool.ConvertEntityFromWebAsync<List<WebVideo>>(url,"data.list");
             return data;
         }
         /// <summary>

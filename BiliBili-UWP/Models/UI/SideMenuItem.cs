@@ -46,6 +46,11 @@ namespace BiliBili_UWP.Models.UI
                     Icon = "";
                     Group = SideMenuGroupType.Basic;
                     break;
+                case SideMenuItemType.Rank:
+                    Name = "排行榜";
+                    Icon = "";
+                    Group = SideMenuGroupType.Basic;
+                    break;
                 case SideMenuItemType.Anime:
                     Name = "番剧推荐";
                     Icon = "";
@@ -102,7 +107,7 @@ namespace BiliBili_UWP.Models.UI
             {
                 new SideMenuItem(SideMenuItemType.Line),
                 new SideMenuItem(SideMenuItemType.Home),
-                new SideMenuItem(SideMenuItemType.Live),
+                new SideMenuItem(SideMenuItemType.Rank),
                 new SideMenuItem(SideMenuItemType.Anime),
                 new SideMenuItem(SideMenuItemType.Dynamic),
                 new SideMenuItem(SideMenuItemType.Line),
