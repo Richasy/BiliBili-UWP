@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:anime="using:BiliBili_Lib.Models.BiliBili.Anime"
-    xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
+    xmlns:widgets="using:BiliBili_UWP.Components.Widgets" xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:DataType="anime:ConditionContainer" x:Key="ConditionItemTemplate">
@@ -88,8 +88,7 @@
                            Grid.Row="1" x:Name="HolderText" HorizontalAlignment="Left"/>
             </Grid>
         </ScrollViewer>
-        <ProgressRing x:Name="LoadingRing" Style="{StaticResource BasicProgressRingStyle}"/>
-        <ProgressBar IsIndeterminate="True" x:Name="LoadingBar" VerticalAlignment="Bottom" HorizontalAlignment="Stretch"
-                     Foreground="{ThemeResource PrimaryColor}" Visibility="Collapsed"/>
+        <muxc:ProgressRing x:Name="LoadingRing" Style="{StaticResource MuxcProgressRingStyle}"/>
+        <muxc:ProgressBar Style="{StaticResource MuxcProgressBarStyle}" x:Name="LoadingBar" VerticalAlignment="Bottom" Visibility="Collapsed"/>
     </Grid>
 </Page>

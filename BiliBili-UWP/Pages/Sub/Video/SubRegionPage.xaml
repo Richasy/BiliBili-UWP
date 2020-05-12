@@ -10,7 +10,7 @@
     xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
     xmlns:controls1="using:BiliBili_UWP.Components.Controls"
     xmlns:ext="using:BiliBili_Controls.Extensions"
-    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls" xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:DataType="bilibili:Region" x:Key="TabItemTemplate">
@@ -87,7 +87,7 @@
                            VerticalAlignment="Top" HorizontalAlignment="Left" Grid.Row="1" x:Name="VideoHolderBlock" FontWeight="Bold"/>
                     </Grid>
                 </ScrollViewer>
-                <ProgressRing Style="{StaticResource BasicProgressRingStyle}" x:Name="LoadingRing"
+                <muxc:ProgressRing Style="{StaticResource MuxcProgressRingStyle}" x:Name="LoadingRing"
                       Grid.Row="2"/>
             </Grid>
         </Grid>

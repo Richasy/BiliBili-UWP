@@ -9,7 +9,7 @@
     xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
     xmlns:bilibili="using:BiliBili_Lib.Models.BiliBili"
     xmlns:ui="using:BiliBili_UWP.Models.UI"
-    xmlns:controls1="using:BiliBili_UWP.Components.Controls"
+    xmlns:controls1="using:BiliBili_UWP.Components.Controls" xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:DataType="bilibili:Tag" x:Key="TagItemTemplate">
@@ -130,6 +130,6 @@
                            TextAlignment="Center"/>
             </StackPanel>
         </Grid>
-        <ProgressRing Style="{StaticResource BasicProgressRingStyle}" Grid.Row="3" x:Name="LoadingRing"/>
+        <muxc:ProgressRing Style="{StaticResource MuxcProgressRingStyle}" Grid.Row="3" x:Name="LoadingRing"/>
     </Grid>
 </Page>

@@ -8,7 +8,7 @@
     xmlns:bilibili="using:BiliBili_Lib.Models.BiliBili.Video"
     xmlns:controls="using:BiliBili_UWP.Components.Controls"
     xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
-    xmlns:ada="using:BiliBili_Controls.AdaptiveGridView"
+    xmlns:ada="using:BiliBili_Controls.AdaptiveGridView" xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     Loaded="Page_Loaded"
     mc:Ignorable="d">
 
@@ -69,7 +69,7 @@
                            x:Name="HolderText" Visibility="Collapsed"/>
         </Grid>
 
-        <ProgressBar IsIndeterminate="True" Foreground="{ThemeResource PrimaryColor}" Grid.Row="2"
+        <muxc:ProgressBar Style="{StaticResource MuxcProgressBarStyle}" Grid.Row="2"
                              x:Name="VideoLoadingBar" Visibility="Collapsed"/>
     </Grid>
 </Page>

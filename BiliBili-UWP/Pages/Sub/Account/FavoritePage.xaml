@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:BiliBili_UWP.Components.Controls"
-    xmlns:favorites="using:BiliBili_Lib.Models.BiliBili.Favorites"
+    xmlns:favorites="using:BiliBili_Lib.Models.BiliBili.Favorites" xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:DataType="favorites:FavoriteVideo" x:Key="VideoItemTemplate">
@@ -37,7 +37,7 @@
                   IsItemClickEnabled="True" ItemClick="FavoriteListView_ItemClick"
                   ItemContainerStyle="{StaticResource TransparentListViewContainerStyle}"
                   Style="{StaticResource NoScrollListView}" ItemTemplate="{StaticResource VideoItemTemplate}"/>
-                <ProgressBar IsIndeterminate="True" Foreground="{ThemeResource PrimaryColor}" HorizontalAlignment="Stretch"
+                <muxc:ProgressBar Style="{StaticResource MuxcProgressBarStyle}"
                              VerticalAlignment="Bottom" x:Name="LoadingBar" Visibility="Collapsed"/>
             </Grid>
         </ScrollViewer>

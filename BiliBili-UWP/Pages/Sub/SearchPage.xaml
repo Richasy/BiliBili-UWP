@@ -11,7 +11,7 @@
     xmlns:controls1="using:BiliBili_UWP.Components.Controls"
     xmlns:ext="using:BiliBili_Controls.Extensions"
     xmlns:ui="using:BiliBili_UWP.Models.UI"
-    xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
+    xmlns:widgets="using:BiliBili_UWP.Components.Widgets" xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:DataType="bilibili:SearchTab" x:Key="TabItemTemplate">
@@ -203,9 +203,9 @@
             </ScrollViewer>
         </Grid>
 
-        <ProgressRing Style="{StaticResource BasicProgressRingStyle}" x:Name="LoadingRing"
+        <muxc:ProgressRing Style="{StaticResource MuxcProgressRingStyle}" x:Name="LoadingRing"
                       Grid.Row="1"/>
-        <ProgressBar x:Name="LoadingBar" IsIndeterminate="True" VerticalAlignment="Bottom" Margin="0,0,0,10"
-                     HorizontalAlignment="Stretch" Foreground="{ThemeResource PrimaryColor}" Visibility="Collapsed"/>
+        <muxc:ProgressBar x:Name="LoadingBar" VerticalAlignment="Bottom" Margin="0,0,0,10"
+                     Style="{StaticResource MuxcProgressBarStyle}" Visibility="Collapsed"/>
     </Grid>
 </Page>

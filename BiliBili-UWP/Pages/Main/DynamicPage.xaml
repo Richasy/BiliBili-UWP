@@ -8,7 +8,7 @@
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:bilibili="using:BiliBili_Lib.Models.BiliBili"
     Loaded="Page_Loaded"
-    xmlns:controls1="using:BiliBili_UWP.Components.Controls"
+    xmlns:controls1="using:BiliBili_UWP.Components.Controls" xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:DataType="bilibili:Topic" x:Key="DynamicItemTemplate">
@@ -51,8 +51,8 @@
             <TextBlock Style="{StaticResource TipTextStyle}" Text="无法加载动态列表，请检查网络或登录后重试" FontWeight="Bold" VerticalAlignment="Top"
                            x:Name="HolderText" Visibility="Collapsed"/>
         </Grid>
-        <ProgressRing Style="{StaticResource BasicProgressRingStyle}" x:Name="LoadingRing" Grid.Row="1"/>
-        <ProgressBar IsIndeterminate="True" Foreground="{ThemeResource PrimaryColor}" Grid.Row="1"
+        <muxc:ProgressRing Style="{StaticResource MuxcProgressRingStyle}" x:Name="LoadingRing" Grid.Row="1"/>
+        <muxc:ProgressBar Style="{StaticResource MuxcProgressBarStyle}" Grid.Row="1"
                              x:Name="DynamicLoadingBar" Visibility="Collapsed" VerticalAlignment="Bottom"/>
     </Grid>
 </Page>

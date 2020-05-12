@@ -108,7 +108,8 @@ namespace BiliBili_UWP.Pages.Main
                 return;
             _isDynamicRequesting = true;
             Tuple<string, List<Topic>> data = null;
-            DynamicLoadingBar.Visibility = Visibility.Visible;
+            if(!LoadingRing.IsActive)
+                DynamicLoadingBar.Visibility = Visibility.Visible;
             if (string.IsNullOrEmpty(offset))
             {
                 string lastSeemId = AppTool.GetLocalSetting(BiliBili_Lib.Enums.Settings.LastSeemDynamicId,"0");

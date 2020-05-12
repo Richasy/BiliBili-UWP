@@ -9,7 +9,7 @@
     xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
     xmlns:bilibili="using:BiliBili_Lib.Models.BiliBili.Account"
     xmlns:controls1="using:BiliBili_UWP.Components.Controls"
-    xmlns:bilibili1="using:BiliBili_Lib.Models.BiliBili"
+    xmlns:bilibili1="using:BiliBili_Lib.Models.BiliBili" xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:DataType="bilibili:ArchiveVideo" x:Key="VideoItemTemplate">
@@ -132,6 +132,6 @@
             <Image Source="ms-appx:///Assets/bilibili logo.png" Width="50" Height="50" VerticalAlignment="Center"
                                HorizontalAlignment="Center"/>
         </Grid>
-        <ProgressRing Style="{StaticResource BasicProgressRingStyle}" Grid.Row="2" x:Name="LoadingRing"/>
+        <muxc:ProgressRing Style="{StaticResource MuxcProgressRingStyle}" Grid.Row="2" x:Name="LoadingRing"/>
     </Grid>
 </Page>

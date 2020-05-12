@@ -9,7 +9,7 @@
     xmlns:controls="using:BiliBili_UWP.Components.Controls"
     xmlns:bilibili="using:BiliBili_Lib.Models.BiliBili"
     xmlns:others="using:BiliBili_UWP.Models.UI.Others"
-    xmlns:controls1="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:controls1="using:Microsoft.Toolkit.Uwp.UI.Controls" xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:DataType="bilibili:AnimeModuleItem" x:Key="BannerItemTemplate">
@@ -95,7 +95,7 @@
         <controls:HorizontalScrollSectionPanel Title="榜单" HoldText="获取榜单数据失败" x:Name="RankContainer" ItemsSource="{x:Bind RankCollection}"
                                             ItemTemplate="{StaticResource RankItemTemplate}" IsItemClickEnabled="False"
                                             Grid.Row="3" Margin="0,20,0,0"/>
-        <ProgressBar x:Name="LoadingBar" VerticalAlignment="Top" Foreground="{ThemeResource PrimaryColor}" HorizontalAlignment="Stretch"
-                     Visibility="Collapsed" IsIndeterminate="True" Grid.Row="1"/>
+        <muxc:ProgressBar x:Name="LoadingBar" VerticalAlignment="Top" Style="{StaticResource MuxcProgressBarStyle}"
+                     Visibility="Collapsed" Grid.Row="1"/>
     </Grid>
 </Page>

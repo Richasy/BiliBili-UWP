@@ -5,6 +5,7 @@
     xmlns:c="using:NSDanmaku.Controls"
     xmlns:others="using:BiliBili_UWP.Models.UI.Others"
     xmlns:ext="using:BiliBili_Controls.Extensions"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:local="using:BiliBili_UWP.Template">
     <Style TargetType="MediaPlayerElement" x:Key="BasicMediaStyle">
         <Setter Property="HorizontalAlignment" Value="Stretch" />
@@ -120,7 +121,7 @@
                                                             </Setter.Value>
                                                         </Setter>
                                                     </Style>
-                                                    <Style TargetType="ProgressBar" x:Key="MediaSliderProgressBarStyle">
+                                                    <Style TargetType="muxc:ProgressBar" x:Key="MediaSliderProgressBarStyle">
                                                         <Setter Property="Height" Value="{ThemeResource SliderTrackThemeHeight}" />
                                                         <Setter Property="Minimum" Value="0" />
                                                         <Setter Property="Maximum" Value="100" />
@@ -285,7 +286,7 @@
                                                                    Height="{ThemeResource SliderTrackThemeHeight}"
                                                                    Grid.Row="1"
                                                                    Grid.ColumnSpan="3" />
-                                                        <ProgressBar x:Name="DownloadProgressIndicator"
+                                                        <muxc:ProgressBar x:Name="DownloadProgressIndicator"
                                                                      Style="{StaticResource MediaSliderProgressBarStyle}"
                                                                      Grid.Row="1"
                                                                      Grid.ColumnSpan="3"
@@ -629,7 +630,7 @@
                                                 Height="33"
                                                 VerticalAlignment="Center"
                                                 IsThumbToolTipEnabled="False" />
-                                        <ProgressBar x:Name="BufferingProgressBar"
+                                        <muxc:ProgressBar x:Name="BufferingProgressBar"
                                                      Height="4"
                                                      IsIndeterminate="True"
                                                      IsHitTestVisible="False"

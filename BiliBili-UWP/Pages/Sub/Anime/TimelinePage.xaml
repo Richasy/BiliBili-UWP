@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:anime="using:BiliBili_Lib.Models.BiliBili.Anime"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
+    xmlns:widgets="using:BiliBili_UWP.Components.Widgets" xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:DataType="anime:Timeline" x:Key="TimelineItemTemplate">
@@ -58,7 +58,7 @@
                   ItemTemplate="{StaticResource TimelineItemTemplate}"
                   x:Name="TimelineListView"
                   />
-        <ProgressRing Style="{StaticResource BasicProgressRingStyle}" x:Name="LoadingRing"/>
+        <muxc:ProgressRing Style="{StaticResource MuxcProgressRingStyle}" x:Name="LoadingRing"/>
         <TextBlock Style="{StaticResource TitleTextBlockStyle}" FontSize="15" Text="数据获取失败"
                    x:Name="HolderText" VerticalAlignment="Top" HorizontalAlignment="Left" Visibility="Collapsed"/>
     </Grid>

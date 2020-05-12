@@ -8,7 +8,7 @@
     xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
     xmlns:bilibili="using:BiliBili_Lib.Models.BiliBili"
     xmlns:controls="using:BiliBili_UWP.Components.Controls"
-    xmlns:controls1="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:controls1="using:Microsoft.Toolkit.Uwp.UI.Controls" xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     Loaded="Page_Loaded"
     mc:Ignorable="d">
     <Page.Resources>
@@ -100,7 +100,7 @@
                            x:Name="HolderText" Visibility="Collapsed"/>
             </Grid>
 
-            <ProgressBar IsIndeterminate="True" Foreground="{ThemeResource PrimaryColor}" Grid.Row="2"
+            <muxc:ProgressBar Style="{StaticResource MuxcProgressBarStyle}" Grid.Row="2"
                              x:Name="VideLoadingBar" Visibility="Collapsed"/>
         </Grid>
     </Grid>

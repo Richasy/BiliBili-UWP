@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:account="using:BiliBili_Lib.Models.BiliBili.Account"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
+    xmlns:widgets="using:BiliBili_UWP.Components.Widgets" xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:DataType="account:FanUser" x:Key="FanItemTemplate">
@@ -47,8 +47,8 @@
                                Visibility="Collapsed"/>
             </Grid>
         </ScrollViewer>
-        <ProgressBar Foreground="{ThemeResource PrimaryColor}" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
+        <muxc:ProgressBar Style="{StaticResource MuxcProgressBarStyle}" VerticalAlignment="Bottom"
                              x:Name="LoadingBar" Visibility="Collapsed" Grid.Row="1"/>
-        <ProgressRing Style="{StaticResource BasicProgressRingStyle}" Grid.Row="1" x:Name="LoadingRing"/>
+        <muxc:ProgressRing Style="{StaticResource MuxcProgressRingStyle}" Grid.Row="1" x:Name="LoadingRing"/>
     </Grid>
 </Page>

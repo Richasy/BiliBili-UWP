@@ -10,7 +10,7 @@
     xmlns:controls1="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
     xmlns:others="using:BiliBili_UWP.Models.UI.Others"
-    xmlns:ext="using:BiliBili_Controls.Extensions"
+    xmlns:ext="using:BiliBili_Controls.Extensions" xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:DataType="bilibili:ChannelListItem" x:Name="DefaultChannelItemTemplate">
@@ -130,7 +130,7 @@
             </Grid>
         </ScrollViewer>
         
-        <ProgressRing Style="{StaticResource BasicProgressRingStyle}" x:Name="LoadingRing"
+        <muxc:ProgressRing Style="{StaticResource MuxcProgressRingStyle}" x:Name="LoadingRing"
                       Grid.Row="3"/>
     </Grid>
 </Page>
