@@ -363,7 +363,7 @@ namespace BiliBili_UWP.Pages.Main
             PartListView.SelectedIndex = e;
         }
 
-        private void CommentButton_Click(object sender, EventArgs e)
+        private void CommentButton_Click(object sender, RoutedEventArgs e)
         {
             if (_currentPart != null)
             {

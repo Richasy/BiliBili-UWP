@@ -167,16 +167,5 @@ namespace BiliBili_UWP.Pages.Main
                 App.AppViewModel.CurrentPagePanel.PageScrollViewer.ChangeView(0, _scrollOffset, 1);
             }
         }
-
-        private async void LaterViewButton_Click(object sender, RoutedEventArgs e)
-        {
-            var data = (sender as FrameworkElement).DataContext as RegionVideo;
-            await App.BiliViewModel.AddViewLater(sender, Convert.ToInt32(data.param));
-        }
-        private async void RankLaterViewButton_Click(object sender, RoutedEventArgs e)
-        {
-            var data = (sender as FrameworkElement).DataContext as WebVideo;
-            await App.BiliViewModel.AddViewLater(sender, Convert.ToInt32(data.aid));
-        }
     }
 }

@@ -10,7 +10,17 @@
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
-
+    <UserControl.Resources>
+        <CommandBarFlyout x:Name="DefaultFlyout">
+            <CommandBarFlyout.SecondaryCommands>
+                <AppBarButton Label="加入稍后再看" FontSize="12" FontFamily="{CustomResource Basic}" x:Name="LaterViewButton" Click="RankLaterViewButton_Click">
+                    <AppBarButton.Icon>
+                        <FontIcon FontFamily="{StaticResource Icon}" Glyph="&#xEA3B;"/>
+                    </AppBarButton.Icon>
+                </AppBarButton>
+            </CommandBarFlyout.SecondaryCommands>
+        </CommandBarFlyout>
+    </UserControl.Resources>
     <Grid Background="{ThemeResource CardBackground}" CornerRadius="4">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -54,8 +64,8 @@
                                            GutterWidth="7" IconForeground="{ThemeResource TipTextColor}" FontSize="10"/>
                 <widgets:IconTextBlock Icon="{x:Bind SecondSectionIcon,Mode=OneWay}" Text="{x:Bind SecondSectionContent,Mode=OneWay}"
                                            GutterWidth="7" IconForeground="{ThemeResource TipTextColor}" FontSize="10" Grid.Column="1"/>
-                <Button Style="{StaticResource TransparentButtonStyle}" Content="&#xE9A9;" Grid.Column="2" Flyout="{x:Bind ExtraFlyout,Mode=OneWay}"
-                        VerticalAlignment="Center" FontFamily="{StaticResource Icon}" FontSize="13" x:Name="MoreButton" Visibility="Collapsed"/>
+                <Button Style="{StaticResource TransparentButtonStyle}" Content="&#xE9A9;" Grid.Column="2" Flyout="{StaticResource DefaultFlyout}"
+                        VerticalAlignment="Center" FontFamily="{StaticResource Icon}" FontSize="13" x:Name="ExtraButton" Visibility="{x:Bind ExtraButtonVisbility,Mode=OneWay}"/>
             </Grid>
             <TextBlock Style="{StaticResource SmallTipTextStyle}" HorizontalAlignment="Left" Text="{x:Bind BottomText,Mode=OneWay}"
                        Visibility="{x:Bind BottomText,Mode=OneWay,Converter={StaticResource StringVisibilityConverter}}"/>

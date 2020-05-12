@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Weakly;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -104,6 +105,35 @@ namespace BiliBili_UWP.Components.Controls
         public static readonly DependencyProperty RightTopImageProperty =
             DependencyProperty.Register("RightTopImage", typeof(string), typeof(DefaultVideoCard), new PropertyMetadata(""));
 
+        //public FlyoutBase ExtraFlyout
+        //{
+        //    get { return (FlyoutBase)GetValue(ExtraFlyoutProperty); }
+        //    set { SetValue(ExtraFlyoutProperty, value); }
+        //}
+
+        //// Using a DependencyProperty as the backing store for ExtraFlyout.  This enables animation, styling, binding, etc...
+        //public static readonly DependencyProperty ExtraFlyoutProperty =
+        //    DependencyProperty.Register("ExtraFlyout", typeof(FlyoutBase), typeof(DefaultVideoCard), new PropertyMetadata(null,new PropertyChangedCallback(ExtraFlyout_Changed)));
+
+        //private static void ExtraFlyout_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        //{
+        //    if (e.NewValue != null && e.NewValue is FlyoutBase flyout)
+        //    {
+        //        var instance = d as DefaultVideoCard;
+        //        instance.MoreButton.Visibility = Visibility.Visible;
+        //    }
+        //}
+
+        public Visibility ExtraButtonVisbility
+        {
+            get { return (Visibility)GetValue(ExtraButtonVisbilityProperty); }
+            set { SetValue(ExtraButtonVisbilityProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ExtraButtonVisbility.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ExtraButtonVisbilityProperty =
+            DependencyProperty.Register("ExtraButtonVisbility", typeof(Visibility), typeof(DefaultVideoCard), new PropertyMetadata(Visibility.Visible));
+
         public FlyoutBase ExtraFlyout
         {
             get { return (FlyoutBase)GetValue(ExtraFlyoutProperty); }
@@ -112,14 +142,14 @@ namespace BiliBili_UWP.Components.Controls
 
         // Using a DependencyProperty as the backing store for ExtraFlyout.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ExtraFlyoutProperty =
-            DependencyProperty.Register("ExtraFlyout", typeof(FlyoutBase), typeof(DefaultVideoCard), new PropertyMetadata(null,new PropertyChangedCallback(ExtraFlyout_Changed)));
+            DependencyProperty.Register("ExtraFlyout", typeof(FlyoutBase), typeof(DefaultVideoCard), new PropertyMetadata(null, new PropertyChangedCallback(ExtraFlyout_Changed)));
 
         private static void ExtraFlyout_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (e.NewValue != null && e.NewValue is FlyoutBase flyout)
             {
                 var instance = d as DefaultVideoCard;
-                instance.MoreButton.Visibility = Visibility.Visible;
+                instance.ExtraButton.Flyout = flyout;
             }
         }
 
@@ -194,5 +224,10 @@ namespace BiliBili_UWP.Components.Controls
         // Using a DependencyProperty as the backing store for DecodePixelWidth.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty DecodePixelWidthProperty =
             DependencyProperty.Register("DecodePixelWidth", typeof(int), typeof(DefaultVideoCard), new PropertyMetadata(225));
+
+        private async void RankLaterViewButton_Click(object sender, RoutedEventArgs e)
+        {
+            await App.BiliViewModel.AddViewLater(sender, Convert.ToInt32(VideoId));
+        }
     }
 }

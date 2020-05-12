@@ -20,7 +20,7 @@
                                        Tip="{x:Bind owner.name}"
                                        FirstSectionContent="{x:Bind stat.view,Converter={StaticResource NumberAbbrConverter}}"
                                        SecondSectionContent="{x:Bind stat.danmaku,Converter={StaticResource NumberAbbrConverter}}"
-                                       Width="190"
+                                       Width="190" VideoId="{x:Bind aid}"
                                        />
         </DataTemplate>
         <DataTemplate x:DataType="video:VideoPart" x:Key="PartItemTemplate">
@@ -138,6 +138,8 @@
                         <widgets:IconTextBlock Icon="&#xEA32;" GutterWidth="5" FontSize="12" IconForeground="{ThemeResource TipTextColor}" x:Name="PlayCountBlock"/>
                         <widgets:IconTextBlock Icon="&#xEA35;" GutterWidth="5" Margin="15,0,0,0" FontSize="12" IconForeground="{ThemeResource TipTextColor}" x:Name="DanmukuCountBlock"/>
                         <widgets:IconTextBlock Icon="&#xEA44;" GutterWidth="5" Margin="15,0,0,0" FontSize="12" IconForeground="{ThemeResource TipTextColor}" x:Name="RepostCountBlock"/>
+                        <widgets:IconTextBlock Icon="bv" GutterWidth="5" Margin="15,0,0,0" FontSize="12" IconForeground="{ThemeResource TipTextColor}" x:Name="BVBlock"/>
+                        <widgets:IconTextBlock Icon="av" GutterWidth="5" Margin="15,0,0,0" FontSize="12" IconForeground="{ThemeResource TipTextColor}" x:Name="AVBlock"/>
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Grid.Column="1" VerticalAlignment="Top">
@@ -146,8 +148,8 @@
                         <widgets:CheckButton Margin="15,0,0,0" Icon="&#xEA45;" x:Name="CoinButton" Click="CoinButton_Click" FlyoutBase.AttachedFlyout="{StaticResource CoinFlyout}"/>
                         <widgets:CheckButton Margin="15,0,0,0" Icon="&#xE9E5;" x:Name="FavoriteButton" Click="FavoriteButton_Click" FlyoutBase.AttachedFlyout="{StaticResource FavoriteFlyout}"/>
                     </StackPanel>
-                    <widgets:CheckButton Icon="&#xE99E;" x:Name="CommentButton" ToolTipService.ToolTip="评论" Click="CommentButton_Click"
-                                         IsCheck="True" Margin="0,10,0,0" HorizontalAlignment="Right"/>
+                    <widgets:AsyncButton Icon="&#xE99E;" Style="{StaticResource SecondaryAsyncButtonStyle}" x:Name="CommentButton" ToolTipService.ToolTip="评论" Click="CommentButton_Click"
+                                          Margin="0,10,0,0" HorizontalAlignment="Right"/>
                 </StackPanel>
             </Grid>
             <ListView ItemTemplate="{StaticResource PartItemTemplate}" ItemsSource="{x:Bind VideoPartCollection}"

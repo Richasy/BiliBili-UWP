@@ -32,6 +32,7 @@
                                        Title="{x:Bind title}"
                                        DecodePixelWidth="160"
                                        Width="200"
+                                       ExtraButtonVisbility="Collapsed"
                                        BottomText="{x:Bind stat.follow_view}"
                                        SectionVisibility="Collapsed"
                                        />

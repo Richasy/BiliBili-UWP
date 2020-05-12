@@ -181,6 +181,8 @@ namespace BiliBili_UWP.Pages.Main
             DanmukuCountBlock.Text = AppTool.GetNumberAbbreviation(_detail.stat.danmaku);
             RepostCountBlock.Text = AppTool.GetNumberAbbreviation(_detail.stat.share);
             CommentButton.Text = AppTool.GetNumberAbbreviation(_detail.stat.reply);
+            BVBlock.Text = _detail.bvid;
+            AVBlock.Text = _detail.aid.ToString();
 
             DescriptionBlock.Text = _detail.desc;
             ToolTipService.SetToolTip(DescriptionBlock, _detail.desc);
@@ -515,7 +517,7 @@ namespace BiliBili_UWP.Pages.Main
             FavoriteButton.Text = AppTool.GetNumberAbbreviation(data.favorite);
         }
 
-        private void CommentButton_Click(object sender, EventArgs e)
+        private void CommentButton_Click(object sender, RoutedEventArgs e)
         {
             var param = new Dictionary<string, string>();
             param.Add("oid", _detail.aid.ToString());

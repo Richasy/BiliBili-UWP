@@ -93,8 +93,8 @@
                 <StackPanel Grid.Column="2" VerticalAlignment="Center">
                     <StackPanel Orientation="Horizontal">
                         <widgets:CheckButton Icon="&#xEA45;" x:Name="CoinButton" Click="CoinButton_Click" FlyoutBase.AttachedFlyout="{StaticResource CoinFlyout}"/>
-                        <widgets:CheckButton Icon="&#xE99E;" x:Name="CommentButton" ToolTipService.ToolTip="评论" Click="CommentButton_Click"
-                                         IsCheck="True" Margin="10,0,0,0"/>
+                        <widgets:AsyncButton Icon="&#xE99E;" x:Name="CommentButton" ToolTipService.ToolTip="评论" Click="CommentButton_Click"
+                                         Style="{StaticResource SecondaryAsyncButtonStyle}" Margin="10,0,0,0"/>
                         <widgets:AsyncButton x:Name="FollowButton" Style="{StaticResource PrimaryAsyncButtonStyle}" Text="追番" Margin="20,0,0,0"
                                      VerticalAlignment="Center" Click="FollowButton_Click"/>
                     </StackPanel>

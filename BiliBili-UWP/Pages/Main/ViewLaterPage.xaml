@@ -19,8 +19,7 @@
                                        Duration="{x:Bind duration,Converter={StaticResource DurationConverter}}"
                                        Tip="{x:Bind owner.name}"
                                        FirstSectionContent="{x:Bind stat.view,Converter={StaticResource NumberAbbrConverter}}"
-                                       SecondSectionContent="{x:Bind stat.danmaku,Converter={StaticResource NumberAbbrConverter}}"
-                                       >
+                                       SecondSectionContent="{x:Bind stat.danmaku,Converter={StaticResource NumberAbbrConverter}}">
                 <controls:DefaultVideoCard.ExtraFlyout>
                     <CommandBarFlyout>
                         <CommandBarFlyout.SecondaryCommands>

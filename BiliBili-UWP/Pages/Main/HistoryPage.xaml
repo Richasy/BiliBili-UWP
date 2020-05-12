@@ -14,7 +14,7 @@
     <Page.Resources>
         <DataTemplate x:DataType="bilibili:VideoDetail" x:Key="VideoItemTemplate">
             <controls:DefaultVideoCard Cover="{x:Bind pic}"
-                                       Title="{x:Bind title}"
+                                       Title="{x:Bind title}" VideoId="{x:Bind aid}"
                                        Duration="{x:Bind duration,Converter={StaticResource DurationConverter}}"
                                        Tip="{x:Bind owner.name}"
                                        FirstSectionContent="{x:Bind stat.view,Converter={StaticResource NumberAbbrConverter}}"

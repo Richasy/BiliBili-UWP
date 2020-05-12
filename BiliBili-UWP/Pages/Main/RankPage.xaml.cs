@@ -43,9 +43,9 @@ namespace BiliBili_UWP.Pages.Main
             if (e.NavigationMode == NavigationMode.Back || _isInit)
                 return;
             VideoGridView.EnableAnimation = App.AppViewModel.IsEnableAnimation;
-            Reset();
             await Refresh();
             base.OnNavigatedTo(e);
+            _isInit = true;
         }
 
         private void Reset()
@@ -99,7 +99,7 @@ namespace BiliBili_UWP.Pages.Main
                 if (source.Item2.Count == 0)
                 {
                     var videos = await App.BiliViewModel._client.Video.GetRegionRankAsync(_selectRegion);
-                    if (videos.Count > 0)
+                    if (videos!=null && videos.Count > 0)
                     {
                         for (int i = 0; i < videos.Count; i++)
                         {
@@ -114,12 +114,6 @@ namespace BiliBili_UWP.Pages.Main
             }
             NoDataContainer.Visibility = source.Item2.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
             LoadingRing.IsActive = false;
-        }
-
-        private async void RankLaterViewButton_Click(object sender, RoutedEventArgs e)
-        {
-            var data = (sender as FrameworkElement).DataContext as WebVideo;
-            await App.BiliViewModel.AddViewLater(sender, Convert.ToInt32(data.aid));
         }
         private async void RegionListView_ItemClick(object sender, ItemClickEventArgs e)
         {

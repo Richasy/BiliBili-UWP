@@ -30,18 +30,8 @@
                                        Title="{x:Bind title}"
                                        FirstSectionContent="{x:Bind play,Converter={StaticResource NumberAbbrConverter}}"
                                        SecondSectionContent="{x:Bind danmaku,Converter={StaticResource NumberAbbrConverter}}"
+                                       VideoId="{x:Bind param}"
                                        >
-                <controls:DefaultVideoCard.ExtraFlyout>
-                    <CommandBarFlyout>
-                        <CommandBarFlyout.SecondaryCommands>
-                            <AppBarButton Label="加入稍后再看" FontSize="12" FontFamily="{CustomResource Basic}" x:Name="LaterViewButton" Click="LaterViewButton_Click">
-                                <AppBarButton.Icon>
-                                    <FontIcon FontFamily="{StaticResource Icon}" Glyph="&#xEA3B;"/>
-                                </AppBarButton.Icon>
-                            </AppBarButton>
-                        </CommandBarFlyout.SecondaryCommands>
-                    </CommandBarFlyout>
-                </controls:DefaultVideoCard.ExtraFlyout>
             </controls:DefaultVideoCard>
         </DataTemplate>
         <DataTemplate x:DataType="bilibili:WebVideo" x:Key="RankItemTemplate">
@@ -53,19 +43,8 @@
                                        FirstSectionContent="{x:Bind play,Converter={StaticResource NumberAbbrConverter}}"
                                        SecondSectionIcon="&#xEA45;"
                                        SecondSectionContent="{x:Bind coins,Converter={StaticResource NumberAbbrConverter}}"
-                                       >
-                <controls:DefaultVideoCard.ExtraFlyout>
-                    <CommandBarFlyout>
-                        <CommandBarFlyout.SecondaryCommands>
-                            <AppBarButton Label="加入稍后再看" FontSize="12" FontFamily="{CustomResource Basic}" x:Name="LaterViewButton" Click="RankLaterViewButton_Click">
-                                <AppBarButton.Icon>
-                                    <FontIcon FontFamily="{StaticResource Icon}" Glyph="&#xEA3B;"/>
-                                </AppBarButton.Icon>
-                            </AppBarButton>
-                        </CommandBarFlyout.SecondaryCommands>
-                    </CommandBarFlyout>
-                </controls:DefaultVideoCard.ExtraFlyout>
-            </controls:DefaultVideoCard>
+                                       VideoId="{x:Bind aid}"
+                                       />
         </DataTemplate>
     </Page.Resources>
 
