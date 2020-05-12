@@ -62,6 +62,7 @@
                           Style="{StaticResource NoScrollGridView}"
                           SelectionMode="None" IsItemClickEnabled="True"
                               ItemClick="RecommendVideoView_ItemClick"
+                              ContainerContentChanging="RecommendVideoView_ContainerContentChanging"
                           ItemsSource="{x:Bind RecommendCollection}"
                           />
                 <TextBlock Style="{StaticResource TipTextStyle}" Text="无法加载推荐视频列表" FontWeight="Bold" VerticalAlignment="Center"

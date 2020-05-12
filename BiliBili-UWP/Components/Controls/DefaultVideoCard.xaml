@@ -26,7 +26,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="1*" />
         </Grid.RowDefinitions>
-        <Grid>
+        <Grid x:Name="CoverContainer">
             <widgets:BiliImage x:Name="VideoCover" HorizontalAlignment="Stretch" CornerRadius="4,4,0,0" Height="110"
                           DecodePixelWidth="{x:Bind DecodePixelWidth,Mode=OneWay}" DisplayType="Rect"
                               Source="{x:Bind Cover,Mode=OneWay,Converter={StaticResource CoverResolutionConverter},ConverterParameter=250}"/>
@@ -48,7 +48,7 @@
                                VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,10,10,0"/>
         </Grid>
 
-        <StackPanel Grid.Row="1" Padding="10,8">
+        <StackPanel Grid.Row="1" Padding="10,8" x:Name="InfoContainer">
             <TextBlock Style="{StaticResource SmallTipTextStyle}" Text="{x:Bind Tip,Mode=OneWay}" FontSize="10"
                        Visibility="{x:Bind Tip,Mode=OneWay,Converter={StaticResource StringVisibilityConverter}}"/>
             <TextBlock Style="{StaticResource CaptionTextStyle}" Text="{x:Bind Title,Mode=OneWay}" FontSize="12" FontWeight="SemiBold" Margin="0,5"

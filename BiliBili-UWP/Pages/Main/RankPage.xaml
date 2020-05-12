@@ -60,10 +60,11 @@
                                         DesiredWidth="220"
                                         ItemHeight="185"
                                         ItemClick="VideoGridView_ItemClick"
-                                        Style="{StaticResource BasicGridView}"
+                                        Style="{StaticResource NoScrollGridView}"
                                         ItemContainerStyle="{StaticResource TransparentGridViewItemContainerStyle}"
                                         StretchContentForSingleRow="False"
                                                ItemsSource="{x:Bind DisplayCollection}"
+                                               ContainerContentChanging="VideoGridView_ContainerContentChanging"
                                         />
             <muxc:ProgressRing Foreground="{ThemeResource PrimaryColor}" VerticalAlignment="Center" HorizontalAlignment="Center"
                                Width="40" Height="40" x:Name="LoadingRing"/>

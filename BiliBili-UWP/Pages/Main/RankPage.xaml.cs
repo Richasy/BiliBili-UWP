@@ -1,4 +1,5 @@
 ﻿using BiliBili_Lib.Models.BiliBili;
+using BiliBili_UWP.Components.Controls;
 using BiliBili_UWP.Models.UI;
 using BiliBili_UWP.Models.UI.Interface;
 using System;
@@ -119,7 +120,10 @@ namespace BiliBili_UWP.Pages.Main
         {
             var item = e.ClickedItem as RegionContainer;
             _selectRegion = item.tid;
+            VideoGridView.Visibility = Visibility.Collapsed;
             await LoadRegionRankVideo();
+            await Task.Delay(100);
+            VideoGridView.Visibility = Visibility.Visible;
         }
 
         private void VideoGridView_ItemClick(object sender, ItemClickEventArgs e)
@@ -127,6 +131,13 @@ namespace BiliBili_UWP.Pages.Main
             var item = e.ClickedItem as WebVideo;
             var container = VideoGridView.ContainerFromItem(item);
             App.AppViewModel.PlayVideo(Convert.ToInt32(item.aid), container, "");
+        }
+
+        private void VideoGridView_ContainerContentChanging(ListViewBase sender, ContainerContentChangingEventArgs args)
+        {
+            args.Handled = true;
+            DefaultVideoCard card = (DefaultVideoCard)args.ItemContainer.ContentTemplateRoot;
+            card.RenderContainer(args);
         }
     }
 }

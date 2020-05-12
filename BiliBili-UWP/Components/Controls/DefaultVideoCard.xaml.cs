@@ -229,5 +229,24 @@ namespace BiliBili_UWP.Components.Controls
         {
             await App.BiliViewModel.AddViewLater(sender, Convert.ToInt32(VideoId));
         }
+
+        public void RenderContainer(ContainerContentChangingEventArgs args)
+        {
+            CoverContainer.Opacity = 0;
+            InfoContainer.Opacity = 0;
+
+            args.RegisterUpdateCallback(RenderInfo);
+        }
+
+        private void RenderInfo(ListViewBase sender, ContainerContentChangingEventArgs args)
+        {
+            InfoContainer.Opacity = 1;
+            args.RegisterUpdateCallback(RenderCover);
+        }
+
+        private void RenderCover(ListViewBase sender, ContainerContentChangingEventArgs args)
+        {
+            CoverContainer.Opacity = 1;
+        }
     }
 }

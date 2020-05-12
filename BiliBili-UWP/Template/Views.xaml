@@ -417,6 +417,7 @@
         <Setter Property="ScrollViewer.IsDeferredScrollingEnabled" Value="False"/>
         <Setter Property="ScrollViewer.BringIntoViewOnFocusChange" Value="True"/>
         <Setter Property="IsSwipeEnabled" Value="True"/>
+        <Setter Property="ShowsScrollingPlaceholders" Value="True" />
         <Setter Property="UseSystemFocusVisuals" Value="{StaticResource UseSystemFocusVisuals}"/>
         <Setter Property="FocusVisualMargin" Value="-2"/>
         <Setter Property="ItemContainerTransitions">
@@ -454,6 +455,7 @@
         <Setter Property="TabNavigation" Value="Once"/>
         <Setter Property="IsSwipeEnabled" Value="True"/>
         <Setter Property="Margin" Value="0"/>
+        <Setter Property="ShowsScrollingPlaceholders" Value="True" />
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
         <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Auto"/>
@@ -749,6 +751,7 @@
         <Setter Property="ScrollViewer.ZoomMode" Value="Disabled"/>
         <Setter Property="ScrollViewer.IsDeferredScrollingEnabled" Value="False"/>
         <Setter Property="ScrollViewer.BringIntoViewOnFocusChange" Value="True"/>
+        <Setter Property="ShowsScrollingPlaceholders" Value="True" />
         <Setter Property="IsSwipeEnabled" Value="True"/>
         <Setter Property="UseSystemFocusVisuals" Value="{StaticResource UseSystemFocusVisuals}"/>
         <Setter Property="FocusVisualMargin" Value="-2"/>
@@ -788,6 +791,7 @@
         <Setter Property="ScrollViewer.VerticalScrollMode" Value="Enabled"/>
         <Setter Property="ScrollViewer.IsVerticalRailEnabled" Value="True"/>
         <Setter Property="ScrollViewer.ZoomMode" Value="Disabled"/>
+        <Setter Property="ShowsScrollingPlaceholders" Value="True" />
         <Setter Property="ScrollViewer.IsDeferredScrollingEnabled" Value="False"/>
         <Setter Property="ScrollViewer.BringIntoViewOnFocusChange" Value="True"/>
         <Setter Property="UseSystemFocusVisuals" Value="{StaticResource UseSystemFocusVisuals}"/>

@@ -127,5 +127,10 @@ namespace BiliBili_UWP.Components.Controls
                 new TipPopup("调整失败，请稍后重试").ShowError();
             }
         }
+
+        public void RenderContainer(ContainerContentChangingEventArgs args)
+        {
+            VideoCard.RenderContainer(args);
+        }
     }
 }

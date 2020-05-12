@@ -1,5 +1,6 @@
 ﻿using BiliBili_Lib.Models.BiliBili;
 using BiliBili_Lib.Tools;
+using BiliBili_UWP.Components.Controls;
 using BiliBili_UWP.Models.Core;
 using BiliBili_UWP.Models.UI;
 using BiliBili_UWP.Models.UI.Interface;
@@ -152,6 +153,13 @@ namespace BiliBili_UWP.Pages.Main
         private void VideoContainer_NeedRemoveVideo(object sender, VideoRecommend e)
         {
             RecommendCollection.Remove(e);
+        }
+
+        private void RecommendVideoView_ContainerContentChanging(ListViewBase sender, ContainerContentChangingEventArgs args)
+        {
+            args.Handled = true;
+            RecommendVideoCard card = (RecommendVideoCard)args.ItemContainer.ContentTemplateRoot;
+            card.RenderContainer(args);
         }
     }
 }
