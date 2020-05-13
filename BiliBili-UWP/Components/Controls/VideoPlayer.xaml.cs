@@ -1446,6 +1446,7 @@ namespace BiliBili_UWP.Components.Controls
                 if (font != null)
                 {
                     FontComboBox.SelectedItem = font;
+                    DanmakuControls.font = fontName;
                 }
             }
             FontComboBox.IsEnabled = true;
