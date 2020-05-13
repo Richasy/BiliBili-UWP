@@ -164,5 +164,42 @@ namespace BiliBili_UWP.Components.Controls
         {
             await App.BiliViewModel.AddViewLater(sender, Convert.ToInt32(VideoId));
         }
+
+        public FlyoutBase ExtraFlyout
+        {
+            get { return (FlyoutBase)GetValue(ExtraFlyoutProperty); }
+            set { SetValue(ExtraFlyoutProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ExtraFlyout.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ExtraFlyoutProperty =
+            DependencyProperty.Register("ExtraFlyout", typeof(FlyoutBase), typeof(DefaultVideoPanel), new PropertyMetadata(null,new PropertyChangedCallback(ExtraFlyout_Changed)));
+
+        private static void ExtraFlyout_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if(e.NewValue !=null && e.NewValue is FlyoutBase flyout)
+            {
+                var instance = d as DefaultVideoPanel;
+                instance.ExtraButton.Flyout = flyout;
+            }
+        }
+        public void RenderContainer(ContainerContentChangingEventArgs args)
+        {
+            CoverContainer.Opacity = 0;
+            InfoContainer.Opacity = 0;
+
+            args.RegisterUpdateCallback(RenderInfo);
+        }
+
+        private void RenderInfo(ListViewBase sender, ContainerContentChangingEventArgs args)
+        {
+            InfoContainer.Opacity = 1;
+            args.RegisterUpdateCallback(RenderCover);
+        }
+
+        private void RenderCover(ListViewBase sender, ContainerContentChangingEventArgs args)
+        {
+            CoverContainer.Opacity = 1;
+        }
     }
 }

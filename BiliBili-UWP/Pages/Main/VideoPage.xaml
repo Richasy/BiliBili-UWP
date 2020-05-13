@@ -20,13 +20,13 @@
                                        Tip="{x:Bind owner.name}"
                                        FirstSectionContent="{x:Bind stat.view,Converter={StaticResource NumberAbbrConverter}}"
                                        SecondSectionContent="{x:Bind stat.danmaku,Converter={StaticResource NumberAbbrConverter}}"
-                                       Width="190"
+                                       Width="190" VideoId="{x:Bind aid}"
                                        />
         </DataTemplate>
         <DataTemplate x:DataType="video:VideoPart" x:Key="PartItemTemplate">
             <ListViewItem x:Name="Container">
                 <Grid Background="{Binding ElementName=Container,Path=IsSelected,Converter={StaticResource SelectedColorConverter}}" CornerRadius="4" Padding="10">
-                    <TextBlock Text="{x:Bind part}" Style="{StaticResource SmallTipTextStyle}" 
+                    <TextBlock Text="{x:Bind part}" Style="{StaticResource SmallTipTextStyle}" MaxLines="1"
                                Foreground="{Binding ElementName=Container,Path=IsSelected,Converter={StaticResource SelectedColorConverter},ConverterParameter='Foreground'}"/>
                 </Grid>
             </ListViewItem>
@@ -116,7 +116,7 @@
                                   CinemaButtonVisibility="Visible" CinemaChanged="VideoPlayer_CinemaChanged"
                                   CompactOverlayChanged="VideoPlayer_CompactOverlayChanged"
                                   SeparateButtonClick="VideoPlayer_SeparateButtonClick"
-                                  MediaEnded="VideoPlayer_MediaEnded"/>
+                                  MediaEnded="VideoPlayer_MediaEnded" PartSwitched="VideoPlayer_PartSwitched"/>
         </Grid>
         <Grid Grid.Row="1" Padding="0,10,20,20">
             <Grid.RowDefinitions>
@@ -138,18 +138,18 @@
                         <widgets:IconTextBlock Icon="&#xEA32;" GutterWidth="5" FontSize="12" IconForeground="{ThemeResource TipTextColor}" x:Name="PlayCountBlock"/>
                         <widgets:IconTextBlock Icon="&#xEA35;" GutterWidth="5" Margin="15,0,0,0" FontSize="12" IconForeground="{ThemeResource TipTextColor}" x:Name="DanmukuCountBlock"/>
                         <widgets:IconTextBlock Icon="&#xEA44;" GutterWidth="5" Margin="15,0,0,0" FontSize="12" IconForeground="{ThemeResource TipTextColor}" x:Name="RepostCountBlock"/>
-                        <Button Style="{StaticResource TransparentButtonStyle}" x:Name="ReplyButton" Padding="0" Click="ReplyButton_Click"  Margin="15,0,0,0" HorizontalAlignment="Stretch">
-                            <TextBlock Style="{StaticResource SmallTipTextStyle}" HorizontalAlignment="Center" FontSize="12">
-                            <Run Text="&#xE99E;" FontFamily="{StaticResource Icon}" Foreground="{ThemeResource PrimaryColor}"/>
-                            <Run x:Name="ReplyCountBlock" Foreground="{ThemeResource NormalTextColor}"/>
-                            </TextBlock>
-                        </Button>
+                        <widgets:IconTextBlock Icon="bv" GutterWidth="5" Margin="15,0,0,0" FontSize="12" IconForeground="{ThemeResource TipTextColor}" x:Name="BVBlock"/>
+                        <widgets:IconTextBlock Icon="av" GutterWidth="5" Margin="15,0,0,0" FontSize="12" IconForeground="{ThemeResource TipTextColor}" x:Name="AVBlock"/>
                     </StackPanel>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" Grid.Column="1" VerticalAlignment="Center">
-                    <widgets:CheckButton Icon="&#xE9F0;" x:Name="LikeButton" Click="LikeButton_Click"/>
-                    <widgets:CheckButton Margin="15,0,0,0" Icon="&#xEA45;" x:Name="CoinButton" Click="CoinButton_Click" FlyoutBase.AttachedFlyout="{StaticResource CoinFlyout}"/>
-                    <widgets:CheckButton Margin="15,0,0,0" Icon="&#xE9E5;" x:Name="FavoriteButton" Click="FavoriteButton_Click" FlyoutBase.AttachedFlyout="{StaticResource FavoriteFlyout}"/>
+                <StackPanel Grid.Column="1" VerticalAlignment="Top">
+                    <StackPanel Orientation="Horizontal">
+                        <widgets:CheckButton Icon="&#xE9F0;" x:Name="LikeButton" Click="LikeButton_Click" Hold="LikeButton_Hold"/>
+                        <widgets:CheckButton Margin="15,0,0,0" Icon="&#xEA45;" x:Name="CoinButton" Click="CoinButton_Click" FlyoutBase.AttachedFlyout="{StaticResource CoinFlyout}"/>
+                        <widgets:CheckButton Margin="15,0,0,0" Icon="&#xE9E5;" x:Name="FavoriteButton" Click="FavoriteButton_Click" FlyoutBase.AttachedFlyout="{StaticResource FavoriteFlyout}"/>
+                    </StackPanel>
+                    <widgets:AsyncButton Icon="&#xE99E;" Style="{StaticResource SecondaryAsyncButtonStyle}" x:Name="CommentButton" ToolTipService.ToolTip="评论" Click="CommentButton_Click"
+                                          Margin="0,10,0,0" HorizontalAlignment="Right"/>
                 </StackPanel>
             </Grid>
             <ListView ItemTemplate="{StaticResource PartItemTemplate}" ItemsSource="{x:Bind VideoPartCollection}"
@@ -161,8 +161,8 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <TextBlock Style="{StaticResource SmallTipTextStyle}" TextWrapping="Wrap" LineHeight="20" x:Name="DescriptionBlock"
-                       MaxLines="3" HorizontalAlignment="Left" IsTextSelectionEnabled="True"/>
+                <widgets:TrimTextBlock x:Name="DescriptionBlock" FontSize="12" Foreground="{ThemeResource TipTextColor}"
+                                       />
                 <ListView ItemTemplate="{StaticResource TagItemTemplate}" ItemsSource="{x:Bind TagCollection}"
                       IsItemClickEnabled="True" ItemContainerStyle="{StaticResource TransparentListViewContainerStyle}"
                       Style="{StaticResource BasicListView}" Padding="0,0,0,5" Margin="0,5,0,0" ItemsPanel="{StaticResource HorizontalListViewItemsPanel}"

@@ -1,5 +1,6 @@
 ﻿using BiliBili_Lib.Models.BiliBili.Video;
 using BiliBili_Lib.Service;
+using BiliBili_UWP.Components.Controls;
 using BiliBili_UWP.Components.Widgets;
 using BiliBili_UWP.Dialogs;
 using BiliBili_UWP.Models.Core;
@@ -45,6 +46,7 @@ namespace BiliBili_UWP.Pages.Main
         }
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
+            HistoryVideoView.EnableAnimation = App.AppViewModel.IsEnableAnimation;
             App.AppViewModel.CurrentPagePanel.ScrollToBottom = ScrollViewerBottomHandle;
             App.AppViewModel.CurrentPagePanel.ScrollChanged = ScrollViewerChanged;
             if (_isInit || e.NavigationMode == NavigationMode.Back)
@@ -141,6 +143,28 @@ namespace BiliBili_UWP.Pages.Main
             {
                 App.AppViewModel.CurrentPagePanel.PageScrollViewer.ChangeView(0, _scrollOffset, 1);
             }
+        }
+
+        private async void RemoveItem_Click(object sender, RoutedEventArgs e)
+        {
+            var item = (sender as FrameworkElement).DataContext as VideoDetail;
+            bool result = await _account.DeleteHistoryAsync(item.aid);
+            if (result)
+            {
+                HistoryCollection.Remove(item);
+                HolderText.Visibility = HistoryCollection.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+            }
+            else
+            {
+                new TipPopup("移出失败，请稍后重试").ShowError();
+            }
+        }
+
+        private void HistoryVideoView_ContainerContentChanging(ListViewBase sender, ContainerContentChangingEventArgs args)
+        {
+            args.Handled = true;
+            DefaultVideoCard card = (DefaultVideoCard)args.ItemContainer.ContentTemplateRoot;
+            card.RenderContainer(args);
         }
     }
 }

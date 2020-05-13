@@ -97,7 +97,7 @@ namespace BiliBili_UWP.Pages.Main
             TitleBlock.Text = "--";
             PlayCountBlock.Text = "-";
             DanmukuCountBlock.Text = "-";
-            ReplyCountBlock.Text = "-";
+            CommentButton.Text = "评论";
             RepostCountBlock.Text = "-";
             BasicInfoBlock.Text = "-";
             Section1Title.Text = "--";
@@ -125,20 +125,22 @@ namespace BiliBili_UWP.Pages.Main
             if (detail != null && detail.season_id > 0)
             {
                 _detail = detail;
-                InitDetail();
                 CheckCoin();
-                await VideoPlayer.Init(_detail, _currentPart);
+                if (await InitDetail())
+                {
+                    await VideoPlayer.Init(_detail, _currentPart);
+                }
             }
             tip.HidePopup();
         }
 
-        private async void InitDetail()
+        private async Task<bool> InitDetail()
         {
             TitleBlock.Text = _detail.title;
             PlayCountBlock.Text = _detail.stat.play;
             DanmukuCountBlock.Text = AppTool.GetNumberAbbreviation(_detail.stat.danmakus);
             RepostCountBlock.Text = AppTool.GetNumberAbbreviation(_detail.stat.share);
-            ReplyCountBlock.Text = AppTool.GetNumberAbbreviation(_detail.stat.reply);
+            CommentButton.Text = AppTool.GetNumberAbbreviation(_detail.stat.reply);
 
             DescriptionBlock.Text = _detail.evaluate;
             ToolTipService.SetToolTip(DescriptionBlock, _detail.evaluate);
@@ -186,7 +188,6 @@ namespace BiliBili_UWP.Pages.Main
                     }
                 }
                 bangumiId = _detail.season_id;
-                
             }
             else if (_detail.user_status.progress != null)
             {
@@ -213,7 +214,9 @@ namespace BiliBili_UWP.Pages.Main
             if (_detail.limit != null)
             {
                 await new ConfirmDialog(_detail.limit.content).ShowAsync();
+                return false;
             }
+            return true;
         }
         private void CheckFollowButton()
         {
@@ -354,7 +357,13 @@ namespace BiliBili_UWP.Pages.Main
                 App.AppViewModel.PlayVideoSeparate(_detail, _currentPart);
             }
         }
-        private void ReplyButton_Click(object sender, RoutedEventArgs e)
+
+        private void VideoPlayer_PartSwitched(object sender, int e)
+        {
+            PartListView.SelectedIndex = e;
+        }
+
+        private void CommentButton_Click(object sender, RoutedEventArgs e)
         {
             if (_currentPart != null)
             {

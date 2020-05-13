@@ -7,16 +7,15 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
     xmlns:bilibili="using:BiliBili_Lib.Models.BiliBili"
-    xmlns:controls1="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:controls="using:BiliBili_UWP.Components.Controls"
+    xmlns:controls1="using:Microsoft.Toolkit.Uwp.UI.Controls" xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     Loaded="Page_Loaded"
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:DataType="bilibili:RegionBanner" x:Key="BannerItemTemplate">
             <Grid>
-                <controls1:ImageEx Source="{x:Bind image,Converter={StaticResource CoverResolutionConverter},ConverterParameter=400}" 
-                                   Height="100" Stretch="UniformToFill" PlaceholderStretch="Uniform" CornerRadius="4"
-                                   IsCacheEnabled="True" PlaceholderSource="ms-appx:///Assets/img_holder.png"/>
+                <widgets:BiliImage Source="{x:Bind image,Converter={StaticResource CoverResolutionConverter},ConverterParameter=400}" 
+                                   Height="100" CornerRadius="4"/>
                 <Border Background="{ThemeResource MaskAcrylicBackground}" CornerRadius="3" Padding="8,4" HorizontalAlignment="Left"
                         VerticalAlignment="Bottom" Margin="5,0,0,5">
                     <TextBlock Text="{x:Bind title}" Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource ImportantTextColor}"
@@ -31,18 +30,8 @@
                                        Title="{x:Bind title}"
                                        FirstSectionContent="{x:Bind play,Converter={StaticResource NumberAbbrConverter}}"
                                        SecondSectionContent="{x:Bind danmaku,Converter={StaticResource NumberAbbrConverter}}"
+                                       VideoId="{x:Bind param}"
                                        >
-                <controls:DefaultVideoCard.ExtraFlyout>
-                    <CommandBarFlyout>
-                        <CommandBarFlyout.SecondaryCommands>
-                            <AppBarButton Label="加入稍后再看" FontSize="12" FontFamily="{CustomResource Basic}" x:Name="LaterViewButton" Click="LaterViewButton_Click">
-                                <AppBarButton.Icon>
-                                    <FontIcon FontFamily="{StaticResource Icon}" Glyph="&#xEA3B;"/>
-                                </AppBarButton.Icon>
-                            </AppBarButton>
-                        </CommandBarFlyout.SecondaryCommands>
-                    </CommandBarFlyout>
-                </controls:DefaultVideoCard.ExtraFlyout>
             </controls:DefaultVideoCard>
         </DataTemplate>
         <DataTemplate x:DataType="bilibili:WebVideo" x:Key="RankItemTemplate">
@@ -54,6 +43,7 @@
                                        FirstSectionContent="{x:Bind play,Converter={StaticResource NumberAbbrConverter}}"
                                        SecondSectionIcon="&#xEA45;"
                                        SecondSectionContent="{x:Bind coins,Converter={StaticResource NumberAbbrConverter}}"
+                                       VideoId="{x:Bind aid}"
                                        />
         </DataTemplate>
     </Page.Resources>
@@ -99,19 +89,20 @@
             <Grid Grid.Row="1">
                 <controls1:AdaptiveGridView x:Name="RecommendVideoView"
                           ItemTemplate="{StaticResource VideoItemTemplate}"
-                                                DesiredWidth="215"
+                          DesiredWidth="215"
                           ItemContainerStyle="{StaticResource TransparentGridViewItemContainerStyle}"
                           Style="{StaticResource NoScrollGridView}"
                           SelectionMode="None" IsItemClickEnabled="True"
-                              ItemClick="RecommendVideoView_ItemClick"
+                          ItemClick="RecommendVideoView_ItemClick"
                           ItemsSource="{x:Bind VideoCollection}"
+                          ContainerContentChanging="RecommendVideoView_ContainerContentChanging"
                           />
                 <TextBlock Style="{StaticResource TipTextStyle}" Text="无法加载视频列表" FontWeight="Bold" VerticalAlignment="Center"
                            x:Name="HolderText" Visibility="Collapsed"/>
             </Grid>
 
-            <ProgressBar IsIndeterminate="True" Foreground="{ThemeResource PrimaryColor}" Grid.Row="2"
-                             x:Name="VideLoadingBar" Visibility="Collapsed"/>
+            <muxc:ProgressBar Style="{StaticResource MuxcProgressBarStyle}" Grid.Row="2"
+                             x:Name="VideLoadingBar" />
         </Grid>
     </Grid>
 </Page>

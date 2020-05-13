@@ -9,12 +9,14 @@
     xmlns:controls="using:BiliBili_UWP.Components.Controls"
     xmlns:controls1="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
+    xmlns:others="using:BiliBili_UWP.Models.UI.Others"
+    xmlns:adaptivegridview="using:BiliBili_Controls.AdaptiveGridView" xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     Loaded="Page_Loaded"
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:DataType="bilibili:VideoRecommend" x:Key="VideoItemTemplate">
             <controls:RecommendVideoCard Data="{x:Bind}" Margin="3" x:Name="VideoContainer"
-                                         NeedRemoveVideo="VideoContainer_NeedRemoveVideo"/>
+                                         NeedRemoveVideo="VideoContainer_NeedRemoveVideo" HorizontalAlignment="Stretch"/>
         </DataTemplate>
     </Page.Resources>
     <Grid>
@@ -51,23 +53,24 @@
                                  Click="RefreshButton_Click" Margin="20,0,0,0"/>
             </Grid>
             <Grid Grid.Row="1">
-                <controls1:AdaptiveGridView x:Name="RecommendVideoView"
+                <adaptivegridview:AdaptiveGridView x:Name="RecommendVideoView"
                               HorizontalAlignment="Stretch"
-                                                DesiredWidth="215"
-                                                ItemHeight="190"
+                              DesiredWidth="220"
+                              ItemHeight="190"
                           ItemTemplate="{StaticResource VideoItemTemplate}"
                           ItemContainerStyle="{StaticResource TransparentGridViewItemContainerStyle}"
                           Style="{StaticResource NoScrollGridView}"
                           SelectionMode="None" IsItemClickEnabled="True"
                               ItemClick="RecommendVideoView_ItemClick"
+                              ContainerContentChanging="RecommendVideoView_ContainerContentChanging"
                           ItemsSource="{x:Bind RecommendCollection}"
                           />
                 <TextBlock Style="{StaticResource TipTextStyle}" Text="无法加载推荐视频列表" FontWeight="Bold" VerticalAlignment="Center"
                            x:Name="HolderText" Visibility="Collapsed"/>
             </Grid>
 
-            <ProgressBar IsIndeterminate="True" Foreground="{ThemeResource PrimaryColor}" Grid.Row="2"
-                             x:Name="VideoLoadingBar" Visibility="Collapsed"/>
+            <muxc:ProgressBar Style="{StaticResource MuxcProgressBarStyle}" Grid.Row="2"
+                             x:Name="VideoLoadingBar"/>
         </Grid>
     </Grid>
 </Page>

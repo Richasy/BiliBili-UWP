@@ -102,5 +102,23 @@ namespace BiliBili_UWP.Components.Controls
             var d = Data as SearchAnime;
             App.AppViewModel.PlayBangumi(d.season_id);
         }
+
+        private async void FollowAnimeButton_Click(object sender, RoutedEventArgs e)
+        {
+            var btn = sender as AsyncButton;
+            var anime = btn.DataContext as SearchAnime;
+            var _animeService = App.BiliViewModel._client.Anime;
+            bool result = false;
+            btn.IsLoading = true;
+            result = await _animeService.FollowBangumiAsync(anime.season_id);
+            if (result)
+            {
+                anime.is_atten = 1;
+                btn.Visibility = Visibility.Collapsed;
+                new TipPopup(anime.render_follow).ShowMessage();
+            }
+            else
+                new TipPopup("操作失败").ShowError();
+        }
     }
 }

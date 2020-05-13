@@ -74,7 +74,11 @@ namespace BiliBili_Lib.Models.Others
         /// <summary>
         /// 分区排行榜
         /// </summary>
-        public const string REGION_RANK = _apiBase + "/x/web-interface/ranking/region";
+        public const string REGION_PART_RANK = _apiBase + "/x/web-interface/ranking/region";
+        /// <summary>
+        /// 总排行榜
+        /// </summary>
+        public const string REGION_TOTAL_RANK = _apiBase + "/x/web-interface/ranking";
         #endregion
 
         #region 账户 Account
@@ -110,6 +114,10 @@ namespace BiliBili_Lib.Models.Others
         /// 清空历史记录
         /// </summary>
         public const string ACCOUNT_HISTORY_CLEAR = _apiBase + "/x/v2/history/clear";
+        /// <summary>
+        /// 删除历史记录
+        /// </summary>
+        public const string ACCOUNT_HISTORY_DEL = _apiBase + "/x/v2/history/del";
         /// <summary>
         /// 稍后观看记录
         /// </summary>
@@ -154,6 +162,10 @@ namespace BiliBili_Lib.Models.Others
         /// 收藏夹视频详情
         /// </summary>
         public const string ACCOUNT_FAVORITE_INFO = _apiBase + "/medialist/gateway/base/resource/infos";
+        /// <summary>
+        /// 删除收藏夹内视频
+        /// </summary>
+        public const string ACCOUNT_FAVORITE_VIDEO_DELETE = _apiBase + "/medialist/gateway/coll/resource/batch/del";
         /// <summary>
         /// 用户空间
         /// </summary>

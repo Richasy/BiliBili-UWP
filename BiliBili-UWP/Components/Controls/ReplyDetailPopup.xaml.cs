@@ -54,6 +54,7 @@ namespace BiliBili_UWP.Components.Controls
             _isRequesting = false;
             _selectReplyId = replyId;
             ReplyCollection.Clear();
+            ReplyTextBox.ClearText();
             await LoadReply();
             LoadingRing.IsActive = false;
         }
@@ -133,6 +134,8 @@ namespace BiliBili_UWP.Components.Controls
             var result = await _client.AddReplyAsync(_oid, e, _selectReplyId, _rootId, _type);
             if (result != null)
             {
+                ReplyTextBox.ClearText();
+                ReplyTextBox.PlaceholderText = "输入回复";
                 if (result.parent_str == _rootId)
                 {
                     ReplyCollection.Add(result);
@@ -144,6 +147,7 @@ namespace BiliBili_UWP.Components.Controls
                     var index = ReplyCollection.IndexOf(parent);
                     ReplyCollection.Insert(index, result);
                 }
+                HolderText.Visibility = ReplyCollection.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
             }
         }
     }

@@ -15,6 +15,7 @@
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400"
+    Loaded="UserControl_Loaded"
     SizeChanged="UserControl_SizeChanged"
     PointerEntered="UserControl_PointerEntered"
     PointerMoved="UserControl_PointerMoved"
@@ -120,7 +121,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <MediaPlayerElement x:Name="mediaElement"  AreTransportControlsEnabled="True" GotFocus="UserControl_GotFocus" LostFocus="UserControl_LostFocus"
+        <MediaPlayerElement x:Name="mediaElement"  AreTransportControlsEnabled="True" GotFocus="MediaPlayerElement_GotFocus" LostFocus="MediaPlayerElement_LostFocus"
                             Background="{ThemeResource PageBackground}" Tapped="mediaElement_Tapped" IsDoubleTapEnabled="True"
                             DoubleTapped="mediaElement_DoubleTapped" Style="{StaticResource BasicMediaStyle}">
             <MediaPlayerElement.TransportControls>
@@ -148,7 +149,7 @@
         </MediaPlayerElement>
         <Grid x:Name="InteractionContainer">
             <ItemsControl x:Name="ChoiceItemsControl" ItemsSource="{x:Bind ChoiceCollection}" HorizontalAlignment="Center"
-                      Visibility="Collapsed" VerticalAlignment="Bottom" Margin="0,0,0,100" SizeChanged="ChoiceItemsControl_SizeChanged">
+                      Visibility="Collapsed" VerticalAlignment="Bottom" Margin="0,0,0,140" SizeChanged="ChoiceItemsControl_SizeChanged">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <ItemsWrapGrid Orientation="Horizontal"/>
@@ -176,13 +177,13 @@
                 <TextBlock Style="{StaticResource TipWrapTextStyle}" Text="互动视频已经结束，点击左上方按钮可返回起点"/>
             </StackPanel>
         </Grid>
-        <Grid x:Name="PopupContainer">
+        <Grid x:Name="PopupContainer" VerticalAlignment="Bottom">
             <Border Background="{ThemeResource MediaTransportControlsPanelBackground}" Padding="8,5" CornerRadius="3" Margin="20,0,20,100"
-                x:Name="SubtitleContainer" Visibility="Collapsed" VerticalAlignment="Bottom" HorizontalAlignment="Center">
+                x:Name="SubtitleContainer" Visibility="Collapsed" HorizontalAlignment="Center">
                 <TextBlock Style="{StaticResource CaptionTextStyle}" FontSize="20" x:Name="SubtitleContentBlock" TextWrapping="Wrap"/>
             </Border>
             <Border x:Name="TipContainer" Background="{ThemeResource PaneBackground}" Padding="12,8" CornerRadius="4" Margin="20,0,20,100"
-                    HorizontalAlignment="Left" VerticalAlignment="Bottom" Visibility="Collapsed"
+                    HorizontalAlignment="Left" Visibility="Collapsed"
                     extensions:VisualExtensions.CenterPoint="20,20,0">
                 <TextBlock Style="{StaticResource CaptionTextStyle}" x:Name="TipContentBlock" TextWrapping="Wrap"
                            MaxWidth="250"/>
@@ -202,14 +203,21 @@
         </Grid>
         <ProgressBar IsIndeterminate="True" Foreground="{ThemeResource PrimaryColor}" Visibility="Collapsed"
                      VerticalAlignment="Bottom" HorizontalAlignment="Stretch" x:Name="LoadingBar"/>
-        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="ErrorContainer" Visibility="Collapsed">
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="ErrorContainer" Visibility="Collapsed"
+                    Background="{ThemeResource MaskAcrylicBackground}" Padding="10" CornerRadius="4">
             <TextBlock Style="{StaticResource BasicIconTextStyle}" FontSize="20" HorizontalAlignment="Center"
                        Text="&#xE903;" Foreground="{ThemeResource TipTextColor}"/>
             <TextBlock HorizontalAlignment="Center"
                        TextAlignment="Center" Margin="0,10,0,0" x:Name="ErrorBlock"/>
         </StackPanel>
         <Grid Grid.Row="1" Visibility="{x:Bind DanmakuBarVisibility,Mode=OneWay}" Background="{ThemeResource MediaTransportControlsPanelBackground}"
-              Padding="15,5">
+              Padding="15,5" x:Name="DanmakuBarContainer" VerticalAlignment="Bottom">
+            <animations:Implicit.ShowAnimations>
+                <animations:OpacityAnimation Duration="0:0:.3" From="0" To="1.0"></animations:OpacityAnimation>
+            </animations:Implicit.ShowAnimations>
+            <animations:Implicit.HideAnimations>
+                <animations:OpacityAnimation Duration="0:0:.7" From="1.0" To="0"></animations:OpacityAnimation>
+            </animations:Implicit.HideAnimations>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
@@ -224,9 +232,48 @@
                     FontFamily="{StaticResource Icon}" Flyout="{StaticResource DanmakuFlyout}" FontSize="25" Margin="10,0,0,0"/>
             </StackPanel>
             <TextBox Style="{StaticResource TransparentTextBoxStyle}" Margin="15,0" VerticalAlignment="Center" PlaceholderText="哔哩哔哩 (゜-゜)つロ 干杯~-bilibili"
-                     Grid.Column="1" x:Name="DanmakuBox" AcceptsReturn="False" HorizontalAlignment="Stretch" KeyDown="DanmakuBox_KeyDown" Padding="6,7"/>
+                     Grid.Column="1" x:Name="DanmakuBox" AcceptsReturn="False" HorizontalAlignment="Stretch" KeyDown="DanmakuBox_KeyDown" Padding="6,7"
+                     GotFocus="DanmakuBox_GotFocus" LostFocus="DanmakuBox_LostFocus"/>
             <Button Style="{StaticResource TransparentButtonStyle}" x:Name="SendDanmakuButton" Content="&#xE9D1;" Grid.Column="2" VerticalAlignment="Center"
                     FontFamily="{StaticResource Icon}" Click="SendDanmakuButton_Click"/>
         </Grid>
+        <StackPanel x:Name="HistoryContainer" Orientation="Horizontal" Background="{ThemeResource PaneBackground}" CornerRadius="4,0,0,4"
+                    Padding="10,8" VerticalAlignment="Bottom" HorizontalAlignment="Right" Visibility="Collapsed" PointerMoved="HistoryContainer_PointerMoved"
+                    Margin="0,0,0,130">
+            <Button Style="{StaticResource DefaultGhostCircleButtonStyle}" Content="&#xE934;" Width="30" Height="30" FontFamily="{StaticResource Icon}"
+                    Click="HideHistoryButton_Click"/>
+            <TextBlock Style="{StaticResource SmallTipTextStyle}" VerticalAlignment="Center" Margin="10,0">
+                <Run Text="您上次观看到："/>
+                <Run x:Name="HistoryTimeBlock" Foreground="{ThemeResource ImportantTextColor}"/>
+            </TextBlock>
+            <Button Style="{StaticResource PrimaryButtonStyle}" Content="继续观看" Name="ContinueHistoryButton"
+                    Click="ContinueHistoryButton_Click" VerticalAlignment="Center" FontSize="12"/>
+            <animations:Implicit.ShowAnimations>
+                <animations:TranslationAnimation Duration="0:0:.5" From="200, 0, 0" To="0" ></animations:TranslationAnimation>
+                <animations:OpacityAnimation Duration="0:0:.5" From="0" To="1.0"></animations:OpacityAnimation>
+            </animations:Implicit.ShowAnimations>
+            <animations:Implicit.HideAnimations>
+                <animations:TranslationAnimation Duration="0:0:.5" From="0" To="200,0,0" ></animations:TranslationAnimation>
+                <animations:OpacityAnimation Duration="0:0:.5" From="1.0" To="0"></animations:OpacityAnimation>
+            </animations:Implicit.HideAnimations>
+        </StackPanel>
+        <StackPanel x:Name="NextPartContainer" Orientation="Horizontal" Background="{ThemeResource PaneBackground}" CornerRadius="4,0,0,4"
+                    Padding="10,8" VerticalAlignment="Bottom" HorizontalAlignment="Right" Visibility="Collapsed" PointerMoved="HistoryContainer_PointerMoved"
+                    Margin="0,0,0,130">
+            <Button Style="{StaticResource DefaultGhostCircleButtonStyle}" Content="&#xE934;" Width="30" Height="30" FontFamily="{StaticResource Icon}"
+                    Click="HideNextPartButton_Click"/>
+            <TextBlock Style="{StaticResource SmallTipTextStyle}" VerticalAlignment="Center" Margin="10,0"
+                       Text="是否切换到下一P？"/>
+            <Button Style="{StaticResource PrimaryButtonStyle}" Content="切换" Name="NextPartButton"
+                    Click="NextPartButton_Click"  VerticalAlignment="Center" FontSize="12"/>
+            <animations:Implicit.ShowAnimations>
+                <animations:TranslationAnimation Duration="0:0:.5" From="200, 0, 0" To="0" ></animations:TranslationAnimation>
+                <animations:OpacityAnimation Duration="0:0:.5" From="0" To="1.0"></animations:OpacityAnimation>
+            </animations:Implicit.ShowAnimations>
+            <animations:Implicit.HideAnimations>
+                <animations:TranslationAnimation Duration="0:0:.5" From="0" To="200,0,0" ></animations:TranslationAnimation>
+                <animations:OpacityAnimation Duration="0:0:.5" From="1.0" To="0"></animations:OpacityAnimation>
+            </animations:Implicit.HideAnimations>
+        </StackPanel>
     </Grid>
 </UserControl>

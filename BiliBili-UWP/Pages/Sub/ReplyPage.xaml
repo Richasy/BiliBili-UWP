@@ -8,7 +8,7 @@
     xmlns:ui="using:BiliBili_UWP.Models.UI"
     xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
     xmlns:bilibili="using:BiliBili_Lib.Models.BiliBili"
-    xmlns:controls="using:BiliBili_UWP.Components.Controls"
+    xmlns:controls="using:BiliBili_UWP.Components.Controls" xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:DataType="ui:IconItem" x:Key="SortItemTemplate">
@@ -52,6 +52,6 @@
                 </Grid>
             </StackPanel>
         </ScrollViewer>
-        <ProgressRing x:Name="LoadingRing" Style="{StaticResource BasicProgressRingStyle}" Grid.Row="2"/>
+        <muxc:ProgressRing x:Name="LoadingRing" Style="{StaticResource MuxcProgressRingStyle}" Grid.Row="2"/>
     </Grid>
 </Page>

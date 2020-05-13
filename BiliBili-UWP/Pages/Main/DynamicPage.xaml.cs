@@ -1,6 +1,7 @@
 ﻿using BiliBili_Lib.Models.BiliBili;
 using BiliBili_Lib.Service;
 using BiliBili_Lib.Tools;
+using BiliBili_UWP.Components.Controls;
 using BiliBili_UWP.Models.Core;
 using BiliBili_UWP.Models.UI.Interface;
 using System;
@@ -87,11 +88,18 @@ namespace BiliBili_UWP.Pages.Main
         {
             _isInit = false;
             Reset();
-            LoadingRing.IsActive = true;
-            await LoadDynamic();
-            if (DynamicCollection.Count < 10)
+            if (App.BiliViewModel.IsLogin)
+            {
+                LoadingRing.IsActive = true;
                 await LoadDynamic();
-            LoadingRing.IsActive = false;
+                if (DynamicCollection.Count < 10)
+                    await LoadDynamic();
+                LoadingRing.IsActive = false;
+            }
+            else
+            {
+                HolderText.Visibility = Visibility.Visible;
+            }
             _isInit = true;
         }
 
@@ -101,7 +109,8 @@ namespace BiliBili_UWP.Pages.Main
                 return;
             _isDynamicRequesting = true;
             Tuple<string, List<Topic>> data = null;
-            DynamicLoadingBar.Visibility = Visibility.Visible;
+            if(!LoadingRing.IsActive)
+                DynamicLoadingBar.Visibility = Visibility.Visible;
             if (string.IsNullOrEmpty(offset))
             {
                 string lastSeemId = AppTool.GetLocalSetting(BiliBili_Lib.Enums.Settings.LastSeemDynamicId,"0");

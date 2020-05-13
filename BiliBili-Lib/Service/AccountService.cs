@@ -298,6 +298,24 @@ namespace BiliBili_Lib.Service
             string content = await BiliTool.PostContentToWebAsync(url, "");
             return content != null;
         }
+        /// <summary>
+        /// 移出稍后再看
+        /// </summary>
+        /// <param name="aids">视频ID组</param>
+        /// <returns></returns>
+        public async Task<bool> DeleteHistoryAsync(params int[] aids)
+        {
+            var param = new Dictionary<string, string>();
+            param.Add("aid", string.Join(',', aids));
+            var data = BiliTool.UrlContact("", param, true);
+            string content = await BiliTool.PostContentToWebAsync(Api.ACCOUNT_HISTORY_DEL, data);
+            if (!string.IsNullOrEmpty(content))
+            {
+                var jobj = JObject.Parse(content);
+                return jobj["code"].ToString() == "0";
+            }
+            return false;
+        }
 
         /// <summary>
         /// 获取我收藏的播单(最多20个)
@@ -545,6 +563,27 @@ namespace BiliBili_Lib.Service
             string url = BiliTool.UrlContact(Api.ACCOUNT_RELATION_FOLLOW_DETAIL, param, true);
             var data = await BiliTool.ConvertEntityFromWebAsync<List<RelationUser>>(url);
             return data;
+        }
+        /// <summary>
+        /// 删除收藏夹内视频
+        /// </summary>
+        /// <param name="aid">视频ID</param>
+        /// <param name="videoType">视频类型</param>
+        /// <param name="listId">收藏夹ID</param>
+        /// <returns></returns>
+        public async Task<bool> RemoveFavoriteVideoAsync(int aid,int videoType,int listId)
+        {
+            var param = new Dictionary<string, string>();
+            param.Add("media_id", listId.ToString());
+            param.Add("resources", $"{aid}:{videoType}");
+            var req = BiliTool.UrlContact("", param, true);
+            var data = await BiliTool.PostContentToWebAsync(Api.ACCOUNT_FAVORITE_VIDEO_DELETE, req);
+            if (!string.IsNullOrEmpty(data))
+            {
+                var jobj = JObject.Parse(data);
+                return jobj["code"].ToString() == "0";
+            }
+            return false;
         }
     }
 }

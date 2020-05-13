@@ -32,7 +32,7 @@ namespace BiliBili_UWP.Pages.Sub.Account
         private List<TempFollowPart> FollowList = new List<TempFollowPart>();
         private bool _isInit = false;
         private bool _isRequesting = false;
-        private int _currentTab = -1;
+        private int _currentTab = int.MinValue;
         private AccountService _accountService = App.BiliViewModel._client.Account;
         public FollowPage()
         {
@@ -94,13 +94,13 @@ namespace BiliBili_UWP.Pages.Sub.Account
         {
             if (_isRequesting)
                 return;
-            _isRequesting = true;
             var source = FollowList.Where(p => p.TagId == _currentTab).FirstOrDefault();
             var tab = TabCollection.Where(p => p.tagid == _currentTab).FirstOrDefault();
             if (source != null && tab!=null)
             {
                 if (tab.count <= source.Users.Count)
                     return;
+                _isRequesting = true;
                 if (isIncrease)
                     source.Page += 1;
                 var users = await _accountService.GetMyFollowUserAsync(_currentTab, source.Page);

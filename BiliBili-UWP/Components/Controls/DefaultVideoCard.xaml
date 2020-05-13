@@ -10,16 +10,26 @@
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
-
+    <UserControl.Resources>
+        <CommandBarFlyout x:Name="DefaultFlyout">
+            <CommandBarFlyout.SecondaryCommands>
+                <AppBarButton Label="加入稍后再看" FontSize="12" FontFamily="{CustomResource Basic}" x:Name="LaterViewButton" Click="RankLaterViewButton_Click">
+                    <AppBarButton.Icon>
+                        <FontIcon FontFamily="{StaticResource Icon}" Glyph="&#xEA3B;"/>
+                    </AppBarButton.Icon>
+                </AppBarButton>
+            </CommandBarFlyout.SecondaryCommands>
+        </CommandBarFlyout>
+    </UserControl.Resources>
     <Grid Background="{ThemeResource CardBackground}" CornerRadius="4">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="1*" />
         </Grid.RowDefinitions>
-        <Grid>
-            <controls:ImageEx x:Name="VideoCover" HorizontalAlignment="Stretch" CornerRadius="4,4,0,0" Height="110" PlaceholderStretch="Uniform"
-                          DecodePixelWidth="{x:Bind DecodePixelWidth,Mode=OneWay}" Stretch="UniformToFill" IsCacheEnabled="True" PlaceholderSource="ms-appx:///Assets/img_holder_rect.png"
-                              Source="{x:Bind Cover,Mode=OneWay,Converter={StaticResource CoverResolutionConverter},ConverterParameter=200}"/>
+        <Grid x:Name="CoverContainer">
+            <widgets:BiliImage x:Name="VideoCover" HorizontalAlignment="Stretch" CornerRadius="4,4,0,0" Height="110"
+                          DecodePixelWidth="{x:Bind DecodePixelWidth,Mode=OneWay}" DisplayType="Rect"
+                              Source="{x:Bind Cover,Mode=OneWay,Converter={StaticResource CoverResolutionConverter},ConverterParameter=250}"/>
             <Border Padding="8,3" Background="{ThemeResource PopupBackground}" RequestedTheme="Dark" HorizontalAlignment="Left" VerticalAlignment="Bottom"
                     CornerRadius="3" Margin="10,0,0,10" Visibility="{x:Bind Duration,Mode=OneWay,Converter={StaticResource StringVisibilityConverter}}">
                 <TextBlock Text="{x:Bind Duration,Mode=OneWay}" Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource ImportantTextColor}"
@@ -34,11 +44,11 @@
                 <TextBlock Text="{x:Bind RightTopText,Mode=OneWay}" FontSize="10" Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource PrimaryColor}"
                            />
             </Border>
-            <controls:ImageEx Width="20" Source="{x:Bind RightTopImage,Mode=OneWay}" Visibility="{x:Bind RightTopImage,Mode=OneWay,Converter={StaticResource StringVisibilityConverter}}"
+            <widgets:BiliImage Width="20" Source="{x:Bind RightTopImage,Mode=OneWay}" Visibility="{x:Bind RightTopImage,Mode=OneWay,Converter={StaticResource StringVisibilityConverter}}"
                                VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,10,10,0"/>
         </Grid>
 
-        <StackPanel Grid.Row="1" Padding="10,8">
+        <StackPanel Grid.Row="1" Padding="10,8" x:Name="InfoContainer">
             <TextBlock Style="{StaticResource SmallTipTextStyle}" Text="{x:Bind Tip,Mode=OneWay}" FontSize="10"
                        Visibility="{x:Bind Tip,Mode=OneWay,Converter={StaticResource StringVisibilityConverter}}"/>
             <TextBlock Style="{StaticResource CaptionTextStyle}" Text="{x:Bind Title,Mode=OneWay}" FontSize="12" FontWeight="SemiBold" Margin="0,5"
@@ -54,8 +64,8 @@
                                            GutterWidth="7" IconForeground="{ThemeResource TipTextColor}" FontSize="10"/>
                 <widgets:IconTextBlock Icon="{x:Bind SecondSectionIcon,Mode=OneWay}" Text="{x:Bind SecondSectionContent,Mode=OneWay}"
                                            GutterWidth="7" IconForeground="{ThemeResource TipTextColor}" FontSize="10" Grid.Column="1"/>
-                <Button Style="{StaticResource TransparentButtonStyle}" Content="&#xE9A9;" Grid.Column="2" Flyout="{x:Bind ExtraFlyout,Mode=OneWay}"
-                        VerticalAlignment="Center" FontFamily="{StaticResource Icon}" FontSize="13" x:Name="MoreButton" Visibility="Collapsed"/>
+                <Button Style="{StaticResource TransparentButtonStyle}" Content="&#xE9A9;" Grid.Column="2" Flyout="{StaticResource DefaultFlyout}"
+                        VerticalAlignment="Center" FontFamily="{StaticResource Icon}" FontSize="13" x:Name="ExtraButton" Visibility="{x:Bind ExtraButtonVisbility,Mode=OneWay}"/>
             </Grid>
             <TextBlock Style="{StaticResource SmallTipTextStyle}" HorizontalAlignment="Left" Text="{x:Bind BottomText,Mode=OneWay}"
                        Visibility="{x:Bind BottomText,Mode=OneWay,Converter={StaticResource StringVisibilityConverter}}"/>

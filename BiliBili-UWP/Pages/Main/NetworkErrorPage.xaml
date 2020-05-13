@@ -12,8 +12,8 @@
     <Grid>
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
             <controls:ImageEx Source="ms-appx:///Assets/null.png" HorizontalAlignment="Center" Width="150"/>
-            <TextBlock Style="{StaticResource TipWrapTextStyle}" HorizontalAlignment="Center" TextAlignment="Center"
-                       Text="加载数据失败，你可以尝试关闭代理后重启应用" Margin="0,15,0,0" FontSize="20"/>
+            <controls:MarkdownTextBlock Style="{StaticResource BasicMarkdownTextBlock}" HorizontalAlignment="Center"
+                       Margin="0,15,0,0" FontSize="16" x:Name="DisplayBlock" MaxWidth="300"/>
         </StackPanel>
     </Grid>
 </Page>

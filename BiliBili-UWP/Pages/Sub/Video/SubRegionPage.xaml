@@ -9,8 +9,8 @@
     xmlns:ui="using:BiliBili_UWP.Models.UI"
     xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
     xmlns:controls1="using:BiliBili_UWP.Components.Controls"
-    xmlns:others="using:BiliBili_UWP.Models.UI.Others"
-    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:ext="using:BiliBili_Controls.Extensions"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls" xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:DataType="bilibili:Region" x:Key="TabItemTemplate">
@@ -55,8 +55,8 @@
                   ItemTemplate="{StaticResource TabItemTemplate}"
                   ItemsSource="{x:Bind TabCollection}"
                   SelectionMode="Single"
-                  others:IndicatorService.Name="ItemSign"
-                  others:IndicatorService.IsScaleEnabled="True"
+                  ext:IndicatorService.Name="ItemSign"
+                  ext:IndicatorService.IsScaleEnabled="True"
                   ItemClick="TabListView_ItemClick"
                   ScrollViewer.VerticalScrollMode="Disabled"
                   ScrollViewer.HorizontalScrollBarVisibility="Hidden"
@@ -75,19 +75,20 @@
                 <ScrollViewer Style="{StaticResource BasicScrollViewer}" ViewChanged="ScrollViewer_ViewChanged" Margin="0,10,0,0" Grid.Row="1">
                     <Grid>
                         <ListView x:Name="VideoListView"
-                      ItemContainerStyle="{StaticResource TransparentListViewContainerStyle}"
-                      Style="{StaticResource NoScrollListView}"
-                          ItemTemplate="{StaticResource VideoItemTemplate}"
-                      IsItemClickEnabled="True"
-                          Grid.Row="1"
-                      Margin="0,0,0,0"
-                      ItemClick="VideoListView_ItemClick"
-                      />
+                                  ItemContainerStyle="{StaticResource TransparentListViewContainerStyle}"
+                                  Style="{StaticResource NoScrollListView}"
+                                  ItemTemplate="{StaticResource VideoItemTemplate}"
+                                  IsItemClickEnabled="True"
+                                  Grid.Row="1"
+                                  Margin="0,0,0,0"
+                                  ItemClick="VideoListView_ItemClick"
+                                  ContainerContentChanging="VideoListView_ContainerContentChanging"
+                                  />
                         <TextBlock Text="查找不到相关视频" Style="{StaticResource TipTextStyle}" Visibility="Collapsed" Margin="10,10,0,0"
                            VerticalAlignment="Top" HorizontalAlignment="Left" Grid.Row="1" x:Name="VideoHolderBlock" FontWeight="Bold"/>
                     </Grid>
                 </ScrollViewer>
-                <ProgressRing Style="{StaticResource BasicProgressRingStyle}" x:Name="LoadingRing"
+                <muxc:ProgressRing Style="{StaticResource MuxcProgressRingStyle}" x:Name="LoadingRing"
                       Grid.Row="2"/>
             </Grid>
         </Grid>

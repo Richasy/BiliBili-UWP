@@ -38,6 +38,8 @@
                             <ComboBoxItem Content="白昼主题" Tag="Light"/>
                             <ComboBoxItem Content="暗夜主题" Tag="Dark"/>
                         </ComboBox>
+                        <ToggleSwitch Style="{StaticResource BasicToggleSwitchStyle}" HeaderTemplate="{StaticResource TipHeaderStyle}"
+                              Header="启用元素动画" Margin="0,15,0,0" x:Name="EnableAnimationSwitch" Toggled="EnableAnimationSwitch_Toggled"/>
                         <ComboBox Style="{StaticResource BasicComboBoxStyle}" ItemContainerStyle="{StaticResource BasicComboBoxItemContainerStyle}"
                           HeaderTemplate="{StaticResource TipHeaderStyle}" Header="应用字体" x:Name="FontComboBox" SelectionChanged="FontComboBox_SelectionChanged"
                           ItemTemplate="{StaticResource FontItemTemplate}" Margin="0,15,0,0" ItemsSource="{x:Bind FontCollection}"/>
@@ -53,6 +55,8 @@
                     <StackPanel Margin="0,15,0,0">
                         <ToggleSwitch Style="{StaticResource BasicToggleSwitchStyle}" HeaderTemplate="{StaticResource TipHeaderStyle}"
                               Header="播放页自动播放" x:Name="AutoPlaySwitch" Toggled="AutoPlaySwitch_Toggled"/>
+                        <ToggleSwitch Style="{StaticResource BasicToggleSwitchStyle}" HeaderTemplate="{StaticResource TipHeaderStyle}"
+                              Header="自动播放下一P" x:Name="AutoNextPartSwitch" Toggled="AutoNextPartSwitch_Toggled" Margin="0,15,0,0"/>
                         <ToggleSwitch Style="{StaticResource BasicToggleSwitchStyle}" HeaderTemplate="{StaticResource TipHeaderStyle}"
                               Header="后台时停止播放视频" x:Name="StopPlayInBackgroundSwitch" Toggled="StopPlayInBackgroundSwitch_Toggled"  Margin="0,15,0,0"/>
                         <ToggleSwitch Style="{StaticResource BasicToggleSwitchStyle}" HeaderTemplate="{StaticResource TipHeaderStyle}"

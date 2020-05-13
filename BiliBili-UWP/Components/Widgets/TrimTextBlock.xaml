@@ -1,0 +1,24 @@
+﻿<UserControl
+    x:Class="BiliBili_UWP.Components.Widgets.TrimTextBlock"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BiliBili_UWP.Components.Widgets"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <TextBlock Style="{StaticResource TipWrapTextStyle}" IsTextTrimmedChanged="TextBlock_IsTextTrimmedChanged" HorizontalAlignment="Stretch"
+                   x:Name="DisplayBlock" MaxLines="{x:Bind MaxLines,Mode=OneWay}" Foreground="{x:Bind Foreground,Mode=OneWay}" FontSize="{x:Bind FontSize,Mode=OneWay}"
+                   IsTextSelectionEnabled="True" LineHeight="20"/>
+        <Button Content="查看全部" FontFamily="{CustomResource Basic}" Foreground="{ThemeResource SecondaryColor}"
+                         FontSize="12" HorizontalAlignment="Left" Click="ShowTotalButton_Click"  x:Name="ShowTotalButton"
+                         Grid.Row="1" Style="{StaticResource TransparentButtonStyle}" Padding="0" Margin="0,0,0,5"/>
+    </Grid>
+</UserControl>

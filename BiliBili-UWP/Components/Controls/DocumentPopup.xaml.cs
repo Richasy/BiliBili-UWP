@@ -74,7 +74,7 @@ namespace BiliBili_UWP.Components.Controls
             content = content.Replace("=\"//", "=\"http://");
             content = content.Replace("data-src", "src");
             string html = await FileIO.ReadTextAsync(await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Components/HTML/ShowPage.html")));
-            string theme = AppTool.GetLocalSetting(Settings.Theme, "Light");
+            string theme = Application.Current.RequestedTheme.ToString();
             string css = await FileIO.ReadTextAsync(await StorageFile.GetFileFromApplicationUriAsync(new Uri($"ms-appx:///Components/HTML/{theme}.css")));
             string fontFamily = AppTool.GetLocalSetting(Settings.FontFamily, "微软雅黑");
             css = css.Replace("$FontFamily$", fontFamily).Replace("$FontSize$", "15");

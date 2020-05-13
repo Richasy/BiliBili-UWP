@@ -71,6 +71,7 @@
             </CommandBarFlyout.SecondaryCommands>
         </CommandBarFlyout>
     </UserControl.Resources>
-    <local:DefaultVideoCard x:Name="VideoCard">
-    </local:DefaultVideoCard>
+
+    <local:DefaultVideoCard x:Name="VideoCard"/>
+
 </UserControl>

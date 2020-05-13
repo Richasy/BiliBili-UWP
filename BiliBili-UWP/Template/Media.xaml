@@ -3,6 +3,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:control="using:BiliBili_UWP.Models.UI.Others"
     xmlns:c="using:NSDanmaku.Controls"
+    xmlns:others="using:BiliBili_UWP.Models.UI.Others"
+    xmlns:ext="using:BiliBili_Controls.Extensions"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:local="using:BiliBili_UWP.Template">
     <Style TargetType="MediaPlayerElement" x:Key="BasicMediaStyle">
         <Setter Property="HorizontalAlignment" Value="Stretch" />
@@ -12,6 +15,16 @@
             <Setter.Value>
                 <ControlTemplate TargetType="MediaPlayerElement">
                     <Grid x:Name="LayoutRoot">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="TransportControlsStates">
+                                <VisualState x:Name="DefaultState"/>
+                                <VisualState x:Name="MarginState">
+                                    <VisualState.Setters>
+                                        <Setter Target="TransportControlsPresenter.Margin" Value="0,0,0,45" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
                         <Border Background="Transparent" />
                         <Image  x:Name="PosterImage"
                 Visibility="Collapsed"
@@ -22,11 +35,9 @@
                 Stretch="{TemplateBinding Stretch}"
                 MediaPlayer="{TemplateBinding MediaPlayer}" />
                         <ContentPresenter     x:Name="TransportControlsPresenter"
-                Visibility="{TemplateBinding AreTransportControlsEnabled}" VerticalAlignment="Bottom"/>
+                Visibility="{TemplateBinding AreTransportControlsEnabled}" IsTapEnabled="False"/>
                         <Grid x:Name="TimedTextSourcePresenter" />
-
                     </Grid>
-
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -50,12 +61,15 @@
                                 <Setter Property="AllowFocusOnInteraction" Value="True" />
                                 <Setter Property="CornerRadius" Value="4" />
                                 <Setter Property="FontSize" Value="14" />
+                                <Setter Property="IsTabStop" Value="False" />
+                                <Setter Property="FocusVisualPrimaryBrush" Value="{ThemeResource PrimaryColor}" />
                             </Style>
                             <!-- New AppBarToggle button style 48x48 pixels in size -->
                             <Style x:Key="AppBarToggleButtonStyle" TargetType="AppBarToggleButton" BasedOn="{StaticResource AppBarToggleButtonRevealStyle}">
                                 <Setter Property="Width" Value="{ThemeResource MTCMediaButtonWidth}" />
                                 <Setter Property="Height" Value="{ThemeResource MTCMediaButtonHeight}" />
                                 <Setter Property="AllowFocusOnInteraction" Value="True" />
+                                <Setter Property="IsTabStop" Value="False" />
                             </Style>
                             <!-- New CommandBar Style -->
                             <Style x:Key="CommandBarStyle" TargetType="CommandBar">
@@ -82,6 +96,7 @@
                                 <Setter Property="UseSystemFocusVisuals" Value="{StaticResource UseSystemFocusVisuals}" />
                                 <Setter Property="FocusVisualMargin" Value="-7,0,-7,0" />
                                 <Setter Property="IsFocusEngagementEnabled" Value="True" />
+                                <Setter Property="IsTabStop" Value="False" />
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate TargetType="Slider">
@@ -106,7 +121,7 @@
                                                             </Setter.Value>
                                                         </Setter>
                                                     </Style>
-                                                    <Style TargetType="ProgressBar" x:Key="MediaSliderProgressBarStyle">
+                                                    <Style TargetType="muxc:ProgressBar" x:Key="MediaSliderProgressBarStyle">
                                                         <Setter Property="Height" Value="{ThemeResource SliderTrackThemeHeight}" />
                                                         <Setter Property="Minimum" Value="0" />
                                                         <Setter Property="Maximum" Value="100" />
@@ -271,7 +286,7 @@
                                                                    Height="{ThemeResource SliderTrackThemeHeight}"
                                                                    Grid.Row="1"
                                                                    Grid.ColumnSpan="3" />
-                                                        <ProgressBar x:Name="DownloadProgressIndicator"
+                                                        <muxc:ProgressBar x:Name="DownloadProgressIndicator"
                                                                      Style="{StaticResource MediaSliderProgressBarStyle}"
                                                                      Grid.Row="1"
                                                                      Grid.ColumnSpan="3"
@@ -404,7 +419,7 @@
                                             <EasingDoubleKeyFrame KeyTime="0" Value="0" />
                                             <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="1" />
                                         </DoubleAnimationUsingKeyFrames>
-                                        <DoubleAnimation Storyboard.TargetProperty="Y" Storyboard.TargetName="TranslateVertical" From="50" To="0.5" Duration="0:0:0.3" />
+                                        <!--<DoubleAnimation Storyboard.TargetProperty="Y" Storyboard.TargetName="TranslateVertical" From="50" To="0.5" Duration="0:0:0.3" />-->
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="ControlPanelFadeOut">
@@ -417,7 +432,7 @@
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="IsHitTestVisible" Storyboard.TargetName="ControlPanel_ControlPanelVisibilityStates_Border">
                                             <DiscreteObjectKeyFrame KeyTime="0" Value="False" />
                                         </ObjectAnimationUsingKeyFrames>
-                                        <DoubleAnimation Storyboard.TargetProperty="Y" Storyboard.TargetName="TranslateVertical" From="0.5" To="50" Duration="0:0:0.7" />
+                                        <!--<DoubleAnimation Storyboard.TargetProperty="Y" Storyboard.TargetName="TranslateVertical" From="0.5" To="50" Duration="0:0:0.7" />-->
                                     </Storyboard>
                                 </VisualState>
 
@@ -615,7 +630,7 @@
                                                 Height="33"
                                                 VerticalAlignment="Center"
                                                 IsThumbToolTipEnabled="False" />
-                                        <ProgressBar x:Name="BufferingProgressBar"
+                                        <muxc:ProgressBar x:Name="BufferingProgressBar"
                                                      Height="4"
                                                      IsIndeterminate="True"
                                                      IsHitTestVisible="False"
@@ -726,9 +741,10 @@
                                                                   >
                                                                 <ListView.ItemTemplate>
                                                                     <DataTemplate>
-                                                                        <ListViewItem x:Name="SubtitleItem" Padding="10,6">
+                                                                        <ListViewItem x:Name="SubtitleItem" Padding="10,6" ext:PressEffect.IsEnabled="True"
+                                                                                      ext:PressEffect.TargetElementName="Radio">
                                                                             <RadioButton Style="{StaticResource BasicRadioButtonStyle}" IsChecked="{Binding ElementName=SubtitleItem,Path=IsSelected}"
-                                                                                     GroupName="Subtitle" Content="{Binding lan_doc}" IsEnabled="False"/>
+                                                                                     GroupName="Subtitle" Content="{Binding lan_doc}" IsEnabled="False" x:Name="Radio"/>
                                                                         </ListViewItem>
                                                                     </DataTemplate>
                                                                 </ListView.ItemTemplate>
@@ -781,11 +797,12 @@
                         Style='{StaticResource AppBarButtonStyle}'
                         MediaTransportControlsHelper.DropoutOrder='1'>
                                                 <AppBarButton.Icon>
-                                                    <FontIcon Glyph="&#xE9DC;" FontFamily="{StaticResource Icon}"/>
+                                                    <FontIcon Glyph="&#xEB9E;" />
                                                 </AppBarButton.Icon>
                                             </AppBarButton>
                                             <AppBarButton x:Name='CustomPlayPauseButton'
                           Style='{StaticResource AppBarButtonStyle}'
+                                                          IsTabStop="True"
                           MediaTransportControlsHelper.DropoutOrder='23'>
                                                 <AppBarButton.Icon>
                                                     <FontIcon FontFamily="{StaticResource Icon}" Glyph="&#xE9BE;"/>
@@ -795,7 +812,7 @@
                         Style='{StaticResource AppBarButtonStyle}'
                         MediaTransportControlsHelper.DropoutOrder='1'>
                                                 <AppBarButton.Icon>
-                                                    <FontIcon Glyph="&#xE9DD;" FontFamily="{StaticResource Icon}"/>
+                                                    <FontIcon Glyph="&#xEB9D;" />
                                                 </AppBarButton.Icon>
                                             </AppBarButton>
                                             <AppBarButton x:Name='NextTrackButton'
@@ -863,9 +880,9 @@
                                                                   >
                                                             <ListView.ItemTemplate>
                                                                 <DataTemplate>
-                                                                    <ListViewItem x:Name="QualityItem" Padding="10,6">
+                                                                    <ListViewItem x:Name="QualityItem" Padding="10,6" ext:PressEffect.IsEnabled="True" ext:PressEffect.TargetElementName="Radio">
                                                                         <RadioButton Style="{StaticResource BasicRadioButtonStyle}" IsChecked="{Binding ElementName=QualityItem,Path=IsSelected}"
-                                                                                     GroupName="Quality" Content="{Binding Item2}" IsEnabled="False"/>
+                                                                                     GroupName="Quality" Content="{Binding Item2}" IsEnabled="False" x:Name="Radio"/>
                                                                     </ListViewItem>
                                                                 </DataTemplate>
                                                             </ListView.ItemTemplate>

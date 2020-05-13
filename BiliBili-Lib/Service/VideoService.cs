@@ -90,8 +90,11 @@ namespace BiliBili_Lib.Service
         {
             var param = new Dictionary<string, string>();
             param.Add("rid", rid.ToString());
-            string url = BiliTool.UrlContact(Api.REGION_RANK, param, true);
-            var data = await BiliTool.ConvertEntityFromWebAsync<List<WebVideo>>(url);
+            param.Add("day", "3");
+            param.Add("type", "1");
+            param.Add("arc_type", "0");
+            string url = BiliTool.UrlContact(Api.REGION_TOTAL_RANK, param, true);
+            var data = await BiliTool.ConvertEntityFromWebAsync<List<WebVideo>>(url,"data.list");
             return data;
         }
         /// <summary>
@@ -166,6 +169,19 @@ namespace BiliBili_Lib.Service
             param.Add("from_spmid", fromSign);
             string url = BiliTool.UrlContact(Api.VIDEO_DETAIL_INFO, param, true);
             var data = await BiliTool.ConvertEntityFromWebAsync<VideoDetail>(url);
+            return data;
+        }
+        /// <summary>
+        /// 获取视频简易信息
+        /// </summary>
+        /// <param name="aid">视频avid</param>
+        /// <returns></returns>
+        public async Task<VideoSlim> GetVideoSlimAsync(int aid)
+        {
+            var param = new Dictionary<string, string>();
+            param.Add("aid", aid.ToString());
+            string url = BiliTool.UrlContact(Api.VIDEO_SLIM_INFO, param, true);
+            var data = await BiliTool.ConvertEntityFromWebAsync<VideoSlim>(url);
             return data;
         }
         /// <summary>

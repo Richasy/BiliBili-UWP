@@ -1,0 +1,110 @@
+﻿<UserControl
+    x:Class="BiliBili_UWP.Components.Controls.DynamicDetailPopup"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BiliBili_UWP.Components.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:bilibili="using:BiliBili_Lib.Models.BiliBili"
+    xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls" xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <UserControl.Resources>
+        <Storyboard x:Name="PopupIn">
+            <DoubleAnimation From="0"
+                             To="1"
+                             Duration="00:00:00.5"
+                             Storyboard.TargetName="PopupBackground"
+                             Storyboard.TargetProperty="Opacity"
+                             >
+                <DoubleAnimation.EasingFunction>
+                    <PowerEase EasingMode="EaseOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+        <Storyboard x:Name="PopupOut">
+            <DoubleAnimation From="1"
+                             To="0"
+                             Duration="00:00:00.5"
+                             Storyboard.TargetName="PopupBackground"
+                             Storyboard.TargetProperty="Opacity"
+                             >
+                <DoubleAnimation.EasingFunction>
+                    <PowerEase EasingMode="EaseOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+        <DataTemplate x:DataType="bilibili:ImageDynamic" x:Name="ImageTemplate">
+            <Grid>
+                <FlipView ItemsSource="{x:Bind pictures}" Background="{ThemeResource PageBackground}"
+                          Loaded="FlipView_Loaded">
+                    <FlipView.ItemTemplate>
+                        <DataTemplate>
+                            <ScrollViewer Style="{StaticResource BasicScrollViewer}" ZoomMode="Enabled"
+                                      MinZoomFactor="0.5" MaxZoomFactor="3" IsZoomChainingEnabled="True"
+                                      HorizontalScrollMode="Enabled" HorizontalScrollBarVisibility="Auto"
+                                           Name="ScrollViewerMain">
+                                <controls:ImageEx MaxWidth="{Binding Path=ViewportWidth, ElementName=ScrollViewerMain}"
+                                       MaxHeight="{Binding Path=ViewportHeight, ElementName=ScrollViewerMain}"
+                          x:Name="DisplayImage" Source="{Binding img_src}" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                            PlaceholderSource="ms-appx:///Assets/img_holder.png" PlaceholderStretch="Uniform"/>
+
+                            </ScrollViewer>
+                        </DataTemplate>
+                    </FlipView.ItemTemplate>
+                </FlipView>
+                <Grid Background="{ThemeResource PopupBackground}" CornerRadius="4" HorizontalAlignment="Center" VerticalAlignment="Bottom"
+                      Margin="0,0,0,20">
+                    <CommandBar Background="Transparent" DefaultLabelPosition="Right">
+                        <AppBarButton x:Name="CopyButton" Label="复制" Click="CopyButton_Click" Icon="Copy"/>
+                        <AppBarButton x:Name="SaveButton" Label="另存为" Click="SaveButton_Click" Icon="Save"/>
+                    </CommandBar>
+                </Grid>
+            </Grid>
+            
+        </DataTemplate>
+        <DataTemplate x:DataType="bilibili:DocumentDynamic" x:Name="DocumentTemplate">
+            <Grid>
+                <local:DocumentView ArticleId="{x:Bind id,Mode=OneWay}"/>
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
+    <Grid x:Name="PopupBackground"
+          Background="{ThemeResource PageBackground}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <ContentPresenter x:Name="MainDisplay" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+        <Grid Width="400" Grid.Column="1" Padding="20" Background="{ThemeResource SideBackground}" x:Name="ReplyContainer">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+            <Grid Margin="0,0,0,10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <StackPanel Orientation="Horizontal" Tapped="Account_Tapped">
+                    <PersonPicture Width="30" Height="30" Style="{StaticResource BasicPersonPictureStyle}" x:Name="UserAvatar"
+                           VerticalAlignment="Center"/>
+                    <StackPanel VerticalAlignment="Center" Margin="10,0,0,0">
+                        <TextBlock x:Name="UserNameBlock" Style="{StaticResource SmallTipTextStyle}" FontSize="13" FontWeight="Bold"
+                           Foreground="{ThemeResource ImportantTextColor}" MaxWidth="195"/>
+                    </StackPanel>
+                </StackPanel>
+                <ScrollViewer Grid.Row="1" MaxHeight="150" Style="{StaticResource BasicScrollViewer}"
+                              HorizontalScrollMode="Disabled" Margin="0,5,0,0">
+                    <local:RenderTextBlock x:Name="DescriptionBlock"
+                                       Text="{x:Bind Dynamic,Mode=OneWay}"/>
+                </ScrollViewer>
+            </Grid>
+            <Frame x:Name="ReplyFrame" Grid.Row="1"/>
+        </Grid>
+        <Button Style="{StaticResource DefaultCircleButtonStyle}" x:Name="CloseButton" Margin="20,20,0,0" Content="&#xEA15;" VerticalAlignment="Top"
+                        Click="CloseButton_Click" HorizontalAlignment="Left"/>
+    </Grid>
+</UserControl>

@@ -1,4 +1,5 @@
-﻿using BiliBili_Lib.Models.Others;
+﻿using BiliBili_Lib.Models.BiliBili;
+using BiliBili_Lib.Models.Others;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -8,6 +9,7 @@ using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.Security.Cryptography.Certificates;
 using Windows.Storage.Streams;
@@ -248,6 +250,34 @@ namespace BiliBili_Lib.Tools
             string sign = useWeb ? GetSign(param, WebVideoKey) : GetSign(param);
             param += $"&sign={sign}";
             return !string.IsNullOrEmpty(_baseUrl) ? _baseUrl + $"?{param}" : param;
+        }
+
+        /// <summary>
+        /// 分析URL指向的结果
+        /// </summary>
+        /// <param name="url">地址</param>
+        /// <returns></returns>
+        public static UriResult GetResultFromUri(string url)
+        {
+            if (url.Contains("/ep", StringComparison.OrdinalIgnoreCase))
+            {
+                var regex_ep = new Regex(@"ep(\d+)");
+                if (regex_ep.IsMatch(url))
+                {
+                    string epId = regex_ep.Match(url).Value.Replace("ep", "");
+                    return new UriResult(Enums.UriType.Bangumi, epId);
+                }
+            }
+            else if (url.Contains("/cv", StringComparison.OrdinalIgnoreCase))
+            {
+                var regex_cv = new Regex(@"cv(\d+)");
+                if (regex_cv.IsMatch(url))
+                {
+                    string epId = regex_cv.Match(url).Value.Replace("cv", "");
+                    return new UriResult(Enums.UriType.Document, epId);
+                }
+            }
+            return new UriResult(Enums.UriType.Web, url);
         }
     }
 }

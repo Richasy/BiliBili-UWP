@@ -7,13 +7,13 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:channels="using:BiliBili_Lib.Models.BiliBili"
+    xmlns:others="using:BiliBili_Controls.Extensions" xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
     <UserControl.Resources>
         <DataTemplate x:DataType="channels:ChannelBase" x:Key="ChannelItemTemplate">
-            <controls:ImageEx DecodePixelWidth="40" Width="40" Height="40" CornerRadius="6" Stretch="UniformToFill" PlaceholderSource="ms-appx:///Assets/img_holder_rect.png"
-                              PlaceholderStretch="Uniform"
+            <widgets:BiliImage DecodePixelWidth="40" Width="40" Height="40" CornerRadius="6"
                               Source="{x:Bind render_cover}" ToolTipService.ToolTip="{x:Bind title}"/>
         </DataTemplate>
     </UserControl.Resources>
@@ -34,7 +34,8 @@
             <TextBlock Text="···" Style="{StaticResource SmallTipTextStyle}" x:Name="MoreSign" Margin="5,0,0,0"
                        Visibility="Collapsed" VerticalAlignment="Center"/>
             <Button Style="{StaticResource DefaultCircleButtonStyle}" CornerRadius="5" Margin="10,0,0,0" Content="&#xE9D0;"
-                            x:Name="SearchChannelButton" Click="SearchChannelButton_Click"  VerticalAlignment="Center"/>
+                            x:Name="SearchChannelButton" Click="SearchChannelButton_Click"  VerticalAlignment="Center"
+                    others:PressEffect.IsEnabled="True"/>
         </StackPanel>
     </StackPanel>
 </UserControl>

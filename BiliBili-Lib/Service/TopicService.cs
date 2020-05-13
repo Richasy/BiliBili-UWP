@@ -58,8 +58,11 @@ namespace BiliBili_Lib.Service
             }
             string url = BiliTool.UrlContact(Api.DYNAMIC_NEW, param, true, useiPhone: true);
             var data = await BiliTool.ConvertEntityFromWebAsync<NewDynamicResponse>(url);
-            data.cards.RemoveAll(p => p == null || p.card == null || p.card.Length < 10 || p.desc.status != 1);
-            AppTool.WriteLocalSetting(Enums.Settings.LastSeemDynamicId, data.max_dynamic_id);
+            if (data != null)
+            {
+                data.cards.RemoveAll(p => p == null || p.card == null || p.card.Length < 10 || p.desc.status != 1);
+                AppTool.WriteLocalSetting(Enums.Settings.LastSeemDynamicId, data.max_dynamic_id);
+            }
             return data;
         }
         /// <summary>

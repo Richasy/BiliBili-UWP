@@ -52,11 +52,15 @@ namespace BiliBili_UWP.Pages.Main
             ThemeComboBox.SelectedIndex = theme == "Light" ? 0 : 1;
             double pageBreakpoint = Convert.ToDouble(AppTool.GetLocalSetting(Settings.PagePanelDisplayBreakpoint, "1500"));
             PagePaneDisplayBreakpointBox.Value = pageBreakpoint;
+            bool isEnableAnimation = AppTool.GetBoolSetting(Settings.EnableAnimation);
+            EnableAnimationSwitch.IsOn = isEnableAnimation;
             #endregion
 
             #region 播放器设置
             bool isAutoPlay = AppTool.GetBoolSetting(Settings.IsAutoPlay);
             AutoPlaySwitch.IsOn = isAutoPlay;
+            bool isAutoNextPart = AppTool.GetBoolSetting(Settings.IsAutoNextPart,false);
+            AutoNextPartSwitch.IsOn = isAutoNextPart;
             bool isManualMTC = AppTool.GetBoolSetting(Settings.IsManualMediaTransportControls, false);
             ManualMTCSwitch.IsOn = isManualMTC;
             double playerSkipStep = Convert.ToDouble(AppTool.GetLocalSetting(Settings.PlayerSkipStep, "30"));
@@ -239,6 +243,20 @@ namespace BiliBili_UWP.Pages.Main
             {
                 App.AppViewModel.UnRegisterBackgroundTask(StaticString.NOTIFICATION_NEWDYNAMIC);
             }
+        }
+
+        private void EnableAnimationSwitch_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (!_isInit)
+                return;
+            AppTool.WriteLocalSetting(Settings.EnableAnimation, EnableAnimationSwitch.IsOn.ToString());
+        }
+
+        private void AutoNextPartSwitch_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (!_isInit)
+                return;
+            AppTool.WriteLocalSetting(Settings.IsAutoNextPart, AutoNextPartSwitch.IsOn.ToString());
         }
     }
 }

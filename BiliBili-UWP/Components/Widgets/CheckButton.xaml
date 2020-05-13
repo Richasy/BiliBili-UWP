@@ -6,18 +6,50 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:bubble="using:BiliBili_Controls.Bubble"
     mc:Ignorable="d"
+    Loaded="UserControl_Loaded"
     d:DesignHeight="300"
     d:DesignWidth="400">
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="TransparentBackground" Color="White" Opacity="0.01"/>
+        <Storyboard x:Name="PressStoryBoard" Completed="PressStoryBoard_Completed">
+            <DoubleAnimation Storyboard.TargetName="PressProgressBar"
+                             Storyboard.TargetProperty="Value"
+                             EnableDependentAnimation="True"
+                             From="0"
+                             To="100"
+                             Duration="0:0:2"/>
+        </Storyboard>
+    </UserControl.Resources>
     <Grid>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="Common">
+                <VisualState x:Name="Default"/>
+                <VisualState x:Name="Checked">
+                    <VisualState.Setters>
+                        <Setter Target="IconContainer.Background" Value="{ThemeResource PrimaryColor}" />
+                        <Setter Target="IconContainer.BorderBrush" Value="Transparent" />
+                        <Setter Target="IconBlock.Foreground" Value="White" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="1*" />
         </Grid.ColumnDefinitions>
-        <Grid>
-            <Button IsEnabled="{x:Bind IsEnabled,Mode=OneWay}" Style="{StaticResource DefaultGhostCircleButtonStyle}" VerticalAlignment="Center"
-                Content="{x:Bind Icon,Mode=OneWay}" Click="Button_Click" x:Name="HandleButton" Width="35" Height="35" HorizontalAlignment="Center"
-                    />
+        <Grid VerticalAlignment="Center" Width="40" Height="40">
+            <bubble:BubbleView HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="BubbleView"
+                               Foreground="{ThemeResource PrimaryColor}"/>
+            <Border Width="35" Height="35" CornerRadius="20" BorderBrush="{ThemeResource LineColor}" BorderThickness="1"
+                    Background="{ThemeResource TransparentBackground}" x:Name="IconContainer" VerticalAlignment="Center" HorizontalAlignment="Center"
+                    PointerPressed="Grid_PointerPressed" PointerMoved="Grid_PointerMoved" PointerReleased="Grid_PointerReleased">
+                <TextBlock Text="{x:Bind Icon,Mode=OneWay}" FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Center"
+                           FontFamily="{StaticResource Icon}" x:Name="IconBlock" Foreground="{ThemeResource NormalTextColor}"/>
+            </Border>
+            <controls:RadialProgressBar x:Name="PressProgressBar" Width="40" Height="40" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                        Foreground="{ThemeResource PrimaryColor}" Value="0" Visibility="Collapsed" Background="Transparent" Maximum="100"/>
         </Grid>
         
         <TextBlock VerticalAlignment="Center" Text="{x:Bind Text,Mode=OneWay}" Grid.Column="1" Margin="8,0,0,0" Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource NormalTextColor}"/>

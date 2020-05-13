@@ -66,6 +66,7 @@ namespace BiliBili_UWP.Pages.Main
         public async Task Refresh()
         {
             Reset();
+            LoadingBar.Visibility = Visibility.Visible;
             var data = await _animeService.GetAnimeSquareAsync(isJP);
             if (data != null && data.Count > 0)
             {
@@ -101,6 +102,7 @@ namespace BiliBili_UWP.Pages.Main
                     RankContainer.HolderVisibility = RankCollection.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
                 }
             }
+            LoadingBar.Visibility = Visibility.Collapsed;
         }
 
         private void SubRegionButton_Click(object sender, RoutedEventArgs e)

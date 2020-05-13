@@ -2,6 +2,7 @@
 using BiliBili_Lib.Models.BiliBili.Account;
 using BiliBili_Lib.Service;
 using BiliBili_Lib.Tools;
+using BiliBili_UWP.Components.Controls;
 using BiliBili_UWP.Components.Widgets;
 using BiliBili_UWP.Dialogs;
 using BiliBili_UWP.Models.UI;
@@ -123,6 +124,7 @@ namespace BiliBili_UWP.Pages.Sub.Account
             var acc = detail.card;
             _user = acc;
             UserAvatar.ProfilePicture = new BitmapImage(new Uri(acc.face + "@50w.jpg"));
+            PendantImage.Visibility = Visibility.Collapsed;
             if (acc.pendant != null)
             {
                 PendantImage.Visibility = Visibility.Visible;
@@ -289,7 +291,13 @@ namespace BiliBili_UWP.Pages.Sub.Account
         {
             var data = e.ClickedItem as ArchiveVideo;
             if (data.@goto == "av")
-                App.AppViewModel.PlayVideo(Convert.ToInt32(data.param));
+            {
+                var ana = BiliTool.GetResultFromUri(data.uri);
+                if (ana.Type == BiliBili_Lib.Enums.UriType.Bangumi)
+                    App.AppViewModel.PlayBangumi(Convert.ToInt32(ana.Param), null, true);
+                else
+                    App.AppViewModel.PlayVideo(Convert.ToInt32(data.param));
+            }
             else if (data.@goto == "bangumi")
                 App.AppViewModel.PlayBangumi(Convert.ToInt32(data.param), null, true);
         }
@@ -303,6 +311,20 @@ namespace BiliBili_UWP.Pages.Sub.Account
                 App.BiliViewModel.ClearAccountInformation();
                 await Refresh();
             }
+        }
+
+        private void ListView_ContainerContentChanging(ListViewBase sender, ContainerContentChangingEventArgs args)
+        {
+            args.Handled = true;
+            TopicCard card = (TopicCard)args.ItemContainer.ContentTemplateRoot;
+            card.RenderContainer(args);
+        }
+
+        private void VideoListView_ContainerContentChanging(ListViewBase sender, ContainerContentChangingEventArgs args)
+        {
+            args.Handled = true;
+            DefaultVideoPanel card = (DefaultVideoPanel)args.ItemContainer.ContentTemplateRoot;
+            card.RenderContainer(args);
         }
     }
 }

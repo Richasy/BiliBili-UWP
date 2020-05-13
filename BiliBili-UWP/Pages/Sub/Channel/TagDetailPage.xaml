@@ -8,7 +8,7 @@
     xmlns:bilibili="using:BiliBili_Lib.Models.BiliBili"
     xmlns:controls1="using:BiliBili_UWP.Components.Controls"
     xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
-    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls" xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:DataType="bilibili:VideoRecommend" x:Key="RecommendVideoItemTemplate">
@@ -102,7 +102,7 @@
                               ItemContainerStyle="{StaticResource TransparentListViewContainerStyle}"
                               Style="{StaticResource NoScrollListView}"
                               SelectionMode="None"
-                              Padding="0"
+                              Padding="0" ContainerContentChanging="TopicListView_ContainerContentChanging"
                               />
                 </Grid>
             </ScrollViewer>
@@ -111,6 +111,6 @@
             <Image Source="ms-appx:///Assets/bilibili logo.png" Width="50" Height="50" VerticalAlignment="Center"
                                HorizontalAlignment="Center"/>
         </Grid>
-        <ProgressRing Style="{StaticResource BasicProgressRingStyle}" Grid.Row="3" x:Name="LoadingRing"/>
+        <muxc:ProgressRing Style="{StaticResource MuxcProgressRingStyle}" Grid.Row="3" x:Name="LoadingRing"/>
     </Grid>
 </Page>

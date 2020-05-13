@@ -1,5 +1,6 @@
 ﻿using BiliBili_Lib.Models.BiliBili;
 using BiliBili_Lib.Service;
+using BiliBili_UWP.Components.Controls;
 using BiliBili_UWP.Components.Widgets;
 using BiliBili_UWP.Models.Core;
 using BiliBili_UWP.Models.UI.Interface;
@@ -168,10 +169,11 @@ namespace BiliBili_UWP.Pages.Main
             }
         }
 
-        private async void LaterViewButton_Click(object sender, RoutedEventArgs e)
+        private void RecommendVideoView_ContainerContentChanging(ListViewBase sender, ContainerContentChangingEventArgs args)
         {
-            var data = (sender as FrameworkElement).DataContext as RegionVideo;
-            await App.BiliViewModel.AddViewLater(sender, Convert.ToInt32(data.param));
+            args.Handled = true;
+            DefaultVideoCard card = (DefaultVideoCard)args.ItemContainer.ContentTemplateRoot;
+            card.RenderContainer(args);
         }
     }
 }

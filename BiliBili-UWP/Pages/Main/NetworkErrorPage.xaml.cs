@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -25,6 +26,13 @@ namespace BiliBili_UWP.Pages.Main
         public NetworkErrorPage()
         {
             this.InitializeComponent();
+        }
+        protected async override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            var file = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Others/NetworkError.txt"));
+            string text = await FileIO.ReadTextAsync(file);
+            DisplayBlock.Text = text;
+            base.OnNavigatedTo(e);
         }
     }
 }

@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:anime="using:BiliBili_Lib.Models.BiliBili.Anime"
+    xmlns:widgets="using:BiliBili_UWP.Components.Widgets" xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:DataType="anime:ConditionContainer" x:Key="ConditionItemTemplate">
@@ -36,9 +37,8 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid>
-                    <controls:ImageEx Source="{x:Bind cover,Converter={StaticResource CoverResolutionConverter},ConverterParameter=200}"
-                                  CornerRadius="4" Stretch="UniformToFill" PlaceholderSource="ms-appx:///Assets/img_holder_rect.png"
-                                  PlaceholderStretch="Uniform"/>
+                    <widgets:BiliImage Source="{x:Bind cover,Converter={StaticResource CoverResolutionConverter},ConverterParameter=200}"
+                                  CornerRadius="4"/>
                     <Border Background="{ThemeResource PaneBackground}" Padding="5,4" CornerRadius="2" HorizontalAlignment="Right" VerticalAlignment="Top"
                             Margin="0,5,5,0" Visibility="{x:Bind badge,Converter={StaticResource StringVisibilityConverter}}">
                         <TextBlock Text="{x:Bind badge}" Style="{StaticResource SmallTipTextStyle}" FontSize="10" Foreground="{ThemeResource PrimaryColor}"/>
@@ -88,8 +88,7 @@
                            Grid.Row="1" x:Name="HolderText" HorizontalAlignment="Left"/>
             </Grid>
         </ScrollViewer>
-        <ProgressRing x:Name="LoadingRing" Style="{StaticResource BasicProgressRingStyle}"/>
-        <ProgressBar IsIndeterminate="True" x:Name="LoadingBar" VerticalAlignment="Bottom" HorizontalAlignment="Stretch"
-                     Foreground="{ThemeResource PrimaryColor}" Visibility="Collapsed"/>
+        <muxc:ProgressRing x:Name="LoadingRing" Style="{StaticResource MuxcProgressRingStyle}"/>
+        <muxc:ProgressBar Style="{StaticResource MuxcProgressBarStyle}" x:Name="LoadingBar" VerticalAlignment="Bottom" Visibility="Collapsed"/>
     </Grid>
 </Page>

@@ -96,7 +96,17 @@ namespace BiliBili_UWP.Components.Layout
             if (page != null)
             {
                 App.AppViewModel.CurrentPageType = page;
-                PageFrame.Navigate(page, parameter, new DrillInNavigationTransitionInfo());
+                NavigationTransitionInfo transitionInfo = null;
+                if (type == SideMenuItemType.VideoPlayer || !App.AppViewModel.IsEnableAnimation)
+                    transitionInfo = new SuppressNavigationTransitionInfo();
+                else
+                {
+                    if (isBack)
+                        transitionInfo = new EntranceNavigationTransitionInfo();
+                    else
+                        transitionInfo = new DrillInNavigationTransitionInfo();
+                }
+                PageFrame.Navigate(page, parameter, transitionInfo);
                 if (!isBack)
                 {
                     if (page.Equals(typeof(Pages.Main.VideoPage)) || page.Equals(typeof(Pages.Main.BangumiPage)))
@@ -145,6 +155,9 @@ namespace BiliBili_UWP.Components.Layout
                     break;
                 case SideMenuItemType.Live:
                     page = typeof(Pages.Main.LivePage);
+                    break;
+                case SideMenuItemType.Rank:
+                    page = typeof(Pages.Main.RankPage);
                     break;
                 case SideMenuItemType.Anime:
                     page = typeof(Pages.Main.AnimePage);
@@ -210,6 +223,8 @@ namespace BiliBili_UWP.Components.Layout
                 result = SideMenuItemType.ViewLater;
             else if (type.Equals(typeof(Pages.Main.LivePage)))
                 result = SideMenuItemType.Live;
+            else if (type.Equals(typeof(Pages.Main.RankPage)))
+                result = SideMenuItemType.Rank;
             else if (type.Equals(typeof(Pages.Main.SettingPage)))
                 result = SideMenuItemType.Settings;
             else if (type.Equals(typeof(Pages.Main.DownloadPage)))
@@ -309,7 +324,12 @@ namespace BiliBili_UWP.Components.Layout
             bool isRepeat = false;
             if (last != null && last.Item1 == page && last.Item2 == parameter)
                 isRepeat = true;
-            SubPageFrame.Navigate(page, parameter, new DrillInNavigationTransitionInfo());
+            NavigationTransitionInfo transitionInfo = null;
+            if (!App.AppViewModel.IsEnableAnimation)
+                transitionInfo = new SuppressNavigationTransitionInfo();
+            else
+                transitionInfo = new DrillInNavigationTransitionInfo();
+            SubPageFrame.Navigate(page, parameter, transitionInfo);
             if (!isBack)
             {
                 if (!isRepeat)
@@ -418,6 +438,12 @@ namespace BiliBili_UWP.Components.Layout
                 MainPageBack();
             }
             return result;
+        }
+
+        public void RemoveMainHistory(SideMenuItemType type)
+        {
+            var page = GetPageTypeFromMenuType(type);
+            MainFrameHistoryList.RemoveAll(p => p.Item1 == page);
         }
     }
 }

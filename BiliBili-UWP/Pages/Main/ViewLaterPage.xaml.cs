@@ -1,24 +1,16 @@
 ﻿using BiliBili_Lib.Models.BiliBili.Video;
 using BiliBili_Lib.Service;
+using BiliBili_UWP.Components.Controls;
 using BiliBili_UWP.Components.Widgets;
 using BiliBili_UWP.Dialogs;
 using BiliBili_UWP.Models.Core;
 using BiliBili_UWP.Models.UI.Interface;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -45,6 +37,7 @@ namespace BiliBili_UWP.Pages.Main
         }
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
+            ViewLaterVideoView.EnableAnimation = App.AppViewModel.IsEnableAnimation;
             App.AppViewModel.CurrentPagePanel.ScrollToBottom = ScrollViewerBottomHandle;
             App.AppViewModel.CurrentPagePanel.ScrollChanged = ScrollViewerChanged;
             if (_isInit || e.NavigationMode == NavigationMode.Back)
@@ -96,6 +89,8 @@ namespace BiliBili_UWP.Pages.Main
         {
             if (!biliVM.CheckAccoutStatus())
                 return;
+            if (ViewLaterCollection.Count == 0)
+                return;
             var dialog = new ConfirmDialog("您确认清空稍后观看记录吗？");
             dialog.PrimaryButtonClick += async (_s, _e) =>
             {
@@ -107,6 +102,7 @@ namespace BiliBili_UWP.Pages.Main
                 {
                     new TipPopup("清空成功").ShowMessage();
                     ViewLaterCollection.Clear();
+                    HolderText.Visibility = Visibility.Visible;
                     dialog.Hide();
                 }
                 else
@@ -122,13 +118,13 @@ namespace BiliBili_UWP.Pages.Main
         private void HistoryVideoView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var item = e.ClickedItem as VideoDetail;
-            var ele = HistoryVideoView.ContainerFromItem(item);
+            var ele = ViewLaterVideoView.ContainerFromItem(item);
             if (item.bangumi != null)
                 App.AppViewModel.PlayBangumi(item.bangumi.ep_id, ele, true);
             else
             {
                 var videos = ViewLaterCollection.Where(p => p.bangumi == null).ToList();
-                App.AppViewModel.PlayVideoList(item.aid, videos);
+                App.AppViewModel.PlayVideoList(item.aid, ele, videos);
             } 
         }
 
@@ -139,6 +135,7 @@ namespace BiliBili_UWP.Pages.Main
             if (result)
             {
                 ViewLaterCollection.Remove(item);
+                HolderText.Visibility = ViewLaterCollection.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
             }
             else
             {
@@ -157,6 +154,13 @@ namespace BiliBili_UWP.Pages.Main
             {
                 App.AppViewModel.CurrentPagePanel.PageScrollViewer.ChangeView(0, _scrollOffset, 1);
             }
+        }
+
+        private void ViewLaterVideoView_ContainerContentChanging(ListViewBase sender, ContainerContentChangingEventArgs args)
+        {
+            args.Handled = true;
+            DefaultVideoCard card = (DefaultVideoCard)args.ItemContainer.ContentTemplateRoot;
+            card.RenderContainer(args);
         }
     }
 }

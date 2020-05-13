@@ -17,16 +17,16 @@
             <ColumnDefinition Width="1*" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-        <Grid Height="70" Width="112">
-            <controls:ImageEx Source="{x:Bind Cover,Mode=OneWay,Converter={StaticResource CoverResolutionConverter},ConverterParameter=200}" x:Name="VideoCover"
-                                       CornerRadius="4" Stretch="UniformToFill" PlaceholderStretch="Uniform" PlaceholderSource="ms-appx:///Assets/img_holder_rect.png"/>
+        <Grid Height="70" Width="112" x:Name="CoverContainer">
+            <widgets:BiliImage Source="{x:Bind Cover,Mode=OneWay,Converter={StaticResource CoverResolutionConverter},ConverterParameter=200}" x:Name="VideoCover"
+                                       CornerRadius="4"/>
             <Border Padding="5,3" Background="{ThemeResource PopupBackground}" RequestedTheme="Dark" HorizontalAlignment="Left" VerticalAlignment="Bottom"
                     CornerRadius="3" Margin="5,0,0,5" Visibility="{x:Bind Duration,Mode=OneWay,Converter={StaticResource StringVisibilityConverter}}">
                 <TextBlock x:Name="DurationBlock" Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource ImportantTextColor}"
                                    Text="{x:Bind Duration,Mode=OneWay}" FontSize="10"/>
             </Border>
         </Grid>
-        <Grid Grid.Column="1" Margin="10,0,0,0">
+        <Grid Grid.Column="1" Margin="10,0,0,0" x:Name="InfoContainer">
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*" />
                 <RowDefinition Height="Auto" />
@@ -51,7 +51,7 @@
             <TextBlock Grid.Row="2" Style="{StaticResource SmallTipTextStyle}" FontSize="10" Text="{x:Bind BottomText,Mode=OneWay}"
                        Visibility="{x:Bind BottomText,Mode=OneWay,Converter={StaticResource StringVisibilityConverter}}"/>
         </Grid>
-        <controls:ImageEx Width="20" Grid.Column="2" VerticalAlignment="Top" Margin="10,0,0,0" Source="{x:Bind RightTopImage,Mode=OneWay}"
+        <widgets:BiliImage Width="20" Grid.Column="2" VerticalAlignment="Top" Margin="10,0,0,0" Source="{x:Bind RightTopImage,Mode=OneWay}"
                Visibility="{x:Bind RightTopImage,Mode=OneWay,Converter={StaticResource StringVisibilityConverter}}"/>
         <Button Style="{StaticResource TransparentButtonStyle}" x:Name="ExtraButton" Content="&#xE9A9;" Grid.Column="2"
                 VerticalAlignment="Bottom" FontFamily="{StaticResource Icon}" FontSize="13" Visibility="{x:Bind ExtraButtonVisibility,Mode=OneWay}">

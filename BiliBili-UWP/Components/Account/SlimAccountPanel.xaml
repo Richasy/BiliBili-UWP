@@ -6,8 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
-    xmlns:other="using:BiliBili_UWP.Models.UI.Others"
-    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:ext="using:BiliBili_Controls.Extensions"
     mc:Ignorable="d"
     Loaded="UserControl_Loaded"
     d:DesignHeight="300"
@@ -22,7 +21,7 @@
             </Grid.RowDefinitions>
             <Grid HorizontalAlignment="Center" Tapped="Account_Tapped">
                 <PersonPicture x:Name="UserAvatar" Style="{StaticResource BasicPersonPictureStyle}" Width="55"/>
-                <controls:ImageEx Width="100" Stretch="Uniform" DecodePixelWidth="100" x:Name="PendantImage"/>
+                <widgets:BiliImage Width="100" DecodePixelWidth="100" x:Name="PendantImage"/>
             </Grid>
             <StackPanel Grid.Row="1" Margin="0,0,0,0">
                 <TextBlock Text="--" x:Name="UserNameBlock" Style="{StaticResource CaptionTextStyle}" FontWeight="Bold"
@@ -30,15 +29,15 @@
                 <widgets:LevelBlock x:Name="LevelBlock" HorizontalAlignment="Center" Margin="0,5,0,0"/>
             </StackPanel>
             <RelativePanel Width="200" HorizontalAlignment="Center" Grid.Row="2" Margin="0,15,0,0">
-                <StackPanel RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" Tapped="Dynamic_Tapped">
+                <StackPanel RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" ext:PressEffect.IsEnabled="True" Tapped="Dynamic_Tapped">
                     <TextBlock Style="{StaticResource CaptionTextStyle}" Text="--" x:Name="DynamicBlock" HorizontalAlignment="Center"/>
                     <TextBlock Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource NormalTextColor}" Text="动态" HorizontalAlignment="Center"/>
                 </StackPanel>
-                <StackPanel RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" Tapped="Follow_Tapped">
+                <StackPanel RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" ext:PressEffect.IsEnabled="True" Tapped="Follow_Tapped">
                     <TextBlock Style="{StaticResource CaptionTextStyle}" Text="--" x:Name="FollowBlock" HorizontalAlignment="Center"/>
                     <TextBlock Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource NormalTextColor}" Text="关注" HorizontalAlignment="Center"/>
                 </StackPanel>
-                <StackPanel RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" Tapped="Fans_Tapped">
+                <StackPanel RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" ext:PressEffect.IsEnabled="True" Tapped="Fans_Tapped">
                     <TextBlock Style="{StaticResource CaptionTextStyle}" Text="--" x:Name="FanBlock" HorizontalAlignment="Center"/>
                     <TextBlock Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource NormalTextColor}" Text="粉丝" HorizontalAlignment="Center"/>
                 </StackPanel>

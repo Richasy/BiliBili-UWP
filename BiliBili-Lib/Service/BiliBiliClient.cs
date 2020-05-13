@@ -261,9 +261,9 @@ namespace BiliBili_Lib.Service
         {
             var param = new Dictionary<string, string>();
             param.Add("oid", oid);
-            param.Add("parent", oid);
+            param.Add("parent", parentId);
             param.Add("root", rootId);
-            param.Add("type", parentId);
+            param.Add("type", type);
             param.Add("message", Uri.EscapeDataString(message));
             param.Add("lottery", "0");
             param.Add("vote", "0");

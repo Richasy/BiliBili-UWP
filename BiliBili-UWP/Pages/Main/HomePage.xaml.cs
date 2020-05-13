@@ -1,5 +1,6 @@
 ﻿using BiliBili_Lib.Models.BiliBili;
 using BiliBili_Lib.Tools;
+using BiliBili_UWP.Components.Controls;
 using BiliBili_UWP.Models.Core;
 using BiliBili_UWP.Models.UI;
 using BiliBili_UWP.Models.UI.Interface;
@@ -37,11 +38,13 @@ namespace BiliBili_UWP.Pages.Main
         public ObservableCollection<VideoRecommend> RecommendCollection = App.BiliViewModel.RecommendVideoCollection;
         private bool _isRecommendRequesting = false;
         private double _scrollOffset = 0;
+        
         public HomePage()
         {
             this.InitializeComponent();
             NavigationCacheMode = NavigationCacheMode.Enabled;
             channelVM.IsLoginChanged += IsLoginChanged;
+            
         }
 
         private async void IsLoginChanged(object sender, bool e)
@@ -53,7 +56,7 @@ namespace BiliBili_UWP.Pages.Main
         {
             App.AppViewModel.CurrentPagePanel.ScrollToBottom=ScrollViewerBottomHandle;
             App.AppViewModel.CurrentPagePanel.ScrollChanged = ScrollViewerChanged;
-            
+            RecommendVideoView.EnableAnimation = App.AppViewModel.IsEnableAnimation;
             if (_isInit || e.NavigationMode == NavigationMode.Back)
             {
                 return;
@@ -150,6 +153,13 @@ namespace BiliBili_UWP.Pages.Main
         private void VideoContainer_NeedRemoveVideo(object sender, VideoRecommend e)
         {
             RecommendCollection.Remove(e);
+        }
+
+        private void RecommendVideoView_ContainerContentChanging(ListViewBase sender, ContainerContentChangingEventArgs args)
+        {
+            args.Handled = true;
+            RecommendVideoCard card = (RecommendVideoCard)args.ItemContainer.ContentTemplateRoot;
+            card.RenderContainer(args);
         }
     }
 }

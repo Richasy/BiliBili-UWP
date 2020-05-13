@@ -4,6 +4,7 @@
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:others="using:BiliBili_UWP.Models.UI.Others"
     xmlns:c="using:NSDanmaku.Controls"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:local="using:BiliBili_UWP.Template">
     <ResourceDictionary.ThemeDictionaries>
         <ResourceDictionary x:Key="Light" Source="ms-appx:///Theme/Light.xaml"/>
@@ -587,6 +588,24 @@
         <Setter Property="Foreground" Value="{ThemeResource PrimaryColor}"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
+    </Style>
+    <Style x:Key="MuxcProgressRingStyle" TargetType="muxc:ProgressRing">
+        <Setter Property="Width" Value="45"/>
+        <Setter Property="Height" Value="45"/>
+        <Setter Property="IsActive" Value="False" />
+        <Setter Property="Background" Value="{ThemeResource ProgressColor}" />
+        <Setter Property="Foreground" Value="{ThemeResource PrimaryColor}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+    </Style>
+    <Style x:Key="MuxcProgressBarStyle" TargetType="muxc:ProgressBar">
+        <Setter Property="IsIndeterminate" Value="True" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Visibility" Value="Collapsed" />
+        <Setter Property="Foreground" Value="{ThemeResource PrimaryColor}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Height" Value="3" />
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
     </Style>
     <DataTemplate x:Key="DialogTitle">
         <TextBlock Style="{StaticResource HeaderTextStyle}"

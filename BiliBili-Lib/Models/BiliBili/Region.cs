@@ -25,7 +25,7 @@ namespace BiliBili_Lib.Models.BiliBili
         public int reid { get; set; }
         public string name { get; set; }
         public string logo { get; set; }
-        public string _goto { get; set; }
+        public string @goto { get; set; }
         public string param { get; set; }
         public int type { get; set; }
 

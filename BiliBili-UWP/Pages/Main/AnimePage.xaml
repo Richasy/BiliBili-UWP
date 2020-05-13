@@ -8,7 +8,8 @@
     xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
     xmlns:controls="using:BiliBili_UWP.Components.Controls"
     xmlns:bilibili="using:BiliBili_Lib.Models.BiliBili"
-    xmlns:controls1="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:others="using:BiliBili_UWP.Models.UI.Others"
+    xmlns:controls1="using:Microsoft.Toolkit.Uwp.UI.Controls" xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:DataType="bilibili:AnimeModuleItem" x:Key="BannerItemTemplate">
@@ -30,7 +31,8 @@
                                        Tip="{x:Bind desc}"
                                        Title="{x:Bind title}"
                                        DecodePixelWidth="160"
-                                       Width="180"
+                                       Width="200"
+                                       ExtraButtonVisbility="Collapsed"
                                        BottomText="{x:Bind stat.follow_view}"
                                        SectionVisibility="Collapsed"
                                        />
@@ -44,7 +46,7 @@
                 </Grid.RowDefinitions>
                 <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="13" Margin="0,0,0,10"
                            Text="{x:Bind title}" FontWeight="Bold"/>
-                <ItemsControl Grid.Row="1" MaxHeight="250" ItemsSource="{x:Bind cards}"
+                <ItemsControl Grid.Row="1" Height="250" ItemsSource="{x:Bind cards}"
                               ScrollViewer.VerticalScrollBarVisibility="Visible">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate x:DataType="bilibili:Card">
@@ -77,7 +79,7 @@
             <TextBlock Style="{StaticResource HeaderTextStyle}" x:Name="TitleBlock" Text="--" VerticalAlignment="Center"/>
             <StackPanel Orientation="Horizontal" Grid.Column="1">
                 <widgets:AsyncButton Style="{StaticResource PrimaryAsyncButtonStyle}" Icon="&#xE926;" Text="索引" Margin="10,0,0,0"
-                                     x:Name="IndexButton" Click="IndexButton_Click"/>
+                                     x:Name="IndexButton" Click="IndexButton_Click" Padding="10,3,10,6"/>
                 <widgets:AsyncButton Style="{StaticResource DefaultAsyncButtonStyle}" Icon="&#xEA3B;" Text="时间表" Margin="10,0,0,0"
                                      x:Name="TimelineButton" Click="TimelineButton_Click"/>
                 <widgets:AsyncButton Style="{StaticResource DefaultAsyncButtonStyle}" Icon="&#xE963;" Text="查看子区" Margin="10,0,0,0"
@@ -93,5 +95,7 @@
         <controls:HorizontalScrollSectionPanel Title="榜单" HoldText="获取榜单数据失败" x:Name="RankContainer" ItemsSource="{x:Bind RankCollection}"
                                             ItemTemplate="{StaticResource RankItemTemplate}" IsItemClickEnabled="False"
                                             Grid.Row="3" Margin="0,20,0,0"/>
+        <muxc:ProgressBar x:Name="LoadingBar" VerticalAlignment="Top" Style="{StaticResource MuxcProgressBarStyle}"
+                     Grid.Row="1"/>
     </Grid>
 </Page>

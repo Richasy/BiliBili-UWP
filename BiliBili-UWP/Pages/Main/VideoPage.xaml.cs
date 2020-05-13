@@ -12,6 +12,7 @@ using SYEngine;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -87,6 +88,11 @@ namespace BiliBili_UWP.Pages.Main
                     _isPlayList = true;
                     _fromSign = "";
                 }
+                var anim = ConnectedAnimationService.GetForCurrentView().GetAnimation("VideoConnectedAnimation");
+                if (anim != null)
+                {
+                    anim.TryStart(VideoPlayer);
+                }
                 await Refresh();
             }
         }
@@ -115,7 +121,7 @@ namespace BiliBili_UWP.Pages.Main
 
             PlayCountBlock.Text = "-";
             DanmukuCountBlock.Text = "-";
-            ReplyCountBlock.Text = "-";
+            CommentButton.Text = "评论";
             RepostCountBlock.Text = "-";
 
             DescriptionBlock.Text = "--";
@@ -124,8 +130,6 @@ namespace BiliBili_UWP.Pages.Main
 
             SelectLikeCheckBox.IsChecked = true;
             FavoriteListView.ItemsSource = null;
-
-            VideoPlayer.IsAutoReturnWhenEnd = !_isPlayList;
 
             FollowButton.Style = UIHelper.GetStyle("PrimaryAsyncButtonStyle");
             FollowButton.Text = "关注";
@@ -144,7 +148,7 @@ namespace BiliBili_UWP.Pages.Main
             var tip = new WaitingPopup("加载视频中...");
             tip.ShowPopup();
             var detail = await _videoService.GetVideoDetailAsync(videoId, _fromSign);
-            if (detail != null)
+            if (detail != null && detail.aid > 0)
             {
                 _detail = detail;
                 if (InitDetail())
@@ -157,26 +161,30 @@ namespace BiliBili_UWP.Pages.Main
         {
             if (!string.IsNullOrEmpty(_detail.redirect_url))
             {
-                var regex_ep = new Regex(@"ep(\d+)");
-                if (regex_ep.IsMatch(_detail.redirect_url))
+                var result = BiliTool.GetResultFromUri(_detail.redirect_url);
+                videoId = 0;
+                _currentPartId = 0;
+                App.AppViewModel.CurrentPagePanel.RemoveMainHistory(Models.Enums.SideMenuItemType.VideoPlayer);
+                if (result.Type == UriType.Bangumi)
                 {
-                    string epId = regex_ep.Match(_detail.redirect_url).Value.Replace("ep", "");
                     new TipPopup("正在转到专题...").ShowMessage();
-                    videoId = 0;
-                    _currentPartId = 0;
-                    App.AppViewModel.CurrentPagePanel.MainPageBack();
-                    App.AppViewModel.PlayBangumi(Convert.ToInt32(epId), null, true);
-                    return false;
+                    App.AppViewModel.PlayBangumi(Convert.ToInt32(result.Param), null, true);
                 }
+                return false;
             }
+            if (_isPlayList)
+                VideoPlayer.IsAutoReturnWhenEnd = false;
+            else
+                VideoPlayer.IsAutoReturnWhenEnd = _detail.pages.Count <= 1;
             TitleBlock.Text = _detail.title;
             PlayCountBlock.Text = AppTool.GetNumberAbbreviation(_detail.stat.view);
             DanmukuCountBlock.Text = AppTool.GetNumberAbbreviation(_detail.stat.danmaku);
             RepostCountBlock.Text = AppTool.GetNumberAbbreviation(_detail.stat.share);
-            ReplyCountBlock.Text = AppTool.GetNumberAbbreviation(_detail.stat.reply);
+            CommentButton.Text = AppTool.GetNumberAbbreviation(_detail.stat.reply);
+            BVBlock.Text = _detail.bvid;
+            AVBlock.Text = _detail.aid.ToString();
 
             DescriptionBlock.Text = _detail.desc;
-            ToolTipService.SetToolTip(DescriptionBlock, _detail.desc);
 
             LikeButton.Text = AppTool.GetNumberAbbreviation(_detail.stat.like);
             CoinButton.Text = AppTool.GetNumberAbbreviation(_detail.stat.coin);
@@ -188,13 +196,7 @@ namespace BiliBili_UWP.Pages.Main
             UPNameBlock.Text = _detail.owner.name;
 
             _detail.pages.ForEach(p => VideoPartCollection.Add(p));
-            if (_detail.history != null)
-            {
-                var historyPart = VideoPartCollection.Where(p => p.cid == _detail.history.cid).FirstOrDefault();
-                PartListView.SelectedItem = historyPart;
-            }
-            else
-                PartListView.SelectedIndex = 0;
+            PartListView.SelectedIndex = 0;
             PartListView.Visibility = _detail.pages.Count > 1 ? Visibility.Visible : Visibility.Collapsed;
 
             if (_detail.tag != null && _detail.tag.Count > 0)
@@ -227,6 +229,7 @@ namespace BiliBili_UWP.Pages.Main
             {
                 _detail.relates.Where(p => p.@goto == "av").Take(10).ToList().ForEach(p => RelatedCollection.Add(p));
             }
+            CheckLikeHoldState();
             return true;
         }
 
@@ -259,7 +262,10 @@ namespace BiliBili_UWP.Pages.Main
         {
             App.AppViewModel.PlayVideoCinema(e);
         }
-
+        private void CheckLikeHoldState()
+        {
+            LikeButton.CanHolding = !(LikeButton.IsCheck && CoinButton.IsCheck && FavoriteButton.IsCheck);
+        }
         private async void LikeButton_Click(object sender, EventArgs e)
         {
             if (App.BiliViewModel.CheckAccoutStatus())
@@ -272,10 +278,12 @@ namespace BiliBili_UWP.Pages.Main
                     string prompt = isLike ? "已点赞" : "已取消点赞";
                     new TipPopup(prompt).ShowMessage();
                     LikeButton.IsCheck = !LikeButton.IsCheck;
+                    UpdateVideoInfo();
                 }
                 else
                     new TipPopup("点赞操作失败").ShowError();
                 LikeButton.IsEnabled = true;
+                CheckLikeHoldState();
             }
         }
 
@@ -313,14 +321,18 @@ namespace BiliBili_UWP.Pages.Main
             if (result)
             {
                 if (Convert.ToBoolean(SelectLikeCheckBox.IsChecked))
+                {
                     LikeButton.IsCheck = true;
+                }
                 new TipPopup("成功投币！").ShowMessage();
+                UpdateVideoInfo();
                 CoinFlyout.Hide();
             }
             else
                 new TipPopup("投币失败").ShowError();
             CoinButton.IsCheck = result;
             CoinButton.IsEnabled = true;
+            CheckLikeHoldState();
         }
 
         private async void FavoriteSureButton_Click(object sender, RoutedEventArgs e)
@@ -351,12 +363,14 @@ namespace BiliBili_UWP.Pages.Main
                     FavoriteFlyout.Hide();
                     FavoriteButton.IsCheck = selectedItems.Count > 0;
                     new TipPopup("已更改收藏夹").ShowMessage();
+                    UpdateVideoInfo();
                 }
                 else
                 {
                     new TipPopup("收藏失败").ShowError();
                 }
             }
+            CheckLikeHoldState();
         }
 
         private async void PartListView_ItemClick(object sender, ItemClickEventArgs e)
@@ -436,14 +450,6 @@ namespace BiliBili_UWP.Pages.Main
             App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Pages.Sub.Account.DetailPage), accId);
         }
 
-        private void ReplyButton_Click(object sender, RoutedEventArgs e)
-        {
-            var param = new Dictionary<string, string>();
-            param.Add("oid", _detail.aid.ToString());
-            param.Add("type", "1");
-            App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Sub.ReplyPage), param);
-        }
-
         private async void PlayListContainer_ItemClick(object sender, ItemClickEventArgs e)
         {
             var item = e.ClickedItem as VideoDetail;
@@ -470,6 +476,52 @@ namespace BiliBili_UWP.Pages.Main
                 videoId = item.aid;
                 await Refresh();
             }
+        }
+
+        private void VideoPlayer_PartSwitched(object sender, int e)
+        {
+            PartListView.SelectedIndex = e;
+        }
+
+        private async void LikeButton_Hold(object sender, bool e)
+        {
+            if (e)
+            {
+                if (App.BiliViewModel.CheckAccoutStatus())
+                {
+                    bool result = await _videoService.TripleVideoAsync(_detail.aid);
+                    if (result)
+                    {
+                        LikeButton.IsCheck = true;
+                        CoinButton.IsCheck = true;
+                        FavoriteButton.IsCheck = true;
+                        CoinButton.ShowBubble();
+                        FavoriteButton.ShowBubble();
+                        new TipPopup("已一键三连~").ShowMessage();
+                        UpdateVideoInfo();
+                    }
+                    else
+                    {
+                        new TipPopup("一键三连失败QAQ").ShowError();
+                    }
+                }
+            }
+        }
+
+        private async void UpdateVideoInfo()
+        {
+            var data = await _videoService.GetVideoSlimAsync(_detail.aid);
+            LikeButton.Text = AppTool.GetNumberAbbreviation(data.like);
+            CoinButton.Text = AppTool.GetNumberAbbreviation(data.coin);
+            FavoriteButton.Text = AppTool.GetNumberAbbreviation(data.favorite);
+        }
+
+        private void CommentButton_Click(object sender, RoutedEventArgs e)
+        {
+            var param = new Dictionary<string, string>();
+            param.Add("oid", _detail.aid.ToString());
+            param.Add("type", "1");
+            App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Sub.ReplyPage), param);
         }
     }
 }

@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:anime="using:BiliBili_Lib.Models.BiliBili.Anime"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:widgets="using:BiliBili_UWP.Components.Widgets" xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:DataType="anime:Timeline" x:Key="TimelineItemTemplate">
@@ -35,9 +36,8 @@
                                     <RowDefinition Height="*" />
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
-                                <controls:ImageEx Source="{x:Bind cover,Converter={StaticResource CoverResolutionConverter},ConverterParameter=200}"
-                                                  Stretch="UniformToFill" IsCacheEnabled="True" PlaceholderSource="ms-appx:///Assets/img_holder_rect.png"
-                                                  PlaceholderStretch="Uniform" CornerRadius="4"/>
+                                <widgets:BiliImage Source="{x:Bind cover,Converter={StaticResource CoverResolutionConverter},ConverterParameter=200}"
+                                                  CornerRadius="4"/>
                                 <StackPanel Grid.Row="1">
                                     <TextBlock Text="{x:Bind title}" Margin="0,3,0,0" Foreground="{ThemeResource NormalTextColor}" Style="{StaticResource SmallTipTextStyle}" MaxWidth="110" ToolTipService.ToolTip="{x:Bind title}"/>
                                     <TextBlock Text="{x:Bind pub_index}" Style="{StaticResource SmallTipTextStyle}" FontSize="10" Foreground="{ThemeResource PrimaryColor}"
@@ -58,7 +58,7 @@
                   ItemTemplate="{StaticResource TimelineItemTemplate}"
                   x:Name="TimelineListView"
                   />
-        <ProgressRing Style="{StaticResource BasicProgressRingStyle}" x:Name="LoadingRing"/>
+        <muxc:ProgressRing Style="{StaticResource MuxcProgressRingStyle}" x:Name="LoadingRing"/>
         <TextBlock Style="{StaticResource TitleTextBlockStyle}" FontSize="15" Text="数据获取失败"
                    x:Name="HolderText" VerticalAlignment="Top" HorizontalAlignment="Left" Visibility="Collapsed"/>
     </Grid>

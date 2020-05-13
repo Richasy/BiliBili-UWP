@@ -1,4 +1,5 @@
 ﻿using BiliBili_Lib.Models.BiliBili;
+using BiliBili_Lib.Tools;
 using BiliBili_UWP.Components.Widgets;
 using BiliBili_UWP.Models.UI;
 using System;
@@ -38,26 +39,25 @@ namespace BiliBili_UWP.Components.Controls
 
         // Using a DependencyProperty as the backing store for Data.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty DataProperty =
-            DependencyProperty.Register("Data", typeof(VideoRecommend), typeof(RecommendVideoCard), new PropertyMetadata(null,new PropertyChangedCallback(Data_Changed)));
+            DependencyProperty.Register("Data", typeof(VideoRecommend), typeof(RecommendVideoCard), new PropertyMetadata(null, new PropertyChangedCallback(Data_Changed)));
 
         private static void Data_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if(e.NewValue!=null && e.NewValue is VideoRecommend data)
+            if (e.NewValue != null && e.NewValue is VideoRecommend data)
             {
                 var instance = d as RecommendVideoCard;
                 var card = instance.VideoCard;
                 card.Cover = data.cover;
                 card.Title = data.title;
-                //card.Tip = string.IsNullOrEmpty(data.args?.up_name) ? "--" : data.args.up_name;
                 card.Tip = data.desc;
-                card.FirstSectionContent = data.cover_left_text_2.Replace("观看","");
+                card.FirstSectionContent = data.cover_left_text_2.Replace("观看", "");
                 card.SecondSectionContent = data.cover_left_text_3.Replace("弹幕", "");
                 card.Duration = data.cover_left_text_1;
                 card.RightBottomText = data.top_rcmd_reason ?? "";
                 if (data.card_goto == "bangumi")
-                    card.ExtraFlyout = instance.BangumiFlyout;
-                else
                     card.ExtraFlyout = instance.VideoFlyout;
+                else
+                    card.ExtraFlyout = instance.BangumiFlyout;
                 var feedback = data.three_point_v2.Where(p => p.type == "feedback").FirstOrDefault();
                 if (feedback != null)
                 {
@@ -87,10 +87,9 @@ namespace BiliBili_UWP.Components.Controls
             var item = (sender as FrameworkElement).DataContext as Reason;
             NotInterestedItemsControl.IsEnabled = false;
             bool result = await App.BiliViewModel._client.Video.DislikeRecommendVideoAsync(Data.args, item.id, Data.card_goto);
-            if(result)
+            if (result)
             {
                 new TipPopup("调整成功，将在下一次优化您的推荐").ShowMessage();
-                VideoFlyout.Hide();
                 NeedRemoveVideo?.Invoke(this, Data);
             }
             else
@@ -103,11 +102,10 @@ namespace BiliBili_UWP.Components.Controls
         {
             var item = (sender as FrameworkElement).DataContext as Reason;
             NotInterestedItemsControl.IsEnabled = false;
-            bool result = await App.BiliViewModel._client.Video.DislikeRecommendVideoAsync(Data.args, item.id, Data.card_goto,true);
+            bool result = await App.BiliViewModel._client.Video.DislikeRecommendVideoAsync(Data.args, item.id, Data.card_goto, true);
             if (result)
             {
                 new TipPopup("调整成功，将在下一次优化您的推荐").ShowMessage();
-                VideoFlyout.Hide();
                 NeedRemoveVideo?.Invoke(this, Data);
             }
             else
@@ -122,13 +120,17 @@ namespace BiliBili_UWP.Components.Controls
             if (result)
             {
                 new TipPopup("调整成功，将在下一次优化您的推荐").ShowMessage();
-                VideoFlyout.Hide();
                 NeedRemoveVideo?.Invoke(this, Data);
             }
             else
             {
                 new TipPopup("调整失败，请稍后重试").ShowError();
             }
+        }
+
+        public void RenderContainer(ContainerContentChangingEventArgs args)
+        {
+            VideoCard.RenderContainer(args);
         }
     }
 }
