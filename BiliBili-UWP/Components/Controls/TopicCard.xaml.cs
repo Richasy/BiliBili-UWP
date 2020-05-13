@@ -347,6 +347,8 @@ namespace BiliBili_UWP.Components.Controls
             TagList.Opacity = 0;
             MainDisplay.Opacity = 0;
             ButtonContainer.Opacity = 0;
+            if (Data == null)
+                Data = args.Item as Topic;
 
             args.RegisterUpdateCallback(RenderHeader);
         }

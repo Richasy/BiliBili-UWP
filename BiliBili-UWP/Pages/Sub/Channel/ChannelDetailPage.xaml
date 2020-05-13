@@ -118,6 +118,7 @@
                               ItemContainerStyle="{StaticResource TransparentListViewContainerStyle}"
                               Style="{StaticResource NoScrollListView}"
                               SelectionMode="None"
+                              ContainerContentChanging="TopicListView_ContainerContentChanging"
                               Padding="0"
                               />
                 </Grid>

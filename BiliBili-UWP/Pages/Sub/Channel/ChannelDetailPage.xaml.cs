@@ -300,5 +300,12 @@ namespace BiliBili_UWP.Pages.Sub.Channel
             DefaultVideoCard card = (DefaultVideoCard)args.ItemContainer.ContentTemplateRoot;
             card.RenderContainer(args);
         }
+
+        private void TopicListView_ContainerContentChanging(ListViewBase sender, ContainerContentChangingEventArgs args)
+        {
+            args.Handled = true;
+            TopicCard card = (TopicCard)args.ItemContainer.ContentTemplateRoot;
+            card.RenderContainer(args);
+        }
     }
 }
