@@ -10,6 +10,7 @@ namespace BiliBili_UWP.Models.Enums
     {
         None,
         Wide,
-        Rect
+        Rect,
+        Ring
     }
 }

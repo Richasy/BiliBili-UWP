@@ -37,6 +37,17 @@ namespace BiliBili_Lib.Models.BiliBili
         public string face { get; set; }
         public int mid { get; set; }
         public string name { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Owner owner &&
+                   mid == owner.mid;
+        }
+
+        public override int GetHashCode()
+        {
+            return 1557962925 + mid.GetHashCode();
+        }
     }
 
 }

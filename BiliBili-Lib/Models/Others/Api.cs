@@ -261,6 +261,10 @@ namespace BiliBili_Lib.Models.Others
         /// </summary>
         public const string APP_SEARCH_TYPE = _appBase + "/x/v2/search/type";
         /// <summary>
+        /// 用户搜索
+        /// </summary>
+        public const string APP_SEARCH_USER = _appBase + "/x/v2/search/user";
+        /// <summary>
         /// 获取搜索建议
         /// </summary>
         public const string APP_SEARCH_SUGGEST = "http://s.search.bilibili.com/main/suggest";

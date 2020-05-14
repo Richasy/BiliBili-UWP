@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:BiliBili_UWP.Components.Widgets"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations" xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     IsTabStop="False"
     mc:Ignorable="d"
     d:DesignHeight="300"
@@ -15,10 +15,11 @@
                HorizontalAlignment="{x:Bind HorizontalAlignment,Mode=OneWay}"
                VerticalAlignment="{x:Bind VerticalAlignment,Mode=OneWay}"
                Stretch="Uniform" Opacity="1.0"/>
+        <muxc:ProgressRing Style="{StaticResource MuxcProgressRingStyle}" x:Name="LoadingRing"/>
         <Image Name="DisplayImage"
                HorizontalAlignment="{x:Bind HorizontalAlignment,Mode=OneWay}"
                VerticalAlignment="{x:Bind VerticalAlignment,Mode=OneWay}"
-               Stretch="UniformToFill" ImageOpened="DisplayImage_ImageOpened"
+               Stretch="{x:Bind Stretch,Mode=OneWay}" ImageOpened="DisplayImage_ImageOpened"
                ImageFailed="DisplayImage_ImageFailed" Opacity="0"/>
 
         <VisualStateManager.VisualStateGroups>
@@ -26,7 +27,7 @@
                 <VisualState x:Name="Failed">
                     <Storyboard>
                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="DisplayImage"
-                                                                       Storyboard.TargetProperty="Opacity">
+                                                       Storyboard.TargetProperty="Opacity">
                             <DiscreteObjectKeyFrame KeyTime="0" Value="0" />
                         </ObjectAnimationUsingKeyFrames>
                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HolderImage"
@@ -47,6 +48,18 @@
                         </ObjectAnimationUsingKeyFrames>
                     </Storyboard>
                 </VisualState>
+                <VisualState x:Name="RingLoading">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="DisplayImage"
+                                                       Storyboard.TargetProperty="Opacity">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="0" />
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="LoadingRing"
+                                                       Storyboard.TargetProperty="IsActive">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="True" />
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
                 <VisualState x:Name="Loaded">
                     <Storyboard>
                         <DoubleAnimation AutoReverse="False"
@@ -63,6 +76,10 @@
                                          Storyboard.TargetProperty="Opacity"
                                          From="1"
                                          To="0" />
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="LoadingRing"
+                                                       Storyboard.TargetProperty="IsActive">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="False" />
+                        </ObjectAnimationUsingKeyFrames>
                     </Storyboard>
                 </VisualState>
                 <VisualState x:Name="Unloaded" />

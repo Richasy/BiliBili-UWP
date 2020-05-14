@@ -35,6 +35,10 @@ namespace BiliBili_UWP.Components.Controls
         public event EventHandler ImageTapped;
         public event EventHandler DocumentTapped;
 
+        public string Url { get; set; }
+        public string Title { get; set; }
+        public string ImageUrl { get; set; }
+
         public object Data
         {
             get { return (object)GetValue(DataProperty); }
@@ -52,32 +56,43 @@ namespace BiliBili_UWP.Components.Controls
                 var data = e.NewValue;
                 var instance = d as DynamicContentBlock;
                 instance.MainContentControl.Content = data;
-                if (data is VideoDynamic)
+                if (data is VideoDynamic v)
                 {
                     instance._cardType = "video";
                     instance.MainContentControl.ContentTemplate = instance.VideoTemplate;
+                    instance.Url = $"https://www.bilibili.com/video/av{v.aid}";
+                    instance.Title = v.title;
+                    instance.ImageUrl = v.pic;
                 }
-                else if (data is ImageDynamic)
+                else if (data is ImageDynamic i)
                 {
                     instance._cardType = "image";
                     instance.MainContentControl.ContentTemplate = instance.ImageTemplate;
+                    instance.Url = string.Empty;
+                    instance.Title = i.title;
+                    instance.ImageUrl = i.pictures.FirstOrDefault()?.img_src;
                 }
-                else if (data is DocumentDynamic)
+                else if (data is DocumentDynamic doc)
                 {
                     instance._cardType = "document";
                     instance.MainContentControl.ContentTemplate = instance.DocumentTemplate;
+                    instance.Url = $"https://www.bilibili.com/read/cv{doc.id}";
+                    instance.Title = doc.title;
+                    if(!string.IsNullOrEmpty(doc.banner_url))
+                        instance.ImageUrl = doc.banner_url;
                 }
                 else if (data is RepostDynamic repost)
                 {
                     instance._cardType = "repost";
                     repost.render_origin = App.BiliViewModel.DynamicContentConvert(repost.item.orig_type, repost.origin);
-                    if (repost.item.orig_type == 512)
+                    if (repost.item.orig_type == 512 || repost.item.orig_type==4101)
                     {
                         repost.origin_user.info = new SlimUserInfo();
                         var anime = repost.render_origin as AnimeDynamic;
                         repost.origin_user.info.face = anime.season.cover;
                         repost.origin_user.info.uname = anime.season.title;
                         repost.render_origin_content = anime.new_desc;
+                        repost.origin_user.info.uid = anime.season.season_id;
                     }
                     else if (repost.item.orig_type == 4303)
                     {
@@ -87,59 +102,65 @@ namespace BiliBili_UWP.Components.Controls
                         repost.origin_user.info.uname = da.up_info.name;
                         repost.origin_user.info.uid = da.up_id;
                     }
-                    else if (repost.item.orig_type == 4101)
-                    {
-                        repost.origin_user.info = new SlimUserInfo();
-                        var da = repost.render_origin as SeriesDynamic;
-                        repost.origin_user.info.face = da.season.square_cover;
-                        repost.origin_user.info.uname = da.season.title;
-                        repost.origin_user.info.uid = da.season.season_id;
-                    }
                     else if (repost.item.orig_type == 4)
                         repost.render_origin_content = (repost.render_origin as TextDynamic).content;
                     else if (repost.item.orig_type == 2)
                         repost.render_origin_content = Regex.Replace((repost.render_origin as ImageDynamic).description, @"#(.*?)#", "").Trim();
                     instance.MainContentControl.ContentTemplate = instance.RepostTemplate;
+                    instance.Url = string.Empty;
                 }
-                else if (data is AnimeDynamic)
+                else if (data is AnimeDynamic ani)
                 {
                     instance._cardType = "anime";
                     instance.MainContentControl.ContentTemplate = instance.AnimeTemplate;
+                    instance.Url = ani.url;
+                    instance.Title = ani.show_title;
+                    instance.ImageUrl = ani.cover;
                 }
                 else if (data is TextDynamic)
                 {
                     instance._cardType = "text";
                     instance.MainContentControl.ContentTemplate = instance.TextTemplate;
                 }
-                else if (data is ShortVideoDynamic)
+                else if (data is ShortVideoDynamic s)
                 {
                     instance._cardType = "shortVideo";
                     instance.MainContentControl.ContentTemplate = instance.ShortVideoTemplate;
+                    instance.Title = s.item.description;
+                    instance.Url = s.item.video_playurl;
+                    instance.ImageUrl = s.item.cover.unclipped;
                 }
-                else if (data is WebDynamic)
+                else if (data is WebDynamic w)
                 {
                     instance._cardType = "web";
                     instance.MainContentControl.ContentTemplate = instance.WebTemplate;
+                    instance.Title = w.sketch.title;
+                    instance.Url = w.sketch.target_url;
+                    instance.ImageUrl = w.sketch.cover_url;
                 }
-                else if (data is CourseDynamic)
+                else if (data is CourseDynamic c)
                 {
                     instance._cardType = "course";
                     instance.MainContentControl.ContentTemplate = instance.CourseTemplate;
+                    instance.Title = c.title;
+                    instance.Url = c.url;
+                    instance.ImageUrl = c.cover;
                 }
-                else if (data is MusicDynamic)
+                else if (data is MusicDynamic m)
                 {
                     instance._cardType = "music";
                     instance.MainContentControl.ContentTemplate = instance.MusicTemplate;
+                    instance.Url = string.Empty;
+                    instance.Title = m.title;
+                    instance.ImageUrl = m.cover;
                 }
-                else if (data is LiveDynamic)
+                else if (data is LiveDynamic l)
                 {
                     instance._cardType = "live";
                     instance.MainContentControl.ContentTemplate = instance.LiveTemplate;
-                }
-                else if (data is SeriesDynamic)
-                {
-                    instance._cardType = "series";
-                    instance.MainContentControl.ContentTemplate = instance.SeriesTemplate;
+                    instance.Url = $"https://live.bilibili.com/{l.roomid}";
+                    instance.Title = l.title;
+                    instance.ImageUrl = l.cover;
                 }
             }
         }
@@ -173,11 +194,6 @@ namespace BiliBili_UWP.Components.Controls
             else if (_cardType == "document")
             {
                 DocumentTapped?.Invoke(this, EventArgs.Empty);
-            }
-            else if (_cardType == "series")
-            {
-                var item = Data as SeriesDynamic;
-                App.AppViewModel.PlayBangumi(item.episode_id, sender, true);
             }
         }
 

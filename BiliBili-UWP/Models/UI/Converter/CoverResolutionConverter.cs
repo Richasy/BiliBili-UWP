@@ -17,7 +17,7 @@ namespace BiliBili_UWP.Models.UI.Converter
             {
                 //string ext = Path.GetExtension(url);
                 string suffix = "";
-                if (parameter != null)
+                if (parameter != null && !url.EndsWith("noface.gif"))
                     suffix = $"@{parameter.ToString()}w.jpg";
                 return url + suffix;
             }

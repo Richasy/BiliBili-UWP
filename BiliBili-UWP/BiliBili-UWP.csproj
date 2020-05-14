@@ -26,7 +26,7 @@
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x86|x64|arm|arm64</AppxBundlePlatforms>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
-    <PackageCertificateThumbprint>DEE731422977E8883FC955C3F48CE0D6DC6CFE61</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>0CC68437B59DE8D50CBF46BDA8072EB98D2344F1</PackageCertificateThumbprint>
     <AppxSymbolPackageEnabled>True</AppxSymbolPackageEnabled>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
@@ -243,6 +243,9 @@
     <Compile Include="Dialogs\ConfirmDialog.xaml.cs">
       <DependentUpon>ConfirmDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\RepostDialog.xaml.cs">
+      <DependentUpon>RepostDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\ShowImageDialog.xaml.cs">
       <DependentUpon>ShowImageDialog.xaml</DependentUpon>
     </Compile>
@@ -277,6 +280,7 @@
     <Compile Include="Models\UI\Interface\IAppPopup.cs" />
     <Compile Include="Models\UI\Interface\IPlayerPage.cs" />
     <Compile Include="Models\UI\Interface\IRefreshPage.cs" />
+    <Compile Include="Models\UI\Others\AtUserTemplateSelector.cs" />
     <Compile Include="Models\UI\Others\CustomResourceLoader.cs" />
     <Compile Include="Models\UI\Others\DanmakuColor.cs" />
     <Compile Include="Models\UI\Others\EmojiTemplateSelector.cs" />
@@ -638,6 +642,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Dialogs\ConfirmDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\RepostDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

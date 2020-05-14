@@ -26,7 +26,7 @@ namespace BiliBili_UWP.Components.Widgets
             this.InitializeComponent();
             VisualStateManager.GoToState(this, "Loading", true);
         }
-
+        private bool _isRing = false;
         public object Source
         {
             get { return (object)GetValue(SourceProperty); }
@@ -42,10 +42,14 @@ namespace BiliBili_UWP.Components.Widgets
             if (e.NewValue != e.OldValue)
             {
                 var instance = d as BiliImage;
-                VisualStateManager.GoToState(instance, "Loading", true);
+                if (instance._isRing)
+                    VisualStateManager.GoToState(instance, "RingLoading", false);
+                else
+                    VisualStateManager.GoToState(instance, "Loading", false);
                 if (e.NewValue == null)
                 {
                     instance.DisplayImage.Source = null;
+                    VisualStateManager.GoToState(instance, "Failed", false);
                 }
                 else if (e.NewValue is string url)
                 {
@@ -82,6 +86,7 @@ namespace BiliBili_UWP.Components.Widgets
             if (e.NewValue != e.OldValue && e.NewValue is BiliImageDisplayType type)
             {
                 var instance = d as BiliImage;
+                instance._isRing = false;
                 if (type == BiliImageDisplayType.Rect)
                 {
                     instance.HolderImage.Source = new BitmapImage(new Uri("ms-appx:///Assets/img_holder_rect.png"));
@@ -89,6 +94,10 @@ namespace BiliBili_UWP.Components.Widgets
                 else if (type == BiliImageDisplayType.Wide)
                 {
                     instance.HolderImage.Source = new BitmapImage(new Uri("ms-appx:///Assets/img_holder.png"));
+                }
+                else if (type == BiliImageDisplayType.Ring)
+                {
+                    instance._isRing = true;
                 }
             }
         }
@@ -102,6 +111,18 @@ namespace BiliBili_UWP.Components.Widgets
         // Using a DependencyProperty as the backing store for DecodePixelWidth.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty DecodePixelWidthProperty =
             DependencyProperty.Register("DecodePixelWidth", typeof(int), typeof(BiliImage), new PropertyMetadata(0));
+
+        public Stretch Stretch
+        {
+            get { return (Stretch)GetValue(StretchProperty); }
+            set { SetValue(StretchProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Stretch.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty StretchProperty =
+            DependencyProperty.Register("Stretch", typeof(Stretch), typeof(BiliImage), new PropertyMetadata(Stretch.UniformToFill));
+
+
 
 
 

@@ -97,7 +97,7 @@ namespace BiliBili_UWP.Models.Core
                 return JsonConvert.DeserializeObject<VideoDynamic>(content);
             else if (type == 64)
                 return JsonConvert.DeserializeObject<DocumentDynamic>(content);
-            else if (type == 512)
+            else if (type == 512 || type == 4101)
                 return JsonConvert.DeserializeObject<AnimeDynamic>(content);
             else if (type == 16)
                 return JsonConvert.DeserializeObject<ShortVideoDynamic>(content);
@@ -109,8 +109,6 @@ namespace BiliBili_UWP.Models.Core
                 return JsonConvert.DeserializeObject<MusicDynamic>(content);
             else if (type == 4200)
                 return JsonConvert.DeserializeObject<LiveDynamic>(content);
-            else if (type == 4101)
-                return JsonConvert.DeserializeObject<SeriesDynamic>(content);
             return null;
         }
 
@@ -144,7 +142,7 @@ namespace BiliBili_UWP.Models.Core
             }
         }
 
-        public async Task AddViewLater(object sender,int id)
+        public async Task AddViewLater(object sender, int id)
         {
             var LaterViewButton = sender as AppBarButton;
             LaterViewButton.IsEnabled = false;

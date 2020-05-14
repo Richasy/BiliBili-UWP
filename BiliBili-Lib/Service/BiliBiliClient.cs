@@ -123,6 +123,22 @@ namespace BiliBili_Lib.Service
             var result = await BiliTool.ConvertEntityFromWebAsync<T>(url, "data.items");
             return result;
         }
+        public async Task<List<Owner>> SearchUserAsync(string keyword,bool isFromDynamic=true)
+        {
+            var param = new Dictionary<string, string>();
+            param.Add("highlight", "0");
+            if(isFromDynamic)
+                param.Add("from_source", "dynamic_uname");
+            param.Add("keyword", Uri.EscapeDataString(keyword));
+            param.Add("order", "totalrank");
+            param.Add("order_sort", "0");
+            param.Add("pn", "0");
+            param.Add("ps", "10");
+            param.Add("user_type", "0");
+            string url = BiliTool.UrlContact(Api.APP_SEARCH_USER, param, true);
+            var result = await BiliTool.ConvertEntityFromWebAsync<List<Owner>>(url, "data.items");
+            return result;
+        }
         /// <summary>
         /// 获取搜索建议
         /// </summary>
