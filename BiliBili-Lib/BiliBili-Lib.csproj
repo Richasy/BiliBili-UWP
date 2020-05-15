@@ -167,6 +167,7 @@
     <Compile Include="Models\Others\ApiKeyInfo.cs" />
     <Compile Include="Models\Others\KeyValueModel.cs" />
     <Compile Include="Models\Others\NotifyBase.cs" />
+    <Compile Include="Models\Others\RepostLocation.cs" />
     <Compile Include="Models\Others\Secure.cs" />
     <Compile Include="Models\Others\TokenPackage.cs" />
     <Compile Include="Models\Others\WebClient.cs" />

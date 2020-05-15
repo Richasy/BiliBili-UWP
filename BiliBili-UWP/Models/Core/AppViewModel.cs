@@ -50,6 +50,7 @@ namespace BiliBili_UWP.Models.Core
         public ReplyDetailPopup _replyDetailPopup;
         public UpdatePopup _updatePopup;
         public DynamicDetailPopup _dynamicDetailPopup;
+        public RepostPopup _repostPopup;
         public WebView _documentWebView;
         public bool IsInBackground;
 
@@ -399,6 +400,27 @@ namespace BiliBili_UWP.Models.Core
             _dynamicDetailPopup.Data = data;
             _dynamicDetailPopup.Dynamic = dynamic;
             _dynamicDetailPopup.InitReply(rid);
+        }
+        public void ShowRepostPopup(string origin,Topic topic)
+        {
+            if (_repostPopup == null)
+                _repostPopup = new RepostPopup();
+            _repostPopup.ShowPopup();
+            _repostPopup.Init(origin, topic);
+        }
+        public void ShowRepostPopup(string origin, VideoDetail video)
+        {
+            if (_repostPopup == null)
+                _repostPopup = new RepostPopup();
+            _repostPopup.ShowPopup();
+            _repostPopup.Init(origin, video);
+        }
+        public void ShowRepostPopup(string origin, BangumiDetail bangumi,Episode part)
+        {
+            if (_repostPopup == null)
+                _repostPopup = new RepostPopup();
+            _repostPopup.ShowPopup();
+            _repostPopup.Init(origin, bangumi,part);
         }
     }
 }

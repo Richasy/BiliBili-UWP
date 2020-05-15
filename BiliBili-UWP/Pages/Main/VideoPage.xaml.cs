@@ -18,11 +18,13 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Media;
 using Windows.Media.Core;
 using Windows.Media.Playback;
+using Windows.Storage.Streams;
 using Windows.System.Display;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -105,6 +107,7 @@ namespace BiliBili_UWP.Pages.Main
             if (videoId > 0 && _currentPartId > 0)
                 await _videoService.AddVideoHistoryAsync(videoId, _currentPartId, VideoPlayer.CurrentProgress);
             Reset();
+            App.AppViewModel.CurrentPagePanel.CheckSubReplyPage();
             base.OnNavigatedFrom(e);
         }
         private void Reset()
@@ -122,7 +125,7 @@ namespace BiliBili_UWP.Pages.Main
             PlayCountBlock.Text = "-";
             DanmukuCountBlock.Text = "-";
             CommentButton.Text = "评论";
-            RepostCountBlock.Text = "-";
+            RepostButton.Text = "-";
 
             DescriptionBlock.Text = "--";
             UPAvatar.ProfilePicture = null;
@@ -179,7 +182,7 @@ namespace BiliBili_UWP.Pages.Main
             TitleBlock.Text = _detail.title;
             PlayCountBlock.Text = AppTool.GetNumberAbbreviation(_detail.stat.view);
             DanmukuCountBlock.Text = AppTool.GetNumberAbbreviation(_detail.stat.danmaku);
-            RepostCountBlock.Text = AppTool.GetNumberAbbreviation(_detail.stat.share);
+            RepostButton.Text = AppTool.GetNumberAbbreviation(_detail.stat.share);
             CommentButton.Text = AppTool.GetNumberAbbreviation(_detail.stat.reply);
             BVBlock.Text = _detail.bvid;
             AVBlock.Text = _detail.aid.ToString();
@@ -238,6 +241,7 @@ namespace BiliBili_UWP.Pages.Main
             var video = e.ClickedItem as VideoRelated;
             videoId = video.aid;
             _fromSign = "main.ugc-video-detail.0.0";
+            App.AppViewModel.CurrentPagePanel.CheckSubReplyPage();
             await Refresh();
         }
 
@@ -522,6 +526,40 @@ namespace BiliBili_UWP.Pages.Main
             param.Add("oid", _detail.aid.ToString());
             param.Add("type", "1");
             App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Sub.ReplyPage), param);
+        }
+
+        private void ShareDynamicButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (!App.BiliViewModel.CheckAccoutStatus())
+                return;
+            string content = _detail.title + "\n" + (_detail.desc??"");
+            App.AppViewModel.ShowRepostPopup(content, _detail);
+        }
+
+        private void ShareDataButton_Click(object sender, RoutedEventArgs e)
+        {
+            DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();
+            dataTransferManager.DataRequested += DataTransferManager_DataRequested;
+            DataTransferManager.ShowShareUI();
+        }
+
+        private void DataTransferManager_DataRequested(DataTransferManager sender, DataRequestedEventArgs args)
+        {
+            DataRequest request = args.Request;
+            request.Data.Properties.Title = _detail.title;
+            request.Data.Properties.Description = _detail.desc ?? "";
+            if (!string.IsNullOrEmpty(_detail.desc))
+                request.Data.SetText(_detail.desc);
+            request.Data.SetWebLink(new Uri($"https://www.bilibili.com/video/{_detail.bvid}"));
+            request.Data.SetBitmap(RandomAccessStreamReference.CreateFromUri(new Uri(_detail.pic)));
+        }
+
+        private void RepostButton_Click(object sender, EventArgs e)
+        {
+            if (App.BiliViewModel.CheckAccoutStatus())
+            {
+                FlyoutBase.ShowAttachedFlyout(sender as FrameworkElement);
+            }
         }
     }
 }

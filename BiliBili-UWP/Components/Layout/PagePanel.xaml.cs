@@ -87,7 +87,8 @@ namespace BiliBili_UWP.Components.Layout
         }
         public void NavigateToPage(SideMenuItemType type, object parameter = null, bool isBack = false)
         {
-            PageSplitView.IsPaneOpen = false;
+            if(PageSplitView.DisplayMode==SplitViewDisplayMode.CompactOverlay)
+                IsSubPageOpen = false;
             var last = MainFrameHistoryList.LastOrDefault();
             var page = GetPageTypeFromMenuType(type);
             bool isRepeat = false;
@@ -98,7 +99,10 @@ namespace BiliBili_UWP.Components.Layout
                 App.AppViewModel.CurrentPageType = page;
                 NavigationTransitionInfo transitionInfo = null;
                 if (type == SideMenuItemType.VideoPlayer || !App.AppViewModel.IsEnableAnimation)
+                {
                     transitionInfo = new SuppressNavigationTransitionInfo();
+                    PageScrollViewer.ChangeView(0, 0, 1);
+                }  
                 else
                 {
                     if (isBack)
@@ -444,6 +448,21 @@ namespace BiliBili_UWP.Components.Layout
         {
             var page = GetPageTypeFromMenuType(type);
             MainFrameHistoryList.RemoveAll(p => p.Item1 == page);
+        }
+
+        public void CheckSubReplyPage()
+        {
+            if(SubFrameHistoryList.Count>0 && SubFrameHistoryList.Last().Item1 == typeof(Pages.Sub.ReplyPage))
+            {
+                if(SubFrameHistoryList.Count>1)
+                    SubPageBack();
+                else
+                {
+                    SubPageFrame.Content = null;
+                    SubFrameHistoryList.Clear();
+                    IsSubPageOpen = false;
+                }
+            }
         }
     }
 }

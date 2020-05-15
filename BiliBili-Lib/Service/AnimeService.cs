@@ -305,5 +305,61 @@ namespace BiliBili_Lib.Service
             }
             return false;
         }
+        /// <summary>
+        /// 转发动漫/电影/电视剧等
+        /// </summary>
+        /// <param name="content">转发内容</param>
+        /// <param name="videoId">视频ID</param>
+        /// <param name="atIds">At的人</param>
+        /// <param name="typeName">番剧：4097,影视:4098,电视剧:4099,国创:4100</param>
+        /// <returns></returns>
+        public async Task<bool> RepostBangumiAsync(string content, int epId, string typeName, List<RepostLocation> atIds)
+        {
+            var param = new Dictionary<string, string>();
+            string type = "";
+            switch (typeName)
+            {
+                case "番剧":
+                    type = "4097";
+                    break;
+                case "影视":
+                    type = "4098";
+                    break;
+                case "电视剧":
+                case "综艺":
+                    type = "4099";
+                    break;
+                case "国创":
+                    type = "4100";
+                    break;
+                case "纪录片":
+                    type = "4101";
+                    break;
+                default:
+                    type = "4097";
+                    break;
+            }
+            param.Add("content", Uri.EscapeDataString(content));
+            param.Add("at_uids", string.Join(',', atIds.Select(p => p.data)));
+            param.Add("ctrl", Uri.EscapeDataString(JsonConvert.SerializeObject(atIds)));
+            param.Add("share_uid", BiliTool.mid.ToString());
+            param.Add("rid", epId.ToString());
+            param.Add("type", type);
+            param.Add("repost_code", "20000");
+            param.Add("sync_comment", "0");
+            param.Add("sketch", "");
+            param.Add("uid", "0");
+            param.Add("share_info", "");
+            param.Add("extension", Uri.EscapeDataString("{\"emoji_type\":1}"));
+            param.Add("statistics", Uri.EscapeDataString("{\"appId\":1,\"version\":\"5.56.1\",\"abtest\":\"\",\"platform\":1}"));
+            var req = BiliTool.UrlContact("", param, true);
+            var response = await BiliTool.PostContentToWebAsync(Api.VIDEO_REPOST, req);
+            if (!string.IsNullOrEmpty(response))
+            {
+                var jobj = JObject.Parse(response);
+                return jobj["code"].ToString() == "0";
+            }
+            return false;
+        }
     }
 }

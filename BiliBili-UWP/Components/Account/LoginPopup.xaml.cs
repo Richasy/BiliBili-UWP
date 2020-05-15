@@ -94,6 +94,11 @@ namespace BiliBili_UWP.Components.Account
 
         private async void LoginButton_Click(object sender, RoutedEventArgs e)
         {
+            await Login();
+        }
+
+        private async Task Login()
+        {
             var waiting = new WaitingPopup("正在验证数据...");
             waiting.ShowPopup();
             string userName = UserNameInputBox.Text;
@@ -144,6 +149,7 @@ namespace BiliBili_UWP.Components.Account
             }
             waiting.HidePopup();
         }
+
         public void ShowMessageBanner(string text)
         {
             MessageBanner.Text = text;
@@ -205,6 +211,14 @@ namespace BiliBili_UWP.Components.Account
             BackupWebView.Source= new Uri("https://passport.bilibili.com/ajax/miniLogin/minilogin");
             BackupWebView.Width = 440;
             BackupWebView.Height = 480;
+        }
+
+        private async void PasswordInputBox_KeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == VirtualKey.Enter)
+            {
+                await Login();
+            }
         }
     }
 }

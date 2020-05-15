@@ -377,8 +377,10 @@ namespace BiliBili_UWP.Components.Controls
             MainDisplay.Opacity = 1;
         }
 
-        private async void ShareDynamicButton_Click(object sender, RoutedEventArgs e)
+        private void ShareDynamicButton_Click(object sender, RoutedEventArgs e)
         {
+            if (!App.BiliViewModel.CheckAccoutStatus())
+                return;
             string content = DescriptionBlock.Text;
             if (string.IsNullOrEmpty(content))
             {
@@ -389,8 +391,7 @@ namespace BiliBili_UWP.Components.Controls
                 else
                     content = $"{Data.desc.user_profile.info.uname}的动态";
             }
-            var dialog = new RepostDialog(content);
-            await dialog.ShowAsync();
+            App.AppViewModel.ShowRepostPopup(content, Data);
         }
 
         private void ShareDataButton_Click(object sender, RoutedEventArgs e)

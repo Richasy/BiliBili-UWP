@@ -214,7 +214,8 @@ namespace BiliBili_Lib.Service
             param.Add("mid", BiliTool.mid);
             param.Add("fnver", "0");
             param.Add("fnval", "16");
-            string url = BiliTool.UrlContact(Api.VIDEO_PLAY, param, true);
+            param.Add("fourk", "1");
+            string url = BiliTool.UrlContact(Api.VIDEO_PLAY, param, true,true);
             var data = await BiliTool.GetTextFromWebAsync(url);
             if (!string.IsNullOrEmpty(data))
             {
@@ -558,6 +559,38 @@ namespace BiliBili_Lib.Service
                 url = "https:" + url;
             var response = await BiliTool.ConvertEntityFromWebAsync<VideoSubtitle>(url, "");
             return response;
+        }
+        /// <summary>
+        /// 转发视频
+        /// </summary>
+        /// <param name="content">转发内容</param>
+        /// <param name="videoId">视频ID</param>
+        /// <param name="atIds">At的人</param>
+        /// <returns></returns>
+        public async Task<bool> RepostVideoAsync(string content, int videoId, List<RepostLocation> atIds)
+        {
+            var param = new Dictionary<string, string>();
+            param.Add("content", Uri.EscapeDataString(content));
+            param.Add("at_uids", string.Join(',', atIds.Select(p=>p.data)));
+            param.Add("ctrl", Uri.EscapeDataString(JsonConvert.SerializeObject(atIds)));
+            param.Add("share_uid", BiliTool.mid.ToString());
+            param.Add("rid", videoId.ToString());
+            param.Add("type", "8");
+            param.Add("repost_code", "20000");
+            param.Add("sync_comment", "0");
+            param.Add("sketch", "");
+            param.Add("uid", "0");
+            param.Add("share_info", "");
+            param.Add("extension", Uri.EscapeDataString("{\"emoji_type\":1}"));
+            param.Add("statistics", Uri.EscapeDataString("{\"appId\":1,\"version\":\"5.56.1\",\"abtest\":\"\",\"platform\":1}"));
+            var req = BiliTool.UrlContact("", param, true);
+            var response = await BiliTool.PostContentToWebAsync(Api.VIDEO_REPOST, req);
+            if (!string.IsNullOrEmpty(response))
+            {
+                var jobj = JObject.Parse(response);
+                return jobj["code"].ToString() == "0";
+            }
+            return false;
         }
     }
 }

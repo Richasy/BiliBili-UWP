@@ -70,6 +70,7 @@ namespace BiliBili_UWP.Pages.Main
         {
             App.AppViewModel.CurrentPagePanel.ScrollToBottom = null;
             App.AppViewModel.CurrentPagePanel.ScrollChanged = null;
+            App.AppViewModel.CurrentPagePanel.CheckSubReplyPage();
             base.OnNavigatingFrom(e);
         }
         private void Reset()

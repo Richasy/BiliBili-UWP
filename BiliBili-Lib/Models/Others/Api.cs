@@ -351,6 +351,10 @@ namespace BiliBili_Lib.Models.Others
         /// 获取视频字幕
         /// </summary>
         public const string VIDEO_SUBTITLE = _apiBase + "/x/player.so";
+        /// <summary>
+        /// 视频分享转发
+        /// </summary>
+        public const string VIDEO_REPOST = _vcBase + "/dynamic_repost/v1/dynamic_repost/share";
         #endregion
 
         #region 话题及动态 Topic Dynamic
@@ -374,6 +378,10 @@ namespace BiliBili_Lib.Models.Others
         /// 用户空间动态
         /// </summary>
         public const string DYNAMIC_USER_HISTORY = _vcBase + "/dynamic_svr/v1/dynamic_svr/space_history";
+        /// <summary>
+        /// 转发动态
+        /// </summary>
+        public const string DYNAMIC_REPOST = _vcBase + "/dynamic_repost/v1/dynamic_repost/repost";
         #endregion
 
         #region 动漫 Anime

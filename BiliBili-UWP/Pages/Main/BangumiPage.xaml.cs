@@ -14,8 +14,10 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage.Streams;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -80,6 +82,7 @@ namespace BiliBili_UWP.Pages.Main
             VideoPlayer.Close();
             App.AppViewModel.CurrentVideoPlayer = null;
             App.AppViewModel.CurrentPlayerType = Models.Enums.PlayerType.None;
+            App.AppViewModel.CurrentPagePanel.CheckSubReplyPage();
             if (_currentPart != null)
                 await _animeService.AddVideoHistoryAsync(_currentPart.aid, _currentPart.id, _currentPart.cid, VideoPlayer.CurrentProgress);
             Reset();
@@ -98,7 +101,7 @@ namespace BiliBili_UWP.Pages.Main
             PlayCountBlock.Text = "-";
             DanmukuCountBlock.Text = "-";
             CommentButton.Text = "评论";
-            RepostCountBlock.Text = "-";
+            RepostButton.Text = "-";
             BasicInfoBlock.Text = "-";
             Section1Title.Text = "--";
             Section1Content.Text = "--";
@@ -139,7 +142,7 @@ namespace BiliBili_UWP.Pages.Main
             TitleBlock.Text = _detail.title;
             PlayCountBlock.Text = _detail.stat.play;
             DanmukuCountBlock.Text = AppTool.GetNumberAbbreviation(_detail.stat.danmakus);
-            RepostCountBlock.Text = AppTool.GetNumberAbbreviation(_detail.stat.share);
+            RepostButton.Text = AppTool.GetNumberAbbreviation(_detail.stat.share);
             CommentButton.Text = AppTool.GetNumberAbbreviation(_detail.stat.reply);
 
             DescriptionBlock.Text = _detail.evaluate;
@@ -183,7 +186,7 @@ namespace BiliBili_UWP.Pages.Main
                     {
                         _currentPart = part;
                         PartListView.SelectedIndex = i;
-                        PartListView.ScrollIntoView(part,ScrollIntoViewAlignment.Leading);
+                        PartListView.ScrollIntoView(part, ScrollIntoViewAlignment.Leading);
                         break;
                     }
                 }
@@ -199,7 +202,7 @@ namespace BiliBili_UWP.Pages.Main
                 }
             }
 
-            if (_currentPart == null && _detail.episodes.Count>0)
+            if (_currentPart == null && _detail.episodes.Count > 0)
             {
                 _currentPart = _detail.episodes.First();
                 PartListView.SelectedIndex = 0;
@@ -273,7 +276,7 @@ namespace BiliBili_UWP.Pages.Main
 
         private void CoinButton_Click(object sender, EventArgs e)
         {
-            if (CoinButton.IsCheck || _currentPart==null)
+            if (CoinButton.IsCheck || _currentPart == null)
                 return;
             if (App.BiliViewModel.CheckAccoutStatus())
             {
@@ -371,6 +374,40 @@ namespace BiliBili_UWP.Pages.Main
                 param.Add("oid", _currentPart.aid.ToString());
                 param.Add("type", "1");
                 App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Sub.ReplyPage), param);
+            }
+        }
+
+        private void ShareDynamicButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (!App.BiliViewModel.CheckAccoutStatus())
+                return;
+            string content = _currentPart.share_copy;
+            App.AppViewModel.ShowRepostPopup(content, _detail, _currentPart);
+        }
+
+        private void ShareDataButton_Click(object sender, RoutedEventArgs e)
+        {
+            DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();
+            dataTransferManager.DataRequested += DataTransferManager_DataRequested;
+            DataTransferManager.ShowShareUI();
+        }
+
+        private void DataTransferManager_DataRequested(DataTransferManager sender, DataRequestedEventArgs args)
+        {
+            DataRequest request = args.Request;
+            request.Data.Properties.Title = _currentPart.share_copy;
+            request.Data.Properties.Description = _detail.evaluate;
+            if (!string.IsNullOrEmpty(_detail.evaluate))
+                request.Data.SetText(_detail.evaluate);
+            request.Data.SetWebLink(new Uri(_currentPart.share_url));
+            request.Data.SetBitmap(RandomAccessStreamReference.CreateFromUri(new Uri(_currentPart.cover)));
+        }
+
+        private void RepostButton_Click(object sender, EventArgs e)
+        {
+            if (App.BiliViewModel.CheckAccoutStatus())
+            {
+                FlyoutBase.ShowAttachedFlyout(sender as FrameworkElement);
             }
         }
     }

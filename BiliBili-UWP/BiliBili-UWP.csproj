@@ -26,7 +26,7 @@
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x86|x64|arm|arm64</AppxBundlePlatforms>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
-    <PackageCertificateThumbprint>0CC68437B59DE8D50CBF46BDA8072EB98D2344F1</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>4234FD68393FD8E15FB75ECDB3A555800C1F2698</PackageCertificateThumbprint>
     <AppxSymbolPackageEnabled>True</AppxSymbolPackageEnabled>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
@@ -174,6 +174,9 @@
     <Compile Include="Components\Controls\ReplyTextBox.xaml.cs">
       <DependentUpon>ReplyTextBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Components\Controls\RepostPopup.xaml.cs">
+      <DependentUpon>RepostPopup.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Components\Controls\ScanChannelPanel.xaml.cs">
       <DependentUpon>ScanChannelPanel.xaml</DependentUpon>
     </Compile>
@@ -242,9 +245,6 @@
     </Compile>
     <Compile Include="Dialogs\ConfirmDialog.xaml.cs">
       <DependentUpon>ConfirmDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Dialogs\RepostDialog.xaml.cs">
-      <DependentUpon>RepostDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\ShowImageDialog.xaml.cs">
       <DependentUpon>ShowImageDialog.xaml</DependentUpon>
@@ -553,6 +553,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Components\Controls\RepostPopup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Components\Controls\ScanChannelPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -642,10 +646,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Dialogs\ConfirmDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Dialogs\RepostDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

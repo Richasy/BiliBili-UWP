@@ -157,5 +157,41 @@ namespace BiliBili_Lib.Service
             }
             return null;
         }
+        /// <summary>
+        /// 转发动态
+        /// </summary>
+        /// <param name="content">附加内容</param>
+        /// <param name="dynamicId">被转发动态ID</param>
+        /// <param name="rid">被转发动态评论ID</param>
+        /// <param name="type">被转发动态类型</param>
+        /// <param name="atIds">at的人</param>
+        /// <returns></returns>
+        public async Task<bool> RepostDynamicAsync(string content, string dynamicId,string rid,int type,List<RepostLocation> atIds)
+        {
+            if (atIds == null)
+                atIds = new List<RepostLocation>();
+            var param = new Dictionary<string, string>();
+            param.Add("content", Uri.EscapeDataString(content));
+            param.Add("at_uids", string.Join(',', atIds.Select(p=>p.data)));
+            param.Add("ctrl", Uri.EscapeDataString(JsonConvert.SerializeObject(atIds)));
+            param.Add("dynamic_id", dynamicId);
+            param.Add("rid", rid);
+            param.Add("repost_code", "10000");
+            param.Add("sync_comment", "0");
+            param.Add("spec_type", "0");
+            param.Add("type", type.ToString());
+            param.Add("uid", BiliTool.mid.ToString());
+            param.Add("extension", Uri.EscapeDataString("{\"emoji_type\":1}"));
+            param.Add("statistics", Uri.EscapeDataString("{\"appId\":1,\"version\":\"5.56.1\",\"abtest\":\"\",\"platform\":1}"));
+            var req = BiliTool.UrlContact("", param, true);
+            var response = await BiliTool.PostContentToWebAsync(Api.DYNAMIC_REPOST, req);
+            if (!string.IsNullOrEmpty(response))
+            {
+                var jobj = JObject.Parse(response);
+                return jobj["code"].ToString() == "0";
+            }
+            return false;
+        }
+        
     }
 }

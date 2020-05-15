@@ -90,7 +90,7 @@
             </Grid.ColumnDefinitions>
             <Button Style="{StaticResource TransparentButtonStyle}" Padding="0,10" x:Name="RepostButton" Flyout="{StaticResource ShareFlyout}" HorizontalAlignment="Stretch">
                 <TextBlock Style="{StaticResource SmallTipTextStyle}" HorizontalAlignment="Center">
-                    <Run Text="&#xE962;" FontFamily="{StaticResource Icon}" x:Name="RepostIcon"/>
+                    <Run Text="&#xEA44;" FontFamily="{StaticResource Icon}" x:Name="RepostIcon"/>
                     <Run x:Name="RepostBlock"/>
                 </TextBlock>
             </Button>
