@@ -1038,8 +1038,8 @@ namespace BiliBili_UWP.Components.Controls
             _pointerHoldCount = 0;
             var pos = e.GetCurrentPoint(this).Position;
             bool isManual = AppTool.GetBoolSetting(Settings.IsManualMediaTransportControls, false);
-            
-            if (!_isMTCShow && !isManual)
+
+            if (!_isMTCShow && !isManual && pos != _lastPointerStayPoint)
             {
                 ShowMTC();
             }
@@ -1423,20 +1423,28 @@ namespace BiliBili_UWP.Components.Controls
                                 break;
                             if (!IsTextShouldShield(item.text))
                             {
-                                switch (item.location)
+                                try
                                 {
-                                    case DanmakuLocation.Top:
-                                        DanmakuControls.AddTopDanmu(item, false);
-                                        break;
-                                    case DanmakuLocation.Bottom:
-                                        DanmakuControls.AddBottomDanmu(item, false);
-                                        break;
-                                    case DanmakuLocation.Position:
-                                        DanmakuControls.AddPositionDanmu(item);
-                                        break;
-                                    default:
-                                        DanmakuControls.AddRollDanmu(item, false);
-                                        break;
+                                    switch (item.location)
+                                    {
+                                        case DanmakuLocation.Top:
+                                            DanmakuControls.AddTopDanmu(item, false);
+                                            break;
+                                        case DanmakuLocation.Bottom:
+                                            DanmakuControls.AddBottomDanmu(item, false);
+                                            break;
+                                        case DanmakuLocation.Position:
+                                            DanmakuControls.AddPositionDanmu(item);
+                                            break;
+                                        default:
+                                            DanmakuControls.AddRollDanmu(item, false);
+                                            break;
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    Debug.WriteLine(ex.Message);
+                                    var ite = item.size;
                                 }
                                 nowDanmaNum++;
                             }

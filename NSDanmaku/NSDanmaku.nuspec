@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>NSDanmaku</id>
+    <version>1.5.0</version>
+    <title>NSDanmaku</title>
+    <authors>xiaoyaocz</authors>
+    <owners>xiaoyaocz</owners>
+    <projectUrl>https://github.com/xiaoyaocz/NSDanmaku</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>一个简单的UWP 弹幕引擎</description>
+    <copyright>Copyright 2020</copyright>
+    <tags>UWP</tags>
+    <dependencies>
+      <dependency id="Microsoft.Toolkit.Uwp.UI.Controls" version="6.0.0" />
+      <dependency id="Newtonsoft.Json" version="12.0.3" />
+      <dependency id="Win2D.uwp" version="1.24.0" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="bin\ARM\Release\NSDanmaku.dll" target="runtimes\win10-arm\lib\uap10.0" />
+    <file src="bin\ARM\Release\NSDanmaku.pdb" target="runtimes\win10-arm\lib\uap10.0" />
+    <file src="bin\x64\Release\NSDanmaku.dll" target="runtimes\win10-x64\lib\uap10.0" />
+    <file src="bin\x64\Release\NSDanmaku.pdb" target="runtimes\win10-x64\lib\uap10.0" />
+    <file src="bin\x86\Release\NSDanmaku.dll" target="runtimes\win10-x86\lib\uap10.0" />
+    <file src="bin\x86\Release\NSDanmaku.pdb" target="runtimes\win10-x86\lib\uap10.0" />
+    <file src="Controls\Danmaku.xaml" target="lib\uap10.0\Controls"/>
+    <file src="Controls\TantanDialog.xaml" target="lib\uap10.0\Controls"/>
+    <file src="Controls\TantanDialog.xaml" target="lib\uap10.0\Controls"/>
+    <file src="bin\Release\NSDanmaku.xr.xml" target="ref\uap10.0\NSDanmaku"/>
+    <file src="bin\Release\NSDanmaku.dll" target="ref\uap10.0" />
+    <file src="bin\Release\NSDanmaku.pri" target="ref\uap10.0" />
+  </files>
+ 
+</package>

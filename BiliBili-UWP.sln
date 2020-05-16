@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BiliBili-Notification", "Bi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BiliBili-Controls", "BiliBili-Controls\BiliBili-Controls.csproj", "{6C6EECB8-F158-4A68-BF22-A5CD7309928E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NSDanmaku", "NSDanmaku\NSDanmaku.csproj", "{964D5BCC-C063-45CC-AEEA-89169E4A2E5E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -111,6 +113,26 @@ Global
 		{6C6EECB8-F158-4A68-BF22-A5CD7309928E}.Release|x64.Build.0 = Release|x64
 		{6C6EECB8-F158-4A68-BF22-A5CD7309928E}.Release|x86.ActiveCfg = Release|x86
 		{6C6EECB8-F158-4A68-BF22-A5CD7309928E}.Release|x86.Build.0 = Release|x86
+		{964D5BCC-C063-45CC-AEEA-89169E4A2E5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{964D5BCC-C063-45CC-AEEA-89169E4A2E5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{964D5BCC-C063-45CC-AEEA-89169E4A2E5E}.Debug|ARM.ActiveCfg = Debug|ARM
+		{964D5BCC-C063-45CC-AEEA-89169E4A2E5E}.Debug|ARM.Build.0 = Debug|ARM
+		{964D5BCC-C063-45CC-AEEA-89169E4A2E5E}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{964D5BCC-C063-45CC-AEEA-89169E4A2E5E}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{964D5BCC-C063-45CC-AEEA-89169E4A2E5E}.Debug|x64.ActiveCfg = Debug|x64
+		{964D5BCC-C063-45CC-AEEA-89169E4A2E5E}.Debug|x64.Build.0 = Debug|x64
+		{964D5BCC-C063-45CC-AEEA-89169E4A2E5E}.Debug|x86.ActiveCfg = Debug|x86
+		{964D5BCC-C063-45CC-AEEA-89169E4A2E5E}.Debug|x86.Build.0 = Debug|x86
+		{964D5BCC-C063-45CC-AEEA-89169E4A2E5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{964D5BCC-C063-45CC-AEEA-89169E4A2E5E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{964D5BCC-C063-45CC-AEEA-89169E4A2E5E}.Release|ARM.ActiveCfg = Release|ARM
+		{964D5BCC-C063-45CC-AEEA-89169E4A2E5E}.Release|ARM.Build.0 = Release|ARM
+		{964D5BCC-C063-45CC-AEEA-89169E4A2E5E}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{964D5BCC-C063-45CC-AEEA-89169E4A2E5E}.Release|ARM64.Build.0 = Release|Any CPU
+		{964D5BCC-C063-45CC-AEEA-89169E4A2E5E}.Release|x64.ActiveCfg = Release|x64
+		{964D5BCC-C063-45CC-AEEA-89169E4A2E5E}.Release|x64.Build.0 = Release|x64
+		{964D5BCC-C063-45CC-AEEA-89169E4A2E5E}.Release|x86.ActiveCfg = Release|x86
+		{964D5BCC-C063-45CC-AEEA-89169E4A2E5E}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
