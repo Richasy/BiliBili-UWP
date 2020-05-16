@@ -76,7 +76,16 @@ namespace BiliBili_UWP.Models.Core
             {
                 case "video":
                     args.TryGetValue("aid", out string videoAid);
-                    PlayVideo(Convert.ToInt32(videoAid), fromSign: StaticString.SIGN_DYNAMIC);
+                    args.TryGetValue("bvid", out string videoBvId);
+                    args.TryGetValue("cid", out string videoCid);
+                    var videoArgs = new VideoActiveArgs();
+                    if (!string.IsNullOrEmpty(videoAid))
+                        videoArgs.aid = Convert.ToInt32(videoAid);
+                    if (!string.IsNullOrEmpty(videoBvId))
+                        videoArgs.bvid = videoBvId;
+                    if (!string.IsNullOrEmpty(videoCid))
+                        videoArgs.cid = Convert.ToInt32(videoCid);
+                    PlayVideo(videoArgs);
                     break;
                 case "bangumi":
                     args.TryGetValue("epid", out string AnimeEpid);
@@ -108,8 +117,7 @@ namespace BiliBili_UWP.Models.Core
         /// <param name="fromSign">来源参数</param>
         public void PlayVideo(int aid, object sender = null, string fromSign = "")
         {
-            if (CurrentPagePanel.IsSubPageOpen)
-                CurrentPagePanel.IsSubPageOpen = false;
+            CurrentPagePanel.CheckSubReplyPage();
             SelectedSideMenuItem = null;
             if (sender != null && IsEnableAnimation)
             {
@@ -119,6 +127,13 @@ namespace BiliBili_UWP.Models.Core
             CurrentSidePanel.SetSelectedItem(SideMenuItemType.Line);
             CurrentPagePanel.NavigateToPage(SideMenuItemType.VideoPlayer, new Tuple<int, string>(aid, fromSign));
         }
+        public void PlayVideo(VideoActiveArgs args)
+        {
+            CurrentPagePanel.CheckSubReplyPage();
+            SelectedSideMenuItem = null;
+            CurrentSidePanel.SetSelectedItem(SideMenuItemType.Line);
+            CurrentPagePanel.NavigateToPage(SideMenuItemType.VideoPlayer, args);
+        }
         /// <summary>
         /// 播放视频列表
         /// </summary>
@@ -126,8 +141,7 @@ namespace BiliBili_UWP.Models.Core
         /// <param name="videoList">播放列表</param>
         public void PlayVideoList(int aid, object sender, List<VideoDetail> videoList)
         {
-            if (CurrentPagePanel.IsSubPageOpen)
-                CurrentPagePanel.IsSubPageOpen = false;
+            CurrentPagePanel.CheckSubReplyPage();
             SelectedSideMenuItem = null;
             if (sender != null && IsEnableAnimation)
             {
@@ -144,8 +158,7 @@ namespace BiliBili_UWP.Models.Core
         /// <param name="sender">触发控件（用于查找封面以实现连接动画）</param>
         public void PlayBangumi(int epid, object sender = null, bool isEp = false)
         {
-            if (CurrentPagePanel.IsSubPageOpen)
-                CurrentPagePanel.IsSubPageOpen = false;
+            CurrentPagePanel.CheckSubReplyPage();
             SelectedSideMenuItem = null;
             if (sender != null && IsEnableAnimation)
             {

@@ -289,6 +289,7 @@
     <Compile Include="Models\UI\Converter\SelectedColorConverter.cs" />
     <Compile Include="Models\UI\Others\SideMenuItemTemplateSelector.cs" />
     <Compile Include="Models\UI\Others\SystemFont.cs" />
+    <Compile Include="Models\UI\Others\VideoActiveArgs.cs" />
     <Compile Include="Models\UI\Others\VideoTransportControls.cs" />
     <Compile Include="Models\UI\SideMenuItem.cs" />
     <Compile Include="Models\UI\StaticString.cs" />

@@ -100,36 +100,6 @@ namespace BiliBili_UWP.Models.UI
         {
             return (Style)Application.Current.Resources[key];
         }
-        public static Storyboard GetPopupStoryboard(bool isPopin = true)
-        {
-            var board = new Storyboard();
-            var containerOpacityAni = new DoubleAnimation();
-            var backgroundOpacityAni = new DoubleAnimation();
-            var containerTransformAni = new DoubleAnimation();
-
-            containerOpacityAni.From = isPopin ? 0f : 1f;
-            containerOpacityAni.To = isPopin ? 1f : 0f;
-            containerOpacityAni.Duration = new Duration(TimeSpan.FromSeconds(0.5));
-            Storyboard.SetTargetName(containerOpacityAni, "PopupContainer");
-            Storyboard.SetTargetProperty(containerOpacityAni, "Opacity");
-
-            backgroundOpacityAni.From = isPopin ? 0f : 1f;
-            backgroundOpacityAni.To = isPopin ? 1f : 0f;
-            backgroundOpacityAni.Duration = new Duration(TimeSpan.FromSeconds(0.5));
-            Storyboard.SetTargetName(backgroundOpacityAni, "PopupBackground");
-            Storyboard.SetTargetProperty(backgroundOpacityAni, "Opacity");
-
-            containerTransformAni.From = isPopin ? -20f : 0f;
-            containerTransformAni.To = isPopin ? 0f : -20f;
-            containerTransformAni.Duration = new Duration(TimeSpan.FromSeconds(0.5));
-            Storyboard.SetTargetName(containerTransformAni, "PopupContainer");
-            Storyboard.SetTargetProperty(containerTransformAni, "(UIElement.RenderTransform).(TranslateTransform.Y)");
-
-            board.Children.Add(containerOpacityAni);
-            board.Children.Add(backgroundOpacityAni);
-            board.Children.Add(containerTransformAni);
-            return board;
-        }
         public static void PopupInit(IAppPopup popup)
         {
             popup._popup = new Popup();

@@ -58,6 +58,8 @@ namespace BiliBili_UWP.Pages.Main
                 var anim = ConnectedAnimationService.GetForCurrentView().GetAnimation("VideoConnectedAnimation");
                 if (anim != null)
                 {
+                    anim.Completed -= ConnectAnimation_Completed;
+                    anim.Completed += ConnectAnimation_Completed;
                     anim.TryStart(VideoPlayer);
                 }
                 App.AppViewModel.CurrentVideoPlayer = VideoPlayer;
@@ -75,6 +77,12 @@ namespace BiliBili_UWP.Pages.Main
                     await Refresh();
                 }
             }
+            App.AppViewModel.CurrentPagePanel.PageScrollViewer.ChangeView(0, 0, 1);
+        }
+
+        private void ConnectAnimation_Completed(ConnectedAnimation sender, object args)
+        {
+            sender = null;
         }
 
         protected async override void OnNavigatedFrom(NavigationEventArgs e)

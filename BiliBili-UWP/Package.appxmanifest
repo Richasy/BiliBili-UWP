@@ -10,7 +10,7 @@
   <Identity
     Name="60520B029E250.4264454043325"
     Publisher="CN=9EFA2047-A580-400B-A5B2-0C7ABB0DB5C0"
-    Version="1.1.4.0" />
+    Version="1.1.5.0" />
 
   <mp:PhoneIdentity PhoneProductId="3e10de2d-fe15-4e8a-9d72-30e9209c46ea" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
@@ -54,6 +54,12 @@
             <Task Type="pushNotification"/>
           </BackgroundTasks>
         </Extension>
+        <uap:Extension Category="windows.protocol">
+          <uap:Protocol Name="richasy-bilibili">
+            <uap:Logo>Assets\bilibili logo.png</uap:Logo>
+            <uap:DisplayName>哔哩</uap:DisplayName>
+          </uap:Protocol>
+        </uap:Extension>
       </Extensions>
     </Application>
   </Applications>

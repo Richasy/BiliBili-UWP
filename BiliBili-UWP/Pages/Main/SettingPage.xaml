@@ -17,7 +17,7 @@
             </Grid>
         </DataTemplate>
     </Page.Resources>
-    <Grid>
+    <Grid Padding="0,0,0,30">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />

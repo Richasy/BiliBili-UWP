@@ -162,10 +162,13 @@ namespace BiliBili_Lib.Service
         /// </summary>
         /// <param name="aid">视频avid</param>
         /// <returns></returns>
-        public async Task<VideoDetail> GetVideoDetailAsync(int aid,string fromSign="")
+        public async Task<VideoDetail> GetVideoDetailAsync(int aid,string fromSign="",string bvId="")
         {
             var param = new Dictionary<string, string>();
-            param.Add("aid", aid.ToString());
+            if (aid > 0)
+                param.Add("aid", aid.ToString());
+            else
+                param.Add("bvid", bvId.ToString());
             param.Add("from_spmid", fromSign);
             string url = BiliTool.UrlContact(Api.VIDEO_DETAIL_INFO, param, true);
             var data = await BiliTool.ConvertEntityFromWebAsync<VideoDetail>(url);
@@ -333,7 +336,7 @@ namespace BiliBili_Lib.Service
         /// <returns></returns>
         public async Task<bool> LikeVideoAsync(int aid, bool isLike)
         {
-            string is_like = isLike ? "0" : "1";
+            string is_like = isLike ? "1" : "0";
             var param = new Dictionary<string, string>();
             param.Add("aid", aid.ToString());
             param.Add("like", is_like);

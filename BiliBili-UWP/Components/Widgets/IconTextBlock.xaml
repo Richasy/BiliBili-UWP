@@ -18,6 +18,6 @@
         <TextBlock FontFamily="{StaticResource Icon}" VerticalAlignment="Center" FontSize="{x:Bind IconFontSize,Mode=OneWay}"
                    Foreground="{x:Bind IconForeground,Mode=OneWay}" Text="{x:Bind Icon,Mode=OneWay}"/>
         <TextBlock FontFamily="{CustomResource Basic}" Grid.Column="2" VerticalAlignment="Center" FontSize="{x:Bind FontSize,Mode=OneWay}"
-                   Foreground="{x:Bind TextForeground,Mode=OneWay}" Text="{x:Bind Text,Mode=OneWay}"/>
+                   Foreground="{x:Bind TextForeground,Mode=OneWay}" Text="{x:Bind Text,Mode=OneWay}" IsTextSelectionEnabled="{x:Bind IsTextScaleFactorEnabled,Mode=OneWay}"/>
     </Grid>
 </UserControl>

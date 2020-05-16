@@ -25,6 +25,8 @@ namespace BiliBili_UWP.Components.Widgets
         {
             this.InitializeComponent();
             VisualStateManager.GoToState(this, "Loading", true);
+            HorizontalContentAlignment = HorizontalAlignment.Center;
+            VerticalContentAlignment = VerticalAlignment.Center;
         }
         private bool _isRing = false;
         public object Source

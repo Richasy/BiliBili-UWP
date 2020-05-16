@@ -11,14 +11,14 @@
     d:DesignWidth="400">
 
     <Grid Background="{x:Bind Background,Mode=OneWay}" CornerRadius="{x:Bind CornerRadius,Mode=OneWay}" BorderBrush="{x:Bind BorderBrush,Mode=OneWay}" BorderThickness="{x:Bind BorderThickness,Mode=OneWay}">
-        <Image Name="HolderImage"
+        <Image Name="HolderImage" Width="{x:Bind Width,Mode=OneWay}" Height="{x:Bind Height,Mode=OneWay}"
                HorizontalAlignment="{x:Bind HorizontalAlignment,Mode=OneWay}"
                VerticalAlignment="{x:Bind VerticalAlignment,Mode=OneWay}"
                Stretch="Uniform" Opacity="1.0"/>
         <muxc:ProgressRing Style="{StaticResource MuxcProgressRingStyle}" x:Name="LoadingRing"/>
-        <Image Name="DisplayImage"
-               HorizontalAlignment="{x:Bind HorizontalAlignment,Mode=OneWay}"
-               VerticalAlignment="{x:Bind VerticalAlignment,Mode=OneWay}"
+        <Image Name="DisplayImage" Width="{x:Bind Width,Mode=OneWay}" Height="{x:Bind Height,Mode=OneWay}"
+               HorizontalAlignment="{x:Bind HorizontalContentAlignment,Mode=OneWay}"
+               VerticalAlignment="{x:Bind VerticalContentAlignment,Mode=OneWay}"
                Stretch="{x:Bind Stretch,Mode=OneWay}" ImageOpened="DisplayImage_ImageOpened"
                ImageFailed="DisplayImage_ImageFailed" Opacity="0"/>
 

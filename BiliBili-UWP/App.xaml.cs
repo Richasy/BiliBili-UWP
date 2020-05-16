@@ -126,6 +126,19 @@ namespace BiliBili_UWP
                 }
                 Window.Current.Activate();
             }
+            else if(e is ProtocolActivatedEventArgs protocalArgs)
+            {
+                string arg = protocalArgs.Uri.Query.Replace("?","");
+                if (rootFrame.Content == null)
+                {
+                    rootFrame.Navigate(typeof(MainPage), arg);
+                }
+                else
+                {
+                    AppViewModel.AppInitByActivated(arg);
+                }
+                Window.Current.Activate();
+            }
             if (e.PreviousExecutionState == ApplicationExecutionState.Running)
             {
                 if (BiliViewModel != null && BiliViewModel.IsLogin)

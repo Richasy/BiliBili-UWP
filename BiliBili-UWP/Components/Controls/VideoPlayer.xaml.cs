@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Media;
@@ -57,6 +58,7 @@ namespace BiliBili_UWP.Components.Controls
         private MediaSource _tempSource = null;
         private int _pointerHoldCount = 0; // 光标保持不动的持续时间
         private int _heartBeatCount = 0;
+        private Point _lastPointerStayPoint = new Point(0, 0);
         private bool _isCatchPointer = false;
         private bool _isMergeSameDanmaku = false; //合并相同弹幕
         private int _maxDanmakuNumber = 0;
@@ -84,6 +86,7 @@ namespace BiliBili_UWP.Components.Controls
         private bool _needShowHistory = false;
 
         private bool _isDanmakuBarFocus = false;
+        private bool _isPlayerLocked = false;
 
         public int CurrentProgress
         {
@@ -177,7 +180,7 @@ namespace BiliBili_UWP.Components.Controls
             HideNextPart();
             mediaElement.PosterSource = new BitmapImage(new Uri(detail.cover));
             await RefreshVideoSource(part);
-            
+
         }
         private void Reset()
         {
@@ -326,7 +329,7 @@ namespace BiliBili_UWP.Components.Controls
                     //互动视频
                     if (ChoiceCollection.Count > 0)
                     {
-                        if (ChoiceCollection.Count == 1)
+                        if (ChoiceCollection.Count == 1 && string.IsNullOrEmpty(ChoiceCollection.First().option))
                             await InitInteraction(ChoiceCollection.First().cid, ChoiceCollection.First().id);
                         else
                             ChoiceItemsControl.Visibility = Visibility.Visible;
@@ -362,7 +365,7 @@ namespace BiliBili_UWP.Components.Controls
         #endregion
 
         #region 播放及刷新
-        public async Task RefreshVideoSource(int partId, int progress = 0,bool needRefresh=false)
+        public async Task RefreshVideoSource(int partId, int progress = 0, bool needRefresh = false)
         {
             LoadingBar.Visibility = Visibility.Visible;
             if (needRefresh)
@@ -438,7 +441,7 @@ namespace BiliBili_UWP.Components.Controls
             SetFocus();
             LoadingBar.Visibility = Visibility.Collapsed;
         }
-        public async Task RefreshVideoSource(Episode part,bool isRefresh=false)
+        public async Task RefreshVideoSource(Episode part, bool isRefresh = false)
         {
             if (part == null)
             {
@@ -521,7 +524,26 @@ namespace BiliBili_UWP.Components.Controls
                 if (_interaction.edges.questions != null)
                 {
                     var choices = _interaction.edges.questions.First().choices;
-                    choices.ForEach(p => ChoiceCollection.Add(p));
+                    foreach (var choice in choices)
+                    {
+                        if (!string.IsNullOrEmpty(choice.condition))
+                        {
+                            var variables = _interaction.hidden_vars.Where(p => p.is_show == 1 && choice.condition.Contains(p.id_v2));
+                            if (variables != null)
+                            {
+                                double min = Convert.ToDouble(Regex.Match(choice.condition, ">=([0-9]{1,}[.][0-9]*)").Value.Replace(">=", ""));
+                                double max = Convert.ToDouble(Regex.Match(choice.condition, "<=([0-9]{1,}[.][0-9]*)").Value.Replace("<=", ""));
+                                var variable = variables.Where(p => choice.condition.Contains(p.id_v2)).FirstOrDefault();
+                                if (variable != null)
+                                {
+                                    if (variable.value >= min && variable.value <= max)
+                                        ChoiceCollection.Add(choice);
+                                }
+                            }
+                        }
+                        else
+                            ChoiceCollection.Add(choice);
+                    }
                 }
             }
             _isChoiceHandling = false;
@@ -578,11 +600,7 @@ namespace BiliBili_UWP.Components.Controls
         }
         private async void DanmakuVisibilityButton_Click(object sender, RoutedEventArgs e)
         {
-            bool isShowDanmaku = AppTool.GetBoolSetting(Settings.IsDanmakuOpen);
-            isShowDanmaku = !isShowDanmaku;
-            AppTool.WriteLocalSetting(Settings.IsDanmakuOpen, isShowDanmaku.ToString());
-            DanmakuVisibilityButton.Content = isShowDanmaku ? "" : "";
-            await LoadDanmaku();
+            await ChangeDanmakuStatus();
         }
 
         private async void SendDanmakuButton_Click(object sender, RoutedEventArgs e)
@@ -992,6 +1010,7 @@ namespace BiliBili_UWP.Components.Controls
         private void UserControl_PointerEntered(object sender, PointerRoutedEventArgs e)
         {
             _isCatchPointer = true;
+            _lastPointerStayPoint = e.GetCurrentPoint(this).Position;
         }
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
@@ -1000,6 +1019,7 @@ namespace BiliBili_UWP.Components.Controls
         private void UserControl_PointerExited(object sender, PointerRoutedEventArgs e)
         {
             _isCatchPointer = false;
+            _lastPointerStayPoint = new Point(0, 0);
             Window.Current.CoreWindow.PointerCursor = new Windows.UI.Core.CoreCursor(Windows.UI.Core.CoreCursorType.Arrow, 0);
         }
         private void MediaPlayerElement_GotFocus(object sender, RoutedEventArgs e)
@@ -1016,12 +1036,18 @@ namespace BiliBili_UWP.Components.Controls
         private void UserControl_PointerMoved(object sender, PointerRoutedEventArgs e)
         {
             _pointerHoldCount = 0;
+            var pos = e.GetCurrentPoint(this).Position;
             bool isManual = AppTool.GetBoolSetting(Settings.IsManualMediaTransportControls, false);
+            
             if (!_isMTCShow && !isManual)
             {
                 ShowMTC();
             }
-            Window.Current.CoreWindow.PointerCursor = new Windows.UI.Core.CoreCursor(Windows.UI.Core.CoreCursorType.Arrow, 0);
+            if (pos != _lastPointerStayPoint)
+            {
+                _lastPointerStayPoint = pos;
+                Window.Current.CoreWindow.PointerCursor = new Windows.UI.Core.CoreCursor(Windows.UI.Core.CoreCursorType.Arrow, 0);
+            }
         }
         private void mediaElement_Tapped(object sender, TappedRoutedEventArgs e)
         {
@@ -1049,7 +1075,7 @@ namespace BiliBili_UWP.Components.Controls
         }
         private void ChoiceItemsControl_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            ((sender as ItemsControl).ItemsPanelRoot as ItemsWrapGrid).ItemWidth = e.NewSize.Width / 2;
+            ((sender as ItemsControl).ItemsPanelRoot as ItemsWrapGrid).ItemWidth = (e.NewSize.Width * 0.8) / 2;
         }
         private async void InteractionHomeButton_Click(object sender, RoutedEventArgs e)
         {
@@ -1072,7 +1098,7 @@ namespace BiliBili_UWP.Components.Controls
                         _player.PlaybackSession.Position = TimeSpan.FromSeconds(history.progress);
                     else
                     {
-                        await RefreshVideoSource(history.cid, history.progress,true);
+                        await RefreshVideoSource(history.cid, history.progress, true);
                         var index = _videoDetail.pages.IndexOf(_videoDetail.pages.Where(p => p.cid == history.cid).FirstOrDefault());
                         if (index != -1)
                             PartSwitched?.Invoke(this, index);
@@ -1100,6 +1126,17 @@ namespace BiliBili_UWP.Components.Controls
             int index = GetNextPartIndex();
             await SwitchNextPart(index);
             HideNextPart();
+        }
+        private void LockScreenButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_isPlayerLocked)
+                UnlockPlayer();
+            else
+                LockPlayer();
+        }
+        private void MaskContainer_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            LockScreenButton.Visibility = Visibility.Visible;
         }
         #endregion
 
@@ -1245,6 +1282,7 @@ namespace BiliBili_UWP.Components.Controls
             _isMTCShow = false;
             VideoMTC.Hide();
             ExitScreenButton.Visibility = Visibility.Collapsed;
+            LockScreenButton.Visibility = Visibility.Collapsed;
             SubtitleContainer.Margin = new Thickness(20, 0, 20, 20);
             TipContainer.Margin = new Thickness(20, 0, 0, 20);
             if (MTC.IsFullWindow || MTC.IsCinema || MTC.IsCompactOverlay)
@@ -1259,6 +1297,7 @@ namespace BiliBili_UWP.Components.Controls
             _isMTCShow = true;
             if (VideoMTC.IsFullWindow || VideoMTC.IsCinema || VideoMTC.IsCompactOverlay)
                 ExitScreenButton.Visibility = Visibility.Visible;
+            LockScreenButton.Visibility = Visibility.Visible;
             SubtitleContainer.Margin = new Thickness(20, 0, 20, 140);
             TipContainer.Margin = new Thickness(20, 0, 0, 140);
             VideoMTC.Show();
@@ -1556,12 +1595,12 @@ namespace BiliBili_UWP.Components.Controls
                 if (!isBangumi)
                 {
                     var next = _videoDetail.pages[index];
-                    await RefreshVideoSource(next.cid,0,true);
+                    await RefreshVideoSource(next.cid, 0, true);
                 }
                 else
                 {
                     var next = _bangumiDetail.episodes[index];
-                    await RefreshVideoSource(next,true);
+                    await RefreshVideoSource(next, true);
                 }
                 PartSwitched?.Invoke(this, index);
             }
@@ -1591,7 +1630,24 @@ namespace BiliBili_UWP.Components.Controls
             mediaElement.Focus(FocusState.Programmatic);
         }
 
+        public void LockPlayer()
+        {
+            MaskContainer.Visibility = Visibility.Visible;
+            LockScreenButton.Content = "";
+        }
+        public void UnlockPlayer()
+        {
+            MaskContainer.Visibility = Visibility.Collapsed;
+            LockScreenButton.Content = "";
+        }
+        public async Task ChangeDanmakuStatus()
+        {
+            bool isShowDanmaku = AppTool.GetBoolSetting(Settings.IsDanmakuOpen);
+            isShowDanmaku = !isShowDanmaku;
+            AppTool.WriteLocalSetting(Settings.IsDanmakuOpen, isShowDanmaku.ToString());
+            DanmakuVisibilityButton.Content = isShowDanmaku ? "" : "";
+            await LoadDanmaku();
+        }
         #endregion
-
     }
 }

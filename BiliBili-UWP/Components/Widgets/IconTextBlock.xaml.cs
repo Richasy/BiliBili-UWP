@@ -85,6 +85,15 @@ namespace BiliBili_UWP.Components.Widgets
         public static readonly DependencyProperty IconFontSizeProperty =
             DependencyProperty.Register("IconFontSize", typeof(double), typeof(IconTextBlock), new PropertyMetadata(12d));
 
+        public bool IsTextSelectionEnabled
+        {
+            get { return (bool)GetValue(IsTextSelectionEnabledProperty); }
+            set { SetValue(IsTextSelectionEnabledProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for IsTextSelectionEnable.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty IsTextSelectionEnabledProperty =
+            DependencyProperty.Register("IsTextSelectionEnabled", typeof(bool), typeof(CheckButton), new PropertyMetadata(false));
 
     }
 }

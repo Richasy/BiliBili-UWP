@@ -101,7 +101,6 @@ namespace BiliBili_UWP.Components.Layout
                 if (type == SideMenuItemType.VideoPlayer || !App.AppViewModel.IsEnableAnimation)
                 {
                     transitionInfo = new SuppressNavigationTransitionInfo();
-                    PageScrollViewer.ChangeView(0, 0, 1);
                 }  
                 else
                 {
@@ -463,6 +462,8 @@ namespace BiliBili_UWP.Components.Layout
                     IsSubPageOpen = false;
                 }
             }
+            if (PageSplitView.DisplayMode == SplitViewDisplayMode.CompactOverlay && IsSubPageOpen)
+                IsSubPageOpen = false;
         }
     }
 }

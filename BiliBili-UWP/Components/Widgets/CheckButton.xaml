@@ -52,6 +52,7 @@
                                         Foreground="{ThemeResource PrimaryColor}" Value="0" Visibility="Collapsed" Background="Transparent" Maximum="100"/>
         </Grid>
         
-        <TextBlock VerticalAlignment="Center" Text="{x:Bind Text,Mode=OneWay}" Grid.Column="1" Margin="8,0,0,0" Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource NormalTextColor}"/>
+        <TextBlock VerticalAlignment="Center" Text="{x:Bind Text,Mode=OneWay}" Grid.Column="1" Margin="8,0,0,0" 
+                   Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource NormalTextColor}"/>
     </Grid>
 </UserControl>

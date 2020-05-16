@@ -117,6 +117,10 @@
         </Flyout>
     </UserControl.Resources>
     <Grid Background="{ThemeResource PageBackground}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
@@ -147,18 +151,20 @@
                                                />
             </MediaPlayerElement.TransportControls>
         </MediaPlayerElement>
+        <Grid Background="{ThemeResource ScreenMaskColor}" Opacity="0.01" x:Name="MaskContainer" Visibility="Collapsed" HorizontalAlignment="Stretch"
+              VerticalAlignment="Stretch" Tapped="MaskContainer_Tapped"/>
         <Grid x:Name="InteractionContainer">
-            <ItemsControl x:Name="ChoiceItemsControl" ItemsSource="{x:Bind ChoiceCollection}" HorizontalAlignment="Center"
+            <ItemsControl x:Name="ChoiceItemsControl" ItemsSource="{x:Bind ChoiceCollection}" HorizontalAlignment="Stretch"
                       Visibility="Collapsed" VerticalAlignment="Bottom" Margin="0,0,0,140" SizeChanged="ChoiceItemsControl_SizeChanged">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <ItemsWrapGrid Orientation="Horizontal"/>
+                        <ItemsWrapGrid Orientation="Horizontal" HorizontalAlignment="Center"/>
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate x:DataType="bilibili:Choice">
                         <Grid Background="{ThemeResource MaskAcrylicBackground}" CornerRadius="4" HorizontalAlignment="Stretch"
-                              VerticalAlignment="Stretch" Padding="20,30" Tapped="Choice_Tapped" Margin="12">
+                              VerticalAlignment="Stretch" Padding="20" Tapped="Choice_Tapped" Margin="12">
                             <TextBlock Text="{x:Bind option}" HorizontalAlignment="Center" VerticalAlignment="Center"
                                        FontSize="15" Foreground="{ThemeResource ImportantTextColor}" FontWeight="Bold"/>
                         </Grid>
@@ -168,6 +174,8 @@
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,20,0,0">
                 <Button Style="{StaticResource DefaultCircleButtonStyle}" Background="{ThemeResource MaskAcrylicBackground}" Foreground="{ThemeResource ImportantTextColor}"
                     x:Name="ExitScreenButton" ToolTipService.ToolTip="返回" Content="&#xE914;" Click="ExitScreenButton_Click" Visibility="Collapsed" Margin="0,0,15,0"/>
+                <Button Style="{StaticResource DefaultCircleButtonStyle}" Background="{ThemeResource MaskAcrylicBackground}" Foreground="{ThemeResource ImportantTextColor}"
+                    x:Name="LockScreenButton" ToolTipService.ToolTip="锁定" Content="&#xEA01;" Click="LockScreenButton_Click"  Visibility="Collapsed" Margin="0,0,15,0"/>
                 <Button Style="{StaticResource PrimaryCircleButtonStyle}" Background="{ThemeResource MaskAcrylicBackground}" Foreground="{ThemeResource ImportantTextColor}"
                 x:Name="InteractionHomeButton" Visibility="Collapsed" Click="InteractionHomeButton_Click"
                 ToolTipService.ToolTip="返回互动视频起点" Content="&#xE9CB;"/>

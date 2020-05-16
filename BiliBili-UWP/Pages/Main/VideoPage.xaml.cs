@@ -7,6 +7,7 @@ using BiliBili_UWP.Components.Widgets;
 using BiliBili_UWP.Dialogs;
 using BiliBili_UWP.Models.UI;
 using BiliBili_UWP.Models.UI.Interface;
+using BiliBili_UWP.Models.UI.Others;
 using NSDanmaku.Helper;
 using SYEngine;
 using System;
@@ -55,6 +56,7 @@ namespace BiliBili_UWP.Pages.Main
 
         private int _currentPartId = 0;
         private int videoId = 0;
+        private string bvId = "";
         public static VideoPage Current;
         private List<FavoriteItem> _tempFavorites = new List<FavoriteItem>();
         private string _fromSign = "";
@@ -90,13 +92,38 @@ namespace BiliBili_UWP.Pages.Main
                     _isPlayList = true;
                     _fromSign = "";
                 }
+                else if(e.Parameter is VideoActiveArgs args)
+                {
+                    if (args.aid > 0)
+                    {
+                        videoId = args.aid;
+                        bvId = "";
+                    }
+                    else if (!string.IsNullOrEmpty(args.bvid))
+                    {
+                        videoId = 0;
+                        bvId = args.bvid;
+                    }
+                    _currentPartId = args.cid;
+                    PlayListContainer.Visibility = Visibility.Collapsed;
+                    _isPlayList = false;
+                    _fromSign = "";
+                }
                 var anim = ConnectedAnimationService.GetForCurrentView().GetAnimation("VideoConnectedAnimation");
                 if (anim != null)
                 {
+                    anim.Completed -= ConnectAnimation_Completed;
+                    anim.Completed += ConnectAnimation_Completed;
                     anim.TryStart(VideoPlayer);
                 }
                 await Refresh();
             }
+            App.AppViewModel.CurrentPagePanel.PageScrollViewer.ChangeView(0, 0, 1);
+        }
+
+        private void ConnectAnimation_Completed(ConnectedAnimation sender, object args)
+        {
+            sender = null;
         }
 
         protected async override void OnNavigatedFrom(NavigationEventArgs e)
@@ -150,7 +177,7 @@ namespace BiliBili_UWP.Pages.Main
             Reset();
             var tip = new WaitingPopup("加载视频中...");
             tip.ShowPopup();
-            var detail = await _videoService.GetVideoDetailAsync(videoId, _fromSign);
+            var detail = await _videoService.GetVideoDetailAsync(videoId, _fromSign,bvId);
             if (detail != null && detail.aid > 0)
             {
                 _detail = detail;
@@ -180,6 +207,8 @@ namespace BiliBili_UWP.Pages.Main
             else
                 VideoPlayer.IsAutoReturnWhenEnd = _detail.pages.Count <= 1;
             TitleBlock.Text = _detail.title;
+            videoId = _detail.aid;
+            bvId = _detail.bvid;
             PlayCountBlock.Text = AppTool.GetNumberAbbreviation(_detail.stat.view);
             DanmukuCountBlock.Text = AppTool.GetNumberAbbreviation(_detail.stat.danmaku);
             RepostButton.Text = AppTool.GetNumberAbbreviation(_detail.stat.share);
@@ -280,6 +309,7 @@ namespace BiliBili_UWP.Pages.Main
                 if (result)
                 {
                     string prompt = isLike ? "已点赞" : "已取消点赞";
+                    _detail.req_user.like = isLike ? 1 : 0;
                     new TipPopup(prompt).ShowMessage();
                     LikeButton.IsCheck = !LikeButton.IsCheck;
                     UpdateVideoInfo();

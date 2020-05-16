@@ -77,13 +77,14 @@ namespace BiliBili_UWP
             _isInit = true;
         }
 
-        private void AccelertorKeyActivedHandle(CoreDispatcher sender, AcceleratorKeyEventArgs args)
+        private async void AccelertorKeyActivedHandle(CoreDispatcher sender, AcceleratorKeyEventArgs args)
         {
             if (args.EventType.ToString().Contains("Down"))
             {
                 var esc = Window.Current.CoreWindow.GetKeyState(VirtualKey.Escape);
                 var space = Window.Current.CoreWindow.GetKeyState(VirtualKey.Space);
                 var f11= Window.Current.CoreWindow.GetKeyState(VirtualKey.F11);
+                var f2 = Window.Current.CoreWindow.GetKeyState(VirtualKey.F2);
                 var left = Window.Current.CoreWindow.GetKeyState(VirtualKey.Left);
                 var right = Window.Current.CoreWindow.GetKeyState(VirtualKey.Right);
                 var player = App.AppViewModel.CurrentVideoPlayer;
@@ -125,6 +126,14 @@ namespace BiliBili_UWP
                     {
                         args.Handled = true;
                         player.MTC.IsFullWindow = !player.MTC.IsFullWindow;
+                    }
+                }
+                else if (f2.HasFlag(CoreVirtualKeyStates.Down))
+                {
+                    if (player != null && player.IsFocus)
+                    {
+                        args.Handled = true;
+                        await player.ChangeDanmakuStatus();
                     }
                 }
                 else if (left.HasFlag(CoreVirtualKeyStates.Down))

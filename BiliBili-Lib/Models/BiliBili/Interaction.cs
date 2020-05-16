@@ -15,6 +15,7 @@ namespace BiliBili_Lib.Models.BiliBili
         public Edges edges { get; set; }
         public Preload preload { get; set; }
         public int is_leaf { get; set; }
+        public List<HiddenVariable> hidden_vars { get; set; }
     }
 
     public class Edges
@@ -66,4 +67,16 @@ namespace BiliBili_Lib.Models.BiliBili
         public int is_current { get; set; }
         public int cursor { get; set; }
     }
+
+    public class HiddenVariable
+    {
+        public int value { get; set; }
+        public string id { get; set; }
+        public string id_v2 { get; set; }
+        public int type { get; set; }
+        public int is_show { get; set; }
+        public string name { get; set; }
+        public int skip_overwrite { get; set; }
+    }
+
 }

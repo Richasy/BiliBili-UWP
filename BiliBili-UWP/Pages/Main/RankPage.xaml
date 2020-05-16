@@ -29,8 +29,8 @@
             <ListViewItem x:Name="TabContainer" Margin="10,0">
                 <StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <widgets:BiliImage DecodePixelWidth="30" Width="25" Height="25" VerticalAlignment="Center"
-                                   Source="{x:Bind logo}"/>
+                        <controls1:ImageEx DecodePixelWidth="25" Width="25" Height="25" VerticalAlignment="Center"
+                                   Source="{x:Bind logo}" IsCacheEnabled="True"/>
                         <TextBlock Text="{x:Bind name}" Style="{StaticResource CaptionTextStyle}" FontSize="13"
                            VerticalAlignment="Center" Margin="10,0,0,0"/>
                     </StackPanel>
