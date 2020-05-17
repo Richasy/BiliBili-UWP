@@ -117,6 +117,13 @@ namespace BiliBili_UWP.Components.Layout
             SideMenuListView.SelectedIndex = index;
         }
 
-        
+        public void SetMenuItemUnread(SideMenuItemType type,int value)
+        {
+            var item = MenuItemCollection.Where(p => p.Type == type).FirstOrDefault();
+            if (item != null)
+            {
+                item.Unread = value;
+            }
+        }
     }
 }

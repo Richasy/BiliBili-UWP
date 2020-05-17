@@ -147,6 +147,10 @@
     <Compile Include="Models\BiliBili\Favorites\FavoriteAnime.cs" />
     <Compile Include="Models\BiliBili\Favorites\FavoriteId.cs" />
     <Compile Include="Models\BiliBili\Favorites\FavoriteVideo.cs" />
+    <Compile Include="Models\BiliBili\Feedback\AtMe.cs" />
+    <Compile Include="Models\BiliBili\Feedback\Like.cs" />
+    <Compile Include="Models\BiliBili\Feedback\Other.cs" />
+    <Compile Include="Models\BiliBili\Feedback\Reply.cs" />
     <Compile Include="Models\BiliBili\Interaction.cs" />
     <Compile Include="Models\BiliBili\Reply.cs" />
     <Compile Include="Models\BiliBili\Search.cs" />

@@ -3,6 +3,7 @@ using BiliBili_Lib.Models;
 using BiliBili_Lib.Models.BiliBili;
 using BiliBili_Lib.Models.BiliBili.Account;
 using BiliBili_Lib.Models.BiliBili.Favorites;
+using BiliBili_Lib.Models.BiliBili.Feedback;
 using BiliBili_Lib.Models.BiliBili.Video;
 using BiliBili_Lib.Models.Others;
 using BiliBili_Lib.Tools;
@@ -553,7 +554,7 @@ namespace BiliBili_Lib.Service
         /// <param name="tagId">分组ID</param>
         /// <param name="pn">页码</param>
         /// <returns></returns>
-        public async Task<List<RelationUser>> GetMyFollowUserAsync(int tagId,int pn)
+        public async Task<List<RelationUser>> GetMyFollowUserAsync(int tagId, int pn)
         {
             var param = new Dictionary<string, string>();
             param.Add("mid", BiliTool.mid);
@@ -571,7 +572,7 @@ namespace BiliBili_Lib.Service
         /// <param name="videoType">视频类型</param>
         /// <param name="listId">收藏夹ID</param>
         /// <returns></returns>
-        public async Task<bool> RemoveFavoriteVideoAsync(int aid,int videoType,int listId)
+        public async Task<bool> RemoveFavoriteVideoAsync(int aid, int videoType, int listId)
         {
             var param = new Dictionary<string, string>();
             param.Add("media_id", listId.ToString());
@@ -584,6 +585,49 @@ namespace BiliBili_Lib.Service
                 return jobj["code"].ToString() == "0";
             }
             return false;
+        }
+        /// <summary>
+        /// 获取回复我的列表
+        /// </summary>
+        /// <param name="replyTime">偏移值（上次请求的底部时间戳）</param>
+        /// <returns></returns>
+        public async Task<FeedReplyResponse> GetReplyMeListAsync(int replyTime = 0)
+        {
+            var param = new Dictionary<string, string>();
+            param.Add("reply_time", replyTime.ToString());
+            string url = BiliTool.UrlContact(Api.ACCOUNT_FEEDBACK_REPLY, param, true);
+            var response = await BiliTool.ConvertEntityFromWebAsync<FeedReplyResponse>(url);
+            return response;
+        }
+        /// <summary>
+        /// 获取At我的列表
+        /// </summary>
+        /// <param name="id">上次请求的Id</param>
+        /// <param name="atTime">上次请求的底部时间戳</param>
+        /// <returns></returns>
+        public async Task<FeedAtResponse> GetAtMeListAsync(long id, int atTime = 0)
+        {
+            var param = new Dictionary<string, string>();
+            param.Add("id", id.ToString());
+            param.Add("at_time", atTime.ToString());
+            string url = BiliTool.UrlContact(Api.ACCOUNT_FEEDBACK_AT, param, true);
+            var response = await BiliTool.ConvertEntityFromWebAsync<FeedAtResponse>(url);
+            return response;
+        }
+        /// <summary>
+        /// 获取点赞的列表
+        /// </summary>
+        /// <param name="id">上次请求的Id</param>
+        /// <param name="likeTime">上次请求的底部时间戳</param>
+        /// <returns></returns>
+        public async Task<FeedLikeResponse> GetLikeMeListAsync(long id, int likeTime = 0)
+        {
+            var param = new Dictionary<string, string>();
+            param.Add("id", id.ToString());
+            param.Add("at_time", likeTime.ToString());
+            string url = BiliTool.UrlContact(Api.ACCOUNT_FEEDBACK_LIKE, param, true);
+            var response = await BiliTool.ConvertEntityFromWebAsync<FeedLikeResponse>(url);
+            return response;
         }
     }
 }

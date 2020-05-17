@@ -55,6 +55,8 @@ namespace BiliBili_UWP.Components.Controls
             _selectReplyId = replyId;
             ReplyCollection.Clear();
             ReplyTextBox.ClearText();
+            HeaderBlock.Visibility = Visibility.Visible;
+            NoDataContainer.Visibility = Visibility.Collapsed;
             await LoadReply();
             LoadingRing.IsActive = false;
         }
@@ -67,21 +69,29 @@ namespace BiliBili_UWP.Components.Controls
             var data = await _client.GetReplyDetailAsync(_rootId, _oid, _next, _type);
             if (data != null)
             {
-                if(data.root.replies!=null && data.root.replies.Count > 0)
+                if (data.root == null)
                 {
-                    foreach (var newItem in data.root.replies)
-                    {
-                        if (ReplyCollection.Contains(newItem))
-                            continue;
-                        ReplyCollection.Add(newItem);
-                    }
-                    data.root.replies = null;
+                    NoDataContainer.Visibility = Visibility.Visible;
+                    HeaderBlock.Visibility = Visibility.Collapsed;
                 }
-                _prev = _next;
-                _next = data.cursor.next;
-                _isEnd = data.cursor.is_end;
-                HeaderBlock.Data = data.root;
-                HolderText.Visibility = ReplyCollection.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+                else
+                {
+                    if (data.root.replies != null && data.root.replies.Count > 0)
+                    {
+                        foreach (var newItem in data.root.replies)
+                        {
+                            if (ReplyCollection.Contains(newItem))
+                                continue;
+                            ReplyCollection.Add(newItem);
+                        }
+                        data.root.replies = null;
+                    }
+                    _prev = _next;
+                    _next = data.cursor.next;
+                    _isEnd = data.cursor.is_end;
+                    HeaderBlock.Data = data.root;
+                    HolderText.Visibility = ReplyCollection.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+                }
             }
             _isRequesting = false;
             LoadingBar.Visibility = Visibility.Collapsed;

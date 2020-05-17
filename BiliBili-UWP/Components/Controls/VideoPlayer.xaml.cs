@@ -187,6 +187,7 @@ namespace BiliBili_UWP.Components.Controls
             ErrorContainer.Visibility = Visibility.Collapsed;
             ErrorBlock.Text = "嗨呀，加载失败啦！";
             InteractionHomeButton.Visibility = Visibility.Collapsed;
+            InteractionEndContainer.Visibility = Visibility.Collapsed;
 
             bool isShowDanmaku = AppTool.GetBoolSetting(Settings.IsDanmakuOpen);
             DanmakuVisibilityButton.Content = isShowDanmaku ? "" : "";
@@ -1423,28 +1424,20 @@ namespace BiliBili_UWP.Components.Controls
                                 break;
                             if (!IsTextShouldShield(item.text))
                             {
-                                try
+                                switch (item.location)
                                 {
-                                    switch (item.location)
-                                    {
-                                        case DanmakuLocation.Top:
-                                            DanmakuControls.AddTopDanmu(item, false);
-                                            break;
-                                        case DanmakuLocation.Bottom:
-                                            DanmakuControls.AddBottomDanmu(item, false);
-                                            break;
-                                        case DanmakuLocation.Position:
-                                            DanmakuControls.AddPositionDanmu(item);
-                                            break;
-                                        default:
-                                            DanmakuControls.AddRollDanmu(item, false);
-                                            break;
-                                    }
-                                }
-                                catch (Exception ex)
-                                {
-                                    Debug.WriteLine(ex.Message);
-                                    var ite = item.size;
+                                    case DanmakuLocation.Top:
+                                        DanmakuControls.AddTopDanmu(item, false);
+                                        break;
+                                    case DanmakuLocation.Bottom:
+                                        DanmakuControls.AddBottomDanmu(item, false);
+                                        break;
+                                    case DanmakuLocation.Position:
+                                        DanmakuControls.AddPositionDanmu(item);
+                                        break;
+                                    default:
+                                        DanmakuControls.AddRollDanmu(item, false);
+                                        break;
                                 }
                                 nowDanmaNum++;
                             }
@@ -1642,11 +1635,13 @@ namespace BiliBili_UWP.Components.Controls
         {
             MaskContainer.Visibility = Visibility.Visible;
             LockScreenButton.Content = "";
+            _isPlayerLocked = true;
         }
         public void UnlockPlayer()
         {
             MaskContainer.Visibility = Visibility.Collapsed;
             LockScreenButton.Content = "";
+            _isPlayerLocked = false;
         }
         public async Task ChangeDanmakuStatus()
         {

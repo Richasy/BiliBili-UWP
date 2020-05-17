@@ -33,7 +33,7 @@ namespace BiliBili_UWP.Models.Core
                 return;
             MySubscribeChannelCollection.Clear();
             var mySub = data.Subscribes;
-            mySub.Take(6).ToList().ForEach(p => MySubscribeChannelCollection.Add(p));
+            mySub.Distinct().Take(6).ToList().ForEach(p => MySubscribeChannelCollection.Add(p));
             if (data.Scaneds != null)
             {
                 if (MyScanedChannelCollection.Count == 0)

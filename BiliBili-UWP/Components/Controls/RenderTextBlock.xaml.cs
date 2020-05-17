@@ -41,6 +41,17 @@ namespace BiliBili_UWP.Components.Controls
                     text = text.Replace(item.Key, $"<sub>!{item.Key}({item.Value.url} ={width})</sub>");
                 }
             }
+            else
+            {
+                foreach (var item in App.BiliViewModel._emojis)
+                {
+                    if (text.Contains(item.name))
+                    {
+                        double width = Convert.ToInt32(item.size) * FontSize;
+                        text = text.Replace(item.name, $"<sub>!{item.name}({item.url} ={width})</sub>");
+                    }
+                }
+            }
             richBlock.Text = text;
         }
 

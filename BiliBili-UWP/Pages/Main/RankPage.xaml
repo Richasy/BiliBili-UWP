@@ -67,8 +67,7 @@
                                         ContainerContentChanging="VideoGridView_ContainerContentChanging"
                                         />
 
-            <muxc:ProgressRing Foreground="{ThemeResource PrimaryColor}" VerticalAlignment="Center" HorizontalAlignment="Center"
-                               Width="40" Height="40" x:Name="LoadingRing"/>
+            <muxc:ProgressRing Style="{StaticResource MuxcProgressRingStyle}" x:Name="LoadingRing"/>
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="NoDataContainer" Visibility="Collapsed">
                 <Image Source="ms-appx:///Assets/null.png" Width="100" HorizontalAlignment="Center"/>
                 <TextBlock Text="暂时无法获取到数据" Margin="0,10,0,0" HorizontalAlignment="Center" TextAlignment="Center"

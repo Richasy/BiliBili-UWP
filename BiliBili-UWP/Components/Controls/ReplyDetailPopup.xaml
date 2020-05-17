@@ -118,6 +118,12 @@
                         <Grid Background="{ThemeResource CardBackground}" Padding="10" CornerRadius="4" Margin="0,0,0,10">
                             <local:ReplyMainBlock x:Name="HeaderBlock" HorizontalAlignment="Stretch" TopBadgeVisibility="Collapsed"
                                           SubReplyVisibility="Collapsed" CommentButtonClick="ReplyMainBlock_CommentButtonClick"/>
+                            <StackPanel x:Name="NoDataContainer" Visibility="Collapsed">
+                                <controls:ImageEx Source="ms-appx:///Assets/null.png"
+                                              Width="60" HorizontalAlignment="Center"/>
+                                <TextBlock Text="找不到数据啦" HorizontalAlignment="Center" Style="{StaticResource TipTextStyle}"
+                                           Margin="0,10,0,0"/>
+                            </StackPanel>
                         </Grid>
                         <Grid Grid.Row="1">
                             <ListView ItemTemplate="{StaticResource ReplyItemTemplate}"

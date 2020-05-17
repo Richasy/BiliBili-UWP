@@ -59,7 +59,7 @@ namespace BiliBili_UWP.Models.UI
                 case SideMenuItemType.Dynamic:
                     Name = "动态";
                     Icon = "";
-                    Group = SideMenuGroupType.Basic;
+                    Group = SideMenuGroupType.My;
                     break;
                 case SideMenuItemType.MyHistory:
                     Name = "历史记录";
@@ -74,6 +74,11 @@ namespace BiliBili_UWP.Models.UI
                 case SideMenuItemType.MyDownload:
                     Name = "我的下载";
                     Icon = "";
+                    Group = SideMenuGroupType.My;
+                    break;
+                case SideMenuItemType.MyMessage:
+                    Name = "我的消息";
+                    Icon = "";
                     Group = SideMenuGroupType.My;
                     break;
                 case SideMenuItemType.ViewLater:
@@ -121,8 +126,8 @@ namespace BiliBili_UWP.Models.UI
                     new SideMenuItem(SideMenuItemType.Line),
                     new SideMenuItem(SideMenuItemType.MyHistory),
                     new SideMenuItem(SideMenuItemType.MyFavorite),
-                    new SideMenuItem(SideMenuItemType.MyDownload),
-                    new SideMenuItem(SideMenuItemType.ViewLater)
+                    new SideMenuItem(SideMenuItemType.ViewLater),
+                    new SideMenuItem(SideMenuItemType.MyMessage),
                 });
             }
             if (selected != SideMenuItemType.Line)

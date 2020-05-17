@@ -159,6 +159,15 @@
     <Compile Include="Components\Controls\HorizontalScrollSectionPanel.xaml.cs">
       <DependentUpon>HorizontalScrollSectionPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Components\Controls\MessageAtBlock.xaml.cs">
+      <DependentUpon>MessageAtBlock.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Controls\MessageLikeBlock.xaml.cs">
+      <DependentUpon>MessageLikeBlock.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Controls\MessageReplyBlock.xaml.cs">
+      <DependentUpon>MessageReplyBlock.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Components\Controls\RecommendVideoCard.xaml.cs">
       <DependentUpon>RecommendVideoCard.xaml</DependentUpon>
     </Compile>
@@ -320,6 +329,9 @@
     </Compile>
     <Compile Include="Pages\Main\LivePage.xaml.cs">
       <DependentUpon>LivePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Main\MessagePage.xaml.cs">
+      <DependentUpon>MessagePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Main\MiniPlayerPage.xaml.cs">
       <DependentUpon>MiniPlayerPage.xaml</DependentUpon>
@@ -534,6 +546,18 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Components\Controls\MessageAtBlock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\Controls\MessageLikeBlock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\Controls\MessageReplyBlock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Components\Controls\RecommendVideoCard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -691,6 +715,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\Main\LivePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Main\MessagePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

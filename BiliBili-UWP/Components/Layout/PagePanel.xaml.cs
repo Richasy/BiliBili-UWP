@@ -177,6 +177,9 @@ namespace BiliBili_UWP.Components.Layout
                 case SideMenuItemType.MyDownload:
                     page = typeof(Pages.Main.DownloadPage);
                     break;
+                case SideMenuItemType.MyMessage:
+                    page = typeof(Pages.Main.MessagePage);
+                    break;
                 case SideMenuItemType.ViewLater:
                     page = typeof(Pages.Main.ViewLaterPage);
                     break;
@@ -232,6 +235,8 @@ namespace BiliBili_UWP.Components.Layout
                 result = SideMenuItemType.Settings;
             else if (type.Equals(typeof(Pages.Main.DownloadPage)))
                 result = SideMenuItemType.MyDownload;
+            else if (type.Equals(typeof(Pages.Main.MessagePage)))
+                result = SideMenuItemType.MyMessage;
             else if (type.Equals(typeof(Pages.Main.HelpPage)))
                 result = SideMenuItemType.Help;
             return result;

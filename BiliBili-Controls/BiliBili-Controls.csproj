@@ -133,6 +133,7 @@
     <Compile Include="Extensions\VisualExtension.cs" />
     <Compile Include="Extensions\VisualTreeExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StaggeredPanel\StaggeredPanel.cs" />
     <EmbeddedResource Include="Properties\BiliBili_Controls.rd.xml" />
   </ItemGroup>
   <ItemGroup>

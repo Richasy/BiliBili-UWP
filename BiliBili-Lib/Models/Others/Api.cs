@@ -194,6 +194,18 @@ namespace BiliBili_Lib.Models.Others
         /// 获取关注列表的详情
         /// </summary>
         public const string ACCOUNT_RELATION_FOLLOW_DETAIL = _apiBase + "/x/relation/tag";
+        /// <summary>
+        /// 获取回复列表
+        /// </summary>
+        public const string ACCOUNT_FEEDBACK_REPLY = _apiBase + "/x/msgfeed/reply";
+        /// <summary>
+        /// 获取At列表
+        /// </summary>
+        public const string ACCOUNT_FEEDBACK_AT = _apiBase + "/x/msgfeed/at";
+        /// <summary>
+        /// 获取点赞列表
+        /// </summary>
+        public const string ACCOUNT_FEEDBACK_LIKE = _apiBase + "/x/msgfeed/like";
         #endregion
 
         #region 频道 Channel
