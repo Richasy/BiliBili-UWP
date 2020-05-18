@@ -118,6 +118,7 @@ namespace BiliBili_UWP.Components.Controls
         private void BodyInit(Topic data)
         {
             MainDisplay.Visibility = Visibility.Visible;
+            MoreButton.Visibility = Visibility.Collapsed;
             if (data.display != null && data.display.emoji_info != null && data.display.emoji_info.emoji_details.Count > 0)
             {
                 var dict = new Dictionary<string, Emote>();
@@ -136,6 +137,7 @@ namespace BiliBili_UWP.Components.Controls
                     DescriptionBlock.Text = Regex.Replace(info.dynamic, @"#(.*?)#", "").Trim();
                 DescriptionBlock.Visibility = string.IsNullOrEmpty(DescriptionBlock.Text) ? Visibility.Collapsed : Visibility.Visible;
                 CommentBlock.Text = AppTool.GetNumberAbbreviation(info.stat.reply);
+                MoreButton.Visibility = Visibility.Visible;
                 MainDisplay.Data = info;
             }
             else if (data.desc.type == 1)
@@ -419,6 +421,12 @@ namespace BiliBili_UWP.Components.Controls
                 request.Data.SetWebLink(new Uri($"https://t.bilibili.com/{Data.desc.dynamic_id_str}?tab=2"));
             if (!string.IsNullOrWhiteSpace(MainDisplay.ImageUrl))
                 request.Data.SetBitmap(RandomAccessStreamReference.CreateFromUri(new Uri(MainDisplay.ImageUrl)));
+        }
+
+        private async void LaterViewButton_Click(object sender, RoutedEventArgs e)
+        {
+            var data = MainDisplay.Data as VideoDynamic;
+            await App.BiliViewModel.AddViewLater(sender, data.aid);
         }
     }
 }

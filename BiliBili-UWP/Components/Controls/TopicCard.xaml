@@ -69,7 +69,19 @@
                 x:Name="FollowButton" Grid.Column="1" VerticalAlignment="Center" Style="{StaticResource DefaultAsyncButtonStyle}"
                                  Padding="0,0,0,0" FontSize="10" Click="FollowButton_Click" Text="关注" BorderBrush="{ThemeResource LineColor}" BorderThickness="1"/>
             <Button Style="{StaticResource TransparentButtonStyle}" VerticalAlignment="Center" Grid.Column="2"
-                    Content="&#xE9A9;" FontFamily="{StaticResource Icon}"/>
+                    Content="&#xE9A9;" FontFamily="{StaticResource Icon}" x:Name="MoreButton">
+                <Button.Flyout>
+                    <CommandBarFlyout x:Name="VideoFlyout">
+                        <CommandBarFlyout.SecondaryCommands>
+                            <AppBarButton Label="加入稍后再看" FontSize="12" FontFamily="{CustomResource Basic}" x:Name="LaterViewButton" Click="LaterViewButton_Click">
+                                <AppBarButton.Icon>
+                                    <FontIcon FontFamily="{StaticResource Icon}" Glyph="&#xEA3B;"/>
+                                </AppBarButton.Icon>
+                            </AppBarButton>
+                        </CommandBarFlyout.SecondaryCommands>
+                    </CommandBarFlyout>
+                </Button.Flyout>
+            </Button>
         </Grid>
         <local:RenderTextBlock x:Name="DescriptionBlock" Margin="0,5,0,0" Grid.Row="1"/>
         <ItemsControl ItemTemplate="{StaticResource TagItemTemplate}" x:Name="TagList" Grid.Row="2" Margin="0,5,0,0"
