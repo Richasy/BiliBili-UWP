@@ -58,7 +58,7 @@ namespace BiliBili_UWP.Components.Controls
                 }
                 instance.DetailBlock.Text = detail;
                 instance.TimeBlock.Text = AppTool.GetReadDateString(data.like_time);
-                instance.TitleBlock.Text = string.IsNullOrEmpty(data.item.title) ? "数据蜜汁消失了" : data.item.title;
+                instance.TitleBlock.Text = string.IsNullOrEmpty(data.item.title) ? data.item.desc : data.item.title;
             }
         }
 

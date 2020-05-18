@@ -88,7 +88,7 @@ namespace BiliBili_UWP.Pages.Main
             else
             {
                 HeaderListView.SelectedIndex = 0;
-                await InitReply(true);
+                await SwitchHeader(HeaderCollection.First(), true);
             }
         }
 

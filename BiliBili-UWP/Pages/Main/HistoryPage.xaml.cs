@@ -147,11 +147,11 @@ namespace BiliBili_UWP.Pages.Main
 
         private async void RemoveItem_Click(object sender, RoutedEventArgs e)
         {
-            var item = (sender as FrameworkElement).DataContext as VideoDetail;
-            bool result = await _account.DeleteHistoryAsync(item.aid);
+            var aid = (sender as AppBarButton).Tag.ToString();
+            bool result = await _account.DeleteHistoryAsync(Convert.ToInt32(aid));
             if (result)
             {
-                HistoryCollection.Remove(item);
+                HistoryCollection.Remove(HistoryCollection.Where(p=>p.aid==Convert.ToInt32(aid)).FirstOrDefault());
                 HolderText.Visibility = HistoryCollection.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
             }
             else
