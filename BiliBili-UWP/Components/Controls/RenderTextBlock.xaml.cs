@@ -33,6 +33,7 @@ namespace BiliBili_UWP.Components.Controls
 
         public void RenderText(string text)
         {
+            text = text.Replace("\n", "\n\n");
             if (EmoteSource != null && EmoteSource.Count > 0)
             {
                 foreach (var item in EmoteSource)

@@ -65,6 +65,7 @@ namespace BiliBili_UWP.Components.Controls
             if (_isRequesting || _isEnd)
                 return;
             _isRequesting = true;
+            if(!LoadingRing.IsActive)
             LoadingBar.Visibility = Visibility.Visible;
             var data = await _client.GetReplyDetailAsync(_rootId, _oid, _next, _type);
             if (data != null)

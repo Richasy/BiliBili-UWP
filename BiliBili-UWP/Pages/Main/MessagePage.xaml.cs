@@ -95,14 +95,17 @@ namespace BiliBili_UWP.Pages.Main
         public async Task InitHeader()
         {
             var unread = await _accService.GetMyUnreadMessageAsync();
-            foreach (var item in HeaderCollection)
+            if (unread != null)
             {
-                if (item.Name == StaticString.MESSAGE_REPLYME)
-                    item.Param = unread.reply > 0 ? unread.reply.ToString() : "";
-                else if (item.Name == StaticString.MESSAGE_AT)
-                    item.Param = unread.at > 0 ? unread.at.ToString() : "";
-                else if (item.Name == StaticString.MESSAGE_LIKE)
-                    item.Param = unread.like > 0 ? unread.like.ToString() : "";
+                foreach (var item in HeaderCollection)
+                {
+                    if (item.Name == StaticString.MESSAGE_REPLYME)
+                        item.Param = unread.reply > 0 ? unread.reply.ToString() : "";
+                    else if (item.Name == StaticString.MESSAGE_AT)
+                        item.Param = unread.at > 0 ? unread.at.ToString() : "";
+                    else if (item.Name == StaticString.MESSAGE_LIKE)
+                        item.Param = unread.like > 0 ? unread.like.ToString() : "";
+                }
             }
         }
 

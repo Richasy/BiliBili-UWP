@@ -41,8 +41,8 @@
 
         <StackPanel Grid.Row="1" Margin="0,7,0,0">
             <controls:MarkdownTextBlock Style="{StaticResource BasicMarkdownTextBlock}" FontSize="13" Foreground="{ThemeResource ImportantTextColor}"
-                           x:Name="DetailBlock" Margin="0,5,0,0"/>
-            <Border Background="{ThemeResource PrimaryColorOpacity}" Padding="5,3" CornerRadius="2" x:Name="LatestContainer" Margin="0,5,0,0"
+                           x:Name="DetailBlock" Margin="0,5,0,0" ParagraphLineHeight="18"/>
+            <Border Background="{ThemeResource PrimaryColorOpacity}" Padding="5,3" CornerRadius="2" x:Name="LatestContainer" Margin="0,2,0,0"
                     HorizontalAlignment="Left">
                 <TextBlock Text="最新" Style="{StaticResource SmallTipTextStyle}" FontSize="10" Foreground="{ThemeResource PrimaryColorOver}"/>
             </Border>

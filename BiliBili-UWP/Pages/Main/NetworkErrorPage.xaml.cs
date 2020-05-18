@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage;
@@ -33,6 +34,11 @@ namespace BiliBili_UWP.Pages.Main
             string text = await FileIO.ReadTextAsync(file);
             DisplayBlock.Text = text;
             base.OnNavigatedTo(e);
+        }
+
+        private async void RestartButton_Click(object sender, RoutedEventArgs e)
+        {
+            await CoreApplication.RequestRestartAsync("restart");
         }
     }
 }

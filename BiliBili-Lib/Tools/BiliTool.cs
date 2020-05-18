@@ -259,22 +259,40 @@ namespace BiliBili_Lib.Tools
         /// <returns></returns>
         public static UriResult GetResultFromUri(string url)
         {
-            if (url.Contains("/ep", StringComparison.OrdinalIgnoreCase))
+            var uri = new Uri(url);
+            string path = uri.AbsolutePath;
+            if (path.Contains("/ep", StringComparison.OrdinalIgnoreCase))
             {
                 var regex_ep = new Regex(@"ep(\d+)");
                 if (regex_ep.IsMatch(url))
                 {
-                    string epId = regex_ep.Match(url).Value.Replace("ep", "");
+                    string epId = regex_ep.Match(path).Value.Replace("ep", "");
                     return new UriResult(Enums.UriType.Bangumi, epId);
                 }
             }
-            else if (url.Contains("/cv", StringComparison.OrdinalIgnoreCase))
+            else if (path.Contains("/cv", StringComparison.OrdinalIgnoreCase))
             {
                 var regex_cv = new Regex(@"cv(\d+)");
                 if (regex_cv.IsMatch(url))
                 {
-                    string epId = regex_cv.Match(url).Value.Replace("cv", "");
-                    return new UriResult(Enums.UriType.Document, epId);
+                    string cId = regex_cv.Match(path).Value.Replace("cv", "");
+                    return new UriResult(Enums.UriType.Document, cId);
+                }
+            }
+            else if (path.Contains("video/", StringComparison.OrdinalIgnoreCase))
+            {
+                var regex_av = new Regex(@"av(\d+)");
+                var regex_bv = new Regex(@"BV(.*)");
+                
+                if (regex_av.IsMatch(path))
+                {
+                    string aid = regex_av.Match(path).Value.Replace("av","");
+                    return new UriResult(Enums.UriType.VideoA, aid);
+                }
+                else if (regex_bv.IsMatch(path))
+                {
+                    string bid = regex_bv.Match(path).Value;
+                    return new UriResult(Enums.UriType.VideoB, bid);
                 }
             }
             return new UriResult(Enums.UriType.Web, url);

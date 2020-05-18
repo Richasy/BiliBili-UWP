@@ -111,10 +111,16 @@ namespace BiliBili_UWP
                     rootFrame.Navigate(typeof(MainPage), (e as LaunchActivatedEventArgs).Arguments);
                 }
                 // Ensure the current window is active
-                Window.Current.Activate();
+                
             }
-
-            if (e is ToastNotificationActivatedEventArgs toastActivationArgs)
+            else if(e.Kind == ActivationKind.StartupTask)
+            {
+                if (rootFrame.Content == null)
+                {
+                    rootFrame.Navigate(typeof(MainPage));
+                }
+            }
+            else if (e is ToastNotificationActivatedEventArgs toastActivationArgs)
             {
                 if (rootFrame.Content == null)
                 {
@@ -124,7 +130,6 @@ namespace BiliBili_UWP
                 {
                     AppViewModel.AppInitByActivated(toastActivationArgs.Argument);
                 }
-                Window.Current.Activate();
             }
             else if(e is ProtocolActivatedEventArgs protocalArgs)
             {
@@ -137,8 +142,8 @@ namespace BiliBili_UWP
                 {
                     AppViewModel.AppInitByActivated(arg);
                 }
-                Window.Current.Activate();
             }
+            Window.Current.Activate();
             if (e.PreviousExecutionState == ApplicationExecutionState.Running)
             {
                 if (BiliViewModel != null && BiliViewModel.IsLogin)

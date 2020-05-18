@@ -8,7 +8,8 @@ namespace BiliBili_Lib.Enums
 {
     public enum UriType
     {
-        Video,
+        VideoA,
+        VideoB,
         Bangumi,
         Document,
         Live,

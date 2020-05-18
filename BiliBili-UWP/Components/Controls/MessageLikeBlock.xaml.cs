@@ -1,5 +1,6 @@
 ﻿using BiliBili_Lib.Models.BiliBili.Feedback;
 using BiliBili_Lib.Tools;
+using BiliBili_UWP.Models.UI.Others;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -64,10 +65,22 @@ namespace BiliBili_UWP.Components.Controls
 
         private async void Container_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            if (Data.item.type == "video")
-                App.AppViewModel.PlayVideo(Convert.ToInt32(Data.item.item_id));
-            else
-                await Launcher.LaunchUriAsync(new Uri(Data.item.uri));
+            e.Handled = true;
+            var result = BiliTool.GetResultFromUri(Data.item.uri);
+            if (result.Type.ToString().Contains("Video"))
+            {
+                if (result.Type == BiliBili_Lib.Enums.UriType.VideoA)
+                    App.AppViewModel.PlayVideo(Convert.ToInt32(result.Param));
+                else
+                {
+                    var args = new VideoActiveArgs() { bvid = result.Param };
+                    App.AppViewModel.PlayVideo(args);
+                }
+            }
+            else if (result.Type == BiliBili_Lib.Enums.UriType.Web)
+            {
+                App.AppViewModel.ShowWebPopup(TitleBlock.Text, result.Param);
+            }
         }
     }
 }

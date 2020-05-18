@@ -1,5 +1,6 @@
 ﻿using BiliBili_Lib.Enums;
 using BiliBili_Lib.Tools;
+using BiliBili_UWP.Components.Widgets;
 using BiliBili_UWP.Dialogs;
 using BiliBili_UWP.Models.UI;
 using BiliBili_UWP.Models.UI.Others;
@@ -11,6 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
+using Windows.ApplicationModel;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -32,6 +34,7 @@ namespace BiliBili_UWP.Pages.Main
     public sealed partial class SettingPage : Page
     {
         private bool _isInit = false;
+        private bool _tempStartupHandle = false;
         private ObservableCollection<SystemFont> FontCollection = App.AppViewModel.FontCollection;
 
         public SettingPage()
@@ -39,7 +42,7 @@ namespace BiliBili_UWP.Pages.Main
             this.InitializeComponent();
             NavigationCacheMode = NavigationCacheMode.Enabled;
         }
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
             if (_isInit || e.NavigationMode == NavigationMode.Back)
                 return;
@@ -54,6 +57,9 @@ namespace BiliBili_UWP.Pages.Main
             PagePaneDisplayBreakpointBox.Value = pageBreakpoint;
             bool isEnableAnimation = AppTool.GetBoolSetting(Settings.EnableAnimation);
             EnableAnimationSwitch.IsOn = isEnableAnimation;
+            StartupTask startupTask = await StartupTask.GetAsync("RichasyBiliBili");
+            bool isEnableStartup = startupTask.State.ToString().Contains("Enable");
+            EnableStartupSwitch.IsOn = isEnableStartup;
             #endregion
 
             #region 播放器设置
@@ -257,6 +263,74 @@ namespace BiliBili_UWP.Pages.Main
             if (!_isInit)
                 return;
             AppTool.WriteLocalSetting(Settings.IsAutoNextPart, AutoNextPartSwitch.IsOn.ToString());
+        }
+
+        private async void EnableStartupSwitch_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (!_isInit)
+                return;
+            if (_tempStartupHandle)
+            {
+                _tempStartupHandle = false;
+                return;
+            }
+            bool isOn = EnableStartupSwitch.IsOn;
+            StartupTask startupTask = await StartupTask.GetAsync("RichasyBiliBili");
+            bool isHandled = false;
+            if (isOn)
+            {
+                switch (startupTask.State)
+                {
+                    case StartupTaskState.Disabled:
+                        StartupTaskState newState = await startupTask.RequestEnableAsync();
+                        if(newState==StartupTaskState.Enabled || newState==StartupTaskState.EnabledByPolicy)
+                        {
+                            isHandled = true;
+                            new TipPopup("已开启应用自启动").ShowMessage();
+                        }
+                        else
+                            new TipPopup("启动失败").ShowMessage();
+                        break;
+                    case StartupTaskState.DisabledByUser:
+                        await new ConfirmDialog("您已在任务管理器中禁用了 哔哩 的启动项，请先启用它").ShowAsync();
+                        break;
+                    case StartupTaskState.DisabledByPolicy:
+                        await new ConfirmDialog("受限于设备或组织策略，您无法设置启动项").ShowAsync();
+                        break;
+                    case StartupTaskState.Enabled:
+                    case StartupTaskState.EnabledByPolicy:
+                        isHandled = true;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else
+            {
+                switch (startupTask.State)
+                {
+                    case StartupTaskState.Disabled:
+                    case StartupTaskState.DisabledByUser:
+                    case StartupTaskState.DisabledByPolicy:
+                        isHandled = true;
+                        break;
+                    case StartupTaskState.Enabled:
+                        startupTask.Disable();
+                        isHandled = true;
+                        new TipPopup("已禁用应用自启").ShowMessage();
+                        break;
+                    case StartupTaskState.EnabledByPolicy:
+                        await new ConfirmDialog("受限于设备或组织策略，您无法设置启动项").ShowAsync();
+                        break;
+                    default:
+                        break;
+                }
+            }
+            if (!isHandled)
+            {
+                _tempStartupHandle = true;
+                EnableStartupSwitch.IsOn = !isOn;
+            }
         }
     }
 }

@@ -34,14 +34,17 @@ namespace BiliBili_UWP.Components.Controls
         {
             _url = url;
             TitleBlock.Text = title;
+            LoadingRing.IsActive = true;
             PopWebView.Navigate(new Uri(url));
         }
         public void ShowPopup()
         {
             UIHelper.PopupShow(this,()=>
             {
+                DisplayContainer.Width = Window.Current.Bounds.Width > 700 ? Window.Current.Bounds.Width * 0.7 : 700;
                 DisplayContainer.Height = Window.Current.Bounds.Height * 0.8;
             });
+            DisplayContainer.Width = Window.Current.Bounds.Width > 700 ? Window.Current.Bounds.Width * 0.7 : 700;
             DisplayContainer.Height = Window.Current.Bounds.Height * 0.8;
             PopupIn.Begin();
         }
@@ -65,6 +68,11 @@ namespace BiliBili_UWP.Components.Controls
         private async void NewWebButton_Click(object sender, RoutedEventArgs e)
         {
             await Launcher.LaunchUriAsync(new Uri(_url));
+        }
+
+        private void PopWebView_DOMContentLoaded(WebView sender, WebViewDOMContentLoadedEventArgs args)
+        {
+            LoadingRing.IsActive = false;
         }
     }
 }

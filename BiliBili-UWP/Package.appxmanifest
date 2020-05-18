@@ -5,7 +5,8 @@
   xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
   xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
   xmlns:uap3="http://schemas.microsoft.com/appx/manifest/uap/windows10/3"
-  IgnorableNamespaces="uap mp uap3">
+  xmlns:uap5="http://schemas.microsoft.com/appx/manifest/uap/windows10/5"
+  IgnorableNamespaces="uap mp uap3 uap5">
 
   <Identity
     Name="60520B029E250.4264454043325"
@@ -46,6 +47,7 @@
           </uap:ShowNameOnTiles>
         </uap:DefaultTile >
         <uap:SplashScreen Image="Assets\Logo\SplashScreen.png"  BackgroundColor="transparent"/>
+        <uap:LockScreen BadgeLogo="Assets\Logo\BadgeLogo.png" Notification="badge"/>
       </uap:VisualElements>
       <Extensions>
         <Extension Category="windows.backgroundTasks" EntryPoint="BiliBili_Notification.NewDynamicNotification">
@@ -54,6 +56,13 @@
             <Task Type="pushNotification"/>
           </BackgroundTasks>
         </Extension>
+         <uap5:Extension
+            Category="windows.startupTask">
+            <uap5:StartupTask
+              TaskId="RichasyBiliBili"
+              Enabled="false"
+              DisplayName="哔哩" />
+          </uap5:Extension>
         <uap:Extension Category="windows.protocol">
           <uap:Protocol Name="richasy-bilibili">
             <uap:Logo>Assets\bilibili logo.png</uap:Logo>

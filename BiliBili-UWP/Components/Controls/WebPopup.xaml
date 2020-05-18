@@ -5,7 +5,7 @@
     xmlns:local="using:BiliBili_UWP.Components.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls" xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -87,7 +87,7 @@
             <controls:DropShadowPanel.RenderTransform>
                 <TranslateTransform Y="-20"></TranslateTransform>
             </controls:DropShadowPanel.RenderTransform>
-            <Grid Width="500" Background="{ThemeResource PageBackground}" CornerRadius="5"
+            <Grid MaxWidth="700" Background="{ThemeResource PageBackground}" CornerRadius="5"
                   Name="DisplayContainer">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -107,8 +107,9 @@
                 </Grid>
                 <WebView DefaultBackgroundColor="Transparent"
                      Grid.Row="1" HorizontalAlignment="Stretch"
-                     VerticalAlignment="Stretch"
+                     VerticalAlignment="Stretch" DOMContentLoaded="PopWebView_DOMContentLoaded"
                      x:Name="PopWebView"/>
+                <muxc:ProgressRing x:Name="LoadingRing" Style="{StaticResource MuxcProgressRingStyle}" Grid.Row="1"/>
             </Grid>
         </controls:DropShadowPanel>
     </Grid>

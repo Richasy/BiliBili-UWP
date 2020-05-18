@@ -46,6 +46,8 @@
                         <widgets:NumberBox HeaderTemplate="{StaticResource TipHeaderStyle}" Header="主副页显示模式调整断点 &#xA;大于此值则主副页并排展示" HorizontalAlignment="Left"
                                    x:Name="PagePaneDisplayBreakpointBox" Margin="0,15,0,0" ValueChanged="PagePaneDisplayBreakpointBox_ValueChanged"
                                    Minimum="700" Maximum="8000" Step="100" BoxWidth="200"/>
+                        <ToggleSwitch Style="{StaticResource BasicToggleSwitchStyle}" HeaderTemplate="{StaticResource TipHeaderStyle}"
+                              Header="跟随系统启动" Margin="0,15,0,0" x:Name="EnableStartupSwitch" Toggled="EnableStartupSwitch_Toggled"/>
                     </StackPanel>
                 </PivotItem>
                 <PivotItem>
