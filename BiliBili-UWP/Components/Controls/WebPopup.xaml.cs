@@ -41,10 +41,10 @@ namespace BiliBili_UWP.Components.Controls
         {
             UIHelper.PopupShow(this,()=>
             {
-                DisplayContainer.Width = Window.Current.Bounds.Width > 700 ? Window.Current.Bounds.Width * 0.7 : 700;
+                DisplayContainer.Width = Window.Current.Bounds.Width > 900 ? Window.Current.Bounds.Width * 0.7 : 900;
                 DisplayContainer.Height = Window.Current.Bounds.Height * 0.8;
             });
-            DisplayContainer.Width = Window.Current.Bounds.Width > 700 ? Window.Current.Bounds.Width * 0.7 : 700;
+            DisplayContainer.Width = Window.Current.Bounds.Width > 900 ? Window.Current.Bounds.Width * 0.7 : 900;
             DisplayContainer.Height = Window.Current.Bounds.Height * 0.8;
             PopupIn.Begin();
         }
@@ -73,6 +73,10 @@ namespace BiliBili_UWP.Components.Controls
         private void PopWebView_DOMContentLoaded(WebView sender, WebViewDOMContentLoadedEventArgs args)
         {
             LoadingRing.IsActive = false;
+            if (string.IsNullOrEmpty(TitleBlock.Text))
+            {
+                TitleBlock.Text = PopWebView.DocumentTitle;
+            }
         }
     }
 }

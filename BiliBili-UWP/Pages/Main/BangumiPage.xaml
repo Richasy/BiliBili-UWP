@@ -99,7 +99,8 @@
                 <controls1:ImageEx Width="120" CornerRadius="4" IsCacheEnabled="True" PlaceholderSource="ms-appx:///Assets/img_holder_rect.png"
                                    PlaceholderStretch="Uniform" Stretch="UniformToFill" Margin="0,0,15,0" x:Name="CoverImage" VerticalAlignment="Center"/>
                 <StackPanel Margin="0,10" Grid.Column="1">
-                    <TextBlock Style="{StaticResource TitleTextStyle}" x:Name="TitleBlock" FontSize="20" Foreground="{ThemeResource ImportantTextColor}"/>
+                    <TextBlock Style="{StaticResource TitleTextStyle}" x:Name="TitleBlock" FontSize="20" Foreground="{ThemeResource ImportantTextColor}"
+                               MaxLines="2"/>
                     <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                         <widgets:IconTextBlock Icon="&#xEA32;" GutterWidth="5" FontSize="12" IconForeground="{ThemeResource TipTextColor}" x:Name="PlayCountBlock"/>
                         <widgets:IconTextBlock Icon="&#xEA35;" GutterWidth="5" Margin="15,0,0,0" FontSize="12" IconForeground="{ThemeResource TipTextColor}" x:Name="DanmukuCountBlock"/>

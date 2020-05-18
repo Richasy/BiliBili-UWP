@@ -118,6 +118,10 @@ namespace BiliBili_UWP.Components.Controls
         {
             LoadingRing.IsActive = false;
             DetailWebView.Focus(FocusState.Programmatic);
+            if (string.IsNullOrEmpty(TitleBlock.Text))
+            {
+                TitleBlock.Text = DetailWebView.DocumentTitle;
+            }
         }
 
         private async void DetailWebView_ScriptNotify(object sender, NotifyEventArgs e)

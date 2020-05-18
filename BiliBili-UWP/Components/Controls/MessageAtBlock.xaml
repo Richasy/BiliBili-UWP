@@ -23,7 +23,7 @@
             </Grid.ColumnDefinitions>
             <StackPanel Orientation="Horizontal">
                 <PersonPicture x:Name="UserAvatar" Style="{StaticResource BasicPersonPictureStyle}"
-                           Width="30" Height="30" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                           Width="30" Height="30" VerticalAlignment="Center" Margin="0,0,10,0" Tapped="UserAvatar_Tapped"/>
                 <TextBlock Style="{StaticResource SmallTipTextStyle}" x:Name="ShowUserBlock" Foreground="{ThemeResource NormalTextColor}" VerticalAlignment="Center"/>
             </StackPanel>
             <TextBlock Style="{StaticResource SmallTipTextStyle}" VerticalAlignment="Center" Grid.Column="1" Margin="10,0,0,0"

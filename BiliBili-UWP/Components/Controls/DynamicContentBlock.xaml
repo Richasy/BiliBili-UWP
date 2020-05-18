@@ -116,25 +116,27 @@
             </StackPanel>
         </DataTemplate>
         <DataTemplate x:DataType="bilibili:RepostDynamic" x:Name="RepostTemplate">
-            <StackPanel>
-                <local:RenderTextBlock LineHeight="18" Margin="0,10,0,5"
+            <Grid>
+                <StackPanel>
+                    <local:RenderTextBlock LineHeight="18" Margin="0,10,0,5"
                            Text="{x:Bind item.content}" Visibility="{x:Bind item.content,Converter={StaticResource StringVisibilityConverter}}"/>
-                <StackPanel Background="{ThemeResource CardBackgroundOver}" Padding="10" CornerRadius="4">
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10" Tapped="Account_Tapped">
-                        <widgets:BiliImage Source="{x:Bind origin_user.info.face,Converter={StaticResource CoverResolutionConverter},ConverterParameter=30}"
+                    <StackPanel Background="{ThemeResource CardBackgroundOver}" Padding="10" CornerRadius="4" Visibility="{x:Bind origin_user.info.uname,Converter={StaticResource StringVisibilityConverter}}">
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10" Tapped="Account_Tapped">
+                            <widgets:BiliImage Source="{x:Bind origin_user.info.face,Converter={StaticResource CoverResolutionConverter},ConverterParameter=30}"
                                           Width="25" Height="25" CornerRadius="12.5"/>
-                        <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="10" VerticalAlignment="Center"
+                            <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="10" VerticalAlignment="Center"
                                    Foreground="{ThemeResource NormalTextColor}" Margin="10,0,0,0">
                             <Run Text="{x:Bind origin_user.info.uname}" Foreground="{ThemeResource SecondaryColor}"/>
                             <Run Text=" 投稿"/>
-                        </TextBlock>
-                    </StackPanel>
-                    <local:RenderTextBlock Text="{x:Bind render_origin_content}" Visibility="{x:Bind render_origin_content,Converter={StaticResource StringVisibilityConverter}}"
+                            </TextBlock>
+                        </StackPanel>
+                        <local:RenderTextBlock Text="{x:Bind render_origin_content}" Visibility="{x:Bind render_origin_content,Converter={StaticResource StringVisibilityConverter}}"
                                            />
-                    <local:DynamicContentBlock Data="{x:Bind render_origin}" HorizontalAlignment="Stretch" ImageTapped="MainDisplay_ImageTapped"
+                        <local:DynamicContentBlock Data="{x:Bind render_origin}" HorizontalAlignment="Stretch" ImageTapped="MainDisplay_ImageTapped"
                                                DocumentTapped="MainDisplay_DocumentTapped"/>
+                    </StackPanel>
                 </StackPanel>
-            </StackPanel>
+            </Grid>
         </DataTemplate>
         <DataTemplate x:DataType="bilibili:ShortVideoDynamic" x:Name="ShortVideoTemplate">
             <Grid>
@@ -208,9 +210,9 @@
                     <ColumnDefinition Width="1*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <widgets:BiliImage Source="{x:Bind cover,Converter={StaticResource CoverResolutionConverter},ConverterParameter=300}" CornerRadius="4" DecodePixelWidth="300" MaxHeight="200"
-                                  x:Name="VideoCover"/>
-                <Grid Grid.Row="1" Margin="0,5,5,0">
+                <widgets:BiliImage Source="{x:Bind cover,Converter={StaticResource CoverResolutionConverter},ConverterParameter=100}" Width="60" Height="60" CornerRadius="4" 
+                                  x:Name="VideoCover" Stretch="UniformToFill"/>
+                <Grid Grid.Column="1" Margin="15,0,5,0" VerticalAlignment="Center">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />

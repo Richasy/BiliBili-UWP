@@ -435,5 +435,31 @@ namespace BiliBili_UWP.Models.Core
             _repostPopup.ShowPopup();
             _repostPopup.Init(origin, bangumi,part);
         }
+        public void HandleUri(string url,string title="")
+        {
+            var result = BiliTool.GetResultFromUri(url);
+            if (result.Type.ToString().Contains("Video"))
+            {
+                if (result.Type == UriType.VideoA)
+                    PlayVideo(Convert.ToInt32(result.Param));
+                else
+                {
+                    var args = new VideoActiveArgs() { bvid = result.Param };
+                    PlayVideo(args);
+                }
+            }
+            else if (result.Type == UriType.Bangumi)
+            {
+                PlayBangumi(Convert.ToInt32(result.Param), null, true);
+            }
+            else if (result.Type == UriType.Document)
+            {
+                ShowDoucmentPopup(title, Convert.ToInt32(result.Param));
+            }
+            else if (result.Type == UriType.Web)
+            {
+                ShowWebPopup(title, result.Param);
+            }
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using BiliBili_Lib.Models.BiliBili;
+using BiliBili_Lib.Tools;
 using BiliBili_UWP.Models.UI;
 using System;
 using System.Collections.Generic;
@@ -117,9 +118,9 @@ namespace BiliBili_UWP.Components.Controls
 
 
 
-        private async void richBlock_LinkClicked(object sender, Microsoft.Toolkit.Uwp.UI.Controls.LinkClickedEventArgs e)
+        private void richBlock_LinkClicked(object sender, Microsoft.Toolkit.Uwp.UI.Controls.LinkClickedEventArgs e)
         {
-            await Launcher.LaunchUriAsync(new Uri(e.Link));
+            App.AppViewModel.HandleUri(e.Link);
         }
     }
 }

@@ -10,6 +10,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text.RegularExpressions;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -194,6 +195,11 @@ namespace BiliBili_UWP.Components.Controls
             else if (_cardType == "document")
             {
                 DocumentTapped?.Invoke(this, EventArgs.Empty);
+            }
+            else if (_cardType == "live")
+            {
+                var item = Data as LiveDynamic;
+                App.AppViewModel.ShowWebPopup(item.title, $"https://live.bilibili.com/{item.roomid}");
             }
         }
 

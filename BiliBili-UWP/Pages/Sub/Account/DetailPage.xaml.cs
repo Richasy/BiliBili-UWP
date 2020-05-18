@@ -103,6 +103,9 @@ namespace BiliBili_UWP.Pages.Sub.Account
 
             VideoContainer.Visibility = Visibility.Visible;
             DynamicContainer.Visibility = Visibility.Collapsed;
+            VideoHolderText.Visibility = Visibility.Collapsed;
+            DynamicHolderText.Visibility = Visibility.Collapsed;
+            HolderContainer.Visibility = Visibility.Collapsed;
 
             DynamicCollection.Clear();
             VideoCollection.Clear();

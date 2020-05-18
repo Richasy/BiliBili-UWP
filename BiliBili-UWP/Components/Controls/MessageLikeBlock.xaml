@@ -13,7 +13,7 @@
     <UserControl.Resources>
         <DataTemplate x:DataType="feedback:FeedUser" x:Key="UserItemTemplate">
             <controls:ImageEx Source="{x:Bind avatar,Converter={StaticResource CoverResolutionConverter},ConverterParameter=40}" Width="30" Height="30" Margin="-5,0,0,0"
-                           BorderBrush="{ThemeResource CardBackground}" CornerRadius="15"/>
+                           BorderBrush="{ThemeResource CardBackground}" CornerRadius="15" Tapped="ImageEx_Tapped"/>
         </DataTemplate>
     </UserControl.Resources>
     <Grid Background="{ThemeResource CardBackground}" Padding="10" CornerRadius="4"

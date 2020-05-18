@@ -63,24 +63,17 @@ namespace BiliBili_UWP.Components.Controls
             }
         }
 
-        private async void Container_Tapped(object sender, TappedRoutedEventArgs e)
+        private void Container_Tapped(object sender, TappedRoutedEventArgs e)
         {
             e.Handled = true;
-            var result = BiliTool.GetResultFromUri(Data.item.uri);
-            if (result.Type.ToString().Contains("Video"))
-            {
-                if (result.Type == BiliBili_Lib.Enums.UriType.VideoA)
-                    App.AppViewModel.PlayVideo(Convert.ToInt32(result.Param));
-                else
-                {
-                    var args = new VideoActiveArgs() { bvid = result.Param };
-                    App.AppViewModel.PlayVideo(args);
-                }
-            }
-            else if (result.Type == BiliBili_Lib.Enums.UriType.Web)
-            {
-                App.AppViewModel.ShowWebPopup(TitleBlock.Text, result.Param);
-            }
+            App.AppViewModel.HandleUri(Data.item.uri, TitleBlock.Text);
+        }
+
+        private void ImageEx_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            e.Handled = true;
+            var user = (sender as FrameworkElement).DataContext as FeedUser;
+            App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Pages.Sub.Account.DetailPage), user.mid);
         }
     }
 }

@@ -12,9 +12,18 @@ namespace BiliBili_UWP.Models.UI.Converter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            if (value == null || string.IsNullOrEmpty(value.ToString()))
+            if (parameter == null)
+            {
+                if (value == null || string.IsNullOrEmpty(value.ToString()))
+                    return Visibility.Collapsed;
+                return Visibility.Visible;
+            }
+            else
+            {
+                if (value == null || string.IsNullOrEmpty(value.ToString()))
+                    return Visibility.Visible;
                 return Visibility.Collapsed;
-            return Visibility.Visible;
+            }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
