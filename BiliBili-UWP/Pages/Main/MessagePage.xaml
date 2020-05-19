@@ -13,6 +13,7 @@
     xmlns:feedback="using:BiliBili_Lib.Models.BiliBili.Feedback"
     xmlns:controls="using:BiliBili_UWP.Components.Controls"
     xmlns:others="using:BiliBili_UWP.Models.UI.Others"
+    Loaded="Page_Loaded"
     xmlns:staggeredpanel="using:BiliBili_Controls.StaggeredPanel"
     mc:Ignorable="d">
     <Page.Resources>
@@ -56,7 +57,7 @@
         </Grid.RowDefinitions>
         <TextBlock Style="{StaticResource HeaderTextStyle}" Text="我的消息" VerticalAlignment="Center"/>
         <ListView Grid.Row="1" Margin="0,20,0,10" ItemTemplate="{StaticResource HeaderItemTemplate}"
-                  Style="{StaticResource BasicListView}" ItemsSource="{x:Bind HeaderCollection}"
+                  Style="{StaticResource BasicListView}" ItemsSource="{x:Bind HeaderCollection}" SelectionMode="Single"
                   ItemsPanel="{StaticResource HorizontalListViewItemsPanel}" Padding="-10,0,0,10"
                   IsItemClickEnabled="True" x:Name="HeaderListView" ItemClick="HeaderListView_ItemClick"
                   ext:IndicatorService.Name="ItemSign" ItemContainerStyle="{StaticResource TransparentListViewContainerStyle}"

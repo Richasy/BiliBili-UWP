@@ -36,23 +36,26 @@ namespace BiliBili_UWP.Pages.Main
         private FeedCursor _replyCursor;
         private FeedCursor _atCursor;
         private FeedCursor _likeCursor;
+        private double _scrollOffset = 0d;
         public MessagePage()
         {
             this.InitializeComponent();
+            NavigationCacheMode = NavigationCacheMode.Enabled;
         }
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
             App.AppViewModel.CurrentPagePanel.ScrollToBottom = ScrollToBottom;
+            App.AppViewModel.CurrentPagePanel.ScrollChanged = ScrollViewerChanged;
             if (e.NavigationMode == NavigationMode.Back)
                 return;
             await Refresh();
-            App.AppViewModel.CurrentPagePanel.PageScrollViewer.ChangeView(0, 0, 1);
             base.OnNavigatedTo(e);
         }
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             App.AppViewModel.CurrentPagePanel.ScrollToBottom = null;
+            App.AppViewModel.CurrentPagePanel.ScrollChanged = null;
             base.OnNavigatedFrom(e);
         }
         public void Reset()
@@ -84,10 +87,11 @@ namespace BiliBili_UWP.Pages.Main
             Reset();
             await InitHeader();
             if (HeaderListView.SelectedIndex != -1)
-                await SwitchHeader(HeaderListView.SelectedItem as IconItem);
+                await SwitchHeader(HeaderCollection[HeaderListView.SelectedIndex]);
             else
             {
                 HeaderListView.SelectedIndex = 0;
+                HeaderListView.SelectedItem = HeaderCollection.First();
                 await SwitchHeader(HeaderCollection.First(), true);
             }
         }
@@ -197,7 +201,11 @@ namespace BiliBili_UWP.Pages.Main
             var item = e.ClickedItem as IconItem;
             await SwitchHeader(item);
         }
-
+        private void ScrollViewerChanged()
+        {
+            double offset = App.AppViewModel.CurrentPagePanel.PageScrollViewer.VerticalOffset;
+            _scrollOffset = offset;
+        }
         private async void ScrollToBottom()
         {
             var item = HeaderListView.SelectedItem as IconItem;
@@ -216,6 +224,14 @@ namespace BiliBili_UWP.Pages.Main
             await InitHeader();
             await App.BiliViewModel.CheckUnreadMessage();
             await Task.WhenAll(tasks.ToArray());
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (_scrollOffset > 0)
+            {
+                App.AppViewModel.CurrentPagePanel.PageScrollViewer.ChangeView(0, _scrollOffset, 1);
+            }
         }
     }
 }
