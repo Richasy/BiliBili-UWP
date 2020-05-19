@@ -61,11 +61,7 @@ namespace BiliBili_UWP.Components.Controls
                 var uri = Data.item.native_uri;
                 if (Data.is_multi == 1)
                 {
-                    var param = new Dictionary<string, string>();
-                    param.Add("type", Data.item.business_id.ToString());
-                    param.Add("oid", Data.item.subject_id.ToString());
-                    param.Add("mode", "2");
-                    App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Pages.Sub.ReplyPage), param);
+                    HandleReply();
                 }
                 else
                 {
@@ -77,7 +73,19 @@ namespace BiliBili_UWP.Components.Controls
         private void Title_Tapped(object sender, TappedRoutedEventArgs e)
         {
             e.Handled = true;
-            App.AppViewModel.HandleUri(Data.item.uri, TitleBlock.Text);
+            if (Data.item.type == "reply")
+                HandleReply();
+            else
+                App.AppViewModel.HandleUri(Data.item.uri, TitleBlock.Text);
+        }
+
+        private void HandleReply()
+        {
+            var param = new Dictionary<string, string>();
+            param.Add("type", Data.item.business_id.ToString());
+            param.Add("oid", Data.item.subject_id.ToString());
+            param.Add("mode", "2");
+            App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Pages.Sub.ReplyPage), param);
         }
 
         private void UserAvatar_Tapped(object sender, TappedRoutedEventArgs e)

@@ -27,17 +27,19 @@ namespace BiliBili_UWP.Pages.Main
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class FavoritePage : Page,IRefreshPage
+    public sealed partial class FavoritePage : Page, IRefreshPage
     {
         private ObservableCollection<FavoriteItem> MyFavoriteCollection = new ObservableCollection<FavoriteItem>();
         private ObservableCollection<FavoriteItem> MyCollectCollection = new ObservableCollection<FavoriteItem>();
         private ObservableCollection<FavoriteAnime> MyAnimeCollection = new ObservableCollection<FavoriteAnime>();
         private ObservableCollection<FavoriteAnime> MyCinemaCollection = new ObservableCollection<FavoriteAnime>();
         private bool isInit = false;
+        public static FavoritePage Current;
         private AccountService _account = App.BiliViewModel._client.Account;
         public FavoritePage()
         {
             this.InitializeComponent();
+            Current = this;
             NavigationCacheMode = NavigationCacheMode.Enabled;
         }
 
@@ -54,15 +56,11 @@ namespace BiliBili_UWP.Pages.Main
             MyCollectCollection.Clear();
             MyAnimeCollection.Clear();
             MyCinemaCollection.Clear();
-
-            MyFavoriteListView.HolderVisibility = Visibility.Visible;
-            MyCollectListView.HolderVisibility = Visibility.Visible;
-            MyAnimeListView.HolderVisibility = Visibility.Visible;
-            MyCinemaListView.HolderVisibility = Visibility.Visible;
         }
         public async Task Refresh()
         {
             Reset();
+            LoadingRing.IsActive = true;
             if (App.BiliViewModel.CheckAccoutStatus())
             {
                 var tasks = new List<Task>();
@@ -81,22 +79,22 @@ namespace BiliBili_UWP.Pages.Main
                 var task2 = Task.Run(async () =>
                 {
                     var data = await _account.GetMyFavoriteAnimeAsync();
-                    if (data != null && data.Count > 0)
+                    if (data != null && data.Item2.Count > 0)
                     {
                         await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
                         {
-                            data.ForEach(p => MyAnimeCollection.Add(p));
+                            data.Item2.ForEach(p => MyAnimeCollection.Add(p));
                         });
                     }
                 });
                 var task3 = Task.Run(async () =>
                 {
                     var data = await _account.GetMyFavoriteCinemaAsync();
-                    if (data != null && data.Count > 0)
+                    if (data != null && data.Item2.Count > 0)
                     {
                         await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
                         {
-                            data.ForEach(p => MyCinemaCollection.Add(p));
+                            data.Item2.ForEach(p => MyCinemaCollection.Add(p));
                         });
                     }
                 });
@@ -109,6 +107,7 @@ namespace BiliBili_UWP.Pages.Main
                 MyAnimeListView.HolderVisibility = MyAnimeCollection.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
                 MyCinemaListView.HolderVisibility = MyCinemaCollection.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
             }
+            LoadingRing.IsActive = false;
         }
         private void MyFavoriteListView_ItemClick(object sender, ItemClickEventArgs e)
         {
@@ -124,6 +123,29 @@ namespace BiliBili_UWP.Pages.Main
                 App.AppViewModel.PlayBangumi(item.progress.last_ep_id, con, true);
             else
                 App.AppViewModel.PlayBangumi(item.season_id, con);
+        }
+
+        private void MyAnimeListView_RefreshButtonClick(object sender, EventArgs e)
+        {
+            App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Sub.Account.FavoriteAnimePage), "anime");
+        }
+
+        private void MyCinemaListView_RefreshButtonClick(object sender, EventArgs e)
+        {
+            App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Sub.Account.FavoriteAnimePage), "cinema");
+        }
+        public void RemoveBangumi(string type, FavoriteAnime data)
+        {
+            if (type == "cinema")
+            {
+                MyCinemaCollection.Remove(data);
+                MyAnimeListView.HolderVisibility = MyAnimeCollection.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+            }
+            else
+            {
+                MyAnimeCollection.Remove(data);
+                MyCinemaListView.HolderVisibility = MyCinemaCollection.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+            }
         }
     }
 }

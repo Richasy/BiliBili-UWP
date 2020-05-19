@@ -353,30 +353,48 @@ namespace BiliBili_Lib.Service
         /// 获取我正在追的动漫
         /// </summary>
         /// <returns></returns>
-        public async Task<List<FavoriteAnime>> GetMyFavoriteAnimeAsync()
+        public async Task<Tuple<int, List<FavoriteAnime>>> GetMyFavoriteAnimeAsync(int page = 1)
         {
             var param = new Dictionary<string, string>();
             param.Add("ps", "20");
-            param.Add("pn", "1");
+            param.Add("pn", page.ToString());
             param.Add("status", "2");
             string url = BiliTool.UrlContact(Api.ACCOUNT_FAVOROTE_ANIME, param, true);
-            var response = await BiliTool.ConvertEntityFromWebAsync<List<FavoriteAnime>>(url, "result.follow_list");
-            return response;
+            var respons = await BiliTool.GetTextFromWebAsync(url,false,"result");
+            if (!string.IsNullOrEmpty(respons))
+            {
+                var jobj = JObject.Parse(respons);
+                var list = JsonConvert.DeserializeObject<List<FavoriteAnime>>(jobj["follow_list"]?.ToString()??"[]");
+                if (list == null)
+                    list = new List<FavoriteAnime>();
+                var total = Convert.ToInt32(jobj["total"].ToString());
+                return new Tuple<int, List<FavoriteAnime>>(total, list);
+            }
+            return null;
         }
 
         /// <summary>
         /// 获取我正在追的影视剧
         /// </summary>
         /// <returns></returns>
-        public async Task<List<FavoriteAnime>> GetMyFavoriteCinemaAsync()
+        public async Task<Tuple<int, List<FavoriteAnime>>> GetMyFavoriteCinemaAsync(int page=1)
         {
             var param = new Dictionary<string, string>();
             param.Add("ps", "20");
-            param.Add("pn", "1");
+            param.Add("pn", page.ToString());
             param.Add("status", "2");
             string url = BiliTool.UrlContact(Api.ACCOUNT_FAVOROTE_CINEMA, param, true);
-            var response = await BiliTool.ConvertEntityFromWebAsync<List<FavoriteAnime>>(url, "result.follow_list");
-            return response;
+            var respons = await BiliTool.GetTextFromWebAsync(url, false, "result");
+            if (!string.IsNullOrEmpty(respons))
+            {
+                var jobj = JObject.Parse(respons);
+                var list = JsonConvert.DeserializeObject<List<FavoriteAnime>>(jobj["follow_list"]?.ToString() ?? "[]");
+                if (list == null)
+                    list = new List<FavoriteAnime>();
+                var total = Convert.ToInt32(jobj["total"].ToString());
+                return new Tuple<int, List<FavoriteAnime>>(total, list);
+            }
+            return null;
         }
 
         /// <summary>

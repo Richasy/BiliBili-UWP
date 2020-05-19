@@ -360,6 +360,9 @@
     <Compile Include="Pages\Sub\Account\FansPage.xaml.cs">
       <DependentUpon>FansPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\Sub\Account\FavoriteAnimePage.xaml.cs">
+      <DependentUpon>FavoriteAnimePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Sub\Account\FavoritePage.xaml.cs">
       <DependentUpon>FavoritePage.xaml</DependentUpon>
     </Compile>
@@ -417,11 +420,6 @@
     <Content Include="Assets\Level\level_5.svg" />
     <Content Include="Assets\Level\level_6.png" />
     <Content Include="Assets\Level\level_6.svg" />
-    <Content Include="Assets\Logo\BadgeLogo.scale-100.png" />
-    <Content Include="Assets\Logo\BadgeLogo.scale-125.png" />
-    <Content Include="Assets\Logo\BadgeLogo.scale-150.png" />
-    <Content Include="Assets\Logo\BadgeLogo.scale-200.png" />
-    <Content Include="Assets\Logo\BadgeLogo.scale-400.png" />
     <Content Include="Assets\Logo\LargeTile.scale-100.png" />
     <Content Include="Assets\Logo\LargeTile.scale-125.png" />
     <Content Include="Assets\Logo\LargeTile.scale-150.png" />
@@ -760,6 +758,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\Sub\Account\FansPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Sub\Account\FavoriteAnimePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

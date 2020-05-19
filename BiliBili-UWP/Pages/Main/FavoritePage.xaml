@@ -9,6 +9,7 @@
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:controls1="using:BiliBili_UWP.Components.Controls"
     xmlns:favorites="using:BiliBili_Lib.Models.BiliBili.Favorites"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:DataType="bilibili:FavoriteItem" x:Key="CollectItemTemplate">
@@ -59,9 +60,13 @@
                                                 ItemsSource="{x:Bind MyCollectCollection}" Margin="0,20,0,0"/>
         <controls1:HorizontalScrollSectionPanel Title="我的追番" HoldText="我还没有追番哟~" x:Name="MyAnimeListView" Grid.Row="2"
                                                 ItemClick="MyAnimeListView_ItemClick"  ItemTemplate="{StaticResource AnimeItemTemplate}"
-                                                ItemsSource="{x:Bind MyAnimeCollection}" Margin="0,20,0,0"/>
+                                                ItemsSource="{x:Bind MyAnimeCollection}" Margin="0,20,0,0" RefreshButtonVisibility="Visible"
+                                                CustomButtonIcon="&#xE963;" CustomButtonText="查看全部" RefreshButtonClick="MyAnimeListView_RefreshButtonClick"/>
         <controls1:HorizontalScrollSectionPanel Title="我的追剧" HoldText="我还没有追剧哟~" x:Name="MyCinemaListView" Grid.Row="3"
                                                 ItemClick="MyAnimeListView_ItemClick"   ItemTemplate="{StaticResource MovieItemTemplate}"
-                                                ItemsSource="{x:Bind MyCinemaCollection}" Margin="0,20,0,0"/>
+                                                ItemsSource="{x:Bind MyCinemaCollection}" Margin="0,20,0,0" RefreshButtonVisibility="Visible"
+                                                CustomButtonIcon="&#xE963;" CustomButtonText="查看全部" RefreshButtonClick="MyCinemaListView_RefreshButtonClick"/>
+        <muxc:ProgressRing x:Name="LoadingRing" Style="{StaticResource MuxcProgressRingStyle}"
+                           Grid.RowSpan="4"/>
     </Grid>
 </Page>

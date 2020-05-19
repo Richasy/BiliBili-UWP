@@ -42,5 +42,16 @@ namespace BiliBili_Lib.Models.BiliBili.Feedback
     {
         public long id { get; set; }
         public FeedUser user { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            return obj is FeedDetail detail &&
+                   id == detail.id;
+        }
+
+        public override int GetHashCode()
+        {
+            return 1877310944 + id.GetHashCode();
+        }
     }
 }

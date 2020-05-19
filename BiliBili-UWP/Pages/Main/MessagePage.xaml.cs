@@ -131,7 +131,7 @@ namespace BiliBili_UWP.Pages.Main
             if (replyResponse != null)
             {
                 _replyCursor = replyResponse.cursor;
-                replyResponse.items.ForEach(p => ReplyCollection.Add(p));
+                replyResponse.items.ForEach(p => { if (!ReplyCollection.Contains(p)) ReplyCollection.Add(p); });
             }
             NoDataContainer.Visibility = ReplyCollection.Count > 0 ? Visibility.Collapsed : Visibility.Visible;
             LoadingRing.IsActive = false;
@@ -156,7 +156,7 @@ namespace BiliBili_UWP.Pages.Main
             if (atResponse != null)
             {
                 _atCursor = atResponse.cursor;
-                atResponse.items.ForEach(p => AtCollection.Add(p));
+                atResponse.items.ForEach(p => { if (!AtCollection.Contains(p)) AtCollection.Add(p); });
             }
             NoDataContainer.Visibility = AtCollection.Count > 0 ? Visibility.Collapsed : Visibility.Visible;
             LoadingRing.IsActive = false;
@@ -209,7 +209,10 @@ namespace BiliBili_UWP.Pages.Main
         private async void ScrollToBottom()
         {
             var item = HeaderListView.SelectedItem as IconItem;
-            await SwitchHeader(item, true);
+            if (item != null)
+            {
+                await SwitchHeader(item, true);
+            }
         }
 
         private async Task SwitchHeader(IconItem item, bool isRefresh = false)

@@ -21,7 +21,7 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <TextBlock Style="{StaticResource TitleTextStyle}" Text="{x:Bind Title,Mode=OneWay}" VerticalAlignment="Center"/>
-            <widgets:AsyncButton Icon="&#xE9C7;" Text="换一换" x:Name="RefreshButton" CornerRadius="15" FontSize="10" BorderThickness="1"
+            <widgets:AsyncButton Icon="{x:Bind CustomButtonIcon,Mode=OneWay}" Text="{x:Bind CustomButtonText,Mode=OneWay}" x:Name="RefreshButton" CornerRadius="15" FontSize="10" BorderThickness="1"
                                  Style="{StaticResource DefaultAsyncButtonStyle}" BorderBrush="{ThemeResource LineColor}" Grid.Column="1"
                                  Visibility="{x:Bind RefreshButtonVisibility,Mode=OneWay}" Click="RefreshButton_Click" Margin="20,0,0,0"/>
         </Grid>

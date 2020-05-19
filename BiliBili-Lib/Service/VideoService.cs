@@ -336,7 +336,7 @@ namespace BiliBili_Lib.Service
         /// <returns></returns>
         public async Task<bool> LikeVideoAsync(int aid, bool isLike)
         {
-            string is_like = isLike ? "1" : "0";
+            string is_like = isLike ? "0" : "1";
             var param = new Dictionary<string, string>();
             param.Add("aid", aid.ToString());
             param.Add("like", is_like);
