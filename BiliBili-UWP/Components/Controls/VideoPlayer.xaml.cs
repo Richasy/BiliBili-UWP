@@ -965,7 +965,7 @@ namespace BiliBili_UWP.Components.Controls
                 video = data.dash.video.FirstOrDefault(p => p.id == _currentQn);
             if (video == null)
                 video = data.dash.video.OrderByDescending(p => p.id).FirstOrDefault(p => p.codecid == 7);
-            var audio = data.dash.audio.FirstOrDefault();
+            var audio = data.dash.audio?.FirstOrDefault();
             MediaSource source = null;
             if (isBangumi)
                 source = await _animeService.CreateMediaSourceAsync(video, audio);

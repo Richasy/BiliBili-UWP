@@ -20,7 +20,7 @@ namespace BiliBili_UWP.Pages.Main
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class ViewLaterPage : Page,IRefreshPage
+    public sealed partial class ViewLaterPage : Page, IRefreshPage
     {
         private bool _isInit = false;
         public BiliViewModel biliVM = App.BiliViewModel;
@@ -125,16 +125,16 @@ namespace BiliBili_UWP.Pages.Main
             {
                 var videos = ViewLaterCollection.Where(p => p.bangumi == null).ToList();
                 App.AppViewModel.PlayVideoList(item.aid, ele, videos);
-            } 
+            }
         }
 
         private async void RemoveItem_Click(object sender, RoutedEventArgs e)
         {
-            var item = (sender as FrameworkElement).DataContext as VideoDetail;
-            bool result = await _account.DeleteViewLaterAsync(item.aid);
+            var aid = Convert.ToInt32((sender as AppBarButton).Tag);
+            bool result = await _account.DeleteViewLaterAsync(Convert.ToInt32(aid));
             if (result)
             {
-                ViewLaterCollection.Remove(item);
+                ViewLaterCollection.Remove(ViewLaterCollection.Where(p => p.aid == aid).FirstOrDefault());
                 HolderText.Visibility = ViewLaterCollection.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
             }
             else

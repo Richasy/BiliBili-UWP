@@ -23,7 +23,7 @@
                 <controls:DefaultVideoCard.ExtraFlyout>
                     <CommandBarFlyout>
                         <CommandBarFlyout.SecondaryCommands>
-                            <AppBarButton Label="移出稍后观看" Click="RemoveItem_Click">
+                            <AppBarButton Label="移出稍后观看" Click="RemoveItem_Click" Tag="{x:Bind aid}">
                                 <AppBarButton.Icon>
                                     <FontIcon FontFamily="{StaticResource Icon}" Glyph="&#xE9F5;"/>
                                 </AppBarButton.Icon>

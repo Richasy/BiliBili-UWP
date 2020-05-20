@@ -23,7 +23,7 @@
                         <CommandBarFlyout>
                             <CommandBarFlyout.SecondaryCommands>
                                 <AppBarButton Label="不追了" x:Name="UnfollowButton" FontSize="12"
-                                              Click="UnfollowButton_Click">
+                                              Click="UnfollowButton_Click" Tag="{x:Bind season_id}">
                                     <AppBarButton.Icon>
                                         <FontIcon FontFamily="{StaticResource Icon}" Glyph=""/>
                                     </AppBarButton.Icon>

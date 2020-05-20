@@ -174,24 +174,28 @@ namespace BiliBili_Lib.Service
                                         </SegmentBase>
                                       </Representation>
                                     </AdaptationSet>
-                                    <AdaptationSet>
-                                      <ContentComponent contentType=""audio"" id=""2"" />
-                                      <Representation bandwidth=""{audio.bandwidth}"" codecs=""{audio.codecs}"" id=""{audio.id}"" mimeType=""{audio.mimeType}"" >
-                                        <BaseURL></BaseURL>
-                                        <SegmentBase indexRange=""{audio.SegmentBase.indexRange}"">
-                                          <Initialization range=""{audio.SegmentBase.Initialization}"" />
-                                        </SegmentBase>
-                                      </Representation>
-                                    </AdaptationSet>
+                                    {{audio}}
                                   </Period>
                                 </MPD>
                                 ";
+                if (audio == null)
+                    mpdStr.Replace("{audio}", "");
+                else
+                    mpdStr.Replace("{audio}", $@"<AdaptationSet>
+                                      <ContentComponent contentType=""audio"" id=""2"" />
+                                      <Representation bandwidth=""{audio.bandwidth}"" codecs=""{audio.codecs}"" id=""{audio.id}"" mimeType=""{audio.mimeType}"" >
+                                        <BaseURL></BaseURL>
+                                        <SegmentBase indexRange=""{audio.segment_base.index_range}"">
+                                          <Initialization range=""{audio.segment_base.initialization}"" />
+                                        </SegmentBase>
+                                      </Representation>
+                                    </AdaptationSet>");
                 var stream = new MemoryStream(Encoding.UTF8.GetBytes(mpdStr)).AsInputStream();
                 var soure = await AdaptiveMediaSource.CreateFromStreamAsync(stream, new Uri(video.baseUrl), "application/dash+xml", httpClient);
                 var s = soure.Status;
                 soure.MediaSource.DownloadRequested += (sender, args) =>
                 {
-                    if (args.ResourceContentType == "audio/mp4")
+                    if (args.ResourceContentType == "audio/mp4" && audio!=null)
                     {
                         args.Result.ResourceUri = new Uri(audio.baseUrl);
                     }

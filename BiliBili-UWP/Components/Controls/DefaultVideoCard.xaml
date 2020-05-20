@@ -45,7 +45,7 @@
                            />
             </Border>
             <widgets:BiliImage Width="20" Source="{x:Bind RightTopImage,Mode=OneWay}" Visibility="{x:Bind RightTopImage,Mode=OneWay,Converter={StaticResource StringVisibilityConverter}}"
-                               VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,10,10,0"/>
+                               VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,0,10,0"/>
         </Grid>
 
         <StackPanel Grid.Row="1" Padding="10,8" x:Name="InfoContainer">

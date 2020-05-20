@@ -206,6 +206,6 @@
         <muxc:ProgressRing Style="{StaticResource MuxcProgressRingStyle}" x:Name="LoadingRing"
                       Grid.Row="1"/>
         <muxc:ProgressBar x:Name="LoadingBar" VerticalAlignment="Bottom" Margin="0,0,0,10"
-                     Style="{StaticResource MuxcProgressBarStyle}" Visibility="Collapsed"/>
+                     Style="{StaticResource MuxcProgressBarStyle}" Visibility="Collapsed" Grid.Row="1"/>
     </Grid>
 </Page>
