@@ -41,6 +41,7 @@ namespace BiliBili_UWP.Components.Controls
     {
         #region 集合
         private ObservableCollection<Tuple<int, string>> QualityCollection = new ObservableCollection<Tuple<int, string>>();
+        private ObservableCollection<Tuple<double, string>> PlayRateCollection;
         private ObservableCollection<Choice> ChoiceCollection = new ObservableCollection<Choice>();
         private ObservableCollection<SystemFont> FontCollection = App.AppViewModel.FontCollection;
         private ObservableCollection<SubtitleIndexItem> SubtitleIndexCollection = new ObservableCollection<SubtitleIndexItem>();
@@ -134,6 +135,15 @@ namespace BiliBili_UWP.Components.Controls
             _subtitleTimer.Interval = TimeSpan.FromSeconds(0.1);
             _subtitleTimer.Tick += SubtitleTimer_Tick;
             DanmakuControls = VideoMTC.DanmakuControls;
+            PlayRateCollection = new ObservableCollection<Tuple<double, string>>
+            {
+                new Tuple<double, string>(0.5,"0.5倍速"),
+                new Tuple<double, string>(0.75,"0.75倍速"),
+                new Tuple<double, string>(1,"正常播放"),
+                new Tuple<double, string>(1.25,"1.25倍速"),
+                new Tuple<double, string>(1.5,"1.5倍速"),
+                new Tuple<double, string>(2,"2倍速"),
+            };
             MTC = VideoMTC;
         }
 
@@ -202,6 +212,7 @@ namespace BiliBili_UWP.Components.Controls
             _playData = null;
             _currentQn = 0;
             _playRate = 1;
+            VideoMTC._playRateComboBox.SelectedIndex = 2;
             QualityCollection.Clear();
             DanmakuList.Clear();
             SendDanmakuList.Clear();
@@ -385,7 +396,7 @@ namespace BiliBili_UWP.Components.Controls
                     {
                         QualityCollection.Add(new Tuple<int, string>(_playData.accept_quality[i], _playData.accept_description[i]));
                     }
-                    VideoMTC._qualityListView.SelectedIndex = -1;
+                    VideoMTC._qualityComboBox.SelectedIndex = -1;
                     int firstQn = Convert.ToInt32(AppTool.GetLocalSetting(Settings.FirstQuality, "0"));
                     if (firstQn > 0)
                     {
@@ -394,7 +405,7 @@ namespace BiliBili_UWP.Components.Controls
                             if (QualityCollection[i].Item1 == firstQn)
                             {
                                 _currentQn = firstQn;
-                                VideoMTC._qualityListView.SelectedIndex = i;
+                                VideoMTC._qualityComboBox.SelectedIndex = i;
                                 break;
                             }
                         }
@@ -402,7 +413,7 @@ namespace BiliBili_UWP.Components.Controls
                     if (_currentQn == 0)
                     {
                         _currentQn = QualityCollection.First().Item1;
-                        VideoMTC._qualityListView.SelectedIndex = 0;
+                        VideoMTC._qualityComboBox.SelectedIndex = 0;
                     }
                 }
             }
@@ -463,6 +474,7 @@ namespace BiliBili_UWP.Components.Controls
                     {
                         QualityCollection.Add(new Tuple<int, string>(_playData.accept_quality[i], _playData.accept_description[i]));
                     }
+                    VideoMTC._qualityComboBox.SelectedIndex = -1;
                     int firstQn = Convert.ToInt32(AppTool.GetLocalSetting(Settings.FirstQuality, "0"));
                     if (firstQn > 0)
                     {
@@ -471,7 +483,7 @@ namespace BiliBili_UWP.Components.Controls
                             if (QualityCollection[i].Item1 == firstQn)
                             {
                                 _currentQn = firstQn;
-                                VideoMTC._qualityListView.SelectedIndex = i;
+                                VideoMTC._qualityComboBox.SelectedIndex = i;
                                 break;
                             }
                         }
@@ -1243,37 +1255,11 @@ namespace BiliBili_UWP.Components.Controls
         {
             await SubtitleInit(e);
         }
-        private void VideoMTC_ForwardButtonClick(object sender, RoutedEventArgs e)
+        private void VideoMTC_PlayRateChanged(object sender, double e)
         {
-            if (_playData != null && _player != null && _player.PlaybackSession != null)
-            {
-                if (_playRate < 2)
-                    _playRate += 0.25;
-                else
-                {
-                    ShowTip("已达2倍的最大播放倍率");
-                    return;
-                }
-                ShowTip($"播放倍率：{_playRate}");
-                _player.PlaybackSession.PlaybackRate = _playRate;
-            }
-        }
-        private void VideoMTC_RewindButtonClick(object sender, RoutedEventArgs e)
-        {
-            if (_playData != null && _player != null && _player.PlaybackSession != null)
-            {
-                if (_playRate > 0.5)
-                    _playRate -= 0.25;
-                else
-                {
-                    ShowTip("已达0.5倍的最小播放倍率");
-                    return;
-                }
-                if (_playRate < 0.5)
-                    _playRate = 0.5;
-                ShowTip($"播放倍率：{_playRate}");
-                _player.PlaybackSession.PlaybackRate = _playRate;
-            }
+            _playRate = e;
+            _player.PlaybackSession.PlaybackRate = _playRate;
+            ShowTip($"播放倍率：{_playRate}");
         }
         #endregion
 
@@ -1652,5 +1638,7 @@ namespace BiliBili_UWP.Components.Controls
             await LoadDanmaku();
         }
         #endregion
+
+        
     }
 }

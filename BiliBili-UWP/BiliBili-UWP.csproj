@@ -213,6 +213,9 @@
     <Compile Include="Components\Others\UpdatePopup.xaml.cs">
       <DependentUpon>UpdatePopup.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Components\Widgets\AppBarComboBox.xaml.cs">
+      <DependentUpon>AppBarComboBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Components\Widgets\AsyncButton.xaml.cs">
       <DependentUpon>AsyncButton.xaml</DependentUpon>
     </Compile>
@@ -618,6 +621,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Components\Others\UpdatePopup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\Widgets\AppBarComboBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

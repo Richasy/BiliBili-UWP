@@ -6,7 +6,8 @@
     xmlns:others="using:BiliBili_UWP.Models.UI.Others"
     xmlns:ext="using:BiliBili_Controls.Extensions"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
-    xmlns:local="using:BiliBili_UWP.Template">
+    xmlns:local="using:BiliBili_UWP.Template"
+    xmlns:widgets="using:BiliBili_UWP.Components.Widgets">
     <Style TargetType="MediaPlayerElement" x:Key="BasicMediaStyle">
         <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="VerticalAlignment" Value="Stretch" />
@@ -755,6 +756,18 @@
                                                     </Flyout>
                                                 </AppBarButton.Flyout>
                                             </AppBarButton>
+                                            <widgets:AppBarComboBox ToolTipService.ToolTip="播放倍速" MediaTransportControlsHelper.DropoutOrder="14"
+                                                                    ItemsSource="{TemplateBinding PlayRateItemsSource}" Width="86"
+                                                                    x:Name="PlayRateComboBox" VerticalAlignment="Center" Text="播放倍速">
+                                                <widgets:AppBarComboBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <ListViewItem x:Name="RateItem" Padding="10,6" ext:PressEffect.IsEnabled="True" ext:PressEffect.TargetElementName="Radio">
+                                                            <RadioButton Style="{StaticResource BasicRadioButtonStyle}" IsChecked="{Binding ElementName=RateItem,Path=IsSelected}"
+                                                                         GroupName="Rate" Content="{Binding Item2}" IsEnabled="False" x:Name="Radio"/>
+                                                        </ListViewItem>
+                                                    </DataTemplate>
+                                                </widgets:AppBarComboBox.ItemTemplate>
+                                            </widgets:AppBarComboBox>
                                             <AppBarButton x:Name='CCSelectionButton'
                         Style='{StaticResource AppBarButtonStyle}'
                         MediaTransportControlsHelper.DropoutOrder='15'
@@ -793,13 +806,13 @@
                           Style='{StaticResource AppBarButtonStyle}'
                           MediaTransportControlsHelper.DropoutOrder='3'
                           Visibility='Collapsed'/>
-                                            <AppBarButton x:Name='CustomRewindButton'
+                                            <!--<AppBarButton x:Name='CustomRewindButton'
                         Style='{StaticResource AppBarButtonStyle}'
                         MediaTransportControlsHelper.DropoutOrder='1'>
                                                 <AppBarButton.Icon>
                                                     <FontIcon Glyph="&#xEB9E;" />
                                                 </AppBarButton.Icon>
-                                            </AppBarButton>
+                                            </AppBarButton>-->
                                             <AppBarButton x:Name='CustomPlayPauseButton'
                           Style='{StaticResource AppBarButtonStyle}'
                                                           IsTabStop="True"
@@ -808,13 +821,13 @@
                                                     <FontIcon FontFamily="{StaticResource Icon}" Glyph="&#xE9BE;"/>
                                                 </AppBarButton.Icon>
                                             </AppBarButton>
-                                            <AppBarButton x:Name='CustomForwardButton'
+                                            <!--<AppBarButton x:Name='CustomForwardButton'
                         Style='{StaticResource AppBarButtonStyle}'
                         MediaTransportControlsHelper.DropoutOrder='1'>
                                                 <AppBarButton.Icon>
                                                     <FontIcon Glyph="&#xEB9D;" />
                                                 </AppBarButton.Icon>
-                                            </AppBarButton>
+                                            </AppBarButton>-->
                                             <AppBarButton x:Name='NextTrackButton'
                           Icon='Next'
                           Style='{StaticResource AppBarButtonStyle}'
@@ -840,6 +853,18 @@
                           Height='0'
                           Width ='0'
                           Margin='0,0' />
+                                            <widgets:AppBarComboBox ToolTipService.ToolTip="分辨率" MediaTransportControlsHelper.DropoutOrder="14"
+                                                                    ItemsSource="{TemplateBinding QualityItemsSource}" SelectedIndex="{TemplateBinding QualitySelectIndex}"
+                                                                    x:Name="QualityComboBox" VerticalAlignment="Center" Text="分辨率" Width="70">
+                                                <widgets:AppBarComboBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <ListViewItem x:Name="QualityItem" Padding="10,6" ext:PressEffect.IsEnabled="True" ext:PressEffect.TargetElementName="Radio">
+                                                            <RadioButton Style="{StaticResource BasicRadioButtonStyle}" IsChecked="{Binding ElementName=QualityItem,Path=IsSelected}"
+                                                                         GroupName="Quality" Content="{Binding Item2}" IsEnabled="False" x:Name="Radio"/>
+                                                        </ListViewItem>
+                                                    </DataTemplate>
+                                                </widgets:AppBarComboBox.ItemTemplate>
+                                            </widgets:AppBarComboBox>
                                             <AppBarToggleButton x:Name='RepeatButton'
                           Style='{StaticResource AppBarToggleButtonStyle}'
                           MediaTransportControlsHelper.DropoutOrder='1'
@@ -855,6 +880,7 @@
                                                     <FontIcon Glyph="&#xE799;" />
                                                 </AppBarButton.Icon>
                                             </AppBarButton>
+                                            
                                             <AppBarButton x:Name='CastButton'
                           Style='{StaticResource AppBarButtonStyle}'
                           MediaTransportControlsHelper.DropoutOrder='11'>
@@ -862,34 +888,7 @@
                                                     <FontIcon Glyph="&#xEC15;" />
                                                 </AppBarButton.Icon>
                                             </AppBarButton>
-                                            <AppBarButton x:Name="QualityButton" ToolTipService.ToolTip="分辨率"
-                                                          Style="{StaticResource AppBarButtonStyle}"
-                                                          MediaTransportControlsHelper.DropoutOrder="14">
-                                                <AppBarButton.Icon>
-                                                    <FontIcon Glyph="&#xE9A6;" FontFamily="{StaticResource Icon}"/>
-                                                </AppBarButton.Icon>
-                                                <AppBarButton.Flyout>
-                                                    <Flyout FlyoutPresenterStyle="{StaticResource NoPaddingFlyoutStyle}">
-                                                        <ListView x:Name="QualityListView"
-                                                                  ItemsSource="{TemplateBinding QualityItemsSource}"
-                                                                  IsItemClickEnabled="True"
-                                                                  Style="{StaticResource BasicListView}"
-                                                                  Width="200"
-                                                                  ItemContainerStyle="{StaticResource BasicListViewContainerStyle}"
-                                                                  SelectedIndex="{TemplateBinding QualitySelectIndex}"
-                                                                  >
-                                                            <ListView.ItemTemplate>
-                                                                <DataTemplate>
-                                                                    <ListViewItem x:Name="QualityItem" Padding="10,6" ext:PressEffect.IsEnabled="True" ext:PressEffect.TargetElementName="Radio">
-                                                                        <RadioButton Style="{StaticResource BasicRadioButtonStyle}" IsChecked="{Binding ElementName=QualityItem,Path=IsSelected}"
-                                                                                     GroupName="Quality" Content="{Binding Item2}" IsEnabled="False" x:Name="Radio"/>
-                                                                    </ListViewItem>
-                                                                </DataTemplate>
-                                                            </ListView.ItemTemplate>
-                                                        </ListView>
-                                                    </Flyout>
-                                                </AppBarButton.Flyout>
-                                            </AppBarButton>
+                                            
                                             <AppBarButton x:Name='CustomCompactOverlayButton'
                           Style='{StaticResource AppBarButtonStyle}' ToolTipService.ToolTip="小窗播放"
                           MediaTransportControlsHelper.DropoutOrder='24'

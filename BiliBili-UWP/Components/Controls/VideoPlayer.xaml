@@ -135,6 +135,8 @@
                                                PlayButtonClick="VideoMTC_PlayButtonClick"
                                                CinemaChanged="VideoMTC_CinemaChanged"
                                                QualityItemsSource="{x:Bind QualityCollection}"
+                                               PlayRateItemsSource="{x:Bind PlayRateCollection}"
+                                               PlayRateChanged="VideoMTC_PlayRateChanged"
                                                QualityChanged="VideoMTC_QualityChanged"
                                                CinemaButtonVisibility="{x:Bind CinemaButtonVisibility,Mode=OneWay}"
                                                FullWindowButtonVisibility="{x:Bind FullWindowButtonVisibility,Mode=OneWay}"
@@ -146,8 +148,6 @@
                                                SeparateButtonClick="VideoMTC_SeparateButtonClick"
                                                Loaded="VideoMTC_Loaded"
                                                ShowAndHideAutomatically="False"
-                                               ForwardButtonClick="VideoMTC_ForwardButtonClick"
-                                               RewindButtonClick="VideoMTC_RewindButtonClick"
                                                />
             </MediaPlayerElement.TransportControls>
         </MediaPlayerElement>

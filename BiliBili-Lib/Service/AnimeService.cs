@@ -179,9 +179,9 @@ namespace BiliBili_Lib.Service
                                 </MPD>
                                 ";
                 if (audio == null)
-                    mpdStr.Replace("{audio}", "");
+                    mpdStr = mpdStr.Replace("{audio}", "");
                 else
-                    mpdStr.Replace("{audio}", $@"<AdaptationSet>
+                    mpdStr = mpdStr.Replace("{audio}", $@"<AdaptationSet>
                                       <ContentComponent contentType=""audio"" id=""2"" />
                                       <Representation bandwidth=""{audio.bandwidth}"" codecs=""{audio.codecs}"" id=""{audio.id}"" mimeType=""{audio.mimeType}"" >
                                         <BaseURL></BaseURL>

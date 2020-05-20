@@ -1,0 +1,37 @@
+﻿<AppBarButton
+    x:Class="BiliBili_UWP.Components.Widgets.AppBarComboBox"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BiliBili_UWP.Components.Widgets"
+    Style="{StaticResource TransparentAppBarButtonStyle}"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" CornerRadius="4" AllowFocusOnInteraction="True"
+    IsTabStop="False"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <AppBarButton.Icon>
+        <FontIcon FontFamily="{StaticResource Icon}" Glyph="{x:Bind PrefixIcon, Mode=OneWay}" FontSize="13"
+                  Foreground="{ThemeResource TipTextColor}"/>
+    </AppBarButton.Icon>
+    <AppBarButton.Content>
+        <StackPanel Orientation="Horizontal" Margin="10,0">
+            <TextBlock Style="{StaticResource CaptionTextStyle}" Margin="0,0,7,0"
+                                       VerticalAlignment="Center" FontSize="14"
+                                       Text="{x:Bind Text,Mode=OneWay}"/>
+            <TextBlock Style="{StaticResource TipTextStyle}" FontFamily="{StaticResource Icon}"
+                       VerticalAlignment="Center" Text="&#xE932;"/>
+        </StackPanel>
+    </AppBarButton.Content>
+    <AppBarButton.Flyout>
+        <Flyout FlyoutPresenterStyle="{StaticResource NoPaddingFlyoutStyle}">
+            <ListView ItemsSource="{x:Bind ItemsSource,Mode=OneWay}"
+                      IsItemClickEnabled="True"
+                      Style="{StaticResource BasicListView}"
+                      Width="200" ItemClick="ListView_ItemClick"
+                      ItemContainerStyle="{StaticResource BasicListViewContainerStyle}"
+                      SelectedIndex="{x:Bind SelectedIndex,Mode=TwoWay}"
+                      ItemTemplate="{x:Bind ItemTemplate,Mode=OneWay}"/>
+        </Flyout>
+    </AppBarButton.Flyout>
+</AppBarButton>
