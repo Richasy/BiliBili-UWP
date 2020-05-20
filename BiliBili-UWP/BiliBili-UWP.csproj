@@ -24,9 +24,9 @@
     <AppxPackageDir>E:\Package\BiliBili\</AppxPackageDir>
     <GenerateTestArtifacts>False</GenerateTestArtifacts>
     <AppxBundle>Always</AppxBundle>
-    <AppxBundlePlatforms>x86</AppxBundlePlatforms>
+    <AppxBundlePlatforms>x86|x64|arm|arm64</AppxBundlePlatforms>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
-    <PackageCertificateThumbprint>2630DD9772581FEB2DAEFF671D9B1245D05CD6DF</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>833F1D71762B8BAFCED9440F459768407D4A9B87</PackageCertificateThumbprint>
     <AppxSymbolPackageEnabled>True</AppxSymbolPackageEnabled>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">

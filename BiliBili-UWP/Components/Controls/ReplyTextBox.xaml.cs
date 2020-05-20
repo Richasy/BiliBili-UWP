@@ -26,6 +26,7 @@ namespace BiliBili_UWP.Components.Controls
             this.InitializeComponent();
             App.BiliViewModel.IsLoginChanged += LoginChanged;
         }
+        public string AtUser = "";
         public event EventHandler<string> SendReply;
         private async void LoginChanged(object sender, bool e)
         {

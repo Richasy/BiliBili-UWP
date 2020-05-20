@@ -1472,7 +1472,7 @@ namespace BiliBili_UWP.Components.Controls
         private async void HeartBeat()
         {
             if (isBangumi)
-                await _animeService.AddVideoHistoryAsync(_bangumiPart.aid, _bangumiPart.id, _bangumiPart.cid, CurrentProgress);
+                await _animeService.AddVideoHistoryAsync(_bangumiPart.aid, _bangumiPart.cid, _bangumiPart.id, CurrentProgress, _bangumiDetail.season_id);
             else
                 await _videoService.AddVideoHistoryAsync(_videoId, _partId, CurrentProgress);
         }

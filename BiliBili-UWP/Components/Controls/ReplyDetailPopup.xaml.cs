@@ -128,6 +128,7 @@ namespace BiliBili_UWP.Components.Controls
         private void ReplyMainBlock_CommentButtonClick(object sender, Reply e)
         {
             _selectReplyId = e.rpid_str;
+            ReplyTextBox.AtUser = e.member.uname;
             ReplyTextBox.PlaceholderText = $"回复 @{e.member.uname}：";
         }
 
@@ -142,6 +143,8 @@ namespace BiliBili_UWP.Components.Controls
 
         private async void ReplyTextBox_SendReply(object sender, string e)
         {
+            if (!string.IsNullOrEmpty(ReplyTextBox.AtUser))
+                e = $"回复 @{ReplyTextBox.AtUser} :" + e;
             var result = await _client.AddReplyAsync(_oid, e, _selectReplyId, _rootId, _type);
             if (result != null)
             {

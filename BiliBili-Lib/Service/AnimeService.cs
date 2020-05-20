@@ -213,10 +213,11 @@ namespace BiliBili_Lib.Service
         /// </summary>
         /// <param name="aid">视频ID</param>
         /// <returns></returns>
-        public async Task AddVideoHistoryAsync(int aid,int sid, int epid, int seconds = 0)
+        public async Task AddVideoHistoryAsync(int aid,int cid, int epid, int seconds = 0,int sid=0)
         {
             var param = new Dictionary<string, string>();
             param.Add("aid", aid.ToString());
+            param.Add("cid", cid.ToString());
             param.Add("sid", sid.ToString());
             param.Add("epid", epid.ToString());
             param.Add("realtime", seconds.ToString());
