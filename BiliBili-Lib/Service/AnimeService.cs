@@ -185,8 +185,8 @@ namespace BiliBili_Lib.Service
                                       <ContentComponent contentType=""audio"" id=""2"" />
                                       <Representation bandwidth=""{audio.bandwidth}"" codecs=""{audio.codecs}"" id=""{audio.id}"" mimeType=""{audio.mimeType}"" >
                                         <BaseURL></BaseURL>
-                                        <SegmentBase indexRange=""{audio.segment_base.index_range}"">
-                                          <Initialization range=""{audio.segment_base.initialization}"" />
+                                        <SegmentBase indexRange=""{audio.SegmentBase.indexRange}"">
+                                          <Initialization range=""{audio.SegmentBase.Initialization}"" />
                                         </SegmentBase>
                                       </Representation>
                                     </AdaptationSet>");
