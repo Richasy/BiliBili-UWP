@@ -26,6 +26,7 @@ using Windows.ApplicationModel.Background;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.Storage;
+using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.WindowManagement;
@@ -68,7 +69,7 @@ namespace BiliBili_UWP.Models.Core
                 WindowsSizeChangedNotify.ForEach(p => p.Item2?.Invoke(e.Size));
             }
         }
-        public void AppInitByActivated(string argument)
+        public async void AppInitByActivated(string argument)
         {
             QueryString args = QueryString.Parse(argument);
             args.TryGetValue("action", out string action);
@@ -90,6 +91,12 @@ namespace BiliBili_UWP.Models.Core
                 case "bangumi":
                     args.TryGetValue("epid", out string AnimeEpid);
                     PlayBangumi(Convert.ToInt32(AnimeEpid), isEp: true);
+                    break;
+                case "screenshot":
+                    args.TryGetValue("image", out string screenShotName);
+                    var picLib = await KnownFolders.PicturesLibrary.CreateFolderAsync("Bili ScreenShot",CreationCollisionOption.OpenIfExists);
+                    var screenFile = await picLib.CreateFileAsync(screenShotName, CreationCollisionOption.OpenIfExists);
+                    await Launcher.LaunchFileAsync(screenFile);
                     break;
                 default:
                     break;

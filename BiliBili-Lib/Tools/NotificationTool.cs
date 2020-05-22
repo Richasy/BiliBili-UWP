@@ -68,6 +68,49 @@ namespace BiliBili_Lib.Tools
                 ShowToast(content, group: "Dynamic");
             }
         }
+        public static void SendScreenShotToast(string imageName,string folderPath)
+        {
+            var content = new ToastContent
+            {
+                Launch = $"action=screenshot&image={imageName}",
+                ActivationType = ToastActivationType.Background,
+                Visual = new ToastVisual()
+                {
+                    BindingGeneric = new ToastBindingGeneric()
+                    {
+                        HeroImage=new ToastGenericHeroImage()
+                        {
+                            Source = $"{folderPath}\\{imageName}",
+                            AlternateText="截图"
+                        },
+                        Children =
+                            {
+                                new AdaptiveText()
+                                {
+                                    Text="保存到图库的截图",
+                                    HintMaxLines=2,
+                                    HintStyle=AdaptiveTextStyle.Header
+                                },
+                                new AdaptiveText()
+                                {
+                                    Text = "哔哩已将您的截图保存到图库中，点击通知可通过默认应用打开图片",
+                                    HintMaxLines=2,
+                                    HintStyle=AdaptiveTextStyle.Default
+                                },
+                            },
+                        AppLogoOverride = new ToastGenericAppLogo()
+                        {
+                            Source = "ms-appx:///Assets/logo_small.png",
+                        },
+                        Attribution = new ToastGenericAttributionText()
+                        {
+                            Text = "截图"
+                        }
+                    },
+                }
+            };
+            ShowToast(content, group: "ScreenShot");
+        }
         public static ToastContent GetOverflowToast(string title)
         {
             var content = new ToastContent

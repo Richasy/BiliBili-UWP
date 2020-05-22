@@ -87,6 +87,7 @@ namespace BiliBili_UWP
                 var f2 = Window.Current.CoreWindow.GetKeyState(VirtualKey.F2);
                 var left = Window.Current.CoreWindow.GetKeyState(VirtualKey.Left);
                 var right = Window.Current.CoreWindow.GetKeyState(VirtualKey.Right);
+                var shift = Window.Current.CoreWindow.GetKeyState(VirtualKey.Shift);
                 var player = App.AppViewModel.CurrentVideoPlayer;
                 
                 if (esc.HasFlag(CoreVirtualKeyStates.Down))
@@ -150,6 +151,17 @@ namespace BiliBili_UWP
                     {
                         args.Handled = true;
                         player.SkipForward();
+                    }
+                }
+                else if (shift.HasFlag(CoreVirtualKeyStates.Down))
+                {
+                    if (args.VirtualKey == VirtualKey.S)
+                    {
+                        //截图
+                        if(player!=null && player.IsFocus)
+                        {
+                            await player.ScreenShot();
+                        }
                     }
                 }
             }

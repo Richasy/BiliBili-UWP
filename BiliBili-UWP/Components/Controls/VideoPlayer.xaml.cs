@@ -8,6 +8,7 @@ using BiliBili_UWP.Components.Widgets;
 using BiliBili_UWP.Models.Enums;
 using BiliBili_UWP.Models.UI;
 using BiliBili_UWP.Models.UI.Others;
+using Microsoft.Graphics.Canvas;
 using Microsoft.Toolkit.Uwp.Helpers;
 using NSDanmaku.Helper;
 using NSDanmaku.Model;
@@ -22,7 +23,9 @@ using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Media;
 using Windows.Media.Core;
+using Windows.Media.Editing;
 using Windows.Media.Playback;
+using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.System;
 using Windows.System.Display;
@@ -198,6 +201,7 @@ namespace BiliBili_UWP.Components.Controls
             ErrorBlock.Text = "嗨呀，加载失败啦！";
             InteractionHomeButton.Visibility = Visibility.Collapsed;
             InteractionEndContainer.Visibility = Visibility.Collapsed;
+            HistoryContainer.Visibility = Visibility.Collapsed;
 
             bool isShowDanmaku = AppTool.GetBoolSetting(Settings.IsDanmakuOpen);
             DanmakuVisibilityButton.Content = isShowDanmaku ? "" : "";
@@ -712,6 +716,7 @@ namespace BiliBili_UWP.Components.Controls
             {
                 double v = FontSizeSlider.Value;
                 DanmakuControls.sizeZoom = v;
+                SubtitleContentBlock.FontSize = v * 25;
                 AppTool.WriteLocalSetting(Settings.DanmakuFontSize, v.ToString());
             }
         }
@@ -1150,6 +1155,7 @@ namespace BiliBili_UWP.Components.Controls
         private void MaskContainer_Tapped(object sender, TappedRoutedEventArgs e)
         {
             LockScreenButton.Visibility = Visibility.Visible;
+            ScreenShotButton.Visibility = Visibility.Visible;
         }
         #endregion
 
@@ -1168,6 +1174,7 @@ namespace BiliBili_UWP.Components.Controls
             double danmakuSize = Convert.ToDouble(AppTool.GetLocalSetting(Settings.DanmakuFontSize, "1.0"));
             FontSizeSlider.Value = danmakuSize;
             DanmakuControls.sizeZoom = danmakuSize;
+            SubtitleContentBlock.FontSize = danmakuSize * 25;
             double danmakuSpeed = Convert.ToDouble(AppTool.GetLocalSetting(Settings.DanmakuSpeed, "1.0"));
             SpeedSlider.Value = danmakuSpeed;
             DanmakuControls.speed = 25 - Convert.ToInt32(12 * danmakuSpeed);
@@ -1270,6 +1277,7 @@ namespace BiliBili_UWP.Components.Controls
             VideoMTC.Hide();
             ExitScreenButton.Visibility = Visibility.Collapsed;
             LockScreenButton.Visibility = Visibility.Collapsed;
+            ScreenShotButton.Visibility = Visibility.Collapsed;
             SubtitleContainer.Margin = new Thickness(20, 0, 20, 20);
             TipContainer.Margin = new Thickness(20, 0, 0, 20);
             if (MTC.IsFullWindow || MTC.IsCinema || MTC.IsCompactOverlay)
@@ -1285,6 +1293,7 @@ namespace BiliBili_UWP.Components.Controls
             if (VideoMTC.IsFullWindow || VideoMTC.IsCinema || VideoMTC.IsCompactOverlay)
                 ExitScreenButton.Visibility = Visibility.Visible;
             LockScreenButton.Visibility = Visibility.Visible;
+            ScreenShotButton.Visibility = Visibility.Visible;
             SubtitleContainer.Margin = new Thickness(20, 0, 20, 140);
             TipContainer.Margin = new Thickness(20, 0, 0, 140);
             VideoMTC.Show();
@@ -1473,6 +1482,7 @@ namespace BiliBili_UWP.Components.Controls
                 {
                     FontComboBox.SelectedItem = font;
                     DanmakuControls.font = fontName;
+                    SubtitleContentBlock.FontFamily = font.FontFamily;
                 }
             }
             FontComboBox.IsEnabled = true;
@@ -1637,8 +1647,27 @@ namespace BiliBili_UWP.Components.Controls
             DanmakuVisibilityButton.Content = isShowDanmaku ? "" : "";
             await LoadDanmaku();
         }
+        public async Task ScreenShot()
+        {
+            if (_playData != null && _player != null && _tempSource != null)
+            {
+                CanvasRenderTarget rendertarget = new CanvasRenderTarget(CanvasDevice.GetSharedDevice(), _player.PlaybackSession.NaturalVideoWidth, _player.PlaybackSession.NaturalVideoHeight, 96);
+                _player.CopyFrameToVideoSurface(rendertarget);
+                var folder = await KnownFolders.PicturesLibrary.CreateFolderAsync("Bili ScreenShot",CreationCollisionOption.OpenIfExists);
+                var file = await folder.CreateFileAsync(Guid.NewGuid().ToString("N") + ".png", CreationCollisionOption.OpenIfExists);
+                using (var stream = await file.OpenAsync(FileAccessMode.ReadWrite))
+                {
+                    await rendertarget.SaveAsync(stream, CanvasBitmapFileFormat.Png);
+                }
+                NotificationTool.SendScreenShotToast(file.Name,folder.Path);
+            }
+        }
+
         #endregion
 
-        
+        private async void ScreenShotButton_Click(object sender, RoutedEventArgs e)
+        {
+            await ScreenShot();
+        }
     }
 }

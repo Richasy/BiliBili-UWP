@@ -102,8 +102,8 @@ namespace BiliBili_UWP
                 // Place the frame in the current Window
                 Window.Current.Content = rootFrame;
             }
-            BackgroundTaskHelper.Register("ToastNotificationBackgroundTask",
-                                          new ToastNotificationActionTrigger());
+
+            BackgroundTaskHelper.Register("ToastBackgroundTask", new ToastNotificationActionTrigger());
             if (e is LaunchActivatedEventArgs && (e as LaunchActivatedEventArgs).PrelaunchActivated == false)
             {
                 if (rootFrame.Content == null)
@@ -160,10 +160,7 @@ namespace BiliBili_UWP
             if (args.TaskInstance.TriggerDetails is ToastNotificationActionTriggerDetail toastArgs)
             {
                 string argument = toastArgs.Argument;
-                if (toastArgs.UserInput != null)
-                {
-                    
-                }
+                AppViewModel.AppInitByActivated(argument);
             }
 
             deferral.Complete();
