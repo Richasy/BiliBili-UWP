@@ -46,7 +46,7 @@ namespace BiliBili_UWP.Components.Controls
         private ObservableCollection<Tuple<int, string>> QualityCollection = new ObservableCollection<Tuple<int, string>>();
         private ObservableCollection<Tuple<double, string>> PlayRateCollection;
         private ObservableCollection<Choice> ChoiceCollection = new ObservableCollection<Choice>();
-        private ObservableCollection<SystemFont> FontCollection = App.AppViewModel.FontCollection;
+        private ObservableCollection<SystemFont> FontCollection =new ObservableCollection<SystemFont>();
         private ObservableCollection<SubtitleIndexItem> SubtitleIndexCollection = new ObservableCollection<SubtitleIndexItem>();
         private List<DanmakuColor> DanmakuColors = DanmakuColor.GetColorList();
         private List<SubtitleItem> Subtitles = new List<SubtitleItem>();
@@ -216,7 +216,7 @@ namespace BiliBili_UWP.Components.Controls
             _playData = null;
             _currentQn = 0;
             _playRate = 1;
-            VideoMTC._playRateComboBox.SelectedIndex = 2;
+            ResetPlayRate();
             QualityCollection.Clear();
             DanmakuList.Clear();
             SendDanmakuList.Clear();
@@ -750,6 +750,14 @@ namespace BiliBili_UWP.Components.Controls
                 {
                     AppTool.WriteLocalSetting(Settings.DanmakuFontFamily, item.Name);
                     DanmakuControls.font = item.Name;
+                    try
+                    {
+                        SubtitleContentBlock.FontFamily = item.FontFamily;
+                    }
+                    catch (Exception)
+                    {
+                        SubtitleContentBlock.FontFamily = new FontFamily(item.Name);
+                    }
                 }
             }
         }
@@ -1157,6 +1165,10 @@ namespace BiliBili_UWP.Components.Controls
             LockScreenButton.Visibility = Visibility.Visible;
             ScreenShotButton.Visibility = Visibility.Visible;
         }
+        private async void ScreenShotButton_Click(object sender, RoutedEventArgs e)
+        {
+            await ScreenShot();
+        }
         #endregion
 
         #region MTC事件
@@ -1365,6 +1377,15 @@ namespace BiliBili_UWP.Components.Controls
         public static readonly DependencyProperty IsAutoReturnWhenEndProperty =
             DependencyProperty.Register("IsAutoReturnWhenEnd", typeof(bool), typeof(VideoPlayer), new PropertyMetadata(true));
 
+        public bool IsRegenerateFonts
+        {
+            get { return (bool)GetValue(IsRegenerateFontsProperty); }
+            set { SetValue(IsRegenerateFontsProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for IsRegenerateFonts.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty IsRegenerateFontsProperty =
+            DependencyProperty.Register("IsRegenerateFonts", typeof(bool), typeof(VideoPlayer), new PropertyMetadata(false));
 
         #endregion
 
@@ -1474,6 +1495,16 @@ namespace BiliBili_UWP.Components.Controls
         private void FontInit()
         {
             FontComboBox.IsEnabled = false;
+            if (FontCollection.Count == 0)
+            {
+                if (IsRegenerateFonts)
+                {
+                    var fonts = SystemFont.GetFonts();
+                    fonts.ForEach(p => FontCollection.Add(p));
+                }
+                else
+                    FontCollection = App.AppViewModel.FontCollection;
+            }
             if (FontCollection != null && FontCollection.Count > 0)
             {
                 string fontName = AppTool.GetLocalSetting(Settings.DanmakuFontFamily, "微软雅黑");
@@ -1482,7 +1513,14 @@ namespace BiliBili_UWP.Components.Controls
                 {
                     FontComboBox.SelectedItem = font;
                     DanmakuControls.font = fontName;
-                    SubtitleContentBlock.FontFamily = font.FontFamily;
+                    try
+                    {
+                        SubtitleContentBlock.FontFamily = font.FontFamily;
+                    }
+                    catch (Exception)
+                    {
+                        SubtitleContentBlock.FontFamily = new FontFamily(font.Name);
+                    }
                 }
             }
             FontComboBox.IsEnabled = true;
@@ -1662,12 +1700,15 @@ namespace BiliBili_UWP.Components.Controls
                 NotificationTool.SendScreenShotToast(file.Name,folder.Path);
             }
         }
-
+        public void ResetPlayRate()
+        {
+            if (VideoMTC._playRateComboBox != null)
+            {
+                VideoMTC._playRateComboBox.SelectedIndex = 2;
+            }
+        }
         #endregion
 
-        private async void ScreenShotButton_Click(object sender, RoutedEventArgs e)
-        {
-            await ScreenShot();
-        }
+        
     }
 }

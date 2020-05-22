@@ -46,8 +46,7 @@
         <AutoSuggestBox Style="{StaticResource BasicSearchBoxStyle}" x:Name="BiliSearchBox"
                         KeyUp="BiliSearchBox_KeyUp" CornerRadius="20"
                         PlaceholderText="搜索" QuerySubmitted="BiliSearchBox_QuerySubmitted"
-                        ItemTemplate="{StaticResource SuggestItemTemplate}"
-                        TabIndex="99"/>
+                        ItemTemplate="{StaticResource SuggestItemTemplate}"/>
         <Button Style="{StaticResource DefaultCircleButtonStyle}" HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="Collapsed"
                 Width="35" Height="35" Content="&#xEA20;" Margin="5,0,0,0" ToolTipService.ToolTip="热搜" x:Name="HotSearchButton" Click="HotSearchButton_Click"/>
         <ProgressRing MaxWidth="15" MaxHeight="15" Foreground="{ThemeResource TipTextColor}"

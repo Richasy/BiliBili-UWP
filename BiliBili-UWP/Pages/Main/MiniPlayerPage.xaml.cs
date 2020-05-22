@@ -78,6 +78,7 @@ namespace BiliBili_UWP.Pages.Main
             VideoPlayer.FullWindowButtonVisibility = Visibility.Collapsed;
             VideoPlayer.CinemaButtonVisibility = Visibility.Collapsed;
             VideoPlayer.SeparateButtonVisibility = Visibility.Collapsed;
+            VideoPlayer.ResetPlayRate();
         }
     }
 }

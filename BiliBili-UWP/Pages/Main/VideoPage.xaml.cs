@@ -76,6 +76,14 @@ namespace BiliBili_UWP.Pages.Main
                 App.AppViewModel.CurrentVideoPlayer = VideoPlayer;
                 App.AppViewModel.CurrentPlayerType = Models.Enums.PlayerType.Video;
                 PlayBackupCollection.Clear();
+                var anim = ConnectedAnimationService.GetForCurrentView().GetAnimation("VideoConnectedAnimation");
+                if (anim != null)
+                {
+                    anim.Completed -= ConnectAnimation_Completed;
+                    anim.Completed += ConnectAnimation_Completed;
+                    anim.TryStart(VideoPlayer);
+                    UpdateLayout();
+                }
                 if (e.Parameter is Tuple<int, string> data)
                 {
                     int aid = data.Item1;
@@ -108,13 +116,6 @@ namespace BiliBili_UWP.Pages.Main
                     PlayListContainer.Visibility = Visibility.Collapsed;
                     _isPlayList = false;
                     _fromSign = "";
-                }
-                var anim = ConnectedAnimationService.GetForCurrentView().GetAnimation("VideoConnectedAnimation");
-                if (anim != null)
-                {
-                    anim.Completed -= ConnectAnimation_Completed;
-                    anim.Completed += ConnectAnimation_Completed;
-                    anim.TryStart(VideoPlayer);
                 }
                 await Refresh();
             }

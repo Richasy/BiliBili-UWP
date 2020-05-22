@@ -12,6 +12,7 @@
     xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
     xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
     xmlns:extensions="using:Microsoft.Toolkit.Uwp.UI.Extensions"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400"
@@ -215,8 +216,7 @@
                 </animations:Implicit.HideAnimations>
             </Border>
         </Grid>
-        <ProgressBar IsIndeterminate="True" Foreground="{ThemeResource PrimaryColor}" Visibility="Collapsed"
-                     VerticalAlignment="Bottom" HorizontalAlignment="Stretch" x:Name="LoadingBar"/>
+        <muxc:ProgressBar VerticalAlignment="Bottom" Style="{StaticResource MuxcProgressBarStyle}" x:Name="LoadingBar"/>
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="ErrorContainer" Visibility="Collapsed"
                     Background="{ThemeResource MaskAcrylicBackground}" Padding="10" CornerRadius="4">
             <TextBlock Style="{StaticResource BasicIconTextStyle}" FontSize="20" HorizontalAlignment="Center"

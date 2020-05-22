@@ -55,12 +55,13 @@ namespace BiliBili_UWP.Pages.Main
         {
             if (e.Parameter != null)
             {
-                var anim = ConnectedAnimationService.GetForCurrentView().GetAnimation("VideoConnectedAnimation");
+                var anim = ConnectedAnimationService.GetForCurrentView().GetAnimation("BangumiConnectedAnimation");
                 if (anim != null)
                 {
                     anim.Completed -= ConnectAnimation_Completed;
                     anim.Completed += ConnectAnimation_Completed;
                     anim.TryStart(VideoPlayer);
+                    UpdateLayout();
                 }
                 App.AppViewModel.CurrentVideoPlayer = VideoPlayer;
                 App.AppViewModel.CurrentPlayerType = Models.Enums.PlayerType.Bangumi;

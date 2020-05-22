@@ -11,6 +11,7 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource PageBackground}">
-        <controls:VideoPlayer x:Name="VideoPlayer" MTCLoaded="VideoPlayer_MTCLoaded"/>
+        <controls:VideoPlayer x:Name="VideoPlayer" MTCLoaded="VideoPlayer_MTCLoaded"
+                              IsRegenerateFonts="True"/>
     </Grid>
 </Page>

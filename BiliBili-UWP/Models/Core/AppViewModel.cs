@@ -170,7 +170,7 @@ namespace BiliBili_UWP.Models.Core
             if (sender != null && IsEnableAnimation)
             {
                 var image = VisualTreeExtension.VisualTreeFindName<FrameworkElement>((FrameworkElement)sender, "VideoCover");
-                ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("VideoConnectedAnimation", image);
+                ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("BangumiConnectedAnimation", image);
             }
             CurrentSidePanel.SetSelectedItem(SideMenuItemType.Line);
             if (isEp)
