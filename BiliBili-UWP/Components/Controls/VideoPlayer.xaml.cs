@@ -191,6 +191,7 @@ namespace BiliBili_UWP.Components.Controls
             isBangumi = true;
             _bangumiDetail = detail;
             _bangumiPart = part;
+            _needShowHistory = true;
             Reset();
             HideNextPart();
             mediaElement.PosterSource = new BitmapImage(new Uri(detail.cover));
@@ -322,6 +323,25 @@ namespace BiliBili_UWP.Components.Controls
                                 else
                                 {
                                     ShowHistory($"{AppTool.GetReadDuration(_videoDetail.history.progress)}");
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (_bangumiDetail != null && _bangumiDetail.user_status.progress != null)
+                        {
+                            var progress = _bangumiDetail.user_status.progress;
+                            var historyEp = _bangumiDetail.episodes.Where(p => p.id == progress.last_ep_id).FirstOrDefault();
+                            if (historyEp != null)
+                            {
+                                if (_bangumiPart.id != historyEp.id)
+                                {
+                                    ShowHistory($"{historyEp.title}-{AppTool.GetReadDuration(progress.last_time)}");
+                                }
+                                else
+                                {
+                                    ShowHistory($"{AppTool.GetReadDuration(progress.last_time)}");
                                 }
                             }
                         }
@@ -488,7 +508,7 @@ namespace BiliBili_UWP.Components.Controls
             SetFocus();
             LoadingBar.Visibility = Visibility.Collapsed;
         }
-        public async Task RefreshVideoSource(Episode part, bool isRefresh = false)
+        public async Task RefreshVideoSource(Episode part, bool isRefresh = false,int progress=0)
         {
             if (part == null)
             {
@@ -538,7 +558,12 @@ namespace BiliBili_UWP.Components.Controls
                     mediaSource = await HandleFlvSource(_videoId, true);
                 var other = _tempSource;
                 _tempSource = mediaSource;
+                TimeSpan offset = TimeSpan.FromSeconds(progress);
+                if (progress == 0)
+                    offset = TimeSpan.FromSeconds(_player.PlaybackSession.Position.TotalSeconds);
                 _player.Source = new MediaPlaybackItem(mediaSource);
+                if (offset.TotalSeconds > 0)
+                    _player.PlaybackSession.Position = offset;
                 other?.Dispose();
 
                 VideoMTC.IsInit = false;
@@ -1159,6 +1184,25 @@ namespace BiliBili_UWP.Components.Controls
                         var index = _videoDetail.pages.IndexOf(_videoDetail.pages.Where(p => p.cid == history.cid).FirstOrDefault());
                         if (index != -1)
                             PartSwitched?.Invoke(this, index);
+                    }
+                }
+            }
+            else
+            {
+                var progress = _bangumiDetail.user_status.progress;
+                if (progress != null)
+                {
+                    if (_bangumiPart.id == progress.last_ep_id)
+                        _player.PlaybackSession.Position = TimeSpan.FromSeconds(progress.last_time);
+                    else
+                    {
+                        var part = _bangumiDetail.episodes.Where(p => p.id == progress.last_ep_id).FirstOrDefault();
+                        if (part != null)
+                        {
+                            await RefreshVideoSource(part, true, progress.last_time);
+                            var index = _bangumiDetail.episodes.IndexOf(part);
+                            PartSwitched?.Invoke(this, index);
+                        }
                     }
                 }
             }

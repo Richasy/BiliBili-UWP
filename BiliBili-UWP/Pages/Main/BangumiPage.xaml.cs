@@ -186,7 +186,6 @@ namespace BiliBili_UWP.Pages.Main
             }
 
             _detail.episodes.ForEach(p => BangumiPartCollection.Add(p));
-
             if (isEp)
             {
                 for (int i = 0; i < _detail.episodes.Count; i++)
@@ -208,7 +207,8 @@ namespace BiliBili_UWP.Pages.Main
                 _currentPart = _detail.episodes.Where(p => p.id == _detail.user_status.progress.last_ep_id).FirstOrDefault();
                 if (_currentPart != null)
                 {
-                    PartListView.SelectedIndex = PartGridView.SelectedIndex = Convert.ToInt32(_detail.user_status.progress.last_ep_index) - 1;
+                    int lastIndex = _detail.episodes.IndexOf(_currentPart);
+                    PartListView.SelectedIndex = PartGridView.SelectedIndex = lastIndex - 1 < -1 ? -1 : lastIndex;
                     PartListView.ScrollIntoView(_currentPart, ScrollIntoViewAlignment.Leading);
                     PartGridView.ScrollIntoView(_currentPart, ScrollIntoViewAlignment.Leading);
                 }
@@ -217,7 +217,7 @@ namespace BiliBili_UWP.Pages.Main
             if (_currentPart == null && _detail.episodes.Count > 0)
             {
                 _currentPart = _detail.episodes.First();
-                PartListView.SelectedIndex= PartGridView.SelectedIndex = 0;
+                PartListView.SelectedIndex = PartGridView.SelectedIndex = 0;
             }
             if (_detail.styles != null && _detail.styles.Count > 0)
             {
