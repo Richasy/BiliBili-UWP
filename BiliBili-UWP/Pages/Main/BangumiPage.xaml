@@ -11,7 +11,7 @@
     xmlns:controls1="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d">
     <Page.Resources>
-        <DataTemplate x:DataType="anime:Episode" x:Key="PartItemTemplate">
+        <DataTemplate x:DataType="anime:Episode" x:Key="PartListItemTemplate">
             <ListViewItem x:Name="Container">
                 <Grid Background="{Binding ElementName=Container,Path=IsSelected,Converter={StaticResource SelectedColorConverter}}" CornerRadius="4" Padding="10"
                       Width="180">
@@ -26,6 +26,22 @@
                                Foreground="{Binding ElementName=Container,Path=IsSelected,Converter={StaticResource SelectedColorConverter},ConverterParameter='Foreground'}"/>
                 </Grid>
             </ListViewItem>
+        </DataTemplate>
+        <DataTemplate x:DataType="anime:Episode" x:Key="PartGridItemTemplate">
+            <GridViewItem x:Name="Container">
+                <Grid Background="{Binding ElementName=Container,Path=IsSelected,Converter={StaticResource SelectedColorConverter}}" CornerRadius="4" Padding="10"
+                      Width="180">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="{x:Bind title}" Visibility="{x:Bind title,Converter={StaticResource StringVisibilityConverter}}" Style="{StaticResource SmallTipTextStyle}" 
+                               Foreground="{Binding ElementName=Container,Path=IsSelected,Converter={StaticResource SelectedColorConverter},ConverterParameter='Foreground'}"/>
+                    <TextBlock Text="{x:Bind long_title}" Visibility="{x:Bind long_title,Converter={StaticResource StringVisibilityConverter}}" Style="{StaticResource SmallTipTextStyle}" 
+                               Grid.Row="1" Margin="0,5,0,0" TextWrapping="Wrap" MaxWidth="150" HorizontalAlignment="Left" MaxLines="1"
+                               Foreground="{Binding ElementName=Container,Path=IsSelected,Converter={StaticResource SelectedColorConverter},ConverterParameter='Foreground'}"/>
+                </Grid>
+            </GridViewItem>
         </DataTemplate>
         <DataTemplate x:DataType="anime:BangumiStyle" x:Key="TagItemTemplate">
             <Border Background="{ThemeResource SecondaryColorOpacity}" Padding="8,5,8,3"
@@ -128,10 +144,23 @@
                     </StackPanel>
                 </StackPanel>
             </Grid>
-            <ListView ItemTemplate="{StaticResource PartItemTemplate}" ItemsSource="{x:Bind BangumiPartCollection}"
-                      IsItemClickEnabled="True" ItemContainerStyle="{StaticResource TransparentListViewContainerStyle}"
-                      Style="{StaticResource BasicListView}" Padding="-5,0,0,5" ItemsPanel="{StaticResource HorizontalListViewItemsPanel}"
-                      x:Name="PartListView" ItemClick="PartListView_ItemClick" Grid.Row="1" Margin="0,20,0,0" ScrollViewer.VerticalScrollMode="Disabled"/>
+            <StackPanel Grid.Row="1" HorizontalAlignment="Stretch" x:Name="PartContainer">
+                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,0,0,10">
+                    <ToggleButton Style="{StaticResource BasicToggleButton}" CornerRadius="2,0,0,2" FontFamily="{StaticResource Icon}"
+                                  Content="&#xE9A8;" x:Name="SingleRowButton" IsChecked="True" Click="PartDsplayButton_Click" Tag="row"/>
+                    <ToggleButton Style="{StaticResource BasicToggleButton}" CornerRadius="0,2,2,0" FontFamily="{StaticResource Icon}"
+                                  Content="&#xE97D;" x:Name="GridViewButton" Click="PartDsplayButton_Click" Tag="grid"/>
+                </StackPanel>
+                <ListView ItemTemplate="{StaticResource PartListItemTemplate}" ItemsSource="{x:Bind BangumiPartCollection}"
+                      IsItemClickEnabled="True" ItemsPanel="{StaticResource HorizontalListViewItemsPanel}"
+                      Padding="0,0,0,5" Style="{StaticResource BasicListView}" ItemContainerStyle="{StaticResource TransparentListViewContainerStyle}"
+                      x:Name="PartListView" ItemClick="PartListView_ItemClick" ScrollViewer.VerticalScrollMode="Disabled"/>
+                <GridView ItemTemplate="{StaticResource PartGridItemTemplate}" ItemsSource="{x:Bind BangumiPartCollection}" 
+                          ItemContainerStyle="{StaticResource TransparentGridViewItemContainerStyle}"
+                          Style="{StaticResource BasicGridView}" Visibility="Collapsed" MaxHeight="400"
+                          IsItemClickEnabled="True" ItemClick="PartListView_ItemClick" HorizontalAlignment="Left"
+                          x:Name="PartGridView" ScrollViewer.HorizontalScrollMode="Disabled"/>
+            </StackPanel>
             <Grid Grid.Row="2" Margin="0,25,0,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />

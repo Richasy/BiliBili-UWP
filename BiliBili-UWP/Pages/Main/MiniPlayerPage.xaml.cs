@@ -79,6 +79,7 @@ namespace BiliBili_UWP.Pages.Main
             VideoPlayer.CinemaButtonVisibility = Visibility.Collapsed;
             VideoPlayer.SeparateButtonVisibility = Visibility.Collapsed;
             VideoPlayer.ResetPlayRate();
+            VideoPlayer.ChangeDanmakuBarDisplayMode();
         }
     }
 }

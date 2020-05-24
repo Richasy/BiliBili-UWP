@@ -157,9 +157,12 @@ namespace BiliBili_UWP.Models.UI.Others
                 instance.IsCinema = false;
             else if (instance.IsCompactOverlay && v)
                 instance.IsCompactOverlay = false;
-            instance._fullWindowButton.Icon = v ? instance.GetIcon("") : instance.GetIcon("");
             instance.FullWindowChanged?.Invoke(instance, v);
-            instance.DanmakuControls.UpdateLayout();
+            if (instance._fullWindowButton != null)
+            {
+                instance._fullWindowButton.Icon = v ? instance.GetIcon("") : instance.GetIcon("");
+                instance.DanmakuControls.UpdateLayout();
+            }
         }
 
         public bool IsCinema
@@ -183,8 +186,11 @@ namespace BiliBili_UWP.Models.UI.Others
             else if (instance.IsCompactOverlay && v)
                 instance.IsCompactOverlay = false;
             instance.CinemaChanged?.Invoke(instance, v);
-            instance._cinemaButton.Icon = v ? instance.GetIcon("") : instance.GetIcon("");
-            instance.DanmakuControls.UpdateLayout();
+            if (instance._cinemaButton != null)
+            {
+                instance._cinemaButton.Icon = v ? instance.GetIcon("") : instance.GetIcon("");
+                instance.DanmakuControls.UpdateLayout();
+            }
         }
 
         public Visibility CinemaButtonVisibility

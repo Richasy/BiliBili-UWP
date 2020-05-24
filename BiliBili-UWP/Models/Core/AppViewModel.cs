@@ -73,9 +73,12 @@ namespace BiliBili_UWP.Models.Core
         {
             QueryString args = QueryString.Parse(argument);
             args.TryGetValue("action", out string action);
+            bool isPlay = CurrentVideoPlayer != null && (CurrentVideoPlayer.MTC.IsFullWindow || CurrentVideoPlayer.MTC.IsCinema || CurrentVideoPlayer.MTC.IsCompactOverlay);
             switch (action)
             {
                 case "video":
+                    if (isPlay)
+                        return;
                     args.TryGetValue("aid", out string videoAid);
                     args.TryGetValue("bvid", out string videoBvId);
                     args.TryGetValue("cid", out string videoCid);
@@ -89,6 +92,8 @@ namespace BiliBili_UWP.Models.Core
                     PlayVideo(videoArgs);
                     break;
                 case "bangumi":
+                    if (isPlay)
+                        return;
                     args.TryGetValue("epid", out string AnimeEpid);
                     PlayBangumi(Convert.ToInt32(AnimeEpid), isEp: true);
                     break;

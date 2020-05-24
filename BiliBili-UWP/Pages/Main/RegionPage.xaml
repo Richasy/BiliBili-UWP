@@ -37,7 +37,6 @@
         <DataTemplate x:DataType="bilibili:WebVideo" x:Key="RankItemTemplate">
             <controls:DefaultVideoCard Cover="{x:Bind pic}" Width="195"
                                        Duration="{x:Bind duration}"
-                                       RightTopImage="{x:Bind render_sign}"
                                        Title="{x:Bind title}"
                                        Tip="{x:Bind author}"
                                        FirstSectionContent="{x:Bind play,Converter={StaticResource NumberAbbrConverter}}"

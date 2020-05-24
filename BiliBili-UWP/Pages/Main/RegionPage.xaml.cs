@@ -102,11 +102,6 @@ namespace BiliBili_UWP.Pages.Main
             if (rank != null && rank.Count > 0)
             {
                 rank = rank.Take(10).ToList();
-                for (int i = 0; i < rank.Count; i++)
-                {
-                    rank[i].render_sign = i < 3 ? $"ms-appx:///Assets/Rank/ic_live_rank_{i + 1}.png" : "";
-                    RankCollection.Add(rank[i]);
-                }
                 RankContainer.Visibility = Visibility.Visible;
             }
             _isRecommendRequesting = false;

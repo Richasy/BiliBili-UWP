@@ -57,6 +57,12 @@
                     <StackPanel Margin="0,15,0,0">
                         <ToggleSwitch Style="{StaticResource BasicToggleSwitchStyle}" HeaderTemplate="{StaticResource TipHeaderStyle}"
                               Header="播放页自动播放" x:Name="AutoPlaySwitch" Toggled="AutoPlaySwitch_Toggled"/>
+                        <ComboBox Style="{StaticResource BasicComboBoxStyle}" HeaderTemplate="{StaticResource TipHeaderStyle}" ItemContainerStyle="{StaticResource BasicComboBoxItemContainerStyle}"
+                                  Header="播放器默认显示方式" x:Name="PlayerModeComboBox" SelectionChanged="PlayerModeComboBox_SelectionChanged" Margin="0,15,0,0">
+                            <ComboBoxItem Content="默认" Tag="Default"/>
+                            <ComboBoxItem Content="影院" Tag="Cinema"/>
+                            <ComboBoxItem Content="全屏" Tag="Full"/>
+                        </ComboBox>
                         <ToggleSwitch Style="{StaticResource BasicToggleSwitchStyle}" HeaderTemplate="{StaticResource TipHeaderStyle}"
                               Header="自动播放下一P" x:Name="AutoNextPartSwitch" Toggled="AutoNextPartSwitch_Toggled" Margin="0,15,0,0"/>
                         <ToggleSwitch Style="{StaticResource BasicToggleSwitchStyle}" HeaderTemplate="{StaticResource TipHeaderStyle}"

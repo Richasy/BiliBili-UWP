@@ -82,7 +82,7 @@ namespace BiliBili_UWP.Pages.Main
                 _page += 1;
             var data = await _account.GetVideoHistoryAsync(_page);
             if (data != null && data.Count > 0)
-                data.ForEach(p => HistoryCollection.Add(p));
+                data.ForEach(p => { if (!HistoryCollection.Contains(p)) { HistoryCollection.Add(p); } });
             HolderText.Visibility = HistoryCollection.Count > 0 ? Visibility.Collapsed : Visibility.Visible;
             VideoLoadingBar.Visibility = Visibility.Collapsed;
             _isHistoryRequesting = false;

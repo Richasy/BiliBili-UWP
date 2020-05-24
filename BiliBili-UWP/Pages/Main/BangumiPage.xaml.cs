@@ -44,6 +44,7 @@ namespace BiliBili_UWP.Pages.Main
         private Episode _currentPart = null;
         private int bangumiId = 0;
         private bool isEp = false;
+        private string _lastSelectPartType = "row";
         public static BangumiPage Current;
         public BangumiPage()
         {
@@ -194,8 +195,9 @@ namespace BiliBili_UWP.Pages.Main
                     if (part.id == bangumiId)
                     {
                         _currentPart = part;
-                        PartListView.SelectedIndex = i;
+                        PartListView.SelectedIndex = PartGridView.SelectedIndex = i;
                         PartListView.ScrollIntoView(part, ScrollIntoViewAlignment.Leading);
+                        PartGridView.ScrollIntoView(part, ScrollIntoViewAlignment.Leading);
                         break;
                     }
                 }
@@ -206,15 +208,16 @@ namespace BiliBili_UWP.Pages.Main
                 _currentPart = _detail.episodes.Where(p => p.id == _detail.user_status.progress.last_ep_id).FirstOrDefault();
                 if (_currentPart != null)
                 {
-                    PartListView.SelectedIndex = Convert.ToInt32(_detail.user_status.progress.last_ep_index) - 1;
+                    PartListView.SelectedIndex = PartGridView.SelectedIndex = Convert.ToInt32(_detail.user_status.progress.last_ep_index) - 1;
                     PartListView.ScrollIntoView(_currentPart, ScrollIntoViewAlignment.Leading);
+                    PartGridView.ScrollIntoView(_currentPart, ScrollIntoViewAlignment.Leading);
                 }
             }
 
             if (_currentPart == null && _detail.episodes.Count > 0)
             {
                 _currentPart = _detail.episodes.First();
-                PartListView.SelectedIndex = 0;
+                PartListView.SelectedIndex= PartGridView.SelectedIndex = 0;
             }
             if (_detail.styles != null && _detail.styles.Count > 0)
             {
@@ -417,6 +420,30 @@ namespace BiliBili_UWP.Pages.Main
             if (App.BiliViewModel.CheckAccoutStatus())
             {
                 FlyoutBase.ShowAttachedFlyout(sender as FrameworkElement);
+            }
+        }
+        private void PartDsplayButton_Click(object sender, RoutedEventArgs e)
+        {
+            var btn = sender as ToggleButton;
+            string tag = btn.Tag.ToString();
+            if (tag == _lastSelectPartType)
+                return;
+            _lastSelectPartType = tag;
+            if (tag == "grid")
+            {
+                SingleRowButton.IsChecked = false;
+                GridViewButton.IsChecked = true;
+                PartListView.Visibility = Visibility.Collapsed;
+                PartGridView.Visibility = Visibility.Visible;
+                PartGridView.SelectedIndex = PartListView.SelectedIndex;
+            }
+            else
+            {
+                SingleRowButton.IsChecked = true;
+                GridViewButton.IsChecked = false;
+                PartListView.Visibility = Visibility.Visible;
+                PartGridView.Visibility = Visibility.Collapsed;
+                PartListView.SelectedIndex = PartGridView.SelectedIndex;
             }
         }
     }

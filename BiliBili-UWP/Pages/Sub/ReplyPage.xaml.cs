@@ -56,13 +56,10 @@ namespace BiliBili_UWP.Pages.Sub
                 oid = param["oid"];
                 type = param["type"];
                 param.TryGetValue("mode",out string m);
-                SortComboBox.SelectedIndex = 0;
                 mode = 3;
                 if (!string.IsNullOrEmpty(m))
-                {
                     mode = Convert.ToInt32(m);
-                    SortComboBox.SelectedIndex = mode == 3 ? 0 : 1;
-                }
+                SortComboBox.SelectedIndex = mode == 3 ? 0 : 1;
                 await Refresh();
             }
         }
@@ -73,6 +70,7 @@ namespace BiliBili_UWP.Pages.Sub
             next = 0;
             total = 0;
             isEnd = false;
+            TopReplyControl.Visibility = Visibility.Collapsed;
             ReplyCollection.Clear();
         }
 

@@ -118,5 +118,6 @@ namespace BiliBili_UWP.Components.Controls
         {
             App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Pages.Sub.Account.DetailPage), Data.member.mid);
         }
+
     }
 }

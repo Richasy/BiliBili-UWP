@@ -60,6 +60,7 @@ namespace BiliBili_UWP.Pages.Main
         public static VideoPage Current;
         private List<FavoriteItem> _tempFavorites = new List<FavoriteItem>();
         private string _fromSign = "";
+        private string _lastSelectPartType = "row";
         private bool _isPlayList = false;
 
         public VideoPage()
@@ -229,8 +230,8 @@ namespace BiliBili_UWP.Pages.Main
             UPNameBlock.Text = _detail.owner.name;
 
             _detail.pages.ForEach(p => VideoPartCollection.Add(p));
-            PartListView.SelectedIndex = 0;
-            PartListView.Visibility = _detail.pages.Count > 1 ? Visibility.Visible : Visibility.Collapsed;
+            PartListView.SelectedIndex = PartGridView.SelectedIndex = 0;
+            PartContainer.Visibility = _detail.pages.Count > 1 ? Visibility.Visible : Visibility.Collapsed;
 
             if (_detail.tag != null && _detail.tag.Count > 0)
             {
@@ -515,7 +516,7 @@ namespace BiliBili_UWP.Pages.Main
 
         private void VideoPlayer_PartSwitched(object sender, int e)
         {
-            PartListView.SelectedIndex = e;
+            PartListView.SelectedIndex = PartGridView.SelectedIndex = e;
         }
 
         private async void LikeButton_Hold(object sender, bool e)
@@ -590,6 +591,31 @@ namespace BiliBili_UWP.Pages.Main
             if (App.BiliViewModel.CheckAccoutStatus())
             {
                 FlyoutBase.ShowAttachedFlyout(sender as FrameworkElement);
+            }
+        }
+
+        private void PartDsplayButton_Click(object sender, RoutedEventArgs e)
+        {
+            var btn = sender as ToggleButton;
+            string tag = btn.Tag.ToString();
+            if (tag == _lastSelectPartType)
+                return;
+            _lastSelectPartType = tag;
+            if (tag == "grid")
+            {
+                SingleRowButton.IsChecked = false;
+                GridViewButton.IsChecked = true;
+                PartListView.Visibility = Visibility.Collapsed;
+                PartGridView.Visibility = Visibility.Visible;
+                PartGridView.SelectedIndex = PartListView.SelectedIndex;
+            }
+            else
+            {
+                SingleRowButton.IsChecked = true;
+                GridViewButton.IsChecked = false;
+                PartListView.Visibility = Visibility.Visible;
+                PartGridView.Visibility = Visibility.Collapsed;
+                PartListView.SelectedIndex = PartGridView.SelectedIndex;
             }
         }
     }

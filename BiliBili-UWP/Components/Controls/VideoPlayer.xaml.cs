@@ -29,6 +29,7 @@ using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.System;
 using Windows.System.Display;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -166,6 +167,7 @@ namespace BiliBili_UWP.Components.Controls
             }
             mediaElement.PosterSource = new BitmapImage(new Uri(detail.pic));
             HideNextPart();
+            SetPlayerMode();
             if (detail.interaction != null)
             {
                 int nodeId = 0;
@@ -192,8 +194,16 @@ namespace BiliBili_UWP.Components.Controls
             Reset();
             HideNextPart();
             mediaElement.PosterSource = new BitmapImage(new Uri(detail.cover));
+            SetPlayerMode();
             await RefreshVideoSource(part);
-
+        }
+        private void SetPlayerMode()
+        {
+            string mode = AppTool.GetLocalSetting(Settings.PlayerMode, "Default");
+            if (mode == "Cinema")
+                MTC.IsCinema = true;
+            else if (mode == "Full")
+                MTC.IsFullWindow = true;
         }
         private void Reset()
         {
@@ -273,7 +283,7 @@ namespace BiliBili_UWP.Components.Controls
 
         private async void Media_StatusChanged(MediaPlaybackSession sender, object args)
         {
-            await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 if (_playData == null)
                     return;
@@ -288,7 +298,7 @@ namespace BiliBili_UWP.Components.Controls
 
         private async void Media_Opened(MediaPlayer sender, object args)
         {
-            await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal,() =>
             {
                 bool isAutoPlay = AppTool.GetBoolSetting(Settings.IsAutoPlay);
                 if (isAutoPlay)
@@ -325,7 +335,28 @@ namespace BiliBili_UWP.Components.Controls
         {
             await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
             {
-                ErrorBlock.Text = args.ErrorMessage;
+                string msg = "";
+                switch (args.Error)
+                {
+                    case MediaPlayerError.Unknown:
+                        msg = "奇怪的未知错误发生了";
+                        break;
+                    case MediaPlayerError.Aborted:
+                        msg = "操作中止";
+                        break;
+                    case MediaPlayerError.NetworkError:
+                        msg = "无法从网络获取数据";
+                        break;
+                    case MediaPlayerError.DecodingError:
+                        msg = "解码失败或正在切换片源";
+                        break;
+                    case MediaPlayerError.SourceNotSupported:
+                        msg = "不支持该视频源";
+                        break;
+                    default:
+                        break;
+                }
+                ErrorBlock.Text = msg;
                 ErrorContainer.Visibility = Visibility.Visible;
             });
         }
@@ -1609,9 +1640,9 @@ namespace BiliBili_UWP.Components.Controls
                 if (needChange)
                 {
                     Grid.SetRow(DanmakuBarContainer, 0);
-                    if (isShow)
-                        VisualStateManager.GoToState(mediaElement, "MarginState", false);
                 }
+                if (isShow)
+                    VisualStateManager.GoToState(mediaElement, "MarginState", false);
             }
             else
             {
@@ -1619,8 +1650,8 @@ namespace BiliBili_UWP.Components.Controls
                 if (needChange)
                 {
                     Grid.SetRow(DanmakuBarContainer, 1);
-                    VisualStateManager.GoToState(mediaElement, "DefaultState", false);
                 }
+                VisualStateManager.GoToState(mediaElement, "DefaultState", false);
             }
         }
         public async Task SwitchNextPart(int index)

@@ -83,6 +83,20 @@ namespace BiliBili_UWP.Pages.Main
             OpenDanmakuInCompactSwitch.IsOn = isShowDanmakuInCompact;
             bool isStopInBackground = AppTool.GetBoolSetting(Settings.IsStopInBackground);
             StopPlayInBackgroundSwitch.IsOn = isStopInBackground;
+            string playerMode = AppTool.GetLocalSetting(Settings.PlayerMode, "Default");
+            switch (playerMode)
+            {
+                case "Default":
+                default:
+                    PlayerModeComboBox.SelectedIndex = 0;
+                    break;
+                case "Cinema":
+                    PlayerModeComboBox.SelectedIndex = 1;
+                    break;
+                case "Full":
+                    PlayerModeComboBox.SelectedIndex = 2;
+                    break;
+            }
             #endregion
 
             #region 通知设置
@@ -331,6 +345,15 @@ namespace BiliBili_UWP.Pages.Main
                 _tempStartupHandle = true;
                 EnableStartupSwitch.IsOn = !isOn;
             }
+        }
+
+        private void PlayerModeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (!_isInit)
+                return;
+            var item = PlayerModeComboBox.SelectedItem as ComboBoxItem;
+            string tag = item.Tag.ToString();
+            AppTool.WriteLocalSetting(Settings.PlayerMode, tag);
         }
     }
 }
