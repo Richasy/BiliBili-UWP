@@ -38,8 +38,7 @@ namespace BiliBili_UWP.Pages.Main
         }
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
-            
-            if (e.Parameter!=null)
+            if (e.Parameter != null)
             {
                 if (e.Parameter is Tuple<VideoDetail, int> data)
                     await VideoPlayer.Init(data.Item1, data.Item2);
@@ -47,6 +46,7 @@ namespace BiliBili_UWP.Pages.Main
                     await VideoPlayer.Init(bangu.Item1, bangu.Item2);
                 bool isShowDanmakuBar = AppTool.GetBoolSetting(Settings.IsShowDanmakuBarInSeparate, false);
                 VideoPlayer.DanmakuBarVisibility = isShowDanmakuBar ? Visibility.Visible : Visibility.Collapsed;
+                VideoPlayer.ChangeDanmakuBarDisplayMode(false, isShowDanmakuBar);
                 UIHelper.SetTitleBarColor();
             }
         }
@@ -79,7 +79,6 @@ namespace BiliBili_UWP.Pages.Main
             VideoPlayer.CinemaButtonVisibility = Visibility.Collapsed;
             VideoPlayer.SeparateButtonVisibility = Visibility.Collapsed;
             VideoPlayer.ResetPlayRate();
-            VideoPlayer.ChangeDanmakuBarDisplayMode();
         }
     }
 }
