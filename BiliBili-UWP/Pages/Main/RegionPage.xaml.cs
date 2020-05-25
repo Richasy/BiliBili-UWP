@@ -103,6 +103,7 @@ namespace BiliBili_UWP.Pages.Main
             if (rank != null && rank.Count > 0)
             {
                 rank = rank.Take(10).ToList();
+                rank.ForEach(p => RankCollection.Add(p));
                 RankContainer.Visibility = Visibility.Visible;
             }
             _isRecommendRequesting = false;
