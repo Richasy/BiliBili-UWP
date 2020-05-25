@@ -15,7 +15,7 @@
         <DataTemplate x:DataType="bilibili:TopicDetail" x:Key="TagItemTemplate">
             <Border CornerRadius="2" Background="{ThemeResource SecondaryColorOpacity}" Padding="8,5,8,3" Margin="0,0,5,5"
                     Tapped="Tag_Tapped">
-                <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="10" Foreground="{ThemeResource SecondaryColorOver}"
+                <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="{CustomResource MiniFontSize}" Foreground="{ThemeResource SecondaryColorOver}"
                            Text="{x:Bind topic_name}"/>
             </Border>
         </DataTemplate>
@@ -24,7 +24,7 @@
                 <Button Style="{StaticResource TransparentButtonStyle}" HorizontalAlignment="Stretch"
                         x:Name="ShareDynamicButton" VerticalAlignment="Center" Click="ShareDynamicButton_Click">
                     <StackPanel>
-                        <TextBlock Text="&#xEA30;" FontSize="20"
+                        <TextBlock Text="&#xEA30;" FontSize="{CustomResource SubFontSize}"
                                    FontFamily="{StaticResource Icon}" HorizontalAlignment="Center"/>
                         <TextBlock Text="动态" Margin="0,10,0,0" HorizontalAlignment="Center" TextAlignment="Center"
                                    Style="{StaticResource SmallTipTextStyle}"/>
@@ -33,7 +33,7 @@
                 <Button Style="{StaticResource TransparentButtonStyle}" HorizontalAlignment="Stretch" Margin="10,0,0,0"
                         x:Name="ShareDataButton" Grid.Column="1" VerticalAlignment="Center" Click="ShareDataButton_Click">
                     <StackPanel>
-                        <TextBlock Text="&#xE9D5;" FontSize="20"
+                        <TextBlock Text="&#xE9D5;" FontSize="{CustomResource SubFontSize}"
                                    FontFamily="{StaticResource Icon}" HorizontalAlignment="Center"/>
                         <TextBlock Text="分享" Margin="0,10,0,0" HorizontalAlignment="Center" TextAlignment="Center"
                                    Style="{StaticResource SmallTipTextStyle}"/>
@@ -57,23 +57,23 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <StackPanel Orientation="Horizontal" Tapped="Account_Tapped">
-                <PersonPicture Width="30" Height="30" Style="{StaticResource BasicPersonPictureStyle}" x:Name="UserAvatar"
+                <PersonPicture Width="{CustomResource HeaderFontSize}" Height="{CustomResource HeaderFontSize}" Style="{StaticResource BasicPersonPictureStyle}" x:Name="UserAvatar"
                            VerticalAlignment="Center"/>
                 <StackPanel VerticalAlignment="Center" Margin="10,0,0,0">
-                    <TextBlock x:Name="UserNameBlock" Style="{StaticResource SmallTipTextStyle}" FontSize="13" FontWeight="Bold"
+                    <TextBlock x:Name="UserNameBlock" Style="{StaticResource SmallTipTextStyle}" FontSize="{CustomResource BasicFontSize}" FontWeight="Bold"
                            Foreground="{ThemeResource ImportantTextColor}" MaxWidth="195"/>
-                    <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="10" x:Name="TipBlock" Margin="0,5,0,0"/>
+                    <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="{CustomResource MiniFontSize}" x:Name="TipBlock" Margin="0,5,0,0"/>
                 </StackPanel>
             </StackPanel>
             <widgets:AsyncButton
                 x:Name="FollowButton" Grid.Column="1" VerticalAlignment="Center" Style="{StaticResource DefaultAsyncButtonStyle}"
-                                 Padding="0,0,0,0" FontSize="10" Click="FollowButton_Click" Text="关注" BorderBrush="{ThemeResource LineColor}" BorderThickness="1"/>
+                                 Padding="0,0,0,0" FontSize="{CustomResource MiniFontSize}" Click="FollowButton_Click" Text="关注" BorderBrush="{ThemeResource LineColor}" BorderThickness="1"/>
             <Button Style="{StaticResource TransparentButtonStyle}" VerticalAlignment="Center" Grid.Column="2"
                     Content="&#xE9A9;" FontFamily="{StaticResource Icon}" x:Name="MoreButton">
                 <Button.Flyout>
                     <CommandBarFlyout x:Name="VideoFlyout">
                         <CommandBarFlyout.SecondaryCommands>
-                            <AppBarButton Label="加入稍后再看" FontSize="12" FontFamily="{CustomResource Basic}" x:Name="LaterViewButton" Click="LaterViewButton_Click">
+                            <AppBarButton Label="加入稍后再看" FontSize="{CustomResource SmallFontSize}" FontFamily="{CustomResource Basic}" x:Name="LaterViewButton" Click="LaterViewButton_Click">
                                 <AppBarButton.Icon>
                                     <FontIcon FontFamily="{StaticResource Icon}" Glyph="&#xEA3B;"/>
                                 </AppBarButton.Icon>

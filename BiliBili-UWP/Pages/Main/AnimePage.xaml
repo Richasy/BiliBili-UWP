@@ -30,7 +30,7 @@
                                        RightTopText="{x:Bind badge}"
                                        Tip="{x:Bind desc}"
                                        Title="{x:Bind title}"
-                                       DecodePixelWidth="160"
+                                       DecodePixelWidth="200"
                                        Width="200"
                                        ExtraButtonVisbility="Collapsed"
                                        BottomText="{x:Bind stat.follow_view}"

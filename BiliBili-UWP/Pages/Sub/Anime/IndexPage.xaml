@@ -16,14 +16,14 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="1*" />
                 </Grid.RowDefinitions>
-                <TextBlock Style="{StaticResource SmallTipTextStyle}" Text="{x:Bind name}" FontSize="10" Margin="0,0,0,5"/>
+                <TextBlock Style="{StaticResource SmallTipTextStyle}" Text="{x:Bind name}" FontSize="{CustomResource MiniFontSize}" Margin="0,0,0,5"/>
                 <ComboBox HorizontalAlignment="Stretch" Style="{StaticResource BasicComboBoxStyle}" ItemContainerStyle="{StaticResource BasicComboBoxItemContainerStyle}"
                           Grid.Row="1" ItemsSource="{x:Bind values}" SelectedIndex="{x:Bind SelectIndex,Mode=OneWay}" SelectionChanged="ConditionComboBox_SelectionChanged"
                           >
                     <ComboBox.ItemTemplate>
                         <DataTemplate x:DataType="anime:ConditionItem">
                             <Grid Padding="8,6">
-                                <TextBlock Text="{x:Bind name}" FontSize="12"/>
+                                <TextBlock Text="{x:Bind name}" FontSize="{CustomResource SmallFontSize}"/>
                             </Grid>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
@@ -41,19 +41,19 @@
                                   CornerRadius="4"/>
                     <Border Background="{ThemeResource PaneBackground}" Padding="5,4" CornerRadius="2" HorizontalAlignment="Right" VerticalAlignment="Top"
                             Margin="0,5,5,0" Visibility="{x:Bind badge,Converter={StaticResource StringVisibilityConverter}}">
-                        <TextBlock Text="{x:Bind badge}" Style="{StaticResource SmallTipTextStyle}" FontSize="10" Foreground="{ThemeResource PrimaryColor}"/>
+                        <TextBlock Text="{x:Bind badge}" Style="{StaticResource SmallTipTextStyle}" FontSize="{CustomResource MiniFontSize}" Foreground="{ThemeResource PrimaryColor}"/>
                     </Border>
                     <Border Background="{ThemeResource MaskAcrylicBackground}" Padding="5,4" CornerRadius="2" HorizontalAlignment="Left" VerticalAlignment="Bottom"
                             Margin="5,0,0,5" Visibility="{x:Bind title_icon,Converter={StaticResource StringVisibilityConverter}}">
-                        <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="10" Foreground="{ThemeResource ImportantTextColor}"
+                        <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="{CustomResource MiniFontSize}" Foreground="{ThemeResource ImportantTextColor}"
                                    Text="{x:Bind title_icon}"/>
                     </Border>
                 </Grid>
                 <StackPanel Padding="0,5" Grid.Row="1" HorizontalAlignment="Left">
                     <TextBlock Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource ImportantTextColor}" Text="{x:Bind title}"
                                MaxWidth="110"/>
-                    <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="10" Text="{x:Bind order}" Visibility="{x:Bind order,Converter={StaticResource StringVisibilityConverter}}" Margin="0,3"/>
-                    <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="10" Text="{x:Bind index_show}" Visibility="{x:Bind index_show,Converter={StaticResource StringVisibilityConverter}}"/>
+                    <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="{CustomResource MiniFontSize}" Text="{x:Bind order}" Visibility="{x:Bind order,Converter={StaticResource StringVisibilityConverter}}" Margin="0,3"/>
+                    <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="{CustomResource MiniFontSize}" Text="{x:Bind index_show}" Visibility="{x:Bind index_show,Converter={StaticResource StringVisibilityConverter}}"/>
                 </StackPanel>
             </Grid>
         </DataTemplate>
@@ -84,7 +84,7 @@
                         </ItemsPanelTemplate>
                     </GridView.ItemsPanel>
                 </GridView>
-                <TextBlock Style="{StaticResource TitleTextStyle}" FontSize="15" Text="没有查到相关数据"
+                <TextBlock Style="{StaticResource TitleTextStyle}" FontSize="{CustomResource BodyFontSize}" Text="没有查到相关数据"
                            Grid.Row="1" x:Name="HolderText" HorizontalAlignment="Left"/>
             </Grid>
         </ScrollViewer>

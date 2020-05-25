@@ -21,7 +21,7 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Border Padding="10,5">
-                        <TextBlock Text="{x:Bind name}" FontSize="12" FontFamily="{CustomResource Basic}" FontWeight="Bold"/>
+                        <TextBlock Text="{x:Bind name}" FontSize="{CustomResource SmallFontSize}" FontFamily="{CustomResource Basic}" FontWeight="Bold"/>
                     </Border>
                     <Border Height="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" x:Name="ItemSign"
                             Grid.Row="1" Background="{Binding ElementName=TabContainer,Path=IsSelected,Converter={StaticResource SideMenuSignColorConverter},Mode=OneWay}"/>
@@ -30,7 +30,7 @@
         </DataTemplate>
         <DataTemplate x:DataType="ui:IconItem" x:Key="SortItemTemplate">
             <widgets:IconTextBlock Icon="{x:Bind Icon}" Text="{x:Bind Name}" IconForeground="{ThemeResource PrimaryColor}"
-                                   FontSize="12"/>
+                                   FontSize="{CustomResource SmallFontSize}"/>
         </DataTemplate>
         <DataTemplate x:DataType="bilibili:RegionVideo" x:Key="VideoItemTemplate">
             <controls1:DefaultVideoPanel Title="{x:Bind title}"

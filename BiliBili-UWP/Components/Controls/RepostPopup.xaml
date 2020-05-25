@@ -87,8 +87,8 @@
                 <controls:ImageEx Width="35" Height="35" CornerRadius="17.5"
                                Source="{x:Bind face,Converter={StaticResource CoverResolutionConverter},ConverterParameter=50}"/>
                 <StackPanel Margin="10,0,0,0" Grid.Column="1" VerticalAlignment="Center">
-                    <TextBlock Style="{StaticResource CaptionTextStyle}" FontSize="13" Text="{x:Bind name}"/>
-                    <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="10">
+                    <TextBlock Style="{StaticResource CaptionTextStyle}" FontSize="{CustomResource BasicFontSize}" Text="{x:Bind name}"/>
+                    <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="{CustomResource MiniFontSize}">
                         <Run Text="uid:"/>
                         <Run Text="{x:Bind mid}"/>
                     </TextBlock>
@@ -124,7 +124,7 @@
                 <widgets:BiliImage CornerRadius="20" Source="{x:Bind face,Converter={StaticResource CoverResolutionConverter},ConverterParameter=50}"
                                    DisplayType="Rect" DecodePixelWidth="50" Stretch="Fill"/>
                 <Button Style="{StaticResource ErrorGhostCircleButtonStyle}" BorderBrush="Transparent" Background="{ThemeResource ErrorColor}"
-                        Width="15" Height="15" CornerRadius="10" FontSize="10" Foreground="White"
+                        Width="15" Height="15" CornerRadius="10" FontSize="{CustomResource MiniFontSize}" Foreground="White"
                         Content="&#xE9A3;" x:Name="RemoveUserButton" Click="RemoveUserButton_Click" VerticalAlignment="Top"
                         RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignRightWithPanel="True"/>
             </RelativePanel>
@@ -169,7 +169,7 @@
                 <ScrollViewer Grid.Row="3" MaxHeight="140" Style="{StaticResource BasicScrollViewer}"
                       HorizontalScrollMode="Disabled">
                     <Grid Padding="10" CornerRadius="4" Background="{ThemeResource CardBackground}">
-                        <TextBlock Style="{StaticResource TipTextStyle}" x:Name="OriginBlock" FontSize="13" LineHeight="20"
+                        <TextBlock Style="{StaticResource TipTextStyle}" x:Name="OriginBlock" FontSize="{CustomResource BasicFontSize}" LineHeight="{CustomResource SubFontSize}"
                            TextWrapping="Wrap"/>
                     </Grid>
                 </ScrollViewer>

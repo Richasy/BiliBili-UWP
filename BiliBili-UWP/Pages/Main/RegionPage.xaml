@@ -81,7 +81,7 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <TextBlock Style="{StaticResource TitleTextStyle}" Text="全区动态" Margin="0,0,0,15"/>
-                <widgets:AsyncButton Icon="&#xE9C7;" Text="换一换" x:Name="RefreshButton" CornerRadius="15" FontSize="10"
+                <widgets:AsyncButton Icon="&#xE9C7;" Text="换一换" x:Name="RefreshButton" CornerRadius="15" FontSize="{CustomResource MiniFontSize}"
                                  Style="{StaticResource DefaultAsyncButtonStyle}" Grid.Column="1"
                                  Click="RefreshButton_Click" Margin="20,0,0,0" VerticalAlignment="Center"/>
             </Grid>

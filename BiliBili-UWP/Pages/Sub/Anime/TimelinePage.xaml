@@ -40,7 +40,7 @@
                                                   CornerRadius="4"/>
                                 <StackPanel Grid.Row="1">
                                     <TextBlock Text="{x:Bind title}" Margin="0,3,0,0" Foreground="{ThemeResource NormalTextColor}" Style="{StaticResource SmallTipTextStyle}" MaxWidth="110" ToolTipService.ToolTip="{x:Bind title}"/>
-                                    <TextBlock Text="{x:Bind pub_index}" Style="{StaticResource SmallTipTextStyle}" FontSize="10" Foreground="{ThemeResource PrimaryColor}"
+                                    <TextBlock Text="{x:Bind pub_index}" Style="{StaticResource SmallTipTextStyle}" FontSize="{CustomResource MiniFontSize}" Foreground="{ThemeResource PrimaryColor}"
                                                Margin="0,3,0,0" MaxWidth="110"/>
                                 </StackPanel>
                             </Grid>
@@ -59,7 +59,7 @@
                   x:Name="TimelineListView"
                   />
         <muxc:ProgressRing Style="{StaticResource MuxcProgressRingStyle}" x:Name="LoadingRing"/>
-        <TextBlock Style="{StaticResource TitleTextBlockStyle}" FontSize="15" Text="数据获取失败"
+        <TextBlock Style="{StaticResource TitleTextBlockStyle}" FontSize="{CustomResource BodyFontSize}" Text="数据获取失败"
                    x:Name="HolderText" VerticalAlignment="Top" HorizontalAlignment="Left" Visibility="Collapsed"/>
     </Grid>
 </Page>

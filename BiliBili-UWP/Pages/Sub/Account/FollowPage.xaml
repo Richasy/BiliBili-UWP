@@ -22,7 +22,7 @@
                     <Border Padding="10,5">
                         <TextBlock FontSize="12" FontFamily="{CustomResource Basic}" FontWeight="Bold">
                             <Run Text="{x:Bind name}"/>
-                            <Run Text="{x:Bind count,Mode=OneWay,Converter={StaticResource NumberAbbrConverter}}" FontSize="10" Foreground="{ThemeResource TipTextColor}"/>
+                            <Run Text="{x:Bind count,Mode=OneWay,Converter={StaticResource NumberAbbrConverter}}" FontSize="{CustomResource MiniFontSize}" Foreground="{ThemeResource TipTextColor}"/>
                         </TextBlock>
                     </Border>
                     <Border Height="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" x:Name="ItemSign"
@@ -42,11 +42,11 @@
                 <StackPanel VerticalAlignment="Center" Grid.Column="1" Margin="10,0,0,0">
                     <TextBlock Style="{StaticResource SmallTipTextStyle}" FontWeight="Bold" Foreground="{ThemeResource NormalTextColor}"
                                Text="{x:Bind uname}"/>
-                    <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="10" Text="{x:Bind sign}" Margin="0,5,0,0"
+                    <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="{CustomResource MiniFontSize}" Text="{x:Bind sign}" Margin="0,5,0,0"
                                Visibility="{x:Bind sign,Converter={StaticResource StringVisibilityConverter}}"/>
                 </StackPanel>
                 <widgets:AsyncButton Style="{StaticResource DefaultAsyncButtonStyle}" Padding="0" Text="取消关注" x:Name="UnfollowButton" Grid.Column="2" Margin="10,0,0,0"
-                                     Click="UnfollowButton_Click"  FontSize="10"/>
+                                     Click="UnfollowButton_Click"  FontSize="{CustomResource MiniFontSize}"/>
             </Grid>
         </DataTemplate>
     </Page.Resources>

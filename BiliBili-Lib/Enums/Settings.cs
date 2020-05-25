@@ -46,6 +46,7 @@ namespace BiliBili_Lib.Enums
         IsOpenNewDynamicNotification,
         EnableAnimation,
         IsAutoNextPart,
-        PlayerMode
+        PlayerMode,
+        BasicFontSize
     }
 }

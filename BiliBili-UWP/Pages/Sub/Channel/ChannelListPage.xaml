@@ -23,10 +23,10 @@
                 <controls1:ImageEx VerticalAlignment="Center" Width="35" Height="35" CornerRadius="4" DecodePixelWidth="35" IsCacheEnabled="True"
                                    Source="{x:Bind render_cover,Converter={StaticResource ChannelCoverConverter}}" Stretch="UniformToFill" Margin="0,0,10,0"/>
                 <StackPanel VerticalAlignment="Center" Grid.Column="1" HorizontalAlignment="Left">
-                    <TextBlock Style="{StaticResource CaptionTextStyle}" FontSize="12" FontWeight="Bold" Text="{x:Bind title}"/>
-                    <TextBlock Style="{StaticResource SmallTipTextStyle}" Text="{x:Bind label}" FontSize="10" Margin="0,5,0,0"/>
+                    <TextBlock Style="{StaticResource CaptionTextStyle}" FontSize="{CustomResource SmallFontSize}" FontWeight="Bold" Text="{x:Bind title}"/>
+                    <TextBlock Style="{StaticResource SmallTipTextStyle}" Text="{x:Bind label}" FontSize="{CustomResource MiniFontSize}" Margin="0,5,0,0"/>
                 </StackPanel>
-                <widgets:AsyncButton Margin="10,0,0,0" Padding="4,2" Style="{StaticResource DefaultAsyncButtonStyle}" VerticalAlignment="Center" x:Name="SubscribeButton" FontSize="12"
+                <widgets:AsyncButton Margin="10,0,0,0" Padding="4,2" Style="{StaticResource DefaultAsyncButtonStyle}" VerticalAlignment="Center" x:Name="SubscribeButton" FontSize="{CustomResource SmallFontSize}"
                                      Click="SubscribeButton_Click" Grid.Column="2" Text="{x:Bind GetSubscribeButtonText()}"/>
             </Grid>
         </DataTemplate>
@@ -42,10 +42,10 @@
                                    Source="{x:Bind render_cover,Converter={StaticResource ChannelCoverConverter}}" Stretch="UniformToFill" Margin="0,0,10,0"/>
                 
                 <StackPanel Orientation="Horizontal" Grid.Column="1">
-                    <TextBlock Style="{StaticResource CaptionTextStyle}" FontSize="12" Text="{x:Bind name}" VerticalAlignment="Center"/>
+                    <TextBlock Style="{StaticResource CaptionTextStyle}" FontSize="{CustomResource SmallFontSize}" Text="{x:Bind name}" VerticalAlignment="Center"/>
                     <TextBlock Text="&#xEA1A;" Visibility="{x:Bind official_verify,Converter={StaticResource IntVisibilityConverter}}"
                                VerticalAlignment="Center" Margin="5,0,0,0" Foreground="{ThemeResource PrimaryColor}" FontFamily="{StaticResource Icon}"
-                               FontSize="15"/>
+                               FontSize="{CustomResource BodyFontSize}"/>
                 </StackPanel>
                 <widgets:AsyncButton Margin="10,0,0,0" Padding="4,2" Style="{StaticResource DefaultAsyncButtonStyle}" VerticalAlignment="Center" x:Name="SubscribeButton" FontSize="12"
                                      Click="SubscribeButton_Click" Grid.Column="2" Text="取消关注"/>
@@ -59,7 +59,7 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Border Padding="10,5">
-                        <TextBlock Text="{x:Bind title}" FontSize="12" FontFamily="{CustomResource Basic}" FontWeight="Bold"/>
+                        <TextBlock Text="{x:Bind title}" FontSize="{CustomResource SmallFontSize}" FontFamily="{CustomResource Basic}" FontWeight="Bold"/>
                     </Border>
                     <Border Height="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" x:Name="ItemSign"
                             Grid.Row="1"
@@ -76,8 +76,8 @@
                 <controls1:ImageEx VerticalAlignment="Center" Width="35" Height="35" CornerRadius="4" DecodePixelWidth="35" IsCacheEnabled="True"
                                    Source="{x:Bind render_cover,Converter={StaticResource ChannelCoverConverter}}" Stretch="UniformToFill"/>
                 <StackPanel VerticalAlignment="Center" Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,0">
-                    <TextBlock Style="{StaticResource CaptionTextStyle}" FontSize="12" FontWeight="Bold" Text="{x:Bind title}"/>
-                    <TextBlock Style="{StaticResource SmallTipTextStyle}" Text="{x:Bind label}" FontSize="10" Margin="0,5,0,0"/>
+                    <TextBlock Style="{StaticResource CaptionTextStyle}" FontSize="{CustomResource SmallFontSize}" FontWeight="Bold" Text="{x:Bind title}"/>
+                    <TextBlock Style="{StaticResource SmallTipTextStyle}" Text="{x:Bind label}" FontSize="{CustomResource MiniFontSize}" Margin="0,5,0,0"/>
                 </StackPanel>
             </Grid>
         </DataTemplate>

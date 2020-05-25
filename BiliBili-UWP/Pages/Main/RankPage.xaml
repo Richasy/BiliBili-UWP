@@ -31,7 +31,7 @@
                     <StackPanel Orientation="Horizontal">
                         <controls1:ImageEx DecodePixelWidth="25" Width="25" Height="25" VerticalAlignment="Center"
                                    Source="{x:Bind logo}" IsCacheEnabled="True"/>
-                        <TextBlock Text="{x:Bind name}" Style="{StaticResource CaptionTextStyle}" FontSize="13"
+                        <TextBlock Text="{x:Bind name}" Style="{StaticResource CaptionTextStyle}" FontSize="{CustomResource BasicFontSize}"
                            VerticalAlignment="Center" Margin="10,0,0,0"/>
                     </StackPanel>
                     <Border Height="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" x:Name="ItemSign" Margin="0,5,0,0"
@@ -58,7 +58,6 @@
                                         ItemTemplate="{StaticResource RankItemTemplate}"
                                         IsItemClickEnabled="True"
                                         DesiredWidth="220"
-                                        ItemHeight="185"
                                         ItemClick="VideoGridView_ItemClick"
                                         Style="{StaticResource NoScrollGridView}"
                                         ItemContainerStyle="{StaticResource TransparentGridViewItemContainerStyle}"

@@ -44,20 +44,20 @@
         <DataTemplate x:DataType="video:VideoTag" x:Key="TagItemTemplate">
             <Border Background="{ThemeResource SecondaryColorOpacity}" BorderBrush="{ThemeResource SecondaryColor}" Padding="8,5"
                     CornerRadius="3">
-                <TextBlock Text="{x:Bind tag_name}" Style="{StaticResource SmallTipTextStyle}" FontSize="10" Foreground="{ThemeResource SecondaryColorOver}"/>
+                <TextBlock Text="{x:Bind tag_name}" Style="{StaticResource SmallTipTextStyle}" FontSize="{CustomResource MiniFontSize}" Foreground="{ThemeResource SecondaryColorOver}"/>
             </Border>
         </DataTemplate>
         <DataTemplate x:DataType="video:Staff" x:Key="StaffItemTemplate">
             <Grid Margin="10,10,10,0">
                 <StackPanel>
                     <PersonPicture Width="35" Height="35" ProfilePicture="{x:Bind face}" Style="{StaticResource BasicPersonPictureStyle}"/>
-                    <TextBlock Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource NormalTextColor}" FontSize="10"
+                    <TextBlock Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource NormalTextColor}" FontSize="{CustomResource MiniFontSize}"
                                HorizontalAlignment="Center" TextAlignment="Center" Margin="0,5,0,0" Text="{x:Bind name}"/>
                 </StackPanel>
                 <Border BorderBrush="{ThemeResource PrimaryColor}" Background="{ThemeResource CardBackground}" BorderThickness="1"
                             CornerRadius="2" Padding="5,3" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="15,-5,-20,0">
                     <TextBlock Text="{x:Bind title}" Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource PrimaryColor}"
-                                   FontSize="10"/>
+                                   FontSize="{CustomResource MiniFontSize}"/>
                 </Border>
             </Grid>
         </DataTemplate>
@@ -75,17 +75,17 @@
             <StackPanel Padding="10">
                 <StackPanel Orientation="Horizontal">
                     <Button Style="{StaticResource DefaultCircleButtonStyle}" Width="50" Height="50" CornerRadius="4" Tag="1"
-                        Content="1" FontFamily="{CustomResource Basic}" FontWeight="Bold" FontSize="30" Click="CoinCountButton_Click"/>
+                        Content="1" FontFamily="{CustomResource Basic}" FontWeight="Bold" FontSize="{CustomResource LargeFontSize}" Click="CoinCountButton_Click"/>
                     <Button Style="{StaticResource DefaultCircleButtonStyle}" Width="50" Height="50" CornerRadius="4" Tag="2"
-                        Content="2" FontFamily="{CustomResource Basic}" FontWeight="Bold" FontSize="30" Margin="15,0,0,0" Click="CoinCountButton_Click"/>
+                        Content="2" FontFamily="{CustomResource Basic}" FontWeight="Bold" FontSize="{CustomResource LargeFontSize}" Margin="15,0,0,0" Click="CoinCountButton_Click"/>
                 </StackPanel>
                 <CheckBox Style="{StaticResource BasicCheckBoxStyle}" Content="同时点赞内容" IsChecked="True" x:Name="SelectLikeCheckBox"
-                          HorizontalAlignment="Left" Margin="0,5,0,0" FontSize="12"/>
+                          HorizontalAlignment="Left" Margin="0,5,0,0" FontSize="{CustomResource SmallFontSize}"/>
             </StackPanel>
         </Flyout>
         <Flyout FlyoutPresenterStyle="{StaticResource NoPaddingFlyoutStyle}" x:Name="FavoriteFlyout">
             <StackPanel>
-                <TextBlock Style="{StaticResource SmallTipTextStyle}" Text="选择收藏夹" Margin="10" FontSize="12" FontWeight="Bold"/>
+                <TextBlock Style="{StaticResource SmallTipTextStyle}" Text="选择收藏夹" Margin="10" FontSize="{CustomResource SmallFontSize}" FontWeight="Bold"/>
                 <ProgressBar HorizontalAlignment="Stretch" Foreground="{ThemeResource PrimaryColor}"
                              IsIndeterminate="True" x:Name="FavoriteProgressBar" Visibility="Collapsed"/>
                 <StackPanel x:Name="FavoriteContainer">
@@ -95,8 +95,8 @@
                             <DataTemplate x:DataType="bilibili:FavoriteItem">
                                 <ListViewItem IsSelected="{x:Bind fav_state,Converter={StaticResource IntBoolConverter}}">
                                     <StackPanel Padding="5,8" BorderThickness="0,0,0,1" BorderBrush="{ThemeResource LineColor}">
-                                        <TextBlock Text="{x:Bind title}" Style="{StaticResource CaptionTextStyle}" FontSize="12" FontWeight="Bold"/>
-                                        <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="10" Margin="0,5,0,0">
+                                        <TextBlock Text="{x:Bind title}" Style="{StaticResource CaptionTextStyle}" FontSize="{CustomResource SmallFontSize}" FontWeight="Bold"/>
+                                        <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="{CustomResource MiniFontSize}" Margin="0,5,0,0">
                                         <Run Text="{x:Bind media_count}"/>
                                         <Run Text="个内容"/>
                                         </TextBlock>
@@ -115,7 +115,7 @@
                 <Button Style="{StaticResource TransparentButtonStyle}" HorizontalAlignment="Stretch"
                         x:Name="ShareDynamicButton" VerticalAlignment="Center" Click="ShareDynamicButton_Click">
                     <StackPanel>
-                        <TextBlock Text="&#xEA30;" FontSize="20"
+                        <TextBlock Text="&#xEA30;" FontSize="{CustomResource SubFontSize}"
                                    FontFamily="{StaticResource Icon}" HorizontalAlignment="Center"/>
                         <TextBlock Text="动态" Margin="0,10,0,0" HorizontalAlignment="Center" TextAlignment="Center"
                                    Style="{StaticResource SmallTipTextStyle}"/>
@@ -124,7 +124,7 @@
                 <Button Style="{StaticResource TransparentButtonStyle}" HorizontalAlignment="Stretch" Margin="10,0,0,0"
                         x:Name="ShareDataButton" Grid.Column="1" VerticalAlignment="Center" Click="ShareDataButton_Click">
                     <StackPanel>
-                        <TextBlock Text="&#xE9D5;" FontSize="20"
+                        <TextBlock Text="&#xE9D5;" FontSize="{CustomResource SubFontSize}"
                                    FontFamily="{StaticResource Icon}" HorizontalAlignment="Center"/>
                         <TextBlock Text="分享" Margin="0,10,0,0" HorizontalAlignment="Center" TextAlignment="Center"
                                    Style="{StaticResource SmallTipTextStyle}"/>
@@ -167,10 +167,10 @@
                                MaxLines="2"/>
                     <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="10" x:Name="DateBlock" Margin="0,10,0,0"/>
                     <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                        <widgets:IconTextBlock Icon="&#xEA32;" GutterWidth="5" FontSize="12" IconForeground="{ThemeResource TipTextColor}" x:Name="PlayCountBlock"/>
-                        <widgets:IconTextBlock Icon="&#xEA35;" GutterWidth="5" Margin="15,0,0,0" FontSize="12" IconForeground="{ThemeResource TipTextColor}" x:Name="DanmukuCountBlock"/>
-                        <widgets:IconTextBlock Icon="bv" IsTextSelectionEnabled="True" GutterWidth="5" Margin="15,0,0,0" FontSize="12" IconForeground="{ThemeResource TipTextColor}" x:Name="BVBlock"/>
-                        <widgets:IconTextBlock Icon="av" IsTextSelectionEnabled="True" GutterWidth="5" Margin="15,0,0,0" FontSize="12" IconForeground="{ThemeResource TipTextColor}" x:Name="AVBlock"/>
+                        <widgets:IconTextBlock Icon="&#xEA32;" GutterWidth="5" FontSize="{CustomResource SmallFontSize}" IconForeground="{ThemeResource TipTextColor}" x:Name="PlayCountBlock"/>
+                        <widgets:IconTextBlock Icon="&#xEA35;" GutterWidth="5" Margin="15,0,0,0" FontSize="{CustomResource SmallFontSize}" IconForeground="{ThemeResource TipTextColor}" x:Name="DanmukuCountBlock"/>
+                        <widgets:IconTextBlock Icon="bv" IsTextSelectionEnabled="True" GutterWidth="5" Margin="15,0,0,0" FontSize="{CustomResource SmallFontSize}" IconForeground="{ThemeResource TipTextColor}" x:Name="BVBlock"/>
+                        <widgets:IconTextBlock Icon="av" IsTextSelectionEnabled="True" GutterWidth="5" Margin="15,0,0,0" FontSize="{CustomResource SmallFontSize}" IconForeground="{ThemeResource TipTextColor}" x:Name="AVBlock"/>
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Grid.Column="1" VerticalAlignment="Top">
@@ -206,7 +206,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <widgets:TrimTextBlock x:Name="DescriptionBlock" FontSize="12" Foreground="{ThemeResource TipTextColor}"
+                <widgets:TrimTextBlock x:Name="DescriptionBlock" FontSize="{CustomResource SmallFontSize}" Foreground="{ThemeResource TipTextColor}"
                                        />
                 <ListView ItemTemplate="{StaticResource TagItemTemplate}" ItemsSource="{x:Bind TagCollection}"
                       IsItemClickEnabled="True" ItemContainerStyle="{StaticResource TransparentListViewContainerStyle}"
@@ -222,7 +222,7 @@
                     <PersonPicture x:Name="UPAvatar" Width="35" Height="35" VerticalAlignment="Center" Style="{StaticResource BasicPersonPictureStyle}"/>
                     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15,0,0,0">
                         <TextBlock x:Name="UPNameBlock" Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource ImportantTextColor}"/>
-                        <TextBlock FontFamily="{StaticResource Icon}" Text="&#xEA31;" Foreground="{ThemeResource TipTextColor}" FontSize="12" Margin="0,5,0,0"/>
+                        <TextBlock FontFamily="{StaticResource Icon}" Text="&#xEA31;" Foreground="{ThemeResource TipTextColor}" FontSize="{CustomResource SmallFontSize}" Margin="0,5,0,0"/>
                     </StackPanel>
                 </StackPanel>
                 <Grid x:Name="StaffContainer" Visibility="Collapsed">

@@ -22,7 +22,7 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Border Padding="10,5">
-                        <TextBlock Text="{x:Bind display,Mode=OneWay}" FontSize="12" FontFamily="{CustomResource Basic}" FontWeight="Bold"/>
+                        <TextBlock Text="{x:Bind display,Mode=OneWay}" FontSize="{CustomResource SmallFontSize}" FontFamily="{CustomResource Basic}" FontWeight="Bold"/>
                     </Border>
                     <Border Height="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" x:Name="ItemSign"
                             Grid.Row="1" Background="{Binding ElementName=TabContainer,Path=IsSelected,Converter={StaticResource SideMenuSignColorConverter},Mode=OneWay}"/>
@@ -31,7 +31,7 @@
         </DataTemplate>
         <DataTemplate x:DataType="ui:IconItem" x:Key="SortItemTemplate">
             <widgets:IconTextBlock Text="{x:Bind Name}" IconForeground="{ThemeResource PrimaryColor}"
-                                   FontSize="12"/>
+                                   FontSize="{CustomResource SmallFontSize}"/>
         </DataTemplate>
         <DataTemplate x:DataType="bilibili:SearchBase" x:Key="ResultItemTemplate">
             <controls1:SearchContentBlock Data="{Binding}" Margin="0,0,0,10" HorizontalAlignment="Stretch"/>

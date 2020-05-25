@@ -45,14 +45,14 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <TextBlock Style="{StaticResource HeaderTextStyle}" Text="历史记录" VerticalAlignment="Center"/>
-            <widgets:AsyncButton Icon="&#xE9F5;" Text="清空记录" x:Name="ClearButton" CornerRadius="15" FontSize="10" BorderThickness="1"
+            <widgets:AsyncButton Icon="&#xE9F5;" Text="清空记录" x:Name="ClearButton" CornerRadius="15" FontSize="{CustomResource SmallFontSize}" BorderThickness="1"
                                  Style="{StaticResource DefaultAsyncButtonStyle}" BorderBrush="{ThemeResource LineColor}" Grid.Column="1"
                                  Click="ClearButton_Click"  Margin="20,0,0,0"/>
         </Grid>
         <Grid Grid.Row="1">
             <ada:AdaptiveGridView x:Name="HistoryVideoView"
                           DesiredWidth="215"
-                          ItemHeight="185" StretchContentForSingleRow="False"
+                          StretchContentForSingleRow="False"
                           ItemTemplate="{StaticResource VideoItemTemplate}"
                           ItemContainerStyle="{StaticResource TransparentGridViewItemContainerStyle}"
                           Style="{StaticResource NoScrollGridView}"

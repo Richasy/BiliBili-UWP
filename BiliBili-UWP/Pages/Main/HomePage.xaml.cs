@@ -38,13 +38,12 @@ namespace BiliBili_UWP.Pages.Main
         public ObservableCollection<VideoRecommend> RecommendCollection = App.BiliViewModel.RecommendVideoCollection;
         private bool _isRecommendRequesting = false;
         private double _scrollOffset = 0;
-        
+
         public HomePage()
         {
             this.InitializeComponent();
             NavigationCacheMode = NavigationCacheMode.Enabled;
             channelVM.IsLoginChanged += IsLoginChanged;
-            
         }
 
         private async void IsLoginChanged(object sender, bool e)
@@ -54,13 +53,14 @@ namespace BiliBili_UWP.Pages.Main
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
-            App.AppViewModel.CurrentPagePanel.ScrollToBottom=ScrollViewerBottomHandle;
+            App.AppViewModel.CurrentPagePanel.ScrollToBottom = ScrollViewerBottomHandle;
             App.AppViewModel.CurrentPagePanel.ScrollChanged = ScrollViewerChanged;
             RecommendVideoView.EnableAnimation = App.AppViewModel.IsEnableAnimation;
+            RecommendVideoView.DesiredWidth = 220 + ((App.AppViewModel.BasicFontSize - 14) * 5);
             if (_isInit || e.NavigationMode == NavigationMode.Back)
             {
                 return;
-            } 
+            }
             await Refresh();
             _isInit = true;
         }
@@ -108,9 +108,9 @@ namespace BiliBili_UWP.Pages.Main
         {
             var item = e.ClickedItem as VideoRecommend;
             var container = RecommendVideoView.ContainerFromItem(item);
-            if(item.card_goto=="av")
-                App.AppViewModel.PlayVideo(item.args.aid,container, StaticString.SIGN_RECOMMEND);
-            else if(item.card_goto=="bangumi")
+            if (item.card_goto == "av")
+                App.AppViewModel.PlayVideo(item.args.aid, container, StaticString.SIGN_RECOMMEND);
+            else if (item.card_goto == "bangumi")
             {
                 var sp = item.uri.Split("#");
                 if (sp.Length > 1)

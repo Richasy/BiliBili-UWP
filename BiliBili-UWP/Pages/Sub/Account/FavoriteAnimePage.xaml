@@ -22,7 +22,7 @@
                     <controls:DefaultVideoPanel.ExtraFlyout>
                         <CommandBarFlyout>
                             <CommandBarFlyout.SecondaryCommands>
-                                <AppBarButton Label="不追了" x:Name="UnfollowButton" FontSize="12"
+                                <AppBarButton Label="不追了" x:Name="UnfollowButton" FontSize="{CustomResource SmallFontSize}"
                                               Click="UnfollowButton_Click" Tag="{x:Bind season_id}">
                                     <AppBarButton.Icon>
                                         <FontIcon FontFamily="{StaticResource Icon}" Glyph=""/>
@@ -46,7 +46,7 @@
                               Style="{StaticResource NoScrollListView}" ItemsSource="{x:Bind AnimeCollection}" HorizontalAlignment="Stretch"
                               ItemTemplate="{StaticResource AnimeTemplate}" IsItemClickEnabled="True" ItemClick="AnimeListView_ItemClick">
                 </ListView>
-                <TextBlock Text="查不到相关数据" Style="{StaticResource TitleTextStyle}" FontSize="15" x:Name="HolderText"
+                <TextBlock Text="查不到相关数据" Style="{StaticResource TitleTextStyle}" FontSize="{CustomResource BodyFontSize}" x:Name="HolderText"
                                Visibility="Collapsed"/>
             </Grid>
         </ScrollViewer>

@@ -25,12 +25,12 @@
                             <ColumnDefinition Width="1*" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <widgets:IconTextBlock Icon="{x:Bind Icon}" Text="{x:Bind Name}" VerticalAlignment="Center" FontSize="13" IconFontSize="15"
+                        <widgets:IconTextBlock Icon="{x:Bind Icon}" Text="{x:Bind Name}" VerticalAlignment="Center" FontSize="{CustomResource SmallFontSize}" IconFontSize="{CustomResource BasicFontSize}"
                                        IconForeground="{ThemeResource PrimaryColor}" IsTextSelectionEnabled="False"/>
                         <Border Visibility="{x:Bind Param,Converter={StaticResource StringVisibilityConverter},Mode=OneWay}"
                         Background="{ThemeResource SecondaryColorOpacity}" Padding="3" CornerRadius="2" Grid.Column="1"
                         Margin="8,0,0,0" VerticalAlignment="Center">
-                            <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="10" Foreground="{ThemeResource SecondaryColorOver}"
+                            <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="{CustomResource MiniFontSize}" Foreground="{ThemeResource SecondaryColorOver}"
                                Text="{x:Bind Param,Mode=OneWay}"/>
                         </Border>
                     </Grid>

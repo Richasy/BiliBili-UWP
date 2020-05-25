@@ -40,7 +40,7 @@
                 </StackPanel>
                 <Border BorderBrush="{ThemeResource PrimaryColor}" BorderThickness="1" Padding="5,3" CornerRadius="2"
                         Visibility="{x:Bind TopBadgeVisibility,Mode=OneWay}" VerticalAlignment="Center" Grid.Column="1">
-                    <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="10" Foreground="{ThemeResource PrimaryColor}"
+                    <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="{CustomResource MiniFontSize}" Foreground="{ThemeResource PrimaryColor}"
                                Text="置顶"/>
                 </Border>
             </Grid>
@@ -53,13 +53,13 @@
                 </Grid.ColumnDefinitions>
                 <StackPanel Orientation="Horizontal">
                     <Button Style="{StaticResource TransparentButtonStyle}" x:Name="LikeButton" Click="LikeButton_Click" Margin="-10,3,0,0" HorizontalAlignment="Stretch">
-                        <TextBlock Style="{StaticResource SmallTipTextStyle}" HorizontalAlignment="Center" FontSize="10" Padding="0">
+                        <TextBlock Style="{StaticResource SmallTipTextStyle}" HorizontalAlignment="Center" FontSize="{CustomResource MiniFontSize}" Padding="0">
                             <Run Text="&#xE9F0;" FontFamily="{StaticResource Icon}" x:Name="LikeIcon"/>
                             <Run x:Name="LikeBlock"/>
                         </TextBlock>
                     </Button>
                     <Button Style="{StaticResource TransparentButtonStyle}" Margin="0,0,0,0" x:Name="CommentButton" Click="CommentButton_Click"  HorizontalAlignment="Stretch"
-                            FontFamily="{StaticResource Icon}" Content="&#xE99E;" FontSize="10" Foreground="{ThemeResource TipTextColor}"/>
+                            FontFamily="{StaticResource Icon}" Content="&#xE99E;" FontSize="{CustomResource MiniFontSize}" Foreground="{ThemeResource TipTextColor}"/>
                 </StackPanel>
             </Grid>
             <StackPanel Grid.Row="3" Background="{ThemeResource CardBackgroundOver}" CornerRadius="3" Padding="10,10,10,10"
@@ -75,7 +75,7 @@
                 </ItemsControl>
                 <Button Style="{StaticResource TransparentButtonStyle}" Padding="0" Visibility="Collapsed" x:Name="MoreReplyButton" Margin="0,5,0,0"
                         Click="MoreReplyButton_Click">
-                    <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="10" Foreground="{ThemeResource SecondaryColor}"
+                    <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="{CustomResource SmallFontSize}" Foreground="{ThemeResource SecondaryColor}"
                                >
                         <Run x:Name="TotalReplyCount"/>
                         <Run Text="&#xE934;" FontFamily="{StaticResource Icon}"/>

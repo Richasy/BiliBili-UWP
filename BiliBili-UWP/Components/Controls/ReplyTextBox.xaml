@@ -21,7 +21,7 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="1*" />
             </Grid.ColumnDefinitions>
-            <Button Style="{StaticResource DefaultCircleButtonStyle}" Width="30" Height="30" FontSize="12"
+            <Button Style="{StaticResource DefaultCircleButtonStyle}" Width="30" Height="30" FontSize="{CustomResource SmallFontSize}"
                     Content="&#xE9E2;" x:Name="EmojiButton" VerticalAlignment="Top">
                 <Button.Flyout>
                     <Flyout FlyoutPresenterStyle="{StaticResource NoPaddingFlyoutStyle}" x:Name="EmojiFlyout">
@@ -30,9 +30,9 @@
                 </Button.Flyout>
             </Button>
             <TextBox x:Name="ReplyBox" Style="{StaticResource TransparentTextBoxStyle}" HorizontalAlignment="Stretch" FontFamily="{CustomResource Basic}"
-                     VerticalAlignment="Stretch" MaxHeight="100" FontSize="12" PlaceholderText="{x:Bind PlaceholderText,Mode=OneWay}" Grid.Column="1" Margin="10,5,0,0"/>
+                     VerticalAlignment="Stretch" MaxHeight="100" FontSize="{CustomResource SmallFontSize}" PlaceholderText="{x:Bind PlaceholderText,Mode=OneWay}" Grid.Column="1" Margin="10,5,0,0"/>
         </Grid>
-        <widgets:AsyncButton FontSize="12" Style="{StaticResource DefaultAsyncButtonStyle}" Padding="5,4"
+        <widgets:AsyncButton FontSize="{CustomResource SmallFontSize}" Style="{StaticResource DefaultAsyncButtonStyle}" Padding="5,4"
                              x:Name="SendButton" Click="SendButton_Click" Grid.Column="1" VerticalAlignment="Top"
                              Margin="10,0,0,0" Text="发送" Icon="&#xE9D1;"/>
     </Grid>

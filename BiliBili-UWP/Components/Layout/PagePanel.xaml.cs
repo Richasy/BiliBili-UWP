@@ -305,9 +305,10 @@ namespace BiliBili_UWP.Components.Layout
         private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             var width = e.NewSize.Width;
+            double OpenWidth = 400 + ((App.AppViewModel.BasicFontSize - 14) * App.AppViewModel.BasicFontSize);
             double breakpoint = Convert.ToDouble(AppTool.GetLocalSetting(Settings.PagePanelDisplayBreakpoint, "1500"));
             PageSplitView.DisplayMode = width < breakpoint ? SplitViewDisplayMode.CompactOverlay : SplitViewDisplayMode.CompactInline;
-            PageSplitView.OpenPaneLength = width < 600 ? width : 400;
+            PageSplitView.OpenPaneLength = width < OpenWidth+200 ? width : OpenWidth;
         }
 
         private void PageSplitView_PaneClosing(SplitView sender, SplitViewPaneClosingEventArgs args)

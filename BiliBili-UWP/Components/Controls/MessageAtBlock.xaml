@@ -33,7 +33,7 @@
         <StackPanel Grid.Row="1" Margin="0,7,0,0">
             <TextBlock Style="{StaticResource SmallTipTextStyle}" TextWrapping="Wrap"
                        HorizontalAlignment="Left" VerticalAlignment="Top" x:Name="TypeBlock"/>
-            <TextBlock Style="{StaticResource TipWrapTextStyle}" FontSize="13" Foreground="{ThemeResource ImportantTextColor}"
+            <TextBlock Style="{StaticResource TipWrapTextStyle}" Foreground="{ThemeResource ImportantTextColor}"
                            x:Name="DetailBlock" Margin="0,5,0,0"/>
         </StackPanel>
         <Border Grid.Row="2" Margin="0,5,0,0" Background="{ThemeResource CardBackgroundOver}" Padding="8,5" CornerRadius="3"

@@ -50,6 +50,7 @@ namespace BiliBili_UWP.Pages.Main
         {
             App.AppViewModel.CurrentPagePanel.ScrollToBottom = ScrollViewerBottomHandle;
             App.AppViewModel.CurrentPagePanel.ScrollChanged = ScrollViewerChanged;
+            RecommendVideoView.DesiredWidth = 220 + ((App.AppViewModel.BasicFontSize - 14) * 5);
             if (e.NavigationMode == NavigationMode.Back)
                 return;
             if (e.Parameter != null && e.Parameter is RegionContainer _con)

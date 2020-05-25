@@ -111,7 +111,7 @@
                     <controls:MarkdownTextBlock Style="{StaticResource BasicMarkdownTextBlock}" x:Name="MarkdownBlock"
                                             LinkClicked="MarkdownBlock_LinkClicked"
                                             TextWrapping="Wrap"
-                                                FontSize="15"
+                                                FontSize="{CustomResource BodyFontSize}"
                                                 Foreground="{ThemeResource NormalTextColor}"
                                                 Grid.Row="1"
                                             />

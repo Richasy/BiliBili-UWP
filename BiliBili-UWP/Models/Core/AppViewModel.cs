@@ -54,6 +54,7 @@ namespace BiliBili_UWP.Models.Core
         public RepostPopup _repostPopup;
         public WebView _documentWebView;
         public bool IsInBackground;
+        public double BasicFontSize = Convert.ToDouble(AppTool.GetLocalSetting(Settings.BasicFontSize, "14"));
 
         public List<Tuple<Guid, Action<Size>>> WindowsSizeChangedNotify { get; set; } = new List<Tuple<Guid, Action<Size>>>();
         public ObservableCollection<SystemFont> FontCollection = new ObservableCollection<SystemFont>();
@@ -99,7 +100,7 @@ namespace BiliBili_UWP.Models.Core
                     break;
                 case "screenshot":
                     args.TryGetValue("image", out string screenShotName);
-                    var picLib = await KnownFolders.PicturesLibrary.CreateFolderAsync("Bili ScreenShot",CreationCollisionOption.OpenIfExists);
+                    var picLib = await KnownFolders.PicturesLibrary.CreateFolderAsync("Bili ScreenShot", CreationCollisionOption.OpenIfExists);
                     var screenFile = await picLib.CreateFileAsync(screenShotName, CreationCollisionOption.OpenIfExists);
                     await Launcher.LaunchFileAsync(screenFile);
                     break;
@@ -416,7 +417,7 @@ namespace BiliBili_UWP.Models.Core
         /// <param name="dynamic">动态信息</param>
         /// <param name="data">数据</param>
         /// <param name="rid">回复ID</param>
-        public void ShowDynamicDetailPopup(SlimUserInfo user,string dynamic,object data,string rid)
+        public void ShowDynamicDetailPopup(SlimUserInfo user, string dynamic, object data, string rid)
         {
             if (_dynamicDetailPopup == null)
                 _dynamicDetailPopup = new DynamicDetailPopup();
@@ -426,7 +427,7 @@ namespace BiliBili_UWP.Models.Core
             _dynamicDetailPopup.Dynamic = dynamic;
             _dynamicDetailPopup.InitReply(rid);
         }
-        public void ShowRepostPopup(string origin,Topic topic)
+        public void ShowRepostPopup(string origin, Topic topic)
         {
             if (_repostPopup == null)
                 _repostPopup = new RepostPopup();
@@ -440,14 +441,14 @@ namespace BiliBili_UWP.Models.Core
             _repostPopup.ShowPopup();
             _repostPopup.Init(origin, video);
         }
-        public void ShowRepostPopup(string origin, BangumiDetail bangumi,Episode part)
+        public void ShowRepostPopup(string origin, BangumiDetail bangumi, Episode part)
         {
             if (_repostPopup == null)
                 _repostPopup = new RepostPopup();
             _repostPopup.ShowPopup();
-            _repostPopup.Init(origin, bangumi,part);
+            _repostPopup.Init(origin, bangumi, part);
         }
-        public void HandleUri(string url,string title="")
+        public void HandleUri(string url, string title = "")
         {
             var result = BiliTool.GetResultFromUri(url);
             if (result.Type.ToString().Contains("Video"))

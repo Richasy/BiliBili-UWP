@@ -105,6 +105,10 @@ namespace BiliBili_Controls.Extensions
 			}
 
 			sb.Children.Add(db);
+			sb.Completed += (_s, _e) =>
+			{
+				(target as UIElement).UpdateLayout();
+			};
 			sb.Begin();
 		}
 		public static void BindSize(this Visual target, Visual source)

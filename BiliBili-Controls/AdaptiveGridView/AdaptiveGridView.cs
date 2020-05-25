@@ -134,13 +134,13 @@ namespace BiliBili_Controls.AdaptiveGridView
             // Then decide if we should run the animation.
             if (_virtualizedPanel == null || _isAnimated || !EnableAnimation) return;
 
-            Opacity = 0;
+            Opacity = 1;
 
             if (!_monitorFirstItemContainerLoadedEvent)
             {
                 _monitorFirstItemContainerLoadedEvent = true;
 
-                element.Loaded += OnContainerLoaded;
+                //element.Loaded += OnContainerLoaded;
 
                 // At this point, the index values are all ready to use.
                 async void OnContainerLoaded(object sender, RoutedEventArgs e)
@@ -195,6 +195,7 @@ namespace BiliBili_Controls.AdaptiveGridView
                     }
                 }
             }
+            this.UpdateLayout();
         }
 
         private int GetNumberOfColumns() => (int)Math.Round(ActualWidth / ItemWidth);

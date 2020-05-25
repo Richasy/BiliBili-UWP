@@ -5,6 +5,7 @@ using BiliBili_UWP.Dialogs;
 using BiliBili_UWP.Models.UI;
 using BiliBili_UWP.Models.UI.Others;
 using Microsoft.Toolkit.Uwp.Helpers;
+using SharpDX.DirectWrite;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -60,6 +61,8 @@ namespace BiliBili_UWP.Pages.Main
             StartupTask startupTask = await StartupTask.GetAsync("RichasyBiliBili");
             bool isEnableStartup = startupTask.State.ToString().Contains("Enable");
             EnableStartupSwitch.IsOn = isEnableStartup;
+            double fontSize = Convert.ToDouble(AppTool.GetLocalSetting(Settings.BasicFontSize, "14"));
+            FontSizeBox.Value = fontSize;
             #endregion
 
             #region 播放器设置
@@ -354,6 +357,13 @@ namespace BiliBili_UWP.Pages.Main
             var item = PlayerModeComboBox.SelectedItem as ComboBoxItem;
             string tag = item.Tag.ToString();
             AppTool.WriteLocalSetting(Settings.PlayerMode, tag);
+        }
+
+        private void FontSizeBox_ValueChanged(object sender, double e)
+        {
+            if (!_isInit)
+                return;
+            AppTool.WriteLocalSetting(Settings.BasicFontSize, e.ToString());
         }
     }
 }

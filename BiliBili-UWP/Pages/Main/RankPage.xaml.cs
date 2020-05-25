@@ -44,6 +44,7 @@ namespace BiliBili_UWP.Pages.Main
             if (e.NavigationMode == NavigationMode.Back || _isInit)
                 return;
             VideoGridView.EnableAnimation = App.AppViewModel.IsEnableAnimation;
+            VideoGridView.DesiredWidth = 220 + ((App.AppViewModel.BasicFontSize - 14) * 5);
             await Refresh();
             base.OnNavigatedTo(e);
             _isInit = true;

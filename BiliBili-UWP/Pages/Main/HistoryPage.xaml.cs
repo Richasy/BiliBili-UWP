@@ -49,6 +49,7 @@ namespace BiliBili_UWP.Pages.Main
             HistoryVideoView.EnableAnimation = App.AppViewModel.IsEnableAnimation;
             App.AppViewModel.CurrentPagePanel.ScrollToBottom = ScrollViewerBottomHandle;
             App.AppViewModel.CurrentPagePanel.ScrollChanged = ScrollViewerChanged;
+            HistoryVideoView.DesiredWidth = 215 + ((App.AppViewModel.BasicFontSize - 14) * 5);
             if (_isInit || e.NavigationMode == NavigationMode.Back)
             {
                 return;

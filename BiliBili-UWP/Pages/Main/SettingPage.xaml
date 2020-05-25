@@ -43,6 +43,9 @@
                         <ComboBox Style="{StaticResource BasicComboBoxStyle}" ItemContainerStyle="{StaticResource BasicComboBoxItemContainerStyle}"
                           HeaderTemplate="{StaticResource TipHeaderStyle}" Header="应用字体" x:Name="FontComboBox" SelectionChanged="FontComboBox_SelectionChanged"
                           ItemTemplate="{StaticResource FontItemTemplate}" Margin="0,15,0,0" ItemsSource="{x:Bind FontCollection}"/>
+                        <widgets:NumberBox HeaderTemplate="{StaticResource TipHeaderStyle}" Header="基准字体大小 &#xA;设置完重启一下应用" HorizontalAlignment="Left"
+                                   x:Name="FontSizeBox" Margin="0,15,0,0" ValueChanged="FontSizeBox_ValueChanged"
+                                   Minimum="12" Maximum="20" Step="0.1" BoxWidth="200"/>
                         <widgets:NumberBox HeaderTemplate="{StaticResource TipHeaderStyle}" Header="主副页显示模式调整断点 &#xA;大于此值则主副页并排展示" HorizontalAlignment="Left"
                                    x:Name="PagePaneDisplayBreakpointBox" Margin="0,15,0,0" ValueChanged="PagePaneDisplayBreakpointBox_ValueChanged"
                                    Minimum="700" Maximum="8000" Step="100" BoxWidth="200"/>

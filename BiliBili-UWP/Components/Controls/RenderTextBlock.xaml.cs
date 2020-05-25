@@ -27,6 +27,7 @@ namespace BiliBili_UWP.Components.Controls
 {
     public sealed partial class RenderTextBlock : UserControl
     {
+        
         public RenderTextBlock()
         {
             this.InitializeComponent();
@@ -84,7 +85,7 @@ namespace BiliBili_UWP.Components.Controls
 
         // Using a DependencyProperty as the backing store for FontSize.  This enables animation, styling, binding, etc...
         public static new readonly DependencyProperty FontSizeProperty =
-            DependencyProperty.Register("FontSize", typeof(double), typeof(RenderTextBlock), new PropertyMetadata(13.0));
+            DependencyProperty.Register("FontSize", typeof(double), typeof(RenderTextBlock), new PropertyMetadata(App.AppViewModel.BasicFontSize));
 
         public new Brush Foreground
         {
@@ -104,7 +105,7 @@ namespace BiliBili_UWP.Components.Controls
 
         // Using a DependencyProperty as the backing store for LineHeight.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty LineHeightProperty =
-            DependencyProperty.Register("LineHeight", typeof(int), typeof(RenderTextBlock), new PropertyMetadata(20));
+            DependencyProperty.Register("LineHeight", typeof(int), typeof(RenderTextBlock), new PropertyMetadata(Convert.ToInt32(Math.Floor(App.AppViewModel.BasicFontSize*1.3))));
 
         public Dictionary<string, Emote> EmoteSource
         {

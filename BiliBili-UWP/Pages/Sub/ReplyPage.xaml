@@ -13,7 +13,7 @@
     <Page.Resources>
         <DataTemplate x:DataType="ui:IconItem" x:Key="SortItemTemplate">
             <widgets:IconTextBlock Icon="{x:Bind Icon}" Text="{x:Bind Name}" IconForeground="{ThemeResource PrimaryColor}"
-                                   FontSize="12"/>
+                                   FontSize="{CustomResource SmallFontSize}"/>
         </DataTemplate>
         <DataTemplate x:DataType="bilibili:Reply" x:Key="ReplyItemTemplate">
             <Grid Padding="10" BorderBrush="{ThemeResource LineColor}" BorderThickness="0,0,0,1">

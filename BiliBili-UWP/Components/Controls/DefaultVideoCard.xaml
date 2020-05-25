@@ -13,7 +13,7 @@
     <UserControl.Resources>
         <CommandBarFlyout x:Name="DefaultFlyout">
             <CommandBarFlyout.SecondaryCommands>
-                <AppBarButton Label="加入稍后再看" FontSize="12" FontFamily="{CustomResource Basic}" x:Name="LaterViewButton" Click="RankLaterViewButton_Click">
+                <AppBarButton Label="加入稍后再看" FontSize="{CustomResource SmallFontSize}" FontFamily="{CustomResource Basic}" x:Name="LaterViewButton" Click="RankLaterViewButton_Click">
                     <AppBarButton.Icon>
                         <FontIcon FontFamily="{StaticResource Icon}" Glyph="&#xEA3B;"/>
                     </AppBarButton.Icon>
@@ -41,7 +41,7 @@
             </Border>
             <Border Background="{ThemeResource PaneBackground}" Padding="8,5" CornerRadius="3" HorizontalAlignment="Right"
                             Visibility="{x:Bind RightTopText,Mode=OneWay,Converter={StaticResource StringVisibilityConverter}}" VerticalAlignment="Top" Margin="0,5,5,0">
-                <TextBlock Text="{x:Bind RightTopText,Mode=OneWay}" FontSize="10" Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource PrimaryColor}"
+                <TextBlock Text="{x:Bind RightTopText,Mode=OneWay}" FontSize="{CustomResource MiniFontSize}" Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource PrimaryColor}"
                            />
             </Border>
             <widgets:BiliImage Width="20" Source="{x:Bind RightTopImage,Mode=OneWay}" Visibility="{x:Bind RightTopImage,Mode=OneWay,Converter={StaticResource StringVisibilityConverter}}"
@@ -49,9 +49,9 @@
         </Grid>
 
         <StackPanel Grid.Row="1" Padding="10,8" x:Name="InfoContainer">
-            <TextBlock Style="{StaticResource SmallTipTextStyle}" Text="{x:Bind Tip,Mode=OneWay}" FontSize="10"
+            <TextBlock Style="{StaticResource SmallTipTextStyle}" Text="{x:Bind Tip,Mode=OneWay}" FontSize="{CustomResource MiniFontSize}"
                        Visibility="{x:Bind Tip,Mode=OneWay,Converter={StaticResource StringVisibilityConverter}}"/>
-            <TextBlock Style="{StaticResource CaptionTextStyle}" Text="{x:Bind Title,Mode=OneWay}" FontSize="12" FontWeight="SemiBold" Margin="0,5"
+            <TextBlock Style="{StaticResource CaptionTextStyle}" Text="{x:Bind Title,Mode=OneWay}" FontSize="{CustomResource SmallFontSize}" FontWeight="SemiBold" Margin="0,5"
                        Foreground="{ThemeResource NormalTextColor}" Visibility="{x:Bind Title,Mode=OneWay,Converter={StaticResource StringVisibilityConverter}}"
                        ToolTipService.ToolTip="{x:Bind Title,Mode=OneWay}"/>
             <Grid Visibility="{x:Bind SectionVisibility,Mode=OneWay}">
@@ -61,11 +61,11 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <widgets:IconTextBlock Icon="{x:Bind FirstSectionIcon,Mode=OneWay}" Text="{x:Bind FirstSectionContent,Mode=OneWay}"
-                                           GutterWidth="7" IconForeground="{ThemeResource TipTextColor}" FontSize="10"/>
+                                           GutterWidth="7" IconForeground="{ThemeResource TipTextColor}" FontSize="{CustomResource MiniFontSize}"/>
                 <widgets:IconTextBlock Icon="{x:Bind SecondSectionIcon,Mode=OneWay}" Text="{x:Bind SecondSectionContent,Mode=OneWay}"
-                                           GutterWidth="7" IconForeground="{ThemeResource TipTextColor}" FontSize="10" Grid.Column="1"/>
+                                           GutterWidth="7" IconForeground="{ThemeResource TipTextColor}" FontSize="{CustomResource MiniFontSize}" Grid.Column="1"/>
                 <Button Style="{StaticResource TransparentButtonStyle}" Content="&#xE9A9;" Grid.Column="2" Flyout="{StaticResource DefaultFlyout}"
-                        VerticalAlignment="Center" FontFamily="{StaticResource Icon}" FontSize="13" x:Name="ExtraButton" Visibility="{x:Bind ExtraButtonVisbility,Mode=OneWay}"/>
+                        VerticalAlignment="Center" FontFamily="{StaticResource Icon}" FontSize="{CustomResource BasicFontSize}" x:Name="ExtraButton" Visibility="{x:Bind ExtraButtonVisbility,Mode=OneWay}"/>
             </Grid>
             <TextBlock Style="{StaticResource SmallTipTextStyle}" HorizontalAlignment="Left" Text="{x:Bind BottomText,Mode=OneWay}"
                        Visibility="{x:Bind BottomText,Mode=OneWay,Converter={StaticResource StringVisibilityConverter}}"/>
