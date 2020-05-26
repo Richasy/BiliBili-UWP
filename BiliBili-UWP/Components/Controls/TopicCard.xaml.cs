@@ -276,7 +276,11 @@ namespace BiliBili_UWP.Components.Controls
             else if (MainDisplay._cardType == "shortVideo")
                 type = "5";
             else if (MainDisplay._cardType == "music")
+            {
+                var music = MainDisplay.Data as MusicDynamic;
+                param["oid"] = music.id.ToString();
                 type = "14";
+            }
             param.Add("type", type);
             App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Pages.Sub.ReplyPage), param);
         }

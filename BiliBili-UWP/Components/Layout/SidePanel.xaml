@@ -34,7 +34,7 @@
                 <Border Width="5" Height="25" CornerRadius="0,2,2,0" VerticalAlignment="Center" x:Name="ItemSign"
                         Background="{x:Bind IsSelected,Converter={StaticResource SideMenuSignColorConverter},Mode=OneWay}"/>
                 <StackPanel Orientation="Horizontal" Grid.Column="2" VerticalAlignment="Center">
-                    <TextBlock Style="{StaticResource SideMenuIconStyle}" Margin="0,0,15,0" Text="{x:Bind Icon}"
+                    <TextBlock Style="{StaticResource SideMenuIconStyle}" Margin="0,0,15,0" Text="{x:Bind Icon}" FontWeight="{x:Bind FontWeight}"
                                Foreground="{x:Bind IsSelected,Mode=OneWay,Converter={StaticResource SelectedColorConverter},ConverterParameter=Side}"/>
                     <TextBlock Style="{StaticResource CaptionTextStyle}" FontSize="{CustomResource BasicFontSize}" Text="{x:Bind Name}"/>
                 </StackPanel>

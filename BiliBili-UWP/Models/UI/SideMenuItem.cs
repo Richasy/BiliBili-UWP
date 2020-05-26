@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Text;
 
 namespace BiliBili_UWP.Models.UI
 {
@@ -26,6 +27,7 @@ namespace BiliBili_UWP.Models.UI
             get => _unread;
             set => Set(ref _unread, value);
         }
+        public FontWeight FontWeight { get; set; }
         public SideMenuItem()
         {
 
@@ -34,6 +36,7 @@ namespace BiliBili_UWP.Models.UI
         {
             Type = type;
             Unread = 0;
+            FontWeight = FontWeights.Normal;
             switch (type)
             {
                 case SideMenuItemType.Home:
@@ -50,6 +53,7 @@ namespace BiliBili_UWP.Models.UI
                     Name = "排行榜";
                     Icon = "";
                     Group = SideMenuGroupType.Basic;
+                    FontWeight = FontWeights.Bold;
                     break;
                 case SideMenuItemType.Anime:
                     Name = "番剧推荐";
@@ -60,6 +64,7 @@ namespace BiliBili_UWP.Models.UI
                     Name = "动态";
                     Icon = "";
                     Group = SideMenuGroupType.My;
+                    FontWeight = FontWeights.Bold;
                     break;
                 case SideMenuItemType.MyHistory:
                     Name = "历史记录";
@@ -85,6 +90,7 @@ namespace BiliBili_UWP.Models.UI
                     Name = "稍后再看";
                     Icon = "";
                     Group = SideMenuGroupType.My;
+                    FontWeight = FontWeights.Bold;
                     break;
                 case SideMenuItemType.Settings:
                     Name = "设置";

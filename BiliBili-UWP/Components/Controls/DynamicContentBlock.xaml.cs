@@ -212,6 +212,11 @@ namespace BiliBili_UWP.Components.Controls
                 var item = Data as LiveDynamic;
                 App.AppViewModel.ShowWebPopup(item.title, $"https://live.bilibili.com/{item.roomid}");
             }
+            else if (_cardType == "music")
+            {
+                var item = Data as MusicDynamic;
+                App.AppViewModel.ShowWebPopup(item.title, $"https://www.bilibili.com/audio/au{item.id}?type=7");
+            }
         }
 
         private void Image_Tapped(object sender, TappedRoutedEventArgs e)
