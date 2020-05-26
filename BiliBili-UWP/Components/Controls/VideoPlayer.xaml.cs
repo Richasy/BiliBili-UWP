@@ -1373,6 +1373,8 @@ namespace BiliBili_UWP.Components.Controls
 
         public void ShowMTC()
         {
+            if (_isPlayerLocked)
+                return;
             bool isShowBarInFullWindow = AppTool.GetBoolSetting(Settings.IsShowDanmakuBarInFullWindow);
             bool isShowBarInCinema = AppTool.GetBoolSetting(Settings.IsShowDanmakuBarInCinema);
             bool isShowBarInCompact = AppTool.GetBoolSetting(Settings.IsShowDanmakuBarInCompactOverlay);

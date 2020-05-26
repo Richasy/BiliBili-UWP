@@ -51,7 +51,7 @@
             </Grid>
         </DataTemplate>
         <DataTemplate x:DataType="bilibili:Topic" x:Key="TopicItemTemplate">
-            <controls1:TopicCard Data="{Binding}" Margin="0,0,0,10"/>
+            <controls1:TopicCard Data="{Binding}" Margin="0,0,0,10" EnableConnectAnimation="False"/>
         </DataTemplate>
     </Page.Resources>
     <Grid>

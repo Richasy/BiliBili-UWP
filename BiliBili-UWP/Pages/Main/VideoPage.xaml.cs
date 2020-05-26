@@ -83,7 +83,6 @@ namespace BiliBili_UWP.Pages.Main
                     anim.Completed -= ConnectAnimation_Completed;
                     anim.Completed += ConnectAnimation_Completed;
                     anim.TryStart(VideoPlayer);
-                    UpdateLayout();
                 }
                 if (e.Parameter is Tuple<int, string> data)
                 {
@@ -126,6 +125,7 @@ namespace BiliBili_UWP.Pages.Main
         private void ConnectAnimation_Completed(ConnectedAnimation sender, object args)
         {
             sender = null;
+            UpdateLayout();
         }
 
         protected async override void OnNavigatedFrom(NavigationEventArgs e)

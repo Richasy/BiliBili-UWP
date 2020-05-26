@@ -40,6 +40,16 @@ namespace BiliBili_UWP.Components.Controls
         public string Title { get; set; }
         public string ImageUrl { get; set; }
 
+        public bool EnableConnectAnimation
+        {
+            get { return (bool)GetValue(EnableConnectAnimationProperty); }
+            set { SetValue(EnableConnectAnimationProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for EnableConnectAnimation.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty EnableConnectAnimationProperty =
+            DependencyProperty.Register("EnableConnectAnimation", typeof(bool), typeof(TopicCard), new PropertyMetadata(true));
+
         public object Data
         {
             get { return (object)GetValue(DataProperty); }
@@ -171,14 +181,15 @@ namespace BiliBili_UWP.Components.Controls
             if (_cardType == "video")
             {
                 var data = Data as VideoDynamic;
+                object ele = EnableConnectAnimation ? sender : null;
                 if (string.IsNullOrEmpty(data.redirect_url))
-                    App.AppViewModel.PlayVideo(data.aid, sender, StaticString.SIGN_DYNAMIC);
+                    App.AppViewModel.PlayVideo(data.aid, ele, StaticString.SIGN_DYNAMIC);
                 else
                 {
                     var result = BiliTool.GetResultFromUri(data.redirect_url);
                     if (result.Type == BiliBili_Lib.Enums.UriType.Bangumi)
                     {
-                        App.AppViewModel.PlayBangumi(Convert.ToInt32(result.Param), sender, true);
+                        App.AppViewModel.PlayBangumi(Convert.ToInt32(result.Param), ele, true);
                     }
                 }
             }

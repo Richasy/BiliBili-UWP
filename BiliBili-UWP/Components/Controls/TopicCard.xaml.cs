@@ -62,6 +62,18 @@ namespace BiliBili_UWP.Components.Controls
             }
         }
 
+        public bool EnableConnectAnimation
+        {
+            get { return (bool)GetValue(EnableConnectAnimationProperty); }
+            set { SetValue(EnableConnectAnimationProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for EnableConnectAnimation.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty EnableConnectAnimationProperty =
+            DependencyProperty.Register("EnableConnectAnimation", typeof(bool), typeof(TopicCard), new PropertyMetadata(true));
+
+
+
         public bool IsUsePhase
         {
             get { return (bool)GetValue(IsUsePhaseProperty); }
@@ -240,11 +252,6 @@ namespace BiliBili_UWP.Components.Controls
             {
                 string yo = "";
             }
-        }
-
-        private void RepostButton_Click(object sender, RoutedEventArgs e)
-        {
-
         }
 
         private void CommentButton_Click(object sender, RoutedEventArgs e)
