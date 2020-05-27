@@ -56,14 +56,6 @@ namespace BiliBili_UWP.Pages.Main
         {
             if (e.Parameter != null)
             {
-                var anim = ConnectedAnimationService.GetForCurrentView().GetAnimation("BangumiConnectedAnimation");
-                if (anim != null)
-                {
-                    anim.Completed -= ConnectAnimation_Completed;
-                    anim.Completed += ConnectAnimation_Completed;
-                    anim.TryStart(VideoPlayer);
-                    UpdateLayout();
-                }
                 App.AppViewModel.CurrentVideoPlayer = VideoPlayer;
                 App.AppViewModel.CurrentPlayerType = Models.Enums.PlayerType.Bangumi;
                 if (e.Parameter is int aid)
@@ -444,6 +436,18 @@ namespace BiliBili_UWP.Pages.Main
                 PartListView.Visibility = Visibility.Visible;
                 PartGridView.Visibility = Visibility.Collapsed;
                 PartListView.SelectedIndex = PartGridView.SelectedIndex;
+            }
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            var anim = ConnectedAnimationService.GetForCurrentView().GetAnimation("BangumiConnectedAnimation");
+            if (anim != null)
+            {
+                anim.Completed -= ConnectAnimation_Completed;
+                anim.Completed += ConnectAnimation_Completed;
+                anim.TryStart(VideoPlayer);
+                UpdateLayout();
             }
         }
     }

@@ -81,7 +81,7 @@
         <Setter Property="IsHoldingEnabled" Value="True"/>
         <Setter Property="Padding" Value="5,0"/>
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
         <Setter Property="MinWidth" Value="0"/>
         <Setter Property="MinHeight" Value="0"/>
         <Setter Property="AllowDrop" Value="False"/>

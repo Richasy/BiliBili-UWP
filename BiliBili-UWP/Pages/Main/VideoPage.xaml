@@ -11,6 +11,7 @@
     xmlns:video="using:BiliBili_Lib.Models.BiliBili.Video"
     xmlns:controls1="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:bilibili="using:BiliBili_Lib.Models.BiliBili"
+    Loaded="Page_Loaded"
     xmlns:adaptivegridview="using:BiliBili_Controls.AdaptiveGridView"
     mc:Ignorable="d">
     <Page.Resources>
