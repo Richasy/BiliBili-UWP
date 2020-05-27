@@ -47,7 +47,7 @@ namespace BiliBili_UWP.Components.Controls
         private ObservableCollection<Tuple<int, string>> QualityCollection = new ObservableCollection<Tuple<int, string>>();
         private ObservableCollection<Tuple<double, string>> PlayRateCollection;
         private ObservableCollection<Choice> ChoiceCollection = new ObservableCollection<Choice>();
-        private ObservableCollection<SystemFont> FontCollection =new ObservableCollection<SystemFont>();
+        private ObservableCollection<SystemFont> FontCollection = new ObservableCollection<SystemFont>();
         private ObservableCollection<SubtitleIndexItem> SubtitleIndexCollection = new ObservableCollection<SubtitleIndexItem>();
         private List<DanmakuColor> DanmakuColors = DanmakuColor.GetColorList();
         private List<SubtitleItem> Subtitles = new List<SubtitleItem>();
@@ -299,56 +299,56 @@ namespace BiliBili_UWP.Components.Controls
 
         private async void Media_Opened(MediaPlayer sender, object args)
         {
-            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal,() =>
-            {
-                bool isAutoPlay = AppTool.GetBoolSetting(Settings.IsAutoPlay);
-                if (isAutoPlay)
-                {
-                    MTC.IsPlaying = true;
-                    _player.Play();
-                }
-                if (_needShowHistory)
-                {
-                    if (!isBangumi)
-                    {
-                        if (_videoDetail != null && _videoDetail.history != null)
-                        {
-                            var historyPage = _videoDetail.pages.Where(p => p.cid == _videoDetail.history.cid).FirstOrDefault();
-                            if (historyPage != null)
-                            {
-                                if (_partId != historyPage.cid)
-                                {
-                                    ShowHistory($"{historyPage.part}-{AppTool.GetReadDuration(_videoDetail.history.progress)}");
-                                }
-                                else
-                                {
-                                    ShowHistory($"{AppTool.GetReadDuration(_videoDetail.history.progress)}");
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (_bangumiDetail != null && _bangumiDetail.user_status.progress != null)
-                        {
-                            var progress = _bangumiDetail.user_status.progress;
-                            var historyEp = _bangumiDetail.episodes.Where(p => p.id == progress.last_ep_id).FirstOrDefault();
-                            if (historyEp != null)
-                            {
-                                if (_bangumiPart.id != historyEp.id)
-                                {
-                                    ShowHistory($"{historyEp.title}-{AppTool.GetReadDuration(progress.last_time)}");
-                                }
-                                else
-                                {
-                                    ShowHistory($"{AppTool.GetReadDuration(progress.last_time)}");
-                                }
-                            }
-                        }
-                    }
-                }
-                ErrorContainer.Visibility = Visibility.Collapsed;
-            });
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+             {
+                 bool isAutoPlay = AppTool.GetBoolSetting(Settings.IsAutoPlay);
+                 if (isAutoPlay)
+                 {
+                     MTC.IsPlaying = true;
+                     _player.Play();
+                 }
+                 if (_needShowHistory)
+                 {
+                     if (!isBangumi)
+                     {
+                         if (_videoDetail != null && _videoDetail.history != null)
+                         {
+                             var historyPage = _videoDetail.pages.Where(p => p.cid == _videoDetail.history.cid).FirstOrDefault();
+                             if (historyPage != null)
+                             {
+                                 if (_partId != historyPage.cid)
+                                 {
+                                     ShowHistory($"{historyPage.part}-{AppTool.GetReadDuration(_videoDetail.history.progress)}");
+                                 }
+                                 else
+                                 {
+                                     ShowHistory($"{AppTool.GetReadDuration(_videoDetail.history.progress)}");
+                                 }
+                             }
+                         }
+                     }
+                     else
+                     {
+                         if (_bangumiDetail != null && _bangumiDetail.user_status.progress != null)
+                         {
+                             var progress = _bangumiDetail.user_status.progress;
+                             var historyEp = _bangumiDetail.episodes.Where(p => p.id == progress.last_ep_id).FirstOrDefault();
+                             if (historyEp != null)
+                             {
+                                 if (_bangumiPart.id != historyEp.id)
+                                 {
+                                     ShowHistory($"{historyEp.title}-{AppTool.GetReadDuration(progress.last_time)}");
+                                 }
+                                 else
+                                 {
+                                     ShowHistory($"{AppTool.GetReadDuration(progress.last_time)}");
+                                 }
+                             }
+                         }
+                     }
+                 }
+                 ErrorContainer.Visibility = Visibility.Collapsed;
+             });
         }
 
         private async void Media_Failed(MediaPlayer sender, MediaPlayerFailedEventArgs args)
@@ -508,7 +508,7 @@ namespace BiliBili_UWP.Components.Controls
             SetFocus();
             LoadingBar.Visibility = Visibility.Collapsed;
         }
-        public async Task RefreshVideoSource(Episode part, bool isRefresh = false,int progress=0)
+        public async Task RefreshVideoSource(Episode part, bool isRefresh = false, int progress = 0)
         {
             if (part == null)
             {
@@ -594,29 +594,40 @@ namespace BiliBili_UWP.Components.Controls
             {
                 ChoiceCollection.Clear();
                 _interaction = data;
-                if (_interaction.edges.questions != null)
+                try
                 {
-                    var choices = _interaction.edges.questions.First().choices;
-                    foreach (var choice in choices)
+                    if (_interaction.edges.questions != null)
                     {
-                        if (!string.IsNullOrEmpty(choice.condition))
+                        var choices = _interaction.edges.questions.First().choices;
+                        foreach (var choice in choices)
                         {
-                            var variables = _interaction.hidden_vars.Where(p => p.is_show == 1 && choice.condition.Contains(p.id_v2));
-                            if (variables != null)
+                            if (!string.IsNullOrEmpty(choice.condition))
                             {
-                                double min = Convert.ToDouble(Regex.Match(choice.condition, ">=([0-9]{1,}[.][0-9]*)").Value.Replace(">=", ""));
-                                double max = Convert.ToDouble(Regex.Match(choice.condition, "<=([0-9]{1,}[.][0-9]*)").Value.Replace("<=", ""));
-                                var variable = variables.Where(p => choice.condition.Contains(p.id_v2)).FirstOrDefault();
-                                if (variable != null)
+                                var variables = _interaction.hidden_vars.Where(p => choice.condition.Contains(p.id_v2));
+                                if (variables != null)
                                 {
-                                    if (variable.value >= min && variable.value <= max)
-                                        ChoiceCollection.Add(choice);
+                                    string minString = Regex.Match(choice.condition, ">=([0-9]{1,}[.][0-9]*)").Value.Replace(">=", "");
+                                    string maxString = Regex.Match(choice.condition, "<=([0-9]{1,}[.][0-9]*)").Value.Replace("<=", "");
+                                    double min = string.IsNullOrEmpty(minString) ? 0 : Convert.ToDouble(minString);
+                                    double max = string.IsNullOrEmpty(maxString) ? -1 : Convert.ToDouble(maxString);
+                                    var variable = variables.Where(p => choice.condition.Contains(p.id_v2)).FirstOrDefault();
+                                    if (variable != null)
+                                    {
+                                        if (variable.value >= min && (max == -1 || variable.value <= max))
+                                        {
+                                            ChoiceCollection.Add(choice);
+                                        }  
+                                    }
                                 }
                             }
+                            else
+                                ChoiceCollection.Add(choice);
                         }
-                        else
-                            ChoiceCollection.Add(choice);
                     }
+                }
+                catch (Exception)
+                {
+
                 }
             }
             _isChoiceHandling = false;
@@ -1768,13 +1779,13 @@ namespace BiliBili_UWP.Components.Controls
             {
                 CanvasRenderTarget rendertarget = new CanvasRenderTarget(CanvasDevice.GetSharedDevice(), _player.PlaybackSession.NaturalVideoWidth, _player.PlaybackSession.NaturalVideoHeight, 96);
                 _player.CopyFrameToVideoSurface(rendertarget);
-                var folder = await KnownFolders.PicturesLibrary.CreateFolderAsync("Bili ScreenShot",CreationCollisionOption.OpenIfExists);
+                var folder = await KnownFolders.PicturesLibrary.CreateFolderAsync("Bili ScreenShot", CreationCollisionOption.OpenIfExists);
                 var file = await folder.CreateFileAsync(Guid.NewGuid().ToString("N") + ".png", CreationCollisionOption.OpenIfExists);
                 using (var stream = await file.OpenAsync(FileAccessMode.ReadWrite))
                 {
                     await rendertarget.SaveAsync(stream, CanvasBitmapFileFormat.Png);
                 }
-                NotificationTool.SendScreenShotToast(file.Name,folder.Path);
+                NotificationTool.SendScreenShotToast(file.Name, folder.Path);
             }
         }
         public void ResetPlayRate()
@@ -1786,6 +1797,6 @@ namespace BiliBili_UWP.Components.Controls
         }
         #endregion
 
-        
+
     }
 }

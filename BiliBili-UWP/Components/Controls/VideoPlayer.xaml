@@ -178,7 +178,7 @@
                     x:Name="ExitScreenButton" ToolTipService.ToolTip="返回" Content="&#xE914;" Click="ExitScreenButton_Click" Visibility="Collapsed" Margin="0,0,15,0"/>
                     <Button Style="{StaticResource DefaultCircleButtonStyle}" Background="{ThemeResource MaskAcrylicBackground}" Foreground="{ThemeResource ImportantTextColor}"
                     x:Name="LockScreenButton" ToolTipService.ToolTip="锁定" Content="&#xEA01;" Click="LockScreenButton_Click"  Visibility="Collapsed" Margin="0,0,15,0"/>
-                    <Button Style="{StaticResource PrimaryCircleButtonStyle}" Background="{ThemeResource MaskAcrylicBackground}" Foreground="{ThemeResource ImportantTextColor}"
+                    <Button Style="{StaticResource PrimaryCircleButtonStyle}" Width="40" Height="40" Background="{ThemeResource MaskAcrylicBackground}" Foreground="{ThemeResource ImportantTextColor}"
                 x:Name="InteractionHomeButton" Visibility="Collapsed" Click="InteractionHomeButton_Click"
                 ToolTipService.ToolTip="返回互动视频起点" Content="&#xE9CB;"/>
                 </StackPanel>

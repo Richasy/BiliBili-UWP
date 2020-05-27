@@ -36,7 +36,7 @@
             <StackPanel>
                 <Grid Padding="10" BorderBrush="{ThemeResource LineColor}" BorderThickness="0,0,0,1"
                        Visibility="Collapsed" x:Name="TopReplyContainer">
-                    <controls:ReplyMainBlock Data="{Binding}" x:Name="TopReplyControl" TopBadgeVisibility="Visible"/>
+                    <controls:ReplyMainBlock x:Name="TopReplyControl" TopBadgeVisibility="Visible"/>
                 </Grid>
                 <Grid>
                     <ListView ItemTemplate="{StaticResource ReplyItemTemplate}"

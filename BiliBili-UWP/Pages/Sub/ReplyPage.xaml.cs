@@ -70,7 +70,7 @@ namespace BiliBili_UWP.Pages.Sub
             next = 0;
             total = 0;
             isEnd = false;
-            TopReplyControl.Visibility = Visibility.Collapsed;
+            TopReplyContainer.Visibility = Visibility.Collapsed;
             ReplyCollection.Clear();
         }
 
