@@ -213,6 +213,7 @@ namespace BiliBili_UWP.Components.Controls
             InteractionHomeButton.Visibility = Visibility.Collapsed;
             InteractionEndContainer.Visibility = Visibility.Collapsed;
             HistoryContainer.Visibility = Visibility.Collapsed;
+            ChoiceItemsControl.Visibility = Visibility.Collapsed;
 
             bool isShowDanmaku = AppTool.GetBoolSetting(Settings.IsDanmakuOpen);
             DanmakuVisibilityButton.Content = isShowDanmaku ? "" : "";
@@ -232,6 +233,7 @@ namespace BiliBili_UWP.Components.Controls
             DanmakuList.Clear();
             SendDanmakuList.Clear();
             Subtitles.Clear();
+            ChoiceCollection.Clear();
             SubtitleIndexCollection.Clear();
             _isMTCShow = true;
             ShowMTC();
