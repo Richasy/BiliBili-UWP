@@ -441,13 +441,16 @@ namespace BiliBili_UWP.Pages.Main
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            var anim = ConnectedAnimationService.GetForCurrentView().GetAnimation("BangumiConnectedAnimation");
-            if (anim != null)
+            if (!string.IsNullOrEmpty(App.AppViewModel.ConnectAnimationName))
             {
-                anim.Completed -= ConnectAnimation_Completed;
-                anim.Completed += ConnectAnimation_Completed;
-                anim.TryStart(VideoPlayer);
-                UpdateLayout();
+                var anim = ConnectedAnimationService.GetForCurrentView().GetAnimation(App.AppViewModel.ConnectAnimationName);
+                if (anim != null)
+                {
+                    anim.Completed -= ConnectAnimation_Completed;
+                    anim.Completed += ConnectAnimation_Completed;
+                    anim.TryStart(VideoPlayer);
+                }
+                App.AppViewModel.ConnectAnimationName = "";
             }
         }
     }

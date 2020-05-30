@@ -618,7 +618,7 @@ namespace BiliBili_UWP.Components.Controls
                                         if (variable.value >= min && (max == -1 || variable.value <= max))
                                         {
                                             ChoiceCollection.Add(choice);
-                                        }  
+                                        }
                                     }
                                 }
                             }
@@ -978,6 +978,28 @@ namespace BiliBili_UWP.Components.Controls
                 _player.PlaybackSession.Position = TimeSpan.FromSeconds(target);
             }
         }
+        public void UpVolume()
+        {
+            if (_player != null && _player.Volume * 100.0 < 100)
+            {
+                double volume = _player.Volume*100.0 + 5;
+                if (volume > 100)
+                    volume = 100;
+                _player.Volume = volume / 100.0;
+                ShowTip($"当前音量: {Math.Round(volume)}");
+            }
+        }
+        public void DownVolume()
+        {
+            if (_player != null && _player.Volume > 0)
+            {
+                double volume = _player.Volume*100.0 - 5;
+                if (volume < 0)
+                    volume = 0;
+                _player.Volume = volume / 100.0;
+                ShowTip($"当前音量: {Math.Round(volume)}");
+            }
+        }
         private void MediaPresenter_ManipulationCompleted(object sender, ManipulationCompletedRoutedEventArgs e)
         {
             _manipulationVolume = 0;
@@ -1018,7 +1040,7 @@ namespace BiliBili_UWP.Components.Controls
                     ShowTip($"当前音量: {Math.Round(volume)}");
                     _player.Volume = volume / 100.0;
                     if (volume == 0)
-                        Debug.WriteLine("静音了！");
+                        ShowTip("静音了！");
                 }
                 else
                 {
@@ -1702,9 +1724,12 @@ namespace BiliBili_UWP.Components.Controls
                 }
                 if (isShow)
                     VisualStateManager.GoToState(mediaElement, "MarginState", false);
+                else
+                    VisualStateManager.GoToState(mediaElement, "DefaultState", false);
             }
             else
             {
+                DanmakuBarVisibility = Visibility.Visible;
                 bool needChange = Grid.GetRow(DanmakuBarContainer) == 0;
                 if (needChange)
                 {

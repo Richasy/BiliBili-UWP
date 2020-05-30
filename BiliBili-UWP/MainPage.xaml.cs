@@ -84,9 +84,12 @@ namespace BiliBili_UWP
                 var esc = Window.Current.CoreWindow.GetKeyState(VirtualKey.Escape);
                 var space = Window.Current.CoreWindow.GetKeyState(VirtualKey.Space);
                 var f11= Window.Current.CoreWindow.GetKeyState(VirtualKey.F11);
+                var f10 = Window.Current.CoreWindow.GetKeyState(VirtualKey.F10);
                 var f2 = Window.Current.CoreWindow.GetKeyState(VirtualKey.F2);
                 var left = Window.Current.CoreWindow.GetKeyState(VirtualKey.Left);
                 var right = Window.Current.CoreWindow.GetKeyState(VirtualKey.Right);
+                var up = Window.Current.CoreWindow.GetKeyState(VirtualKey.Up);
+                var down = Window.Current.CoreWindow.GetKeyState(VirtualKey.Down);
                 var shift = Window.Current.CoreWindow.GetKeyState(VirtualKey.Shift);
                 var player = App.AppViewModel.CurrentVideoPlayer;
                 
@@ -129,6 +132,14 @@ namespace BiliBili_UWP
                         player.MTC.IsFullWindow = !player.MTC.IsFullWindow;
                     }
                 }
+                else if (f10.HasFlag(CoreVirtualKeyStates.Down))
+                {
+                    if (player != null && player.IsFocus)
+                    {
+                        args.Handled = true;
+                        player.MTC.IsCompactOverlay = !player.MTC.IsCompactOverlay;
+                    }
+                }
                 else if (f2.HasFlag(CoreVirtualKeyStates.Down))
                 {
                     if (player != null && player.IsFocus)
@@ -151,6 +162,22 @@ namespace BiliBili_UWP
                     {
                         args.Handled = true;
                         player.SkipForward();
+                    }
+                }
+                else if (up.HasFlag(CoreVirtualKeyStates.Down))
+                {
+                    if (player != null && player.IsFocus)
+                    {
+                        args.Handled = true;
+                        player.UpVolume();
+                    }
+                }
+                else if (down.HasFlag(CoreVirtualKeyStates.Down))
+                {
+                    if (player != null && player.IsFocus)
+                    {
+                        args.Handled = true;
+                        player.DownVolume();
                     }
                 }
                 else if (shift.HasFlag(CoreVirtualKeyStates.Down))

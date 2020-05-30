@@ -1,5 +1,6 @@
 ﻿using BiliBili_Lib.Models.BiliBili.Video;
 using BiliBili_Lib.Service;
+using BiliBili_Lib.Tools;
 using BiliBili_UWP.Components.Controls;
 using BiliBili_UWP.Components.Widgets;
 using BiliBili_UWP.Dialogs;
@@ -41,6 +42,9 @@ namespace BiliBili_UWP.Pages.Main
             App.AppViewModel.CurrentPagePanel.ScrollToBottom = ScrollViewerBottomHandle;
             App.AppViewModel.CurrentPagePanel.ScrollChanged = ScrollViewerChanged;
             ViewLaterVideoView.DesiredWidth = 215 + ((App.AppViewModel.BasicFontSize - 14) * 5);
+            bool isFluent = AppTool.GetBoolSetting(BiliBili_Lib.Enums.Settings.EnableFluentGrid, false);
+            ViewLaterGridView.Visibility = isFluent ? Visibility.Visible : Visibility.Collapsed;
+            ViewLaterVideoView.Visibility = isFluent ? Visibility.Collapsed : Visibility.Visible;
             if (_isInit || e.NavigationMode == NavigationMode.Back)
             {
                 return;
@@ -116,7 +120,7 @@ namespace BiliBili_UWP.Pages.Main
             await dialog.ShowAsync();
         }
 
-        private void HistoryVideoView_ItemClick(object sender, ItemClickEventArgs e)
+        private void ViewLaterVideoView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var item = e.ClickedItem as VideoDetail;
             var ele = ViewLaterVideoView.ContainerFromItem(item);

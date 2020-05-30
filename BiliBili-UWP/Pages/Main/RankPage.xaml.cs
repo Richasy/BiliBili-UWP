@@ -1,4 +1,5 @@
 ﻿using BiliBili_Lib.Models.BiliBili;
+using BiliBili_Lib.Tools;
 using BiliBili_UWP.Components.Controls;
 using BiliBili_UWP.Models.UI;
 using BiliBili_UWP.Models.UI.Interface;
@@ -45,6 +46,9 @@ namespace BiliBili_UWP.Pages.Main
                 return;
             VideoGridView.EnableAnimation = App.AppViewModel.IsEnableAnimation;
             VideoGridView.DesiredWidth = 220 + ((App.AppViewModel.BasicFontSize - 14) * 5);
+            bool isFluent = AppTool.GetBoolSetting(BiliBili_Lib.Enums.Settings.EnableFluentGrid, false);
+            FluentGridView.Visibility = isFluent ? Visibility.Visible : Visibility.Collapsed;
+            VideoGridView.Visibility = isFluent ? Visibility.Collapsed : Visibility.Visible;
             await Refresh();
             base.OnNavigatedTo(e);
             _isInit = true;

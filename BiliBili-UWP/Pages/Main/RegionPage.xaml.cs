@@ -1,5 +1,6 @@
 ﻿using BiliBili_Lib.Models.BiliBili;
 using BiliBili_Lib.Service;
+using BiliBili_Lib.Tools;
 using BiliBili_UWP.Components.Controls;
 using BiliBili_UWP.Components.Widgets;
 using BiliBili_UWP.Models.Core;
@@ -51,6 +52,9 @@ namespace BiliBili_UWP.Pages.Main
             App.AppViewModel.CurrentPagePanel.ScrollToBottom = ScrollViewerBottomHandle;
             App.AppViewModel.CurrentPagePanel.ScrollChanged = ScrollViewerChanged;
             RecommendVideoView.DesiredWidth = 220 + ((App.AppViewModel.BasicFontSize - 14) * 5);
+            bool isFluent = AppTool.GetBoolSetting(BiliBili_Lib.Enums.Settings.EnableFluentGrid, false);
+            RecommendGridView.Visibility = isFluent ? Visibility.Visible : Visibility.Collapsed;
+            RecommendVideoView.Visibility = isFluent ? Visibility.Collapsed : Visibility.Visible;
             if (e.NavigationMode == NavigationMode.Back)
                 return;
             if (e.Parameter != null && e.Parameter is RegionContainer _con)

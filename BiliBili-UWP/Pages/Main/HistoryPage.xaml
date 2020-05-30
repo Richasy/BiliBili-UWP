@@ -61,6 +61,17 @@
                           ItemsSource="{x:Bind HistoryCollection}"
                           ContainerContentChanging="HistoryVideoView_ContainerContentChanging"
                           />
+            <GridView x:Name="HistoryGridView" ItemTemplate="{StaticResource VideoItemTemplate}" HorizontalAlignment="Stretch"
+                      ItemContainerStyle="{StaticResource TransparentGridViewItemContainerStyle}"
+                      Style="{StaticResource NoScrollGridView}" SelectionMode="None" IsItemClickEnabled="True"
+                      ItemClick="HistoryVideoView_ItemClick" ItemsSource="{x:Bind HistoryCollection}"
+                      ContainerContentChanging="HistoryVideoView_ContainerContentChanging" Visibility="Collapsed">
+                <GridView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsWrapGrid Orientation="Horizontal" ItemWidth="215" HorizontalAlignment="Center"/>
+                    </ItemsPanelTemplate>
+                </GridView.ItemsPanel>
+            </GridView>
             <TextBlock Style="{StaticResource TipTextStyle}" Text="暂无视频观看历史记录" FontWeight="Bold" VerticalAlignment="Center"
                            x:Name="HolderText" Visibility="Collapsed"/>
         </Grid>

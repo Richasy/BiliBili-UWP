@@ -54,6 +54,7 @@ namespace BiliBili_UWP.Models.Core
         public RepostPopup _repostPopup;
         public WebView _documentWebView;
         public bool IsInBackground;
+        public string ConnectAnimationName = "";
         public double BasicFontSize = Convert.ToDouble(AppTool.GetLocalSetting(Settings.BasicFontSize, "14"));
 
         public List<Tuple<Guid, Action<Size>>> WindowsSizeChangedNotify { get; set; } = new List<Tuple<Guid, Action<Size>>>();
@@ -135,7 +136,14 @@ namespace BiliBili_UWP.Models.Core
             if (sender != null && IsEnableAnimation)
             {
                 var image = VisualTreeExtension.VisualTreeFindName<FrameworkElement>((FrameworkElement)sender, "VideoCover");
-                ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("VideoConnectedAnimation", image);
+                if (image != null)
+                {
+                    string animationName = "VideoConnectedAnimation" + Guid.NewGuid().ToString("N");
+                    ConnectAnimationName = animationName;
+                    ConnectedAnimationService.GetForCurrentView().PrepareToAnimate(animationName, image);
+                }
+                else
+                    ConnectAnimationName = "";
             }
             CurrentSidePanel.SetSelectedItem(SideMenuItemType.Line);
             CurrentPagePanel.NavigateToPage(SideMenuItemType.VideoPlayer, new Tuple<int, string>(aid, fromSign));
@@ -176,7 +184,14 @@ namespace BiliBili_UWP.Models.Core
             if (sender != null && IsEnableAnimation)
             {
                 var image = VisualTreeExtension.VisualTreeFindName<FrameworkElement>((FrameworkElement)sender, "VideoCover");
-                ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("BangumiConnectedAnimation", image);
+                if (image != null)
+                {
+                    string animationName = "BangumiConnectedAnimation" + Guid.NewGuid().ToString("N");
+                    ConnectAnimationName = animationName;
+                    ConnectedAnimationService.GetForCurrentView().PrepareToAnimate(animationName, image);
+                }
+                else
+                    ConnectAnimationName = "";
             }
             CurrentSidePanel.SetSelectedItem(SideMenuItemType.Line);
             if (isEp)

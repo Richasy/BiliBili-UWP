@@ -57,6 +57,9 @@ namespace BiliBili_UWP.Pages.Main
             App.AppViewModel.CurrentPagePanel.ScrollChanged = ScrollViewerChanged;
             RecommendVideoView.EnableAnimation = App.AppViewModel.IsEnableAnimation;
             RecommendVideoView.DesiredWidth = 220 + ((App.AppViewModel.BasicFontSize - 14) * 5);
+            bool isFluent = AppTool.GetBoolSetting(BiliBili_Lib.Enums.Settings.EnableFluentGrid, false);
+            RecommendGridView.Visibility = isFluent ? Visibility.Visible : Visibility.Collapsed;
+            RecommendVideoView.Visibility = isFluent ? Visibility.Collapsed : Visibility.Visible;
             if (_isInit || e.NavigationMode == NavigationMode.Back)
             {
                 return;
@@ -92,7 +95,6 @@ namespace BiliBili_UWP.Pages.Main
         private void CheckRecommendStatus()
         {
             HolderText.Visibility = RecommendCollection.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
-            RecommendVideoView.Visibility = RecommendCollection.Count == 0 ? Visibility.Collapsed : Visibility.Visible;
         }
 
         private async void ScrollViewerBottomHandle()
