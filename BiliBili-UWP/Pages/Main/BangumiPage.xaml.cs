@@ -46,6 +46,8 @@ namespace BiliBili_UWP.Pages.Main
         private bool isEp = false;
         private string _lastSelectPartType = "row";
         public static BangumiPage Current;
+        private bool _isInit = false;
+        private bool _isCurrently = false;
         public BangumiPage()
         {
             this.InitializeComponent();
@@ -62,26 +64,35 @@ namespace BiliBili_UWP.Pages.Main
                 {
                     bangumiId = aid;
                     isEp = false;
-                    await Refresh();
                 }
                 else if (e.Parameter is Tuple<int, bool> data)
                 {
                     bangumiId = data.Item1;
                     isEp = data.Item2;
-                    await Refresh();
                 }
+                if (_isCurrently && _isInit)
+                    await Refresh();
             }
-            App.AppViewModel.CurrentPagePanel.PageScrollViewer.ChangeView(0, 0, 1);
+            _isCurrently = true;
+            
         }
 
-        private void ConnectAnimation_Completed(ConnectedAnimation sender, object args)
+        private async void ConnectAnimation_Completed(ConnectedAnimation sender, object args)
         {
             sender = null;
+            UpdateLayout();
+            if (!_isInit)
+            {
+                await Refresh();
+                _isInit = true;
+            }
         }
 
         protected async override void OnNavigatedFrom(NavigationEventArgs e)
         {
             VideoPlayer.Close();
+            if (e.SourcePageType != typeof(BangumiPage))
+                _isCurrently = false;
             App.AppViewModel.CurrentVideoPlayer = null;
             App.AppViewModel.CurrentPlayerType = Models.Enums.PlayerType.None;
             App.AppViewModel.CurrentPagePanel.CheckSubReplyPage();
@@ -137,6 +148,7 @@ namespace BiliBili_UWP.Pages.Main
                 }
             }
             tip.HidePopup();
+            App.AppViewModel.CurrentPagePanel.PageScrollViewer.ChangeView(0, 0, 1);
         }
 
         private async Task<bool> InitDetail()
@@ -368,6 +380,7 @@ namespace BiliBili_UWP.Pages.Main
         private void VideoPlayer_PartSwitched(object sender, int e)
         {
             PartListView.SelectedIndex = e;
+            PartListView.ScrollIntoView(BangumiPartCollection[e], ScrollIntoViewAlignment.Leading);
         }
 
         private void CommentButton_Click(object sender, RoutedEventArgs e)
@@ -439,8 +452,10 @@ namespace BiliBili_UWP.Pages.Main
             }
         }
 
-        private void Page_Loaded(object sender, RoutedEventArgs e)
+        private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            if (_isInit)
+                await Refresh();
             if (!string.IsNullOrEmpty(App.AppViewModel.ConnectAnimationName))
             {
                 var anim = ConnectedAnimationService.GetForCurrentView().GetAnimation(App.AppViewModel.ConnectAnimationName);
@@ -451,6 +466,11 @@ namespace BiliBili_UWP.Pages.Main
                     anim.TryStart(VideoPlayer);
                 }
                 App.AppViewModel.ConnectAnimationName = "";
+            }
+            else if (!_isInit)
+            {
+                await Refresh();
+                _isInit = true;
             }
         }
     }

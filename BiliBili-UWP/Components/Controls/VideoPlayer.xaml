@@ -149,6 +149,8 @@
                                                SeparateButtonClick="VideoMTC_SeparateButtonClick"
                                                Loaded="VideoMTC_Loaded"
                                                ShowAndHideAutomatically="False"
+                                               PreviousButtonClick="VideoMTC_PreviousButtonClick"
+                                               NextButtonClick="VideoMTC_NextButtonClick"
                                                />
             </MediaPlayerElement.TransportControls>
         </MediaPlayerElement>

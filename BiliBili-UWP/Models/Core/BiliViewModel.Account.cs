@@ -55,6 +55,7 @@ namespace BiliBili_UWP.Models.Core
         private async void MessageTimer_Tick(object sender, object e)
         {
             await CheckUnreadMessage();
+            await _client.Account.SSO();
         }
 
         public async Task CheckUnreadMessage()

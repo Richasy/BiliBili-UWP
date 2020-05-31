@@ -9,6 +9,7 @@
     xmlns:controls="using:BiliBili_UWP.Components.Controls"
     xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
     xmlns:controls1="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:adaptivegridview="using:BiliBili_Controls.AdaptiveGridView"
     Loaded="Page_Loaded"
     mc:Ignorable="d">
     <Page.Resources>
@@ -31,14 +32,14 @@
         <DataTemplate x:DataType="anime:Episode" x:Key="PartGridItemTemplate">
             <GridViewItem x:Name="Container">
                 <Grid Background="{Binding ElementName=Container,Path=IsSelected,Converter={StaticResource SelectedColorConverter}}" CornerRadius="4" Padding="10"
-                      Width="180">
+                      Width="200">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <TextBlock Text="{x:Bind title}" Visibility="{x:Bind title,Converter={StaticResource StringVisibilityConverter}}" Style="{StaticResource SmallTipTextStyle}" 
                                Foreground="{Binding ElementName=Container,Path=IsSelected,Converter={StaticResource SelectedColorConverter},ConverterParameter='Foreground'}"/>
-                    <TextBlock Text="{x:Bind long_title}" Visibility="{x:Bind long_title,Converter={StaticResource StringVisibilityConverter}}" Style="{StaticResource SmallTipTextStyle}" 
+                    <TextBlock Text="{x:Bind long_title}" ToolTipService.ToolTip="{x:Bind long_title}" Visibility="{x:Bind long_title,Converter={StaticResource StringVisibilityConverter}}" Style="{StaticResource SmallTipTextStyle}" 
                                Grid.Row="1" Margin="0,5,0,0" TextWrapping="Wrap" MaxWidth="150" HorizontalAlignment="Left" MaxLines="1"
                                Foreground="{Binding ElementName=Container,Path=IsSelected,Converter={StaticResource SelectedColorConverter},ConverterParameter='Foreground'}"/>
                 </Grid>

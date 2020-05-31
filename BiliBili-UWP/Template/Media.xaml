@@ -806,13 +806,13 @@
                           Style='{StaticResource AppBarButtonStyle}'
                           MediaTransportControlsHelper.DropoutOrder='3'
                           Visibility='Collapsed'/>
-                                            <!--<AppBarButton x:Name='CustomRewindButton'
+                                            <AppBarButton x:Name='CustomPreviousButton'
                         Style='{StaticResource AppBarButtonStyle}'
                         MediaTransportControlsHelper.DropoutOrder='1'>
                                                 <AppBarButton.Icon>
-                                                    <FontIcon Glyph="&#xEB9E;" />
+                                                    <FontIcon Glyph="&#xE9DC;" FontFamily="{StaticResource Icon}"/>
                                                 </AppBarButton.Icon>
-                                            </AppBarButton>-->
+                                            </AppBarButton>
                                             <AppBarButton x:Name='CustomPlayPauseButton'
                           Style='{StaticResource AppBarButtonStyle}'
                                                           IsTabStop="True"
@@ -821,13 +821,13 @@
                                                     <FontIcon FontFamily="{StaticResource Icon}" Glyph="&#xE9BE;"/>
                                                 </AppBarButton.Icon>
                                             </AppBarButton>
-                                            <!--<AppBarButton x:Name='CustomForwardButton'
+                                            <AppBarButton x:Name='CustomNextButton'
                         Style='{StaticResource AppBarButtonStyle}'
                         MediaTransportControlsHelper.DropoutOrder='1'>
                                                 <AppBarButton.Icon>
-                                                    <FontIcon Glyph="&#xEB9D;" />
+                                                    <FontIcon Glyph="&#xE9DD;" FontFamily="{StaticResource Icon}"/>
                                                 </AppBarButton.Icon>
-                                            </AppBarButton>-->
+                                            </AppBarButton>
                                             <AppBarButton x:Name='NextTrackButton'
                           Icon='Next'
                           Style='{StaticResource AppBarButtonStyle}'

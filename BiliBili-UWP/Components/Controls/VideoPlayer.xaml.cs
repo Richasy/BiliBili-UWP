@@ -982,7 +982,7 @@ namespace BiliBili_UWP.Components.Controls
         {
             if (_player != null && _player.Volume * 100.0 < 100)
             {
-                double volume = _player.Volume*100.0 + 5;
+                double volume = _player.Volume * 100.0 + 5;
                 if (volume > 100)
                     volume = 100;
                 _player.Volume = volume / 100.0;
@@ -993,7 +993,7 @@ namespace BiliBili_UWP.Components.Controls
         {
             if (_player != null && _player.Volume > 0)
             {
-                double volume = _player.Volume*100.0 - 5;
+                double volume = _player.Volume * 100.0 - 5;
                 if (volume < 0)
                     volume = 0;
                 _player.Volume = volume / 100.0;
@@ -1390,6 +1390,29 @@ namespace BiliBili_UWP.Components.Controls
             _player.PlaybackSession.PlaybackRate = _playRate;
             ShowTip($"播放倍率：{_playRate}");
         }
+        private async void VideoMTC_PreviousButtonClick(object sender, RoutedEventArgs e)
+        {
+            var index = GetPreviousPartIndex();
+            if (index == -1)
+                return;
+            if (isBangumi)
+                await RefreshVideoSource(_bangumiDetail.episodes[index], true);
+            else
+                await RefreshVideoSource(_videoDetail.pages[index].cid, 0, true);
+            PartSwitched?.Invoke(this, index);
+        }
+
+        private async void VideoMTC_NextButtonClick(object sender, RoutedEventArgs e)
+        {
+            var index = GetNextPartIndex();
+            if (index == -1)
+                return;
+            if (isBangumi)
+                await RefreshVideoSource(_bangumiDetail.episodes[index], true);
+            else
+                await RefreshVideoSource(_videoDetail.pages[index].cid, 0, true);
+            PartSwitched?.Invoke(this, index);
+        }
         #endregion
 
         #region MTC状态控制
@@ -1615,7 +1638,12 @@ namespace BiliBili_UWP.Components.Controls
                     fonts.ForEach(p => FontCollection.Add(p));
                 }
                 else
-                    FontCollection = App.AppViewModel.FontCollection;
+                {
+                    foreach (var item in App.AppViewModel.FontCollection)
+                    {
+                        FontCollection.Add(item);
+                    }
+                }
             }
             if (FontCollection != null && FontCollection.Count > 0)
             {
@@ -1775,6 +1803,26 @@ namespace BiliBili_UWP.Components.Controls
             }
             return -1;
         }
+        private int GetPreviousPartIndex()
+        {
+            if (!isBangumi)
+            {
+                var index = _videoDetail.pages.IndexOf(_videoDetail.pages.Where(p => p.cid == _partId).FirstOrDefault());
+                if (index != -1 && index > 0)
+                {
+                    return index - 1;
+                }
+            }
+            else
+            {
+                var index = _bangumiDetail.episodes.IndexOf(_bangumiPart);
+                if (index != -1 && index > 0)
+                {
+                    return index - 1;
+                }
+            }
+            return -1;
+        }
         public void SetFocus()
         {
             mediaElement.Focus(FocusState.Programmatic);
@@ -1822,6 +1870,7 @@ namespace BiliBili_UWP.Components.Controls
                 VideoMTC._playRateComboBox.SelectedIndex = 2;
             }
         }
+
         #endregion
 
 

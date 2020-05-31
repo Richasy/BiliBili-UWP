@@ -36,8 +36,8 @@
         <DataTemplate x:DataType="video:VideoPart" x:Key="PartGridItemTemplate">
             <GridViewItem x:Name="Container">
                 <Grid Background="{Binding ElementName=Container,Path=IsSelected,Converter={StaticResource SelectedColorConverter}}" CornerRadius="4" Padding="10"
-                      Width="150">
-                    <TextBlock Text="{x:Bind part}" Style="{StaticResource SmallTipTextStyle}" MaxLines="1"
+                      Width="180">
+                    <TextBlock Text="{x:Bind part}" Style="{StaticResource SmallTipTextStyle}" MaxLines="1" ToolTipService.ToolTip="{x:Bind part}"
                                Foreground="{Binding ElementName=Container,Path=IsSelected,Converter={StaticResource SelectedColorConverter},ConverterParameter='Foreground'}"/>
                 </Grid>
             </GridViewItem>
@@ -198,7 +198,7 @@
                       x:Name="PartListView" ItemClick="PartListView_ItemClick" ScrollViewer.VerticalScrollMode="Disabled"/>
                 <GridView ItemTemplate="{StaticResource PartGridItemTemplate}" ItemsSource="{x:Bind VideoPartCollection}" 
                           ItemContainerStyle="{StaticResource TransparentGridViewItemContainerStyle}"
-                          Style="{StaticResource BasicGridView}" Visibility="Collapsed" MaxHeight="200"
+                          Style="{StaticResource BasicGridView}" Visibility="Collapsed" MaxHeight="400"
                           IsItemClickEnabled="True" ItemClick="PartListView_ItemClick" HorizontalAlignment="Left"
                           x:Name="PartGridView" ScrollViewer.HorizontalScrollMode="Disabled"/>
             </StackPanel>

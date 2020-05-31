@@ -23,8 +23,8 @@ namespace BiliBili_UWP.Models.UI.Others
         private AppBarButton _compactOverlayButton;
         private AppBarButton _cinemaButton;
         private AppBarButton _separateButton;
-        //private AppBarButton _forwardButton;
-        //private AppBarButton _rewindButton;
+        private AppBarButton _previousButton;
+        private AppBarButton _nextButton;
         public AppBarComboBox _qualityComboBox;
         public AppBarComboBox _playRateComboBox;
         public ListView _subtitleListView;
@@ -41,8 +41,8 @@ namespace BiliBili_UWP.Models.UI.Others
         public event EventHandler<bool> CompactOverlayButtonClick;
         public event EventHandler<int> QualityChanged;
         public event EventHandler<double> PlayRateChanged;
-        public event RoutedEventHandler ForwardButtonClick;
-        public event RoutedEventHandler RewindButtonClick;
+        public event RoutedEventHandler PreviousButtonClick;
+        public event RoutedEventHandler NextButtonClick;
         public event EventHandler<SubtitleIndexItem> SubtitleChanged;
         public event RoutedEventHandler SeparateButtonClick;
         public MediaPlayerElement MediaPlayerElement;
@@ -63,10 +63,10 @@ namespace BiliBili_UWP.Models.UI.Others
             _cinemaButton.Click += CinemaButtonClick;
             _separateButton = GetTemplateChild("SeparateButton") as AppBarButton;
             _separateButton.Click += SeparateButtonClick;
-            //_forwardButton = GetTemplateChild("CustomForwardButton") as AppBarButton;
-            //_forwardButton.Click += ForwardButton_Click;
-            //_rewindButton = GetTemplateChild("CustomRewindButton") as AppBarButton;
-            //_rewindButton.Click += RewindButton_Click;
+            _previousButton = GetTemplateChild("CustomPreviousButton") as AppBarButton;
+            _previousButton.Click += PreviousButton_Click;
+            _nextButton = GetTemplateChild("CustomNextButton") as AppBarButton;
+            _nextButton.Click += NextButton_Click;
 
             _qualityComboBox = GetTemplateChild("QualityComboBox") as AppBarComboBox;
             _qualityComboBox.SelectionChanged += QualityComboBox_SelectionChanged;
@@ -92,14 +92,14 @@ namespace BiliBili_UWP.Models.UI.Others
                 QualityChanged?.Invoke(this, item.Item1);
         }
 
-        private void RewindButton_Click(object sender, RoutedEventArgs e)
+        private void PreviousButton_Click(object sender, RoutedEventArgs e)
         {
-            RewindButtonClick?.Invoke(this, e);
+            PreviousButtonClick?.Invoke(this, e);
         }
 
-        private void ForwardButton_Click(object sender, RoutedEventArgs e)
+        private void NextButton_Click(object sender, RoutedEventArgs e)
         {
-            ForwardButtonClick?.Invoke(this, e);
+            NextButtonClick?.Invoke(this, e);
         }
 
         private void SubtitleListView_ItemClick(object sender, ItemClickEventArgs e)
