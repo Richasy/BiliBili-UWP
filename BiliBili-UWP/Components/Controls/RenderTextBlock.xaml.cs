@@ -40,7 +40,7 @@ namespace BiliBili_UWP.Components.Controls
             {
                 foreach (var item in EmoteSource)
                 {
-                    double width = item.Value.meta.size * FontSize;
+                    double width = item.Value.meta.size * Convert.ToInt32(FontSize);
                     text = text.Replace(item.Key, $"<sub>!{item.Key}({item.Value.url} ={width})</sub>");
                 }
             }
@@ -50,7 +50,7 @@ namespace BiliBili_UWP.Components.Controls
                 {
                     if (text.Contains(item.name))
                     {
-                        double width = Convert.ToInt32(item.size) * FontSize;
+                        double width = Convert.ToInt32(item.size) * Convert.ToInt32(FontSize);
                         text = text.Replace(item.name, $"<sub>!{item.name}({item.url} ={width})</sub>");
                     }
                 }

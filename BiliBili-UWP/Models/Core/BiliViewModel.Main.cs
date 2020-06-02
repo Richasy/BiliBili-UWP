@@ -66,6 +66,14 @@ namespace BiliBili_UWP.Models.Core
         {
             RegionCollection.Clear();
             var regions = await _client.GetRegionIndexAsync();
+            if (regions != null)
+            {
+                await IOTool.SetLocalDataAsync("region.json", JsonConvert.SerializeObject(regions.Where(p => p.children != null).ToList()));
+            }
+            else
+            {
+                regions = await IOTool.GetLocalDataAsync<List<RegionContainer>>("region.json");
+            }
             regions.Where(p => p.children != null).ToList().ForEach(p => RegionCollection.Add(p));
         }
 

@@ -46,7 +46,7 @@ namespace BiliBili_Lib.Tools
                 try
                 {
                     client.DefaultRequestHeaders.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4150.0 Safari/537.36 Edg/85.0.529.0");
-                    client.DefaultRequestHeaders.Referer = new Uri("http://www.bilibili.com/");
+                    //client.DefaultRequestHeaders.Referer = new Uri("http://www.bilibili.com/");
                     var response = await client.GetAsync(new Uri(url));
                     if (response.IsSuccessStatusCode)
                     {
