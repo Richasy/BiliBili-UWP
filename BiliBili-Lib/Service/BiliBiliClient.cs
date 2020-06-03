@@ -339,5 +339,30 @@ namespace BiliBili_Lib.Service
             }
             return -1;
         }
+
+        /// <summary>
+        /// 测试请求，验证网络是否可访问
+        /// </summary>
+        /// <returns></returns>
+        public async Task<bool> ValidateRequestAsync()
+        {
+            string url = Api.OTHER_ZONE;
+            string response = await BiliTool.GetTextFromWebAsync(url, true);
+            try
+            {
+                if (!string.IsNullOrEmpty(response))
+                {
+                    var jobj = JObject.Parse(response);
+                    if (jobj["code"].ToString() == "0")
+                        return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                BiliTool._logger.Error($"测试请求失败", ex);
+                return false;
+            }
+            return false;
+        }
     }
 }

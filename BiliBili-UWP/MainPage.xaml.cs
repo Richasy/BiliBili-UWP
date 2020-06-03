@@ -50,30 +50,35 @@ namespace BiliBili_UWP
             App.AppViewModel.CheckAppUpdate();
             var popup = new WaitingPopup("正在初始化");
             popup.ShowPopup();
-            try
+            bool isCanRequest = await App.BiliViewModel._client.ValidateRequestAsync();
+            if (isCanRequest)
             {
-                await App.BiliViewModel.GetRegionsAsync();
-                App.AppViewModel.FontInit();
-                Window.Current.Dispatcher.AcceleratorKeyActivated += AccelertorKeyActivedHandle;
-                if (e.Parameter != null && e.Parameter is string argument && !string.IsNullOrEmpty(argument))
+                try
                 {
-                    App.AppViewModel.AppInitByActivated(argument);
+                    await App.BiliViewModel.GetRegionsAsync();
+                    App.AppViewModel.FontInit();
+                    Window.Current.Dispatcher.AcceleratorKeyActivated += AccelertorKeyActivedHandle;
+                    if (e.Parameter != null && e.Parameter is string argument && !string.IsNullOrEmpty(argument))
+                    {
+                        App.AppViewModel.AppInitByActivated(argument);
+                    }
+                    else
+                    {
+                        PagePanel.NavigateToPage(Models.Enums.SideMenuItemType.Home);
+                    }
                 }
-                else
+                catch (Exception)
                 {
-                    PagePanel.NavigateToPage(Models.Enums.SideMenuItemType.Home);
+                    var rootFrame = Window.Current.Content as Frame;
+                    rootFrame.Navigate(typeof(Pages.Main.NetworkErrorPage));
                 }
             }
-            catch (Exception)
+            else
             {
                 var rootFrame = Window.Current.Content as Frame;
                 rootFrame.Navigate(typeof(Pages.Main.NetworkErrorPage));
             }
-            finally
-            {
-                popup.HidePopup();
-            }
-            
+            popup.HidePopup();
             _isInit = true;
         }
 

@@ -168,6 +168,7 @@ namespace BiliBili_UWP.Components.Controls
             mediaElement.PosterSource = new BitmapImage(new Uri(detail.pic));
             HideNextPart();
             SetPlayerMode();
+            ResetPlayRate();
             if (detail.interaction != null)
             {
                 int nodeId = 0;
@@ -193,6 +194,7 @@ namespace BiliBili_UWP.Components.Controls
             _bangumiPart = part;
             _needShowHistory = true;
             Reset();
+            ResetPlayRate();
             HideNextPart();
             mediaElement.PosterSource = new BitmapImage(new Uri(detail.cover));
             SetPlayerMode();
@@ -227,8 +229,8 @@ namespace BiliBili_UWP.Components.Controls
 
             _playData = null;
             _currentQn = 0;
-            _playRate = 1;
-            ResetPlayRate();
+            //_playRate = 1;
+            //ResetPlayRate();
             QualityCollection.Clear();
             DanmakuList.Clear();
             SendDanmakuList.Clear();
@@ -380,6 +382,10 @@ namespace BiliBili_UWP.Components.Controls
                 }
                 ErrorBlock.Text = msg;
                 ErrorContainer.Visibility = Visibility.Visible;
+                if (isBangumi)
+                    App._logger.Error($"播放动漫:{_bangumiDetail.season_id} & {_bangumiPart.cid}: {msg}");
+                else
+                    App._logger.Error($"播放视频:{_videoDetail.aid} & {_partId}: {msg}");
             });
         }
 
@@ -392,42 +398,45 @@ namespace BiliBili_UWP.Components.Controls
         {
             await DispatcherHelper.ExecuteOnUIThreadAsync(async () =>
             {
-                VideoMTC.IsPlaying = false;
-                if (_videoDetail.interaction != null)
+                if (!_player.IsLoopingEnabled)
                 {
-                    //互动视频
-                    if (ChoiceCollection.Count > 0)
+                    VideoMTC.IsPlaying = false;
+                    if (_videoDetail.interaction != null)
                     {
-                        if (ChoiceCollection.Count == 1 && string.IsNullOrEmpty(ChoiceCollection.First().option))
-                            await InitInteraction(ChoiceCollection.First().cid, ChoiceCollection.First().id);
+                        //互动视频
+                        if (ChoiceCollection.Count > 0)
+                        {
+                            if (ChoiceCollection.Count == 1 && string.IsNullOrEmpty(ChoiceCollection.First().option))
+                                await InitInteraction(ChoiceCollection.First().cid, ChoiceCollection.First().id);
+                            else
+                                ChoiceItemsControl.Visibility = Visibility.Visible;
+                        }
                         else
-                            ChoiceItemsControl.Visibility = Visibility.Visible;
+                        {
+                            InteractionEndContainer.Visibility = Visibility.Visible;
+                            MediaEnded?.Invoke(this, _videoId);
+                        }
                     }
                     else
                     {
-                        InteractionEndContainer.Visibility = Visibility.Visible;
-                        MediaEnded?.Invoke(this, _videoId);
+                        if (IsAutoReturnWhenEnd)
+                        {
+                            if (VideoMTC.IsFullWindow)
+                                VideoMTC.IsFullWindow = false;
+                            else if (VideoMTC.IsCinema)
+                                VideoMTC.IsCinema = false;
+                            else if (VideoMTC.IsCompactOverlay)
+                                VideoMTC.IsCompactOverlay = false;
+                        }
+                        int id = 0;
+                        if (isBangumi)
+                            id = _bangumiPart.id;
+                        else
+                            id = _videoId;
+                        bool result = await ShowNextPart();
+                        if (!result)
+                            MediaEnded?.Invoke(this, id);
                     }
-                }
-                else
-                {
-                    if (IsAutoReturnWhenEnd)
-                    {
-                        if (VideoMTC.IsFullWindow)
-                            VideoMTC.IsFullWindow = false;
-                        else if (VideoMTC.IsCinema)
-                            VideoMTC.IsCinema = false;
-                        else if (VideoMTC.IsCompactOverlay)
-                            VideoMTC.IsCompactOverlay = false;
-                    }
-                    int id = 0;
-                    if (isBangumi)
-                        id = _bangumiPart.id;
-                    else
-                        id = _videoId;
-                    bool result = await ShowNextPart();
-                    if (!result)
-                        MediaEnded?.Invoke(this, id);
                 }
             });
         }
@@ -502,9 +511,11 @@ namespace BiliBili_UWP.Components.Controls
                 }
                 else
                     ErrorContainer.Visibility = Visibility.Visible;
+                _player.IsLoopingEnabled = AutoLoop;
             }
             else
             {
+                App._logger.Error($"播放源（视频）加载失败: {_videoDetail.aid} & {partId}");
                 ErrorContainer.Visibility = Visibility.Visible;
             }
             SetFocus();
@@ -576,6 +587,7 @@ namespace BiliBili_UWP.Components.Controls
             }
             else
             {
+                App._logger.Error($"播放源（动漫）加载失败: {_bangumiDetail.season_id} & {part.cid}");
                 ErrorContainer.Visibility = Visibility.Visible;
             }
             UpdateMediaProperties(part.title, part.subtitle, _bangumiDetail.cover);
@@ -1522,6 +1534,23 @@ namespace BiliBili_UWP.Components.Controls
         public static readonly DependencyProperty IsRegenerateFontsProperty =
             DependencyProperty.Register("IsRegenerateFonts", typeof(bool), typeof(VideoPlayer), new PropertyMetadata(false));
 
+        public bool AutoLoop
+        {
+            get { return (bool)GetValue(AutoLoopProperty); }
+            set { SetValue(AutoLoopProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for AutoLoop.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty AutoLoopProperty =
+            DependencyProperty.Register("AutoLoop", typeof(bool), typeof(VideoPlayer), new PropertyMetadata(false,new PropertyChangedCallback(AutoLoop_Changed)));
+
+        private static void AutoLoop_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var instance = d as VideoPlayer;
+            if(instance._player!=null)
+                instance._player.IsLoopingEnabled = (bool)e.NewValue;
+        }
+
         #endregion
 
         #region 计时器
@@ -1865,9 +1894,11 @@ namespace BiliBili_UWP.Components.Controls
         }
         public void ResetPlayRate()
         {
+            _playRate = 1;
             if (VideoMTC._playRateComboBox != null)
             {
-                VideoMTC._playRateComboBox.SelectedIndex = 2;
+                int index = PlayRateCollection.IndexOf(PlayRateCollection.Where(q => q.Item1 == _playRate).FirstOrDefault());
+                VideoMTC._playRateComboBox.SelectedIndex = index;
             }
         }
 

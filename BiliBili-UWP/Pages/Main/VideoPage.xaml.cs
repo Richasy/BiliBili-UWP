@@ -155,6 +155,8 @@ namespace BiliBili_UWP.Pages.Main
             LikeButton.IsCheck = false;
             CoinButton.IsCheck = false;
             FavoriteButton.IsCheck = false;
+            AutoLoopSwitch.IsOn = false;
+            VideoPlayer.AutoLoop = false;
 
             PlayCountBlock.Text = "-";
             DanmukuCountBlock.Text = "-";
@@ -646,6 +648,13 @@ namespace BiliBili_UWP.Pages.Main
                 await Refresh();
                 _isInit = true;
             }
+        }
+
+        private void AutoLoopSwitch_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (!_isInit)
+                return;
+            VideoPlayer.AutoLoop = AutoLoopSwitch.IsOn;
         }
     }
 }

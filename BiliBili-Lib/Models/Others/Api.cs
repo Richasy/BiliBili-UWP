@@ -473,5 +473,9 @@ namespace BiliBili_Lib.Models.Others
         /// </summary>
         public const string LIVE_SQUARE = _liveBase + "/xlive/app-interface/v2/index/getAllList";
         #endregion
+
+        #region 其它
+        public const string OTHER_ZONE = _apiBase + "/x/web-interface/zone";
+        #endregion
     }
 }

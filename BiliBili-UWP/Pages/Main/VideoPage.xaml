@@ -163,17 +163,23 @@
                     <ColumnDefinition Width="1*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <StackPanel Margin="0,10">
+                <Grid Margin="0,10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
                     <TextBlock Style="{StaticResource TitleTextStyle}" x:Name="TitleBlock" FontSize="20" Foreground="{ThemeResource ImportantTextColor}"
-                               MaxLines="2"/>
-                    <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="10" x:Name="DateBlock" Margin="0,10,0,0"/>
-                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                               MaxLines="2" TextWrapping="Wrap"/>
+                    <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="{CustomResource MiniFontSize}" x:Name="DateBlock"
+                                Margin="0,10,0,0" Grid.Row="1"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0" Grid.Row="2">
                         <widgets:IconTextBlock Icon="&#xEA32;" GutterWidth="5" FontSize="{CustomResource SmallFontSize}" IconForeground="{ThemeResource TipTextColor}" x:Name="PlayCountBlock"/>
                         <widgets:IconTextBlock Icon="&#xEA35;" GutterWidth="5" Margin="15,0,0,0" FontSize="{CustomResource SmallFontSize}" IconForeground="{ThemeResource TipTextColor}" x:Name="DanmukuCountBlock"/>
                         <widgets:IconTextBlock Icon="bv" IsTextSelectionEnabled="True" GutterWidth="5" Margin="15,0,0,0" FontSize="{CustomResource SmallFontSize}" IconForeground="{ThemeResource TipTextColor}" x:Name="BVBlock"/>
                         <widgets:IconTextBlock Icon="av" IsTextSelectionEnabled="True" GutterWidth="5" Margin="15,0,0,0" FontSize="{CustomResource SmallFontSize}" IconForeground="{ThemeResource TipTextColor}" x:Name="AVBlock"/>
                     </StackPanel>
-                </StackPanel>
+                </Grid>
                 <StackPanel Grid.Column="1" VerticalAlignment="Top">
                     <StackPanel Orientation="Horizontal">
                         <widgets:CheckButton Icon="&#xE9F0;" x:Name="LikeButton" Click="LikeButton_Click" Hold="LikeButton_Hold"/>
@@ -181,8 +187,13 @@
                         <widgets:CheckButton Margin="15,0,0,0" Icon="&#xE9E5;" x:Name="FavoriteButton" Click="FavoriteButton_Click" FlyoutBase.AttachedFlyout="{StaticResource FavoriteFlyout}"/>
                         <widgets:CheckButton Margin="15,0,0,0" Icon="&#xEA44;" x:Name="RepostButton" FlyoutBase.AttachedFlyout="{StaticResource ShareFlyout}" Click="RepostButton_Click"/>
                     </StackPanel>
-                    <widgets:AsyncButton Icon="&#xE99E;" Style="{StaticResource SecondaryAsyncButtonStyle}" x:Name="CommentButton" ToolTipService.ToolTip="评论" Click="CommentButton_Click"
-                                          Margin="0,10,0,0" HorizontalAlignment="Right"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0" HorizontalAlignment="Right">
+                        <ToggleSwitch x:Name="AutoLoopSwitch" Style="{StaticResource BasicToggleSwitchStyle}" VerticalAlignment="Center"
+                                      OnContent="洗脑循环" OffContent="洗脑循环" Toggled="AutoLoopSwitch_Toggled" FontSize="{CustomResource SmallFontSize}"/>
+                        <widgets:AsyncButton Icon="&#xE99E;" Style="{StaticResource SecondaryAsyncButtonStyle}" x:Name="CommentButton" ToolTipService.ToolTip="评论" Click="CommentButton_Click"
+                                          />
+                    </StackPanel>
+                    
                 </StackPanel>
             </Grid>
             <StackPanel Grid.Row="1" HorizontalAlignment="Stretch" x:Name="PartContainer">

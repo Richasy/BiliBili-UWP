@@ -1,5 +1,6 @@
 ﻿using BiliBili_Lib.Models.BiliBili;
 using BiliBili_Lib.Models.Others;
+using MetroLog;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -29,6 +30,7 @@ namespace BiliBili_Lib.Tools
         public static string _accessToken = "";
         public static string sid = "";
         public static string mid = "";
+        public static ILogger _logger = LogManagerFactory.CreateLogManager().GetLogger("网络请求");
         /// <summary>
         /// 从网络获取文本
         /// </summary>
@@ -68,11 +70,13 @@ namespace BiliBili_Lib.Tools
                     }
                     else
                     {
+                        _logger.Warn($"请求数据异常(Text)：URL: {url}; Message: {await response.Content.ReadAsStringAsync()}");
                         return null;
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    _logger.Error($"请求出现异常:{url}", ex);
                     return null;
                 }
             }
@@ -92,8 +96,10 @@ namespace BiliBili_Lib.Tools
                 {
                     return JsonConvert.DeserializeObject<T>(response);
                 }
-                catch (Exception)
-                { }
+                catch (Exception ex)
+                {
+                    _logger.Error($"数据转化失败: {nameof(T)}", ex);
+                }
             }
             return null;
         }
@@ -116,7 +122,11 @@ namespace BiliBili_Lib.Tools
                     var buffer = await response.Content.ReadAsBufferAsync();
                     return buffer.AsStream();
                 }
-                return null;
+                else
+                {
+                    _logger.Warn($"请求数据(Stream)异常：URL: {url}; Message: {await response.Content.ReadAsStringAsync()}");
+                    return null;
+                }
             }
         }
         /// <summary>
@@ -141,6 +151,10 @@ namespace BiliBili_Lib.Tools
                 if (response.IsSuccessStatusCode)
                 {
                     return await response.Content.ReadAsStringAsync();
+                }
+                else
+                {
+                    _logger.Warn($"上传数据异常：URL: {url}; Message: {await response.Content.ReadAsStringAsync()}");
                 }
                 return "";
             }

@@ -7,6 +7,7 @@ using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage;
+using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -39,6 +40,12 @@ namespace BiliBili_UWP.Pages.Main
         private async void RestartButton_Click(object sender, RoutedEventArgs e)
         {
             await CoreApplication.RequestRestartAsync("restart");
+        }
+
+        private async void ExportLogButton_Click(object sender, RoutedEventArgs e)
+        {
+            var folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync("MetroLogs", CreationCollisionOption.OpenIfExists);
+            await Launcher.LaunchFolderAsync(folder);
         }
     }
 }

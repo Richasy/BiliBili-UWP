@@ -17,6 +17,8 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
+using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -373,6 +375,12 @@ namespace BiliBili_UWP.Pages.Main
             if (!_isInit)
                 return;
             AppTool.WriteLocalSetting(Settings.EnableFluentGrid, FluentGridSwitch.IsOn.ToString());
+        }
+
+        private async void ExportLogButton_Click(object sender, RoutedEventArgs e)
+        {
+            var folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync("MetroLogs", CreationCollisionOption.OpenIfExists);
+            await Launcher.LaunchFolderAsync(folder);
         }
     }
 }

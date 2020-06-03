@@ -4,6 +4,7 @@ using BiliBili_UWP.Components.Widgets;
 using BiliBili_UWP.Models.Core;
 using BiliBili_UWP.Models.UI;
 using BiliBili_UWP.Models.UI.Others;
+using MetroLog;
 using Microsoft.Toolkit.Uwp.Helpers;
 using System;
 using System.Collections.Generic;
@@ -38,6 +39,7 @@ namespace BiliBili_UWP
         /// </summary>
         public static AppViewModel AppViewModel;
         public static BiliViewModel BiliViewModel;
+        public static ILogger _logger = LogManagerFactory.CreateLogManager().GetLogger("应用程序");
         public App()
         {
             this.InitializeComponent();
@@ -71,6 +73,7 @@ namespace BiliBili_UWP
             e.Handled = true;
             string msg = e.Message;
             new TipPopup(msg).ShowError();
+            _logger.Error(msg, e.Exception);
         }
         /// <summary>
         /// 在应用程序由最终用户正常启动时进行调用。
@@ -87,71 +90,71 @@ namespace BiliBili_UWP
         }
         private void OnLaunchedOrActivated(IActivatedEventArgs e)
         {
-            Frame rootFrame = Window.Current.Content as Frame;
+            try
+            {
+                Frame rootFrame = Window.Current.Content as Frame;
 
-            // Do not repeat app initialization when the Window already has content,
-            // just ensure that the window is active
-            if (rootFrame == null)
-            {
-                SYEngine.Core.Initialize();
-                // Create a Frame to act as the navigation context and navigate to the first page
-                rootFrame = new Frame();
+                // Do not repeat app initialization when the Window already has content,
+                // just ensure that the window is active
+                if (rootFrame == null)
+                {
+                    SYEngine.Core.Initialize();
+                    // Create a Frame to act as the navigation context and navigate to the first page
+                    rootFrame = new Frame();
 
-                rootFrame.NavigationFailed += OnNavigationFailed;
+                    rootFrame.NavigationFailed += OnNavigationFailed;
 
-                // Place the frame in the current Window
-                Window.Current.Content = rootFrame;
-            }
+                    // Place the frame in the current Window
+                    Window.Current.Content = rootFrame;
+                }
 
-            BackgroundTaskHelper.Register("ToastBackgroundTask", new ToastNotificationActionTrigger());
-            if (e is LaunchActivatedEventArgs && (e as LaunchActivatedEventArgs).PrelaunchActivated == false)
-            {
-                if (rootFrame.Content == null)
+                BackgroundTaskHelper.Register("ToastBackgroundTask", new ToastNotificationActionTrigger());
+                if (e is LaunchActivatedEventArgs && (e as LaunchActivatedEventArgs).PrelaunchActivated == false)
                 {
-                    rootFrame.Navigate(typeof(MainPage), (e as LaunchActivatedEventArgs).Arguments);
+                    if (rootFrame.Content == null)
+                    {
+                        rootFrame.Navigate(typeof(MainPage), (e as LaunchActivatedEventArgs).Arguments);
+                    }
+                    // Ensure the current window is active
+
                 }
-                // Ensure the current window is active
-                
+                else if (e.Kind == ActivationKind.StartupTask)
+                {
+                    if (rootFrame.Content == null)
+                    {
+                        rootFrame.Navigate(typeof(MainPage));
+                    }
+                }
+                else if (e is ToastNotificationActivatedEventArgs toastActivationArgs)
+                {
+                    if (rootFrame.Content == null)
+                    {
+                        rootFrame.Navigate(typeof(MainPage), toastActivationArgs.Argument);
+                    }
+                    else
+                    {
+                        AppViewModel.AppInitByActivated(toastActivationArgs.Argument);
+                    }
+                }
+                else if (e is ProtocolActivatedEventArgs protocalArgs)
+                {
+                    string arg = protocalArgs.Uri.Query.Replace("?", "");
+                    if (rootFrame.Content == null)
+                    {
+                        rootFrame.Navigate(typeof(MainPage), arg);
+                    }
+                    else
+                    {
+                        AppViewModel.AppInitByActivated(arg);
+                    }
+                }
+                Window.Current.Activate();
+                UIHelper.SetTitleBarColor();
             }
-            else if(e.Kind == ActivationKind.StartupTask)
+            catch (Exception ex)
             {
-                if (rootFrame.Content == null)
-                {
-                    rootFrame.Navigate(typeof(MainPage));
-                }
+                _logger.Error("启动出错", ex);
             }
-            else if (e is ToastNotificationActivatedEventArgs toastActivationArgs)
-            {
-                if (rootFrame.Content == null)
-                {
-                    rootFrame.Navigate(typeof(MainPage), toastActivationArgs.Argument);
-                }
-                else
-                {
-                    AppViewModel.AppInitByActivated(toastActivationArgs.Argument);
-                }
-            }
-            else if(e is ProtocolActivatedEventArgs protocalArgs)
-            {
-                string arg = protocalArgs.Uri.Query.Replace("?","");
-                if (rootFrame.Content == null)
-                {
-                    rootFrame.Navigate(typeof(MainPage), arg);
-                }
-                else
-                {
-                    AppViewModel.AppInitByActivated(arg);
-                }
-            }
-            Window.Current.Activate();
-            if (e.PreviousExecutionState == ApplicationExecutionState.Running)
-            {
-                if (BiliViewModel != null && BiliViewModel.IsLogin)
-                {
-                    BiliViewModel.ChangeMyInfo();
-                }
-            }
-            UIHelper.SetTitleBarColor();
         }
         protected override void OnBackgroundActivated(BackgroundActivatedEventArgs args)
         {
@@ -173,7 +176,9 @@ namespace BiliBili_UWP
         ///<param name="e">有关导航失败的详细信息</param>
         void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
         {
-            throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
+            _logger.Error($"页面导航失败: {e.SourcePageType.FullName}", e.Exception);
+            e.Handled = true;
+            new TipPopup("导航到特定页失败，错误信息已记录").ShowError();
         }
 
         /// <summary>

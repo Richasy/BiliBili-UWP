@@ -110,13 +110,14 @@ namespace BiliBili_UWP.Pages.Main
                 return;
             _isDynamicRequesting = true;
             Tuple<string, List<Topic>> data = null;
-            if(!LoadingRing.IsActive)
+            if (!LoadingRing.IsActive)
                 DynamicLoadingBar.Visibility = Visibility.Visible;
             if (string.IsNullOrEmpty(offset))
             {
-                string lastSeemId = AppTool.GetLocalSetting(BiliBili_Lib.Enums.Settings.LastSeemDynamicId,"0");
+                string lastSeemId = AppTool.GetLocalSetting(BiliBili_Lib.Enums.Settings.LastSeemDynamicId, "0");
                 var temp = await _topicService.GetNewDynamicAsync(lastSeemId);
-                data = new Tuple<string, List<Topic>>(temp.history_offset, temp.cards);
+                if (temp != null)
+                    data = new Tuple<string, List<Topic>>(temp.history_offset, temp.cards);
             }
             else
                 data = await _topicService.GetHistoryDynamicAsync(offset);
@@ -143,7 +144,7 @@ namespace BiliBili_UWP.Pages.Main
                         index = DynamicCollection.IndexOf(temp);
                     else
                         index = DynamicCollection.Count;
-                    if ((_isOnlyVideo && (item.desc.type == 8)||(item.desc.type==512)) || !_isOnlyVideo)
+                    if ((_isOnlyVideo && (item.desc.type == 8) || (item.desc.type == 512)) || !_isOnlyVideo)
                     {
                         DynamicCollection.Insert(index, item);
                     }
