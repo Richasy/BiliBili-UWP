@@ -14,7 +14,7 @@
     xmlns:controls="using:BiliBili_UWP.Components.Controls"
     xmlns:others="using:BiliBili_UWP.Models.UI.Others"
     Loaded="Page_Loaded"
-    xmlns:staggeredpanel="using:BiliBili_Controls.StaggeredPanel"
+    xmlns:panel="using:BiliBili_Controls.CustomPanel"
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:DataType="ui:IconItem" x:Key="HeaderItemTemplate">
@@ -71,7 +71,7 @@
                       >
                 <GridView.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <staggeredpanel:StaggeredPanel DesiredColumnWidth="280"
+                        <panel:StaggeredPanel DesiredColumnWidth="280"
                                              HorizontalAlignment="Stretch"
                                              ColumnSpacing="15"
                                              RowSpacing="15" />

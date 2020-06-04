@@ -34,7 +34,7 @@
             </controls:DefaultVideoCard>
         </DataTemplate>
     </Page.Resources>
-    <Grid>
+    <Grid x:Name="PageContainer" Visibility="Collapsed">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />

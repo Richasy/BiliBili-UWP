@@ -8,6 +8,7 @@ using MetroLog;
 using Microsoft.Toolkit.Uwp.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -40,6 +41,7 @@ namespace BiliBili_UWP
         public static AppViewModel AppViewModel;
         public static BiliViewModel BiliViewModel;
         public static ILogger _logger = LogManagerFactory.CreateLogManager().GetLogger("应用程序");
+        public static Stopwatch _watch = new Stopwatch();
         public App()
         {
             this.InitializeComponent();

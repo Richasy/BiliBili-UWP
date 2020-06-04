@@ -15,7 +15,7 @@
             <controls1:TopicCard Data="{Binding}" IsUsePhase="False"/>
         </DataTemplate>
     </Page.Resources>
-    <Grid>
+    <Grid x:Name="PageContainer">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="1*" />

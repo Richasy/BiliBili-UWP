@@ -7,6 +7,7 @@ using BiliBili_UWP.Models.UI.Interface;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -70,6 +71,21 @@ namespace BiliBili_UWP.Components.Layout
         public static readonly DependencyProperty IsSubPageOpenProperty =
             DependencyProperty.Register("IsSubPageOpen", typeof(bool), typeof(PagePanel), new PropertyMetadata(false));
 
+        public bool IsStretch
+        {
+            get { return (bool)GetValue(IsStretchProperty); }
+            set { SetValue(IsStretchProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for IsStretch.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty IsStretchProperty =
+            DependencyProperty.Register("IsStretch", typeof(bool), typeof(PagePanel), new PropertyMetadata(false,new PropertyChangedCallback(IsStretch_Changed)));
+
+        private static void IsStretch_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            
+        }
+
         private static void IsDefaultChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (e.NewValue != e.OldValue && e.NewValue is bool isDefault)
@@ -109,6 +125,7 @@ namespace BiliBili_UWP.Components.Layout
                     else
                         transitionInfo = new DrillInNavigationTransitionInfo();
                 }
+                Debug.WriteLine($"页面准备导航：{App._watch.Elapsed.TotalSeconds}s");
                 PageFrame.Navigate(page, parameter, transitionInfo);
                 if (!isBack)
                 {
@@ -123,6 +140,7 @@ namespace BiliBili_UWP.Components.Layout
                         BackButton.Visibility = Visibility.Visible;
                     }
                 }
+                Debug.WriteLine($"页面导航折腾完成：{App._watch.Elapsed.TotalSeconds}s");
                 IsDefault = false;
             }
             else

@@ -3,8 +3,9 @@ using System.Linq;
 using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
 
-namespace BiliBili_Controls.StaggeredPanel
+namespace BiliBili_Controls.CustomPanel
 {
     /// <summary>
     /// Arranges child elements into a staggered grid pattern where items are added to the column that has used least amount of space.
@@ -18,7 +19,7 @@ namespace BiliBili_Controls.StaggeredPanel
         /// </summary>
         public StaggeredPanel()
         {
-            RegisterPropertyChangedCallback(Panel.HorizontalAlignmentProperty, OnHorizontalAlignmentChanged);
+            RegisterPropertyChangedCallback(VirtualizingPanel.HorizontalAlignmentProperty, OnHorizontalAlignmentChanged);
         }
 
         /// <summary>

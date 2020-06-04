@@ -64,6 +64,7 @@ namespace BiliBili_UWP.Pages.Main
         private bool _isPlayList = false;
         private bool _isInit = false;
         private bool _isCurrently = false;
+        
 
         public VideoPage()
         {
@@ -74,7 +75,8 @@ namespace BiliBili_UWP.Pages.Main
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
-            
+            App._watch.Start();
+            PageContainer.Visibility = Visibility.Collapsed;
             if (e.Parameter != null)
             {
                 App.AppViewModel.CurrentVideoPlayer = VideoPlayer;
@@ -117,7 +119,6 @@ namespace BiliBili_UWP.Pages.Main
                     await Refresh();
             }
             _isCurrently = true;
-            
         }
 
         private async void ConnectAnimation_Completed(ConnectedAnimation sender, object args)
@@ -130,9 +131,10 @@ namespace BiliBili_UWP.Pages.Main
                 _isInit = true;
             }
         }
-
-        protected async override void OnNavigatedFrom(NavigationEventArgs e)
+        protected async override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
+            App._watch.Restart();
+            PageContainer.Visibility = Visibility.Collapsed;
             VideoPlayer.Close();
             if(e.SourcePageType!=typeof(VideoPage))
                 _isCurrently = false;
@@ -142,7 +144,7 @@ namespace BiliBili_UWP.Pages.Main
                 await _videoService.AddVideoHistoryAsync(videoId, _currentPartId, VideoPlayer.CurrentProgress);
             Reset();
             App.AppViewModel.CurrentPagePanel.CheckSubReplyPage();
-            base.OnNavigatedFrom(e);
+            base.OnNavigatingFrom(e);
         }
         private void Reset()
         {
@@ -183,6 +185,8 @@ namespace BiliBili_UWP.Pages.Main
         }
         public async Task Refresh()
         {
+            if (PageContainer.Visibility == Visibility.Collapsed)
+                PageContainer.Visibility = Visibility.Visible;
             Reset();
             var tip = new WaitingPopup("加载视频中...");
             tip.ShowPopup();
@@ -632,14 +636,14 @@ namespace BiliBili_UWP.Pages.Main
         {
             if (_isInit)
                 await Refresh();
-            if (!string.IsNullOrEmpty(App.AppViewModel.ConnectAnimationName))
+            if (!string.IsNullOrEmpty(App.AppViewModel.ConnectAnimationName) && !_isInit)
             {
                 var anim = ConnectedAnimationService.GetForCurrentView().GetAnimation(App.AppViewModel.ConnectAnimationName);
                 if (anim != null)
                 {
                     anim.Completed -= ConnectAnimation_Completed;
                     anim.Completed += ConnectAnimation_Completed;
-                    anim.TryStart(VideoPlayer);
+                    anim.TryStart(VideoHolder);
                 }
                 App.AppViewModel.ConnectAnimationName = "";
             }
@@ -648,6 +652,7 @@ namespace BiliBili_UWP.Pages.Main
                 await Refresh();
                 _isInit = true;
             }
+            App._watch.Stop();
         }
 
         private void AutoLoopSwitch_Toggled(object sender, RoutedEventArgs e)

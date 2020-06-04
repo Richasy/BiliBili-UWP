@@ -52,6 +52,7 @@ namespace BiliBili_UWP.Pages.Main
         }
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
+            PageContainer.Visibility = Visibility.Collapsed;
             App.AppViewModel.CurrentPagePanel.ScrollToBottom = ScrollViewerBottomHandle;
             App.AppViewModel.CurrentPagePanel.ScrollChanged = ScrollViewerChanged;
             if (e.NavigationMode == NavigationMode.Back)
@@ -64,10 +65,9 @@ namespace BiliBili_UWP.Pages.Main
             await Refresh();
         }
 
-
-
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
+            PageContainer.Visibility = Visibility.Collapsed;
             App.AppViewModel.CurrentPagePanel.ScrollToBottom = null;
             App.AppViewModel.CurrentPagePanel.ScrollChanged = null;
             App.AppViewModel.CurrentPagePanel.CheckSubReplyPage();
@@ -75,6 +75,8 @@ namespace BiliBili_UWP.Pages.Main
         }
         private void Reset()
         {
+            if (PageContainer.Visibility == Visibility.Collapsed)
+                PageContainer.Visibility = Visibility.Visible;
             DynamicCollection.Clear();
             TotalList.Clear();
             LoadingRing.IsActive = false;
@@ -161,10 +163,12 @@ namespace BiliBili_UWP.Pages.Main
             double offset = App.AppViewModel.CurrentPagePanel.PageScrollViewer.VerticalOffset;
             _scrollOffset = offset;
         }
-        private void Page_Loaded(object sender, RoutedEventArgs e)
+        private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            PageContainer.Visibility = Visibility.Visible;
             if (_scrollOffset > 0)
             {
+                await Task.Delay(50);
                 App.AppViewModel.CurrentPagePanel.PageScrollViewer.ChangeView(0, _scrollOffset, 1);
             }
         }

@@ -500,6 +500,7 @@ namespace BiliBili_UWP.Components.Controls
                     var other = _tempSource;
                     _tempSource = mediaSource;
                     _mediaPlayer.Source = new MediaPlaybackItem(mediaSource);
+                    _mediaPlayer.PlaybackSession.PlaybackRate = _playRate;
                     if (offset.TotalSeconds > 0)
                         _player.PlaybackSession.Position = offset;
                     other?.Dispose();
@@ -578,7 +579,7 @@ namespace BiliBili_UWP.Components.Controls
                 if (offset.TotalSeconds > 0)
                     _player.PlaybackSession.Position = offset;
                 other?.Dispose();
-
+                _player.PlaybackSession.PlaybackRate = _playRate;
                 VideoMTC.IsInit = false;
                 VideoMTC.IsPlaying = _player.AutoPlay;
                 VideoMTC.IsInit = true;
@@ -1697,7 +1698,7 @@ namespace BiliBili_UWP.Components.Controls
         public async void ResetDanmakuStatus()
         {
             bool isShow = AppTool.GetBoolSetting(Settings.IsDanmakuOpen);
-            if (isShow)
+            if (isShow && DanmakuControls!=null)
             {
                 DanmakuControls.Width = 100;
                 await Task.Delay(100);

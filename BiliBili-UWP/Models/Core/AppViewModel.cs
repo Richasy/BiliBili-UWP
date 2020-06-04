@@ -18,6 +18,7 @@ using Microsoft.Toolkit.Uwp.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -131,22 +132,21 @@ namespace BiliBili_UWP.Models.Core
         /// <param name="fromSign">来源参数</param>
         public void PlayVideo(int aid, object sender = null, string fromSign = "")
         {
+            App._watch.Start();
             CurrentPagePanel.CheckSubReplyPage();
             SelectedSideMenuItem = null;
             if (sender != null && IsEnableAnimation)
             {
-                var image = VisualTreeExtension.VisualTreeFindName<FrameworkElement>((FrameworkElement)sender, "VideoCover");
-                if (image != null)
-                {
-                    string animationName = "VideoConnectedAnimation" + Guid.NewGuid().ToString("N");
-                    ConnectAnimationName = animationName;
-                    ConnectedAnimationService.GetForCurrentView().PrepareToAnimate(animationName, image);
-                }
-                else
-                    ConnectAnimationName = "";
+                //var image = VisualTreeExtension.VisualTreeFindName<FrameworkElement>((FrameworkElement)sender, "VideoCover");
+                string animationName = "VideoConnectedAnimation" + Guid.NewGuid().ToString("N");
+                ConnectAnimationName = animationName;
+                ConnectedAnimationService.GetForCurrentView().PrepareToAnimate(animationName, sender as UIElement);
             }
+            else
+                ConnectAnimationName = "";
             CurrentSidePanel.SetSelectedItem(SideMenuItemType.Line);
             CurrentPagePanel.NavigateToPage(SideMenuItemType.VideoPlayer, new Tuple<int, string>(aid, fromSign));
+            App._watch.Stop();
         }
         public void PlayVideo(VideoActiveArgs args)
         {

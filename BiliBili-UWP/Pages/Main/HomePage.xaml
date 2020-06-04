@@ -19,7 +19,7 @@
                                          NeedRemoveVideo="VideoContainer_NeedRemoveVideo" HorizontalAlignment="Stretch"/>
         </DataTemplate>
     </Page.Resources>
-    <Grid>
+    <Grid x:Name="PageContainer">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />

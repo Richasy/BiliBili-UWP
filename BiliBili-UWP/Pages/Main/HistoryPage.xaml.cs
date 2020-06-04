@@ -47,6 +47,7 @@ namespace BiliBili_UWP.Pages.Main
         }
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
+            PageContainer.Visibility = Visibility.Collapsed;
             HistoryVideoView.EnableAnimation = App.AppViewModel.IsEnableAnimation;
             App.AppViewModel.CurrentPagePanel.ScrollToBottom = ScrollViewerBottomHandle;
             App.AppViewModel.CurrentPagePanel.ScrollChanged = ScrollViewerChanged;
@@ -63,12 +64,15 @@ namespace BiliBili_UWP.Pages.Main
         }
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
+            PageContainer.Visibility = Visibility.Collapsed;
             App.AppViewModel.CurrentPagePanel.ScrollToBottom = null;
             App.AppViewModel.CurrentPagePanel.ScrollChanged = null;
             base.OnNavigatingFrom(e);
         }
         public async Task Refresh()
         {
+            if (PageContainer.Visibility == Visibility.Collapsed)
+                PageContainer.Visibility = Visibility.Visible;
             HistoryCollection.Clear();
             _page = 1;
             _scrollOffset = 0;
@@ -144,6 +148,7 @@ namespace BiliBili_UWP.Pages.Main
         }
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            PageContainer.Visibility = Visibility.Visible;
             if (_scrollOffset > 0)
             {
                 App.AppViewModel.CurrentPagePanel.PageScrollViewer.ChangeView(0, _scrollOffset, 1);
