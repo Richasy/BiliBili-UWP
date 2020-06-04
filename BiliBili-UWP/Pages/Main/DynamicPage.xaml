@@ -15,14 +15,7 @@
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:DataType="bilibili:Topic" x:Key="DynamicItemTemplate">
-            <items:VirtualizingItem Content="{Binding}">
-                <items:VirtualizingItem.OriginTemplate>
-                    <DataTemplate>
-                        <controls1:TopicCard Data="{Binding}" IsUsePhase="False"/>
-                    </DataTemplate>
-                </items:VirtualizingItem.OriginTemplate>
-            </items:VirtualizingItem>
-            
+            <controls1:TopicCard Data="{Binding}" IsUsePhase="False"/>
         </DataTemplate>
     </Page.Resources>
     <Grid x:Name="PageContainer">
@@ -51,7 +44,7 @@
                           >
                 <GridView.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <myControl:VirtualizingPanel DesiredColumnWidth="310"
+                        <controls:StaggeredPanel DesiredColumnWidth="310"
                                              HorizontalAlignment="Stretch"
                                              ColumnSpacing="15" />
                     </ItemsPanelTemplate>

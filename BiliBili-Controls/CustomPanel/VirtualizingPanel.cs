@@ -32,12 +32,12 @@ namespace BiliBili_Controls.CustomPanel
         public static readonly DependencyProperty DesiredColumnWidthProperty = DependencyProperty.Register(
             nameof(DesiredColumnWidth),
             typeof(double),
-            typeof(StaggeredPanel),
+            typeof(VirtualizingPanel),
             new PropertyMetadata(250d, OnDesiredColumnWidthChanged));
 
         private static void OnDesiredColumnWidthChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var panel = (StaggeredPanel)d;
+            var panel = (VirtualizingPanel)d;
             panel.InvalidateMeasure();
         }
         ///<summary>
@@ -95,12 +95,12 @@ namespace BiliBili_Controls.CustomPanel
         public static readonly DependencyProperty PaddingProperty = DependencyProperty.Register(
             nameof(Padding),
             typeof(Thickness),
-            typeof(StaggeredPanel),
+            typeof(VirtualizingPanel),
             new PropertyMetadata(default(Thickness), OnPaddingChanged));
 
         private static void OnPaddingChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var panel = (StaggeredPanel)d;
+            var panel = (VirtualizingPanel)d;
             panel.InvalidateMeasure();
         }
 
