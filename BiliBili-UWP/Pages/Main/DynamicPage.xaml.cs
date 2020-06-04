@@ -39,6 +39,7 @@ namespace BiliBili_UWP.Pages.Main
         private string offset = "";
         private double _scrollOffset = 0;
         private bool _isOnlyVideo = false;
+        public ScrollViewer ParentViewer = App.AppViewModel.CurrentPagePanel.PageScrollViewer;
         public DynamicPage()
         {
             this.InitializeComponent();

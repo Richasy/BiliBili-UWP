@@ -8,11 +8,21 @@
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:bilibili="using:BiliBili_Lib.Models.BiliBili"
     Loaded="Page_Loaded"
-    xmlns:controls1="using:BiliBili_UWP.Components.Controls" xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:controls1="using:BiliBili_UWP.Components.Controls"
+    xmlns:myControl="using:BiliBili_Controls.CustomPanel"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls" xmlns:items="using:BiliBili_Controls.Items"
+    x:Name="DPage"
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:DataType="bilibili:Topic" x:Key="DynamicItemTemplate">
-            <controls1:TopicCard Data="{Binding}" IsUsePhase="False"/>
+            <items:VirtualizingItem Content="{Binding}">
+                <items:VirtualizingItem.OriginTemplate>
+                    <DataTemplate>
+                        <controls1:TopicCard Data="{Binding}" IsUsePhase="False"/>
+                    </DataTemplate>
+                </items:VirtualizingItem.OriginTemplate>
+            </items:VirtualizingItem>
+            
         </DataTemplate>
     </Page.Resources>
     <Grid x:Name="PageContainer">
@@ -41,10 +51,9 @@
                           >
                 <GridView.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <controls:StaggeredPanel DesiredColumnWidth="310"
+                        <myControl:VirtualizingPanel DesiredColumnWidth="310"
                                              HorizontalAlignment="Stretch"
-                                             ColumnSpacing="15"
-                                             RowSpacing="15" />
+                                             ColumnSpacing="15" />
                     </ItemsPanelTemplate>
                 </GridView.ItemsPanel>
             </GridView>

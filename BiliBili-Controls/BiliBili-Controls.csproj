@@ -126,12 +126,17 @@
     <Compile Include="AdaptiveGridView\AdaptiveGridViewItem.Properties.cs" />
     <Compile Include="Bubble\Bubble.cs" />
     <Compile Include="Bubble\BubbleView.cs" />
+    <Compile Include="CustomPanel\VirtualizingPanel.cs" />
     <Compile Include="Enums\VisualPropertyType.cs" />
     <Compile Include="Extensions\CompositionExtension.cs" />
+    <Compile Include="Extensions\IItemGenerator.cs" />
     <Compile Include="Extensions\IndicatorHelper.cs" />
+    <Compile Include="Extensions\IVirtualizingItem.cs" />
     <Compile Include="Extensions\PressEffect.cs" />
+    <Compile Include="Extensions\StackLayoutContext.cs" />
     <Compile Include="Extensions\VisualExtension.cs" />
     <Compile Include="Extensions\VisualTreeExtension.cs" />
+    <Compile Include="Items\VirtualizingItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CustomPanel\StaggeredPanel.cs" />
     <EmbeddedResource Include="Properties\BiliBili_Controls.rd.xml" />
