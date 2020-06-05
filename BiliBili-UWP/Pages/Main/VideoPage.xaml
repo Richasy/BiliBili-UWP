@@ -223,7 +223,7 @@
                     </Grid.RowDefinitions>
                     <widgets:TrimTextBlock x:Name="DescriptionBlock" FontSize="{CustomResource SmallFontSize}" Foreground="{ThemeResource TipTextColor}"
                                        />
-                    <ListView ItemTemplate="{StaticResource TagItemTemplate}" ItemsSource="{x:Bind TagCollection}"
+                    <ListView ItemTemplate="{StaticResource TagItemTemplate}" ItemsSource="{x:Bind TagCollection}" Height="30"
                       IsItemClickEnabled="True" ItemContainerStyle="{StaticResource TransparentListViewContainerStyle}"
                       Style="{StaticResource BasicListView}" Padding="0,0,0,5" Margin="0,5,0,0" ItemsPanel="{StaticResource HorizontalListViewItemsPanel}"
                       x:Name="TagListView" ItemClick="TagListView_ItemClick"  Grid.Row="1" ScrollViewer.VerticalScrollMode="Disabled"/>

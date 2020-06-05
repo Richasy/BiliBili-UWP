@@ -887,9 +887,6 @@
     <PackageReference Include="System.Reactive">
       <Version>4.4.1</Version>
     </PackageReference>
-    <PackageReference Include="WaterFallView">
-      <Version>1.0.5</Version>
-    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BiliBili-Controls\BiliBili-Controls.csproj">

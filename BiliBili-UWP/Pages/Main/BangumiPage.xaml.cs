@@ -225,7 +225,12 @@ namespace BiliBili_UWP.Pages.Main
             }
             if (_detail.styles != null && _detail.styles.Count > 0)
             {
+                TagListView.Visibility = Visibility.Visible;
                 _detail.styles.ForEach(p => TagCollection.Add(p));
+            }
+            else
+            {
+                TagListView.Visibility = Visibility.Collapsed;
             }
 
             CheckFollowButton();

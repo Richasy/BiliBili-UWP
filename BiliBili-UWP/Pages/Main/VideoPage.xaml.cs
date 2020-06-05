@@ -247,7 +247,12 @@ namespace BiliBili_UWP.Pages.Main
 
             if (_detail.tag != null && _detail.tag.Count > 0)
             {
+                TagListView.Visibility = Visibility.Visible;
                 _detail.tag.ForEach(p => TagCollection.Add(p));
+            }
+            else
+            {
+                TagListView.Visibility = Visibility.Collapsed;
             }
 
             if (_detail.staff != null && _detail.staff.Count > 0)

@@ -125,7 +125,7 @@
                     </StackPanel>
                     <TextBlock x:Name="BasicInfoBlock" Style="{StaticResource SmallTipTextStyle}" FontSize="{CustomResource MiniFontSize}" Margin="0,10,0,0"
                                LineHeight="{CustomResource SubFontSize}" IsTextSelectionEnabled="True"/>
-                    <ListView ItemTemplate="{StaticResource TagItemTemplate}" ItemsSource="{x:Bind TagCollection}"
+                    <ListView ItemTemplate="{StaticResource TagItemTemplate}" ItemsSource="{x:Bind TagCollection}" Height="30"
                       IsItemClickEnabled="True" ItemContainerStyle="{StaticResource TransparentListViewContainerStyle}"
                       Style="{StaticResource BasicListView}" Padding="-5,0,0,5" ItemsPanel="{StaticResource HorizontalListViewItemsPanel}"
                       x:Name="TagListView" ItemClick="TagListView_ItemClick"/>
