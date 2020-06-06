@@ -89,7 +89,7 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <controls:ImageEx CornerRadius="5" Tapped="Image_Tapped" Stretch="UniformToFill" MaxHeight="200"
+                            <controls:ImageEx CornerRadius="5" Tapped="Image_Tapped" Stretch="UniformToFill" MaxHeight="{Binding img_height}"
                                               PlaceholderSource="ms-appx:///Assets/img_holder_rect.png" PlaceholderStretch="Uniform"
                                         Source="{Binding img_src,Converter={StaticResource CoverResolutionConverter},ConverterParameter=300}"
                                         />

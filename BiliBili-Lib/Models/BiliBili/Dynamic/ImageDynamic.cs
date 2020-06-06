@@ -33,9 +33,9 @@ namespace BiliBili_Lib.Models.BiliBili
         public class Picture
         {
             public string img_src { get; set; }
-            public int img_width { get; set; }
-            public int img_height { get; set; }
-            public int img_size { get; set; }
+            public double img_width { get; set; }
+            public double img_height { get; set; }
+            public double img_size { get; set; }
         }
     }
 }

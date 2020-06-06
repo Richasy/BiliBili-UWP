@@ -66,7 +66,6 @@ namespace BiliBili_UWP.Components.Controls
             {
                 var data = e.NewValue;
                 var instance = d as DynamicContentBlock;
-                instance.MainContentControl.Content = data;
                 if (data is VideoDynamic v)
                 {
                     instance._cardType = "video";
@@ -78,6 +77,8 @@ namespace BiliBili_UWP.Components.Controls
                 else if (data is ImageDynamic i)
                 {
                     instance._cardType = "image";
+                    double height = 250.0 / i.render_count;
+                    i.pictures.ForEach(p => p.img_height = height);
                     instance.MainContentControl.ContentTemplate = instance.ImageTemplate;
                     instance.Url = string.Empty;
                     instance.Title = i.title;
@@ -173,6 +174,7 @@ namespace BiliBili_UWP.Components.Controls
                     instance.Title = l.title;
                     instance.ImageUrl = l.cover;
                 }
+                instance.MainContentControl.Content = data;
             }
         }
 
