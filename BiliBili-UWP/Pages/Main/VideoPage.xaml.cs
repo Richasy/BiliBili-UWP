@@ -133,15 +133,14 @@ namespace BiliBili_UWP.Pages.Main
         }
         protected async override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
-            App._watch.Restart();
             PageContainer.Visibility = Visibility.Collapsed;
+            if (videoId > 0 && _currentPartId > 0)
+                await _videoService.AddVideoHistoryAsync(videoId, _currentPartId, VideoPlayer.CurrentProgress);
             VideoPlayer.Close();
             if(e.SourcePageType!=typeof(VideoPage))
                 _isCurrently = false;
             App.AppViewModel.CurrentVideoPlayer = null;
             App.AppViewModel.CurrentPlayerType = Models.Enums.PlayerType.None;
-            if (videoId > 0 && _currentPartId > 0)
-                await _videoService.AddVideoHistoryAsync(videoId, _currentPartId, VideoPlayer.CurrentProgress);
             Reset();
             App.AppViewModel.CurrentPagePanel.CheckSubReplyPage();
             base.OnNavigatingFrom(e);

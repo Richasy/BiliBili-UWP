@@ -126,8 +126,10 @@ namespace BiliBili_Lib.Tools
                 return "昨天";
             else if (span.TotalDays < 30)
                 return span.Days + "天前";
-            else
+            else if (span.TotalDays < 365)
                 return date.ToString("MM-dd");
+            else
+                return date.ToString("yyyy-MM-dd");
         }
         /// <summary>
         /// 将秒数转化为可读时间
@@ -137,7 +139,7 @@ namespace BiliBili_Lib.Tools
         public static string GetReadDuration(int seconds)
         {
             var span = TimeSpan.FromSeconds(seconds);
-            string time = span.Minutes.ToString("00") + ":" + span.Seconds.ToString("00");
+            string time = span.Minutes.ToString("00") + ":" + Math.Abs(span.Seconds).ToString("00");
             if (span.Hours > 0)
                 time = span.Hours.ToString() + ":" + time;
             return time;

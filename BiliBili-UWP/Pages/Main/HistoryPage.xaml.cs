@@ -146,9 +146,10 @@ namespace BiliBili_UWP.Pages.Main
             double offset = App.AppViewModel.CurrentPagePanel.PageScrollViewer.VerticalOffset;
             _scrollOffset = offset;
         }
-        private void Page_Loaded(object sender, RoutedEventArgs e)
+        private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
             PageContainer.Visibility = Visibility.Visible;
+            await Task.Delay(100);
             if (_scrollOffset > 0)
             {
                 App.AppViewModel.CurrentPagePanel.PageScrollViewer.ChangeView(0, _scrollOffset, 1);

@@ -229,8 +229,6 @@ namespace BiliBili_UWP.Components.Controls
 
             _playData = null;
             _currentQn = 0;
-            //_playRate = 1;
-            //ResetPlayRate();
             QualityCollection.Clear();
             DanmakuList.Clear();
             SendDanmakuList.Clear();

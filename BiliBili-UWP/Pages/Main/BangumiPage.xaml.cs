@@ -90,14 +90,14 @@ namespace BiliBili_UWP.Pages.Main
 
         protected async override void OnNavigatedFrom(NavigationEventArgs e)
         {
-            VideoPlayer.Close();
             if (e.SourcePageType != typeof(BangumiPage))
                 _isCurrently = false;
+            if (_currentPart != null)
+                await _animeService.AddVideoHistoryAsync(_currentPart.aid, _currentPart.cid, _currentPart.id, VideoPlayer.CurrentProgress, _detail.season_id);
+            VideoPlayer.Close(); 
             App.AppViewModel.CurrentVideoPlayer = null;
             App.AppViewModel.CurrentPlayerType = Models.Enums.PlayerType.None;
             App.AppViewModel.CurrentPagePanel.CheckSubReplyPage();
-            if (_currentPart != null)
-                await _animeService.AddVideoHistoryAsync(_currentPart.aid, _currentPart.id, _currentPart.cid, VideoPlayer.CurrentProgress);
             Reset();
             base.OnNavigatedFrom(e);
         }
@@ -384,7 +384,7 @@ namespace BiliBili_UWP.Pages.Main
 
         private void VideoPlayer_PartSwitched(object sender, int e)
         {
-            PartListView.SelectedIndex = e;
+            PartListView.SelectedIndex= PartGridView.SelectedIndex = e;
             PartListView.ScrollIntoView(BangumiPartCollection[e], ScrollIntoViewAlignment.Leading);
         }
 

@@ -220,6 +220,7 @@ namespace BiliBili_Lib.Service
             param.Add("cid", cid.ToString());
             param.Add("sid", sid.ToString());
             param.Add("epid", epid.ToString());
+            param.Add("progress", seconds.ToString());
             param.Add("realtime", seconds.ToString());
             param.Add("type", "4");
             var data = BiliTool.UrlContact("", param, true);
