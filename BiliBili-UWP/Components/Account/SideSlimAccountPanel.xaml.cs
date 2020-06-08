@@ -19,9 +19,9 @@ using Windows.UI.Xaml.Navigation;
 
 namespace BiliBili_UWP.Components.Account
 {
-    public sealed partial class SlimAccountPanel : UserControl
+    public sealed partial class SideSlimAccountPanel : UserControl
     {
-        public SlimAccountPanel()
+        public SideSlimAccountPanel()
         {
             this.InitializeComponent();
             App.BiliViewModel.IsLoginChanged -= LoginStatusChanged;
@@ -85,13 +85,13 @@ namespace BiliBili_UWP.Components.Account
 
         // Using a DependencyProperty as the backing store for IsOnlyAvatar.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty IsOnlyAvatarProperty =
-            DependencyProperty.Register("IsOnlyAvatar", typeof(bool), typeof(SlimAccountPanel), new PropertyMetadata(false, new PropertyChangedCallback(IsOnlyAvatar_Changed)));
+            DependencyProperty.Register("IsOnlyAvatar", typeof(bool), typeof(SideSlimAccountPanel), new PropertyMetadata(false, new PropertyChangedCallback(IsOnlyAvatar_Changed)));
 
         private static void IsOnlyAvatar_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (e.NewValue != e.OldValue)
             {
-                var instance = d as SlimAccountPanel;
+                var instance = d as SideSlimAccountPanel;
                 instance.CheckElementStatus();
             }
         }
@@ -133,7 +133,7 @@ namespace BiliBili_UWP.Components.Account
         private void ToMe()
         {
             var me = App.BiliViewModel._client.Account.Me;
-            App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Pages.Sub.Account.DetailPage), me.mid);
+            App.AppViewModel.NavigateToSubPage(typeof(Pages.Sub.Account.DetailPage), me.mid);
         }
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -159,17 +159,17 @@ namespace BiliBili_UWP.Components.Account
         private void Dynamic_Tapped(object sender, TappedRoutedEventArgs e)
         {
             var me = App.BiliViewModel._client.Account.Me;
-            App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Pages.Sub.Account.DetailPage), new Tuple<int, bool>(me.mid, true));
+            App.AppViewModel.NavigateToSubPage(typeof(Pages.Sub.Account.DetailPage), new Tuple<int, bool>(me.mid, true));
         }
 
         private void Fans_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Pages.Sub.Account.FansPage));
+            App.AppViewModel.NavigateToSubPage(typeof(Pages.Sub.Account.FansPage));
         }
 
         private void Follow_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Pages.Sub.Account.FollowPage));
+            App.AppViewModel.NavigateToSubPage(typeof(Pages.Sub.Account.FollowPage));
         }
     }
 }

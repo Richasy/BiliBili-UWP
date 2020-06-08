@@ -27,7 +27,6 @@
     <AppxBundlePlatforms>x86|x64|arm|arm64</AppxBundlePlatforms>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
     <AppxSymbolPackageEnabled>True</AppxSymbolPackageEnabled>
-    <PackageCertificateThumbprint>8394841C23A7A629FF3D687EA040294A39099B0E</PackageCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -132,11 +131,17 @@
     <Compile Include="Components\Account\LoginPopup.xaml.cs">
       <DependentUpon>LoginPopup.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Components\Account\SlimAccountPanel.xaml.cs">
-      <DependentUpon>SlimAccountPanel.xaml</DependentUpon>
+    <Compile Include="Components\Account\SideSlimAccountPanel.xaml.cs">
+      <DependentUpon>SideSlimAccountPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Account\TopSlimAccountPanel.xaml.cs">
+      <DependentUpon>TopSlimAccountPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Components\Controls\AppSearchBox.xaml.cs">
       <DependentUpon>AppSearchBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Controls\CoverVideoCard.xaml.cs">
+      <DependentUpon>CoverVideoCard.xaml</DependentUpon>
     </Compile>
     <Compile Include="Components\Controls\DefaultVideoCard.xaml.cs">
       <DependentUpon>DefaultVideoCard.xaml</DependentUpon>
@@ -192,6 +197,9 @@
     <Compile Include="Components\Controls\SearchContentBlock.xaml.cs">
       <DependentUpon>SearchContentBlock.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Components\Controls\SubPageControl.xaml.cs">
+      <DependentUpon>SubPageControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Components\Controls\SubscribeChannelPanel.xaml.cs">
       <DependentUpon>SubscribeChannelPanel.xaml</DependentUpon>
     </Compile>
@@ -204,11 +212,17 @@
     <Compile Include="Components\Controls\WebPopup.xaml.cs">
       <DependentUpon>WebPopup.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Components\Layout\BottomPanel.xaml.cs">
+      <DependentUpon>BottomPanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Components\Layout\PagePanel.xaml.cs">
       <DependentUpon>PagePanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Components\Layout\SidePanel.xaml.cs">
       <DependentUpon>SidePanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Layout\TopPanel.xaml.cs">
+      <DependentUpon>TopPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Components\Others\UpdatePopup.xaml.cs">
       <DependentUpon>UpdatePopup.xaml</DependentUpon>
@@ -303,7 +317,7 @@
     <Compile Include="Models\UI\Others\SystemFont.cs" />
     <Compile Include="Models\UI\Others\VideoActiveArgs.cs" />
     <Compile Include="Models\UI\Others\VideoTransportControls.cs" />
-    <Compile Include="Models\UI\SideMenuItem.cs" />
+    <Compile Include="Models\UI\AppMenuItem.cs" />
     <Compile Include="Models\UI\StaticString.cs" />
     <Compile Include="Models\UI\UIHelper.cs" />
     <Compile Include="Pages-Desktop\Main\BangumiPage.xaml.cs">
@@ -396,10 +410,10 @@
     <Compile Include="Pages-Share\Sub\Video\SubRegionPage.xaml.cs">
       <DependentUpon>SubRegionPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Pages-Tablet\Main\HomePage.xaml.cs">
-      <DependentUpon>HomePage.xaml</DependentUpon>
+    <Compile Include="Pages-Tablet\Main\RecommendPage.xaml.cs">
+      <DependentUpon>RecommendPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TabletMainPage.xaml.cs">
       <DependentUpon>TabletMainPage.xaml</DependentUpon>
     </Compile>
@@ -522,11 +536,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Components\Account\SlimAccountPanel.xaml">
+    <Page Include="Components\Account\SideSlimAccountPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\Account\TopSlimAccountPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Components\Controls\AppSearchBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\Controls\CoverVideoCard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -602,6 +624,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Components\Controls\SubPageControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Components\Controls\SubscribeChannelPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -618,11 +644,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Components\Layout\BottomPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Components\Layout\PagePanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Components\Layout\SidePanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\Layout\TopPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -818,7 +852,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages-Tablet\Main\HomePage.xaml">
+    <Page Include="Pages-Tablet\Main\RecommendPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

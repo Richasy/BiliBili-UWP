@@ -505,6 +505,7 @@
                             Margin="0"
                                  CornerRadius="{TemplateBinding CornerRadius}"
                                  Height="{TemplateBinding Height}"
+                                 Background="{TemplateBinding Background}"
                             DesiredCandidateWindowAlignment="BottomEdge"
                             UseSystemFocusVisuals="{TemplateBinding UseSystemFocusVisuals}" />
 

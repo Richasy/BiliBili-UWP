@@ -54,7 +54,7 @@ namespace BiliBili_UWP.Pages.Sub.Account
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
-            App.AppViewModel.CurrentPagePanel.SubPageTitle = "用户信息";
+            App.AppViewModel.CurrentSubPageControl.SubPageTitle = "用户信息";
             if (e.NavigationMode == NavigationMode.Back)
                 return;
             if(e.Parameter!=null)

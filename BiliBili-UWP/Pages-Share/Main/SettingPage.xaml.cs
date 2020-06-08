@@ -4,32 +4,21 @@ using BiliBili_UWP.Components.Widgets;
 using BiliBili_UWP.Dialogs;
 using BiliBili_UWP.Models.UI;
 using BiliBili_UWP.Models.UI.Others;
-using Microsoft.Toolkit.Uwp.Helpers;
-using SharpDX.DirectWrite;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Core;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.Storage;
 using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
-namespace BiliBili_UWP.Pages.Main
+namespace BiliBili_UWP.Pages_Share.Main
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
@@ -56,6 +45,18 @@ namespace BiliBili_UWP.Pages.Main
             ThemeComboBox.Visibility = isThemeWithSystem ? Visibility.Collapsed : Visibility.Visible;
             string theme = AppTool.GetLocalSetting(Settings.Theme, "Light");
             ThemeComboBox.SelectedIndex = theme == "Light" ? 0 : 1;
+            string displayMode = AppTool.GetLocalSetting(Settings.DisplayMode, "Desktop");
+            switch (displayMode)
+            {
+                case "Desktop":
+                    DisplayModeComboBox.SelectedIndex = 0;
+                    break;
+                case "Tablet":
+                    DisplayModeComboBox.SelectedIndex = 1;
+                    break;
+                default:
+                    break;
+            }
             double pageBreakpoint = Convert.ToDouble(AppTool.GetLocalSetting(Settings.PagePanelDisplayBreakpoint, "1500"));
             PagePaneDisplayBreakpointBox.Value = pageBreakpoint;
             bool isEnableAnimation = AppTool.GetBoolSetting(Settings.EnableAnimation);
@@ -381,6 +382,15 @@ namespace BiliBili_UWP.Pages.Main
         {
             var folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync("MetroLogs", CreationCollisionOption.OpenIfExists);
             await Launcher.LaunchFolderAsync(folder);
+        }
+
+        private async void DisplayModeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (!_isInit)
+                return;
+            var item = DisplayModeComboBox.SelectedItem as ComboBoxItem;
+            AppTool.WriteLocalSetting(Settings.DisplayMode, item.Tag.ToString());
+            await ShowRestartDialog();
         }
     }
 }

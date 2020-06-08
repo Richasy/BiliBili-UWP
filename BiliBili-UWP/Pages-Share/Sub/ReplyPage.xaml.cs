@@ -48,7 +48,7 @@ namespace BiliBili_UWP.Pages.Sub
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            App.AppViewModel.CurrentPagePanel.SubPageTitle = StaticString.REPLY_LIST;
+            App.AppViewModel.CurrentSubPageControl.SubPageTitle = StaticString.REPLY_LIST;
             if (e.NavigationMode == NavigationMode.Back)
                 return;
             if (e.Parameter != null && e.Parameter is Dictionary<string, string> param)

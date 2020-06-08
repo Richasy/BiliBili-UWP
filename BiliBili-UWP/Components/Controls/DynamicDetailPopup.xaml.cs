@@ -159,7 +159,7 @@ namespace BiliBili_UWP.Components.Controls
         {
             if (User != null)
             {
-                App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Pages.Sub.Account.DetailPage), User.uid);
+                App.AppViewModel.NavigateToSubPage(typeof(Pages.Sub.Account.DetailPage), User.uid);
             }
         }
 

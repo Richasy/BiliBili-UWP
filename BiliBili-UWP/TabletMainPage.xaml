@@ -4,11 +4,55 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:BiliBili_UWP"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:controls="using:HN.Controls"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls" xmlns:ui="using:BiliBili_UWP.Models.UI"
+    mc:Ignorable="d" xmlns:ext="using:BiliBili_Controls.Extensions" xmlns:controls1="using:BiliBili_UWP.Components.Controls" xmlns:layout="using:BiliBili_UWP.Components.Layout"
+    SizeChanged="Page_SizeChanged"
+    Background="{ThemeResource PageBackground}">
+    <Page.Resources>
+        
+    </Page.Resources>
     <Grid>
-
+        <Grid x:Name="BackgroundImageContainer" Visibility="Collapsed">
+            <controls:ImageEx x:Name="BackgroundImage" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                              Stretch="UniformToFill">
+                <controls:ImageEx.PlaceholderTemplate>
+                    <DataTemplate>
+                        <muxc:ProgressRing Style="{StaticResource MuxcProgressRingStyle}"/>
+                    </DataTemplate>
+                </controls:ImageEx.PlaceholderTemplate>
+            </controls:ImageEx>
+            <Grid x:Name="MaskGrid" Background="{ThemeResource MaskAcrylicBackground}"/>
+        </Grid>
+        <SplitView x:Name="AppSplitView" PaneClosing="PageSplitView_PaneClosing" PaneOpening="PageSplitView_PaneOpening"
+               PanePlacement="Right" CompactPaneLength="0" OpenPaneLength="400" IsPaneOpen="{x:Bind IsSubPageOpen,Mode=TwoWay}"
+               AllowFocusOnInteraction="True">
+            <SplitView.Pane>
+                <controls1:SubPageControl x:Name="SubPageControl" CloseButtonClick="SubPageControl_CloseButtonClick"/>
+            </SplitView.Pane>
+            <SplitView.Content>
+                <Grid Padding="40,30,40,20">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <layout:TopPanel x:Name="TopPanel" TopMenuItemClick="TopPanel_TopMenuItemClick" BackButtonClick="TopPanel_BackButtonClick"/>
+                    <Grid Grid.Row="1">
+                        <Frame x:Name="MainFrame" x:FieldModifier="Public" Padding="0,0,0,15"/>
+                        <Grid Grid.Row="2" Background="{ThemeResource PageBackground}" x:Name="HolderContainer"
+              HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="Collapsed">
+                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <controls:ImageEx Source="ms-appx:///Assets/bilibili logo.png" Width="100"
+                               HorizontalAlignment="Center" Margin="0,0,0,20"/>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                    
+                    <layout:BottomPanel Grid.Row="2" SettingButtonClick="BottomPanel_SettingButtonClick" HelpButtonClick="BottomPanel_HelpButtonClick"/>
+                </Grid>
+            </SplitView.Content>
+        </SplitView>
+        <Grid Background="{ThemeResource PageBackground}" Opacity="0.01" x:Name="TitleContainer" Height="35" VerticalAlignment="Top"/>
     </Grid>
 </Page>

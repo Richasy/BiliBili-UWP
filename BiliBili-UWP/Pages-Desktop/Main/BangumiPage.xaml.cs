@@ -339,7 +339,7 @@ namespace BiliBili_UWP.Pages.Main
             }
             if (list.Count > 0)
             {
-                App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Sub.Anime.IndexPage), list);
+                App.AppViewModel.NavigateToSubPage(typeof(Sub.Anime.IndexPage), list);
             }
         }
         private async void FollowButton_Click(object sender, RoutedEventArgs e)
@@ -395,7 +395,7 @@ namespace BiliBili_UWP.Pages.Main
                 var param = new Dictionary<string, string>();
                 param.Add("oid", _currentPart.aid.ToString());
                 param.Add("type", "1");
-                App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Sub.ReplyPage), param);
+                App.AppViewModel.NavigateToSubPage(typeof(Sub.ReplyPage), param);
             }
         }
 

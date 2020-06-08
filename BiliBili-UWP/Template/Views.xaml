@@ -86,6 +86,7 @@
         <Setter Property="MinHeight" Value="0"/>
         <Setter Property="AllowDrop" Value="False"/>
         <Setter Property="UseSystemFocusVisuals" Value="{StaticResource UseSystemFocusVisuals}"/>
+        <Setter Property="FocusVisualPrimaryBrush" Value="{ThemeResource PrimaryColor}" />
         <Setter Property="FocusVisualMargin" Value="0"/>
         <Setter Property="Template">
             <Setter.Value>

@@ -14,8 +14,8 @@ namespace BiliBili_UWP.Models.UI.Others
         public DataTemplate LineTemplate { get; set; }
         protected override DataTemplate SelectTemplateCore(object data)
         {
-            var item = data as SideMenuItem;
-            return item.Type == Enums.SideMenuItemType.Line ? LineTemplate : DefaultTemplate;
+            var item = data as AppMenuItem;
+            return item.Type == Enums.AppMenuItemType.Line ? LineTemplate : DefaultTemplate;
         }
     }
 }

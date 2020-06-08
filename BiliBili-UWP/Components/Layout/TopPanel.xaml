@@ -1,0 +1,42 @@
+﻿<UserControl
+    x:Class="BiliBili_UWP.Components.Layout.TopPanel"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BiliBili_UWP.Components.Layout"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:ui="using:BiliBili_UWP.Models.UI"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    mc:Ignorable="d" xmlns:ext="using:BiliBili_Controls.Extensions" xmlns:controls1="using:BiliBili_UWP.Components.Controls" xmlns:account="using:BiliBili_UWP.Components.Account"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <UserControl.Resources>
+        <DataTemplate x:DataType="ui:AppMenuItem" x:Key="TopMenuItemTemplate">
+            <StackPanel Margin="10,0">
+                <TextBlock Style="{StaticResource BodyTextStyle}" FontSize="{CustomResource BasicFontSize}"
+                           Foreground="{ThemeResource ImportantTextColor}" Text="{x:Bind Name}"/>
+                <Border HorizontalAlignment="Center" Margin="0,5,0,0" Width="5" Height="5" Background="{x:Bind IsSelected,Converter={StaticResource SideMenuSignColorConverter},Mode=OneWay}"
+                         x:Name="Sign" CornerRadius="3"/>
+            </StackPanel>
+        </DataTemplate>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Button Style="{StaticResource DefaultCircleButtonStyle}" Foreground="{ThemeResource NormalTextColor}" Content="&#xE933;"
+                x:Name="BackButton" Margin="0,0,20,0" Visibility="{x:Bind BackButtonVisibility,Mode=OneWay}" Click="BackButton_Click" VerticalAlignment="Center"/>
+        <TextBlock Style="{StaticResource AppLogoStyle}" x:Name="AppLogo" Text="&#xE902;" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <ListView Style="{StaticResource BasicListView}" ItemsPanel="{StaticResource HorizontalListViewItemsPanel}" ItemContainerStyle="{StaticResource TransparentListViewContainerStyle}"
+                          ItemTemplate="{StaticResource TopMenuItemTemplate}" IsItemClickEnabled="True" VerticalAlignment="Center" Padding="0,5,0,0"
+                          x:Name="TopMenuListView" ItemClick="TopMenuListView_ItemClick" Grid.Column="1" Margin="15,0,0,0" HorizontalAlignment="Left"
+                          ext:IndicatorService.Name="Sign" ext:IndicatorService.IsScaleEnabled="True" ItemsSource="{x:Bind MenuItemCollection}"
+                  ScrollViewer.VerticalScrollMode="Disabled"/>
+        <controls1:AppSearchBox Grid.Column="2" VerticalAlignment="Center" Background="{ThemeResource PaneBackground}"
+                                Margin="15,0" Width="300" HorizontalAlignment="Right"/>
+        <account:TopSlimAccountPanel Grid.Column="3" VerticalAlignment="Center"/>
+    </Grid>
+</UserControl>

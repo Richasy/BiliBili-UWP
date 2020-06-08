@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BiliBili_UWP.Models.Enums
 {
-    public enum SideMenuItemType
+    public enum AppMenuItemType
     {
         Home,
         Live,
@@ -27,6 +27,9 @@ namespace BiliBili_UWP.Models.Enums
         BangumiPlayer,
         Region,
         MiniPlayer,
-        MyMessage
+        MyMessage,
+
+        Recommend,
+        Channel,
     }
 }

@@ -72,6 +72,9 @@
         </CommandBarFlyout>
     </UserControl.Resources>
 
-    <local:DefaultVideoCard x:Name="VideoCard"/>
+    <Grid>
+        <local:DefaultVideoCard x:Name="VideoCard"/>
+        <local:CoverVideoCard x:Name="CoverCard"/>
+    </Grid>
 
 </UserControl>

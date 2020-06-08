@@ -1,0 +1,85 @@
+﻿<UserControl
+    x:Class="BiliBili_UWP.Components.Account.TopSlimAccountPanel"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BiliBili_UWP.Components.Account"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
+    mc:Ignorable="d" Loaded="UserControl_Loaded"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <UserControl.Resources>
+        <MenuFlyout MenuFlyoutPresenterStyle="{StaticResource BasicMenuFlyoutStyle}" x:Name="AccountFlyout" Placement="Bottom">
+            <MenuFlyoutItem Text="我的主页" Style="{StaticResource BasicMenuFlyoutItemStyle}">
+                <MenuFlyoutItem.Icon>
+                    <FontIcon FontFamily="{StaticResource Icon}" Glyph="&#xEA04;"/>
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+            <MenuFlyoutSeparator/>
+            <MenuFlyoutItem Text="视频动态" Style="{StaticResource BasicMenuFlyoutItemStyle}">
+                <MenuFlyoutItem.Icon>
+                    <FontIcon FontFamily="{StaticResource Icon}" Glyph="&#xEA30;" FontWeight="Bold"/>
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+            <MenuFlyoutItem Text="我的收藏" Style="{StaticResource BasicMenuFlyoutItemStyle}">
+                <MenuFlyoutItem.Icon>
+                    <FontIcon FontFamily="{StaticResource Icon}" Glyph="&#xE9E5;"/>
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+            <MenuFlyoutItem Text="我的追番" Style="{StaticResource BasicMenuFlyoutItemStyle}">
+                <MenuFlyoutItem.Icon>
+                    <FontIcon FontFamily="{StaticResource Icon}" Glyph="&#xE963;"/>
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+            <MenuFlyoutSeparator/>
+            <MenuFlyoutItem Text="稍后再看" Style="{StaticResource BasicMenuFlyoutItemStyle}">
+                <MenuFlyoutItem.Icon>
+                    <FontIcon FontFamily="{StaticResource Icon}" Glyph="&#xEA2E;" FontWeight="Bold"/>
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+            <MenuFlyoutItem Text="历史记录" Style="{StaticResource BasicMenuFlyoutItemStyle}">
+                <MenuFlyoutItem.Icon>
+                    <FontIcon FontFamily="{StaticResource Icon}" Glyph="&#xEA3B;"/>
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+            <MenuFlyoutSeparator/>
+            <MenuFlyoutItem Text="我的关注" Style="{StaticResource BasicMenuFlyoutItemStyle}">
+                <MenuFlyoutItem.Icon>
+                    <FontIcon FontFamily="{StaticResource Icon}" Glyph="&#xEA09;"/>
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+            <MenuFlyoutItem Text="我的粉丝" Style="{StaticResource BasicMenuFlyoutItemStyle}">
+                <MenuFlyoutItem.Icon>
+                    <FontIcon FontFamily="{StaticResource Icon}" Glyph="&#xE9E2;"/>
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+        </MenuFlyout>
+    </UserControl.Resources>
+    <Grid>
+        <Grid x:Name="DetailContainer" Visibility="Collapsed" Background="{ThemeResource TransparentBackground}"
+              Tapped="DetailContainer_Tapped">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid VerticalAlignment="Center">
+                <PersonPicture x:Name="UserAvatar" Style="{StaticResource BasicPersonPictureStyle}" Width="35"/>
+                <widgets:BiliImage Width="60" DecodePixelWidth="60" x:Name="PendantImage"/>
+            </Grid>
+            <StackPanel Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center">
+                <TextBlock Text="--" x:Name="UserNameBlock" Style="{StaticResource CaptionTextStyle}" FontWeight="Bold"
+                           HorizontalAlignment="Center" TextAlignment="Center" MaxWidth="200" Margin="0,0,0,5"/>
+                <widgets:LevelBlock x:Name="LevelBlock" HorizontalAlignment="Left" Margin="0,5,0,0"/>
+            </StackPanel>
+            <Grid Background="{ThemeResource PageOverBackground}" CornerRadius="15" Width="30" Height="30"
+                  VerticalAlignment="Center" Grid.Column="2" Margin="25,0,0,0">
+                <TextBlock Style="{StaticResource BasicIconTextStyle}" VerticalAlignment="Center" HorizontalAlignment="Center"
+                           FontSize="14" Foreground="{ThemeResource SecondaryColor}" Text="&#xE932;"/>
+            </Grid>
+        </Grid>
+        <widgets:AsyncButton Style="{StaticResource SecondaryAsyncButtonStyle}" Icon="&#xE901;"
+                             Text="登录账户" x:Name="LoginButton" Click="LoginButton_Click"/>
+    </Grid>
+</UserControl>

@@ -51,6 +51,8 @@ namespace BiliBili_UWP
             UnhandledException += OnUnhandleException;
             EnteredBackground += App_EnteredBackground;
             LeavingBackground += App_LeavingBackground;
+            App.AppViewModel = new AppViewModel();
+            App.BiliViewModel = new BiliViewModel();
             bool isThemeWithSystem = AppTool.GetBoolSetting(Settings.IsThemeWithSystem);
             _isTabletMode = AppTool.GetLocalSetting(Settings.DisplayMode, "Desktop") == "Tablet";
             if (!isThemeWithSystem)

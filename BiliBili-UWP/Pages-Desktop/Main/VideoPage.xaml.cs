@@ -207,7 +207,7 @@ namespace BiliBili_UWP.Pages.Main
                 var result = BiliTool.GetResultFromUri(_detail.redirect_url);
                 videoId = 0;
                 _currentPartId = 0;
-                App.AppViewModel.CurrentPagePanel.RemoveMainHistory(Models.Enums.SideMenuItemType.VideoPlayer);
+                App.AppViewModel.CurrentPagePanel.RemoveMainHistory(Models.Enums.AppMenuItemType.VideoPlayer);
                 if (result.Type == UriType.Bangumi)
                 {
                     new TipPopup("正在转到专题...").ShowMessage();
@@ -220,6 +220,7 @@ namespace BiliBili_UWP.Pages.Main
             else
                 VideoPlayer.IsAutoReturnWhenEnd = _detail.pages.Count <= 1;
             TitleBlock.Text = _detail.title;
+            ToolTipService.SetToolTip(TitleBlock, _detail.title);
             videoId = _detail.aid;
             bvId = _detail.bvid;
             PlayCountBlock.Text = AppTool.GetNumberAbbreviation(_detail.stat.view);
@@ -438,13 +439,13 @@ namespace BiliBili_UWP.Pages.Main
         private void TagListView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var item = e.ClickedItem as VideoTag;
-            App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Sub.Channel.TagDetailPage), item.tag_id);
+            App.AppViewModel.NavigateToSubPage(typeof(Sub.Channel.TagDetailPage), item.tag_id);
         }
 
         private void StaffListView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var item = e.ClickedItem as Staff;
-            App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Sub.Account.DetailPage), item.mid);
+            App.AppViewModel.NavigateToSubPage(typeof(Sub.Account.DetailPage), item.mid);
         }
 
         private async void FollowButton_Click(object sender, RoutedEventArgs e)
@@ -499,7 +500,7 @@ namespace BiliBili_UWP.Pages.Main
         private void SingleUserContainer_Tapped(object sender, TappedRoutedEventArgs e)
         {
             var accId = _detail.owner.mid;
-            App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Pages.Sub.Account.DetailPage), accId);
+            App.AppViewModel.NavigateToSubPage(typeof(Pages.Sub.Account.DetailPage), accId);
         }
 
         private async void PlayListContainer_ItemClick(object sender, ItemClickEventArgs e)
@@ -574,7 +575,7 @@ namespace BiliBili_UWP.Pages.Main
             var param = new Dictionary<string, string>();
             param.Add("oid", _detail.aid.ToString());
             param.Add("type", "1");
-            App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Sub.ReplyPage), param);
+            App.AppViewModel.NavigateToSubPage(typeof(Sub.ReplyPage), param);
         }
 
         private void ShareDynamicButton_Click(object sender, RoutedEventArgs e)

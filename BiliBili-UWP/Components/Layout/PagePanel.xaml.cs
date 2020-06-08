@@ -32,7 +32,6 @@ namespace BiliBili_UWP.Components.Layout
     {
         public bool IsNavigationFromCode = false;
         private List<Tuple<Type, object>> MainFrameHistoryList = new List<Tuple<Type, object>>();
-        private List<Tuple<Type, object>> SubFrameHistoryList = new List<Tuple<Type, object>>();
         public Action ScrollToBottom = null;
         public Action ScrollChanged = null;
         public PagePanel()
@@ -51,23 +50,15 @@ namespace BiliBili_UWP.Components.Layout
             get { return (bool)GetValue(IsDefaultProperty); }
             set { SetValue(IsDefaultProperty, value); }
         }
-        public string SubPageTitle
-        {
-            get { return (string)GetValue(SubPageTitleProperty); }
-            set { SetValue(SubPageTitleProperty, value); }
-        }
         public bool IsSubPageOpen
         {
             get { return (bool)GetValue(IsSubPageOpenProperty); }
             set { SetValue(IsSubPageOpenProperty, value); }
         }
-
         public static new readonly DependencyProperty PaddingProperty =
             DependencyProperty.Register("Padding", typeof(Thickness), typeof(PagePanel), new PropertyMetadata(new Thickness(50, 35, 20, 0)));
         public static readonly DependencyProperty IsDefaultProperty =
             DependencyProperty.Register("IsDefault", typeof(bool), typeof(PagePanel), new PropertyMetadata(false, new PropertyChangedCallback(IsDefaultChanged)));
-        public static readonly DependencyProperty SubPageTitleProperty =
-            DependencyProperty.Register("SubPageTitle", typeof(string), typeof(PagePanel), new PropertyMetadata(""));
         public static readonly DependencyProperty IsSubPageOpenProperty =
             DependencyProperty.Register("IsSubPageOpen", typeof(bool), typeof(PagePanel), new PropertyMetadata(false));
 
@@ -101,7 +92,7 @@ namespace BiliBili_UWP.Components.Layout
             if (result)
                 e.Handled = true;
         }
-        public void NavigateToPage(SideMenuItemType type, object parameter = null, bool isBack = false)
+        public void NavigateToPage(AppMenuItemType type, object parameter = null, bool isBack = false)
         {
             if(PageSplitView.DisplayMode==SplitViewDisplayMode.CompactOverlay)
                 IsSubPageOpen = false;
@@ -114,7 +105,7 @@ namespace BiliBili_UWP.Components.Layout
             {
                 App.AppViewModel.CurrentPageType = page;
                 NavigationTransitionInfo transitionInfo = null;
-                if (type == SideMenuItemType.VideoPlayer || !App.AppViewModel.IsEnableAnimation)
+                if (type == AppMenuItemType.VideoPlayer || !App.AppViewModel.IsEnableAnimation)
                 {
                     transitionInfo = new SuppressNavigationTransitionInfo();
                 }  
@@ -125,7 +116,6 @@ namespace BiliBili_UWP.Components.Layout
                     else
                         transitionInfo = new DrillInNavigationTransitionInfo();
                 }
-                Debug.WriteLine($"页面准备导航：{App._watch.Elapsed.TotalSeconds}s");
                 PageFrame.Navigate(page, parameter, transitionInfo);
                 if (!isBack)
                 {
@@ -140,7 +130,6 @@ namespace BiliBili_UWP.Components.Layout
                         BackButton.Visibility = Visibility.Visible;
                     }
                 }
-                Debug.WriteLine($"页面导航折腾完成：{App._watch.Elapsed.TotalSeconds}s");
                 IsDefault = false;
             }
             else
@@ -153,11 +142,11 @@ namespace BiliBili_UWP.Components.Layout
             IsDefault = false;
             if (region.name == "番剧" || region.name == "国创")
             {
-                NavigateToPage(SideMenuItemType.Anime, region.name == "番剧");
+                NavigateToPage(AppMenuItemType.Anime, region.name == "番剧");
             }
             else
             {
-                NavigateToPage(SideMenuItemType.Region, region);
+                NavigateToPage(AppMenuItemType.Region, region);
             }
         }
         public void ClearCache()
@@ -166,57 +155,57 @@ namespace BiliBili_UWP.Components.Layout
             PageFrame.CacheSize = 0;
             PageFrame.CacheSize = cacheSize;
         }
-        private Type GetPageTypeFromMenuType(SideMenuItemType type)
+        private Type GetPageTypeFromMenuType(AppMenuItemType type)
         {
             Type page = null;
             switch (type)
             {
-                case SideMenuItemType.Home:
+                case AppMenuItemType.Home:
                     page = typeof(Pages.Main.HomePage);
                     break;
-                case SideMenuItemType.Live:
+                case AppMenuItemType.Live:
                     page = typeof(Pages.Main.LivePage);
                     break;
-                case SideMenuItemType.Rank:
+                case AppMenuItemType.Rank:
                     page = typeof(Pages.Main.RankPage);
                     break;
-                case SideMenuItemType.Anime:
+                case AppMenuItemType.Anime:
                     page = typeof(Pages.Main.AnimePage);
                     break;
-                case SideMenuItemType.Dynamic:
+                case AppMenuItemType.Dynamic:
                     page = typeof(Pages.Main.DynamicPage);
                     break;
-                case SideMenuItemType.MyHistory:
+                case AppMenuItemType.MyHistory:
                     page = typeof(Pages.Main.HistoryPage);
                     break;
-                case SideMenuItemType.MyFavorite:
+                case AppMenuItemType.MyFavorite:
                     page = typeof(Pages.Main.FavoritePage);
                     break;
-                case SideMenuItemType.MyDownload:
+                case AppMenuItemType.MyDownload:
                     page = typeof(Pages.Main.DownloadPage);
                     break;
-                case SideMenuItemType.MyMessage:
+                case AppMenuItemType.MyMessage:
                     page = typeof(Pages.Main.MessagePage);
                     break;
-                case SideMenuItemType.ViewLater:
+                case AppMenuItemType.ViewLater:
                     page = typeof(Pages.Main.ViewLaterPage);
                     break;
-                case SideMenuItemType.Settings:
-                    page = typeof(Pages.Main.SettingPage);
+                case AppMenuItemType.Settings:
+                    page = typeof(Pages_Share.Main.SettingPage);
                     break;
-                case SideMenuItemType.Help:
-                    page = typeof(Pages.Main.HelpPage);
+                case AppMenuItemType.Help:
+                    page = typeof(Pages_Share.Main.HelpPage);
                     break;
-                case SideMenuItemType.VideoPlayer:
+                case AppMenuItemType.VideoPlayer:
                     page = typeof(Pages.Main.VideoPage);
                     break;
-                case SideMenuItemType.BangumiPlayer:
+                case AppMenuItemType.BangumiPlayer:
                     page = typeof(Pages.Main.BangumiPage);
                     break;
-                case SideMenuItemType.MiniPlayer:
+                case AppMenuItemType.MiniPlayer:
                     page = typeof(Pages.Main.MiniPlayerPage);
                     break;
-                case SideMenuItemType.Region:
+                case AppMenuItemType.Region:
                     page = typeof(Pages.Main.RegionPage);
                     break;
                 default:
@@ -224,39 +213,39 @@ namespace BiliBili_UWP.Components.Layout
             }
             return page;
         }
-        private SideMenuItemType GetMenuTypeFromPageType(Type type)
+        private AppMenuItemType GetMenuTypeFromPageType(Type type)
         {
-            SideMenuItemType result = SideMenuItemType.Line;
+            AppMenuItemType result = AppMenuItemType.Line;
             if (type.Equals(typeof(Pages.Main.HomePage)))
-                result = SideMenuItemType.Home;
+                result = AppMenuItemType.Home;
             else if (type.Equals(typeof(Pages.Main.AnimePage)))
-                result = SideMenuItemType.Anime;
+                result = AppMenuItemType.Anime;
             else if (type.Equals(typeof(Pages.Main.DynamicPage)))
-                result = SideMenuItemType.Dynamic;
+                result = AppMenuItemType.Dynamic;
             else if (type.Equals(typeof(Pages.Main.RegionPage)))
-                result = SideMenuItemType.Region;
+                result = AppMenuItemType.Region;
             else if (type.Equals(typeof(Pages.Main.VideoPage)))
-                result = SideMenuItemType.VideoPlayer;
+                result = AppMenuItemType.VideoPlayer;
             else if (type.Equals(typeof(Pages.Main.BangumiPage)))
-                result = SideMenuItemType.BangumiPlayer;
+                result = AppMenuItemType.BangumiPlayer;
             else if (type.Equals(typeof(Pages.Main.HistoryPage)))
-                result = SideMenuItemType.MyHistory;
+                result = AppMenuItemType.MyHistory;
             else if (type.Equals(typeof(Pages.Main.FavoritePage)))
-                result = SideMenuItemType.MyFavorite;
+                result = AppMenuItemType.MyFavorite;
             else if (type.Equals(typeof(Pages.Main.ViewLaterPage)))
-                result = SideMenuItemType.ViewLater;
+                result = AppMenuItemType.ViewLater;
             else if (type.Equals(typeof(Pages.Main.LivePage)))
-                result = SideMenuItemType.Live;
+                result = AppMenuItemType.Live;
             else if (type.Equals(typeof(Pages.Main.RankPage)))
-                result = SideMenuItemType.Rank;
-            else if (type.Equals(typeof(Pages.Main.SettingPage)))
-                result = SideMenuItemType.Settings;
+                result = AppMenuItemType.Rank;
+            else if (type.Equals(typeof(Pages_Share.Main.SettingPage)))
+                result = AppMenuItemType.Settings;
             else if (type.Equals(typeof(Pages.Main.DownloadPage)))
-                result = SideMenuItemType.MyDownload;
+                result = AppMenuItemType.MyDownload;
             else if (type.Equals(typeof(Pages.Main.MessagePage)))
-                result = SideMenuItemType.MyMessage;
-            else if (type.Equals(typeof(Pages.Main.HelpPage)))
-                result = SideMenuItemType.Help;
+                result = AppMenuItemType.MyMessage;
+            else if (type.Equals(typeof(Pages_Share.Main.HelpPage)))
+                result = AppMenuItemType.Help;
             return result;
         }
 
@@ -315,11 +304,6 @@ namespace BiliBili_UWP.Components.Layout
             }
         }
 
-        private void ClosePaneButton_Click(object sender, RoutedEventArgs e)
-        {
-            PageSplitView.IsPaneOpen = false;
-        }
-
         private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             var width = e.NewSize.Width;
@@ -332,7 +316,7 @@ namespace BiliBili_UWP.Components.Layout
         private void PageSplitView_PaneClosing(SplitView sender, SplitViewPaneClosingEventArgs args)
         {
             MaskGrid.Visibility = Visibility.Collapsed;
-            SubPageFrame.Visibility = Visibility.Collapsed;
+            SubPageControl.FrameVisibility = Visibility.Collapsed;
             OpenPaneButton.Visibility = Visibility.Visible;
         }
 
@@ -340,74 +324,13 @@ namespace BiliBili_UWP.Components.Layout
         {
             if (PageSplitView.DisplayMode == SplitViewDisplayMode.CompactOverlay)
                 MaskGrid.Visibility = Visibility.Visible;
-            SubPageFrame.Visibility = Visibility.Visible;
+            SubPageControl.FrameVisibility = Visibility.Visible;
             OpenPaneButton.Visibility = Visibility.Collapsed;
-        }
-
-        public void NavigateToSubPage(Type page, object parameter = null, bool isBack = false)
-        {
-            PageSplitView.IsPaneOpen = true;
-            var last = SubFrameHistoryList.LastOrDefault();
-            bool isRepeat = false;
-            if (last != null && last.Item1 == page && last.Item2 == parameter)
-                isRepeat = true;
-            NavigationTransitionInfo transitionInfo = null;
-            if (!App.AppViewModel.IsEnableAnimation)
-                transitionInfo = new SuppressNavigationTransitionInfo();
-            else
-                transitionInfo = new DrillInNavigationTransitionInfo();
-            SubPageFrame.Navigate(page, parameter, transitionInfo);
-            if (!isBack)
-            {
-                if (!isRepeat)
-                {
-                    if (page.Equals(typeof(Pages.Sub.ReplyPage)))
-                        SubFrameHistoryList.RemoveAll(p => p.Item1 == page);
-                    SubFrameHistoryList.Add(new Tuple<Type, object>(page, parameter));
-                }
-                if (SubFrameHistoryList.Count > 1)
-                {
-                    SubBackButton.Visibility = Visibility.Visible;
-                }
-            }
         }
 
         private void PageFrame_Navigated(object sender, NavigationEventArgs e)
         {
             App.AppViewModel.CurrentPageType = e.SourcePageType;
-        }
-
-        private async void SubRefreshButton_Click(object sender, RoutedEventArgs e)
-        {
-            var sub = SubPageFrame.Content as IRefreshPage;
-            if (sub != null)
-            {
-                SubRefreshButton.IsEnabled = false;
-                LoadingBar.Visibility = Visibility.Visible;
-                await sub.Refresh();
-                LoadingBar.Visibility = Visibility.Collapsed;
-                SubRefreshButton.IsEnabled = true;
-            }
-        }
-
-        private void SubBackButton_Click(object sender, RoutedEventArgs e)
-        {
-            SubPageBack();
-        }
-
-        public void SubPageBack()
-        {
-            if (SubFrameHistoryList.Count <= 1)
-                return;
-            int c = SubFrameHistoryList.Count - 2;
-            var last = SubFrameHistoryList[c];
-            var previousType = last.Item1;
-            SubFrameHistoryList.RemoveAt(SubFrameHistoryList.Count - 1);
-            if (SubFrameHistoryList.Count <= 1)
-            {
-                SubBackButton.Visibility = Visibility.Collapsed;
-            }
-            NavigateToSubPage(previousType, last.Item2, true);
         }
 
         private void OpenPaneButton_Click(object sender, RoutedEventArgs e)
@@ -452,12 +375,11 @@ namespace BiliBili_UWP.Components.Layout
                     return true;
             }
             bool result = false;
-            if (SubFrameHistoryList.Count > 1
-                    && PageSplitView.IsPaneOpen
+            if (PageSplitView.IsPaneOpen
                     && PageSplitView.DisplayMode == SplitViewDisplayMode.CompactOverlay)
             {
                 result = true;
-                SubPageBack();
+                SubPageControl.SubPageBack();
             }
             else if (MainFrameHistoryList.Count > 1)
             {
@@ -467,7 +389,7 @@ namespace BiliBili_UWP.Components.Layout
             return result;
         }
 
-        public void RemoveMainHistory(SideMenuItemType type)
+        public void RemoveMainHistory(AppMenuItemType type)
         {
             var page = GetPageTypeFromMenuType(type);
             MainFrameHistoryList.RemoveAll(p => p.Item1 == page);
@@ -475,19 +397,18 @@ namespace BiliBili_UWP.Components.Layout
 
         public void CheckSubReplyPage()
         {
-            if(SubFrameHistoryList.Count>0 && SubFrameHistoryList.Last().Item1 == typeof(Pages.Sub.ReplyPage))
+            if(SubPageControl.CheckSubReplyPage())
             {
-                if(SubFrameHistoryList.Count>1)
-                    SubPageBack();
-                else
-                {
-                    SubPageFrame.Content = null;
-                    SubFrameHistoryList.Clear();
-                    IsSubPageOpen = false;
-                }
+                IsSubPageOpen = false;
+                return;
             }
             if (PageSplitView.DisplayMode == SplitViewDisplayMode.CompactOverlay && IsSubPageOpen)
                 IsSubPageOpen = false;
+        }
+
+        private void SubPageControl_CloseButtonClick(object sender, EventArgs e)
+        {
+            PageSplitView.IsPaneOpen = false;
         }
     }
 }

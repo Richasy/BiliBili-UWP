@@ -137,7 +137,7 @@ namespace BiliBili_UWP.Pages.Sub.Channel
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            App.AppViewModel.CurrentPagePanel.SubPageTitle = StaticString.CHANNEL_DETAIL;
+            App.AppViewModel.CurrentSubPageControl.SubPageTitle = StaticString.CHANNEL_DETAIL;
             if (e.NavigationMode == NavigationMode.Back)
                 return;
             if (e.Parameter != null && e.Parameter is int channelId)

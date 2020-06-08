@@ -77,7 +77,7 @@ namespace BiliBili_UWP.Components.Controls
         private void UserAvatar_Tapped(object sender, TappedRoutedEventArgs e)
         {
             e.Handled = true;
-            App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Pages.Sub.Account.DetailPage), Data.user.mid);
+            App.AppViewModel.NavigateToSubPage(typeof(Pages.Sub.Account.DetailPage), Data.user.mid);
         }
     }
 }

@@ -1,8 +1,8 @@
 ﻿<Page
-    x:Class="BiliBili_UWP.Pages.Main.HelpPage"
+    x:Class="BiliBili_UWP.Pages_Share.Main.HelpPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:BiliBili_UWP.Pages.Main"
+    xmlns:local="using:BiliBili_UWP.Pages_Share.Main"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:BiliBili_UWP.Components.Controls"
@@ -10,37 +10,39 @@
     xmlns:controls1="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d">
 
-    <Grid Padding="0,0,0,30">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        <TextBlock Style="{StaticResource HeaderTextStyle}" Text="帮助 &amp; 关于" VerticalAlignment="Center"/>
-        <Grid Margin="0,30,0,0" Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
+    <ScrollViewer Style="{StaticResource BasicScrollViewer}">
+        <Grid Padding="0,0,0,30">
             <Grid.RowDefinitions>
-                <RowDefinition Height="1*" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <StackPanel x:Name="MainContainer">
-                <controls1:MarkdownTextBlock Style="{StaticResource BasicMarkdownTextBlock}" x:Name="RenderBlock" MaxWidth="400" HorizontalAlignment="Left"
+            <TextBlock Style="{StaticResource HeaderTextStyle}" Text="帮助 &amp; 关于" VerticalAlignment="Center"/>
+            <Grid Margin="0,30,0,0" Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <StackPanel x:Name="MainContainer">
+                    <controls1:MarkdownTextBlock Style="{StaticResource BasicMarkdownTextBlock}" x:Name="RenderBlock" MaxWidth="400" HorizontalAlignment="Left"
                            TextWrapping="Wrap" LinkClicked="RenderBlock_LinkClicked" LinkForeground="{ThemeResource SecondaryColor}"/>
-                <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
-                    <widgets:AsyncButton Style="{StaticResource PrimaryAsyncButtonStyle}" Icon="&#xE901;" Text="开发者B站主页"
+                    <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+                        <widgets:AsyncButton Style="{StaticResource PrimaryAsyncButtonStyle}" Icon="&#xE901;" Text="开发者B站主页"
                                          x:Name="ToBiliButton" Click="ToBiliButton_Click"/>
-                    <widgets:AsyncButton Style="{StaticResource SecondaryAsyncButtonStyle}" Icon="&#xE996;" Text="发送邮件"
+                        <widgets:AsyncButton Style="{StaticResource SecondaryAsyncButtonStyle}" Icon="&#xE996;" Text="发送邮件"
                                          x:Name="SendMailButton" Click="SendMailButton_Click" Margin="15,0,0,0"/>
-                    <widgets:AsyncButton Style="{StaticResource DefaultAsyncButtonStyle}" Icon="&#xEA3B;" Text="更新历史"
+                        <widgets:AsyncButton Style="{StaticResource DefaultAsyncButtonStyle}" Icon="&#xEA3B;" Text="更新历史"
                                          x:Name="UpdateHistoryButton" Click="UpdateHistoryButton_Click" Margin="15,0,0,0"/>
+                    </StackPanel>
                 </StackPanel>
-            </StackPanel>
-            <StackPanel x:Name="SubContainer" Grid.Column="1">
-                <controls1:MarkdownTextBlock Style="{StaticResource BasicMarkdownTextBlock}" x:Name="ShortcutBlock" MaxWidth="400" HorizontalAlignment="Left"
+                <StackPanel x:Name="SubContainer" Grid.Column="1">
+                    <controls1:MarkdownTextBlock Style="{StaticResource BasicMarkdownTextBlock}" x:Name="ShortcutBlock" MaxWidth="400" HorizontalAlignment="Left"
                            TextWrapping="Wrap"/>
-            </StackPanel>
+                </StackPanel>
+            </Grid>
         </Grid>
-    </Grid>
+    </ScrollViewer>
 </Page>

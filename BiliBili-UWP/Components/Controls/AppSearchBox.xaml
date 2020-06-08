@@ -44,7 +44,7 @@
     </UserControl.Resources>
     <Grid>
         <AutoSuggestBox Style="{StaticResource BasicSearchBoxStyle}" x:Name="BiliSearchBox"
-                        KeyUp="BiliSearchBox_KeyUp" CornerRadius="20"
+                        KeyUp="BiliSearchBox_KeyUp" CornerRadius="20" Background="{x:Bind Background,Mode=OneWay}"
                         PlaceholderText="搜索" QuerySubmitted="BiliSearchBox_QuerySubmitted"
                         ItemTemplate="{StaticResource SuggestItemTemplate}"/>
         <Button Style="{StaticResource DefaultCircleButtonStyle}" HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="Collapsed"

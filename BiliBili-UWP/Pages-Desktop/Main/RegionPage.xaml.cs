@@ -115,7 +115,7 @@ namespace BiliBili_UWP.Pages.Main
 
         private void SubRegionButton_Click(object sender, RoutedEventArgs e)
         {
-            App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Sub.Video.SubRegionPage), _region);
+            App.AppViewModel.NavigateToSubPage(typeof(Sub.Video.SubRegionPage), _region);
         }
 
         private async void ScrollViewerBottomHandle()

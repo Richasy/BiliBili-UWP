@@ -44,7 +44,7 @@ namespace BiliBili_UWP.Pages.Sub.Anime
         }
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
-            App.AppViewModel.CurrentPagePanel.SubPageTitle = "索引";
+            App.AppViewModel.CurrentSubPageControl.SubPageTitle = "索引";
             if (e.NavigationMode == NavigationMode.Back)
                 return;
             if (e.Parameter != null)

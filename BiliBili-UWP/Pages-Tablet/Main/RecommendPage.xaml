@@ -1,0 +1,64 @@
+﻿<Page
+    x:Class="BiliBili_UWP.Pages_Tablet.Main.RecommendPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BiliBili_UWP.Pages_Tablet.Main"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:bilibili="using:BiliBili_Lib.Models.BiliBili" xmlns:controls="using:BiliBili_UWP.Components.Controls"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls" xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <DataTemplate x:DataType="bilibili:VideoRecommend" x:Key="VideoTemplate">
+            <controls:RecommendVideoCard IsCoverCard="True" Data="{x:Bind}" Margin="3"
+                                         NeedRemoveVideo="VideoContainer_NeedRemoveVideo" HorizontalAlignment="Stretch"/>
+        </DataTemplate>
+    </Page.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Grid>
+            <Grid Padding="30,20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <StackPanel>
+                    <TextBlock x:Name="TitleBlock" Style="{StaticResource HeaderTextStyle}" FontSize="{CustomResource LargeFontSize}" TextWrapping="Wrap"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+                        <PersonPicture Width="30" Height="30" x:Name="UserAvatar" Style="{StaticResource BasicPersonPictureStyle}"/>
+                        <TextBlock Style="{StaticResource TipTextStyle}" VerticalAlignment="Center" Margin="10,0,0,0" Foreground="{ThemeResource ImportantTextColor}" x:Name="UserNameBlock"/>
+                    </StackPanel>
+                    <TextBlock Style="{StaticResource BodyTextStyle}" x:Name="PublishBlock" Margin="0,20,0,0"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+                        <widgets:IconTextBlock Icon="" x:Name="PlayCountBlock" FontSize="{CustomResource BasicFontSize}" IconForeground="{ThemeResource NormalTextColor}"/>
+                        <widgets:IconTextBlock Icon="" x:Name="DanmakuCountBlock" Margin="15,0,0,0" FontSize="{CustomResource BasicFontSize}" IconForeground="{ThemeResource NormalTextColor}"/>
+                        <StackPanel Height="{CustomResource BasicFontSize}" Width="1" Background="{ThemeResource LineColor}"
+                                    Margin="15,0"/>
+                        <widgets:IconTextBlock Icon="" x:Name="LikeCountBlock" FontSize="{CustomResource BasicFontSize}" IconForeground="{ThemeResource NormalTextColor}"/>
+                        <widgets:IconTextBlock Icon="" x:Name="CoinCountBlock" Margin="15,0,0,0" FontSize="{CustomResource BasicFontSize}"
+                                               IconForeground="{ThemeResource NormalTextColor}"/>
+                        <widgets:IconTextBlock Icon="" x:Name="FavoriteCountBlock" Margin="15,0,0,0" IconForeground="{ThemeResource NormalTextColor}"
+                                               FontSize="{CustomResource BasicFontSize}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+                        <widgets:AsyncButton Icon="" Text="立即播放" Style="{StaticResource SecondaryAsyncButtonStyle}"
+                                             FontSize="{CustomResource SubFontSize}" Padding="20,10"/>
+                        <widgets:AsyncButton Icon="" Text="稍后再看" Style="{StaticResource DefaultAsyncButtonStyle}"
+                                             FontSize="{CustomResource SubFontSize}" Padding="20,10" Margin="20,0,0,0"/>
+                    </StackPanel>
+                </StackPanel>
+                <widgets:TrimTextBlock x:Name="DescriptionBlock" Grid.Row="1" Margin="0,15,0,0" HorizontalAlignment="Stretch" FontSize="{CustomResource BasicFontSize}"/>
+            </Grid>
+            <muxc:ProgressRing Style="{StaticResource MuxcProgressRingStyle}" x:Name="LoadingRing"/>
+        </Grid>
+        <Grid Grid.Column="1">
+            <ListView x:Name="VideoView" ItemContainerStyle="{StaticResource TransparentListViewContainerStyle}" ItemsSource="{x:Bind VideoCollection}"
+                  Style="{StaticResource BasicListView}" Padding="30,10" ItemTemplate="{StaticResource VideoTemplate}"
+                  HorizontalAlignment="Right" SelectionChanged="VideoView_SelectionChanged" SelectionMode="Single"/>
+            <TextBlock Style="{StaticResource TipTextStyle}" Text="无法加载推荐视频列表" FontWeight="Bold" VerticalAlignment="Center"
+                           x:Name="HolderText" Visibility="Collapsed"/>
+        </Grid>
+    </Grid>
+</Page>

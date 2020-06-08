@@ -50,7 +50,7 @@ namespace BiliBili_UWP.Pages.Sub.Video
             {
                 _regionContainer = _con;
             }
-            App.AppViewModel.CurrentPagePanel.SubPageTitle = _regionContainer.name + "分区";
+            App.AppViewModel.CurrentSubPageControl.SubPageTitle = _regionContainer.name + "分区";
             await Refresh();
             _isInit = true;
         }
