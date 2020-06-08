@@ -231,7 +231,7 @@ namespace BiliBili_UWP.Models.Core
             if (isFull)
             {
                 page.RemovePlayer();
-                MainPage.Current.InsertPlayer();
+                DesktopMainPage.Current.InsertPlayer();
                 ApplicationView.GetForCurrentView().TryEnterFullScreenMode();
             }
             else
@@ -239,7 +239,7 @@ namespace BiliBili_UWP.Models.Core
                 ApplicationView.GetForCurrentView().ExitFullScreenMode();
                 if (!CurrentVideoPlayer.MTC.IsCinema)
                 {
-                    MainPage.Current.RemovePlayer();
+                    DesktopMainPage.Current.RemovePlayer();
                     page.InsertPlayer();
                     CurrentVideoPlayer.DanmakuBarVisibility = Visibility.Visible;
                 }
@@ -255,13 +255,13 @@ namespace BiliBili_UWP.Models.Core
             if (isCinema)
             {
                 page.RemovePlayer();
-                MainPage.Current.InsertPlayer();
+                DesktopMainPage.Current.InsertPlayer();
             }
             else
             {
                 if (!CurrentVideoPlayer.MTC.IsFullWindow)
                 {
-                    MainPage.Current.RemovePlayer();
+                    DesktopMainPage.Current.RemovePlayer();
                     page.InsertPlayer();
                 }
             }
@@ -276,14 +276,14 @@ namespace BiliBili_UWP.Models.Core
             if (isCompact)
             {
                 page.RemovePlayer();
-                MainPage.Current.InsertPlayer();
+                DesktopMainPage.Current.InsertPlayer();
                 await ApplicationView.GetForCurrentView().TryEnterViewModeAsync(ApplicationViewMode.CompactOverlay);
             }
             else
             {
                 if (!CurrentVideoPlayer.MTC.IsCompactOverlay)
                 {
-                    MainPage.Current.RemovePlayer();
+                    DesktopMainPage.Current.RemovePlayer();
                     page.InsertPlayer();
                     CurrentVideoPlayer.DanmakuBarVisibility = Visibility.Visible;
                     await ApplicationView.GetForCurrentView().TryEnterViewModeAsync(ApplicationViewMode.Default);

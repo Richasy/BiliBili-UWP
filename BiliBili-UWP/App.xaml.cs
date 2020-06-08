@@ -42,15 +42,17 @@ namespace BiliBili_UWP
         public static BiliViewModel BiliViewModel;
         public static ILogger _logger = LogManagerFactory.CreateLogManager().GetLogger("应用程序");
         public static Stopwatch _watch = new Stopwatch();
+        public static bool _isTabletMode;
         public App()
         {
             this.InitializeComponent();
-            CustomXamlResourceLoader.Current = new CustomResourceLoader();   
+            CustomXamlResourceLoader.Current = new CustomResourceLoader();
             this.Suspending += OnSuspending;
             UnhandledException += OnUnhandleException;
             EnteredBackground += App_EnteredBackground;
             LeavingBackground += App_LeavingBackground;
             bool isThemeWithSystem = AppTool.GetBoolSetting(Settings.IsThemeWithSystem);
+            _isTabletMode = AppTool.GetLocalSetting(Settings.DisplayMode, "Desktop") == "Tablet";
             if (!isThemeWithSystem)
             {
                 string theme = AppTool.GetLocalSetting(Settings.Theme, "Light");
@@ -115,7 +117,10 @@ namespace BiliBili_UWP
                 {
                     if (rootFrame.Content == null)
                     {
-                        rootFrame.Navigate(typeof(MainPage), (e as LaunchActivatedEventArgs).Arguments);
+                        if (_isTabletMode)
+                            rootFrame.Navigate(typeof(TabletMainPage), (e as LaunchActivatedEventArgs).Arguments);
+                        else
+                            rootFrame.Navigate(typeof(DesktopMainPage), (e as LaunchActivatedEventArgs).Arguments);
                     }
                     // Ensure the current window is active
 
@@ -124,14 +129,20 @@ namespace BiliBili_UWP
                 {
                     if (rootFrame.Content == null)
                     {
-                        rootFrame.Navigate(typeof(MainPage));
+                        if (_isTabletMode)
+                            rootFrame.Navigate(typeof(TabletMainPage));
+                        else
+                            rootFrame.Navigate(typeof(DesktopMainPage));
                     }
                 }
                 else if (e is ToastNotificationActivatedEventArgs toastActivationArgs)
                 {
                     if (rootFrame.Content == null)
                     {
-                        rootFrame.Navigate(typeof(MainPage), toastActivationArgs.Argument);
+                        if (_isTabletMode)
+                            rootFrame.Navigate(typeof(TabletMainPage), toastActivationArgs.Argument);
+                        else
+                            rootFrame.Navigate(typeof(DesktopMainPage), toastActivationArgs.Argument);
                     }
                     else
                     {
@@ -143,7 +154,10 @@ namespace BiliBili_UWP
                     string arg = protocalArgs.Uri.Query.Replace("?", "");
                     if (rootFrame.Content == null)
                     {
-                        rootFrame.Navigate(typeof(MainPage), arg);
+                        if (_isTabletMode)
+                            rootFrame.Navigate(typeof(TabletMainPage), arg);
+                        else
+                            rootFrame.Navigate(typeof(DesktopMainPage), arg);
                     }
                     else
                     {

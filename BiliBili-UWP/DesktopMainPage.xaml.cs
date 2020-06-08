@@ -25,12 +25,12 @@ namespace BiliBili_UWP
     /// <summary>
     /// 可用于自身或导航至 Frame 内部的空白页。
     /// </summary>
-    public sealed partial class MainPage : Page
+    public sealed partial class DesktopMainPage : Page
     {
         private bool _isInit = false;
         string tempArgument = string.Empty;
-        public static MainPage Current;
-        public MainPage()
+        public static DesktopMainPage Current;
+        public DesktopMainPage()
         {
             App.AppViewModel = new AppViewModel();
             App.BiliViewModel = new BiliViewModel();

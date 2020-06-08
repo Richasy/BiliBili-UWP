@@ -1,5 +1,5 @@
 ﻿<Page
-    x:Class="BiliBili_UWP.MainPage"
+    x:Class="BiliBili_UWP.DesktopMainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:BiliBili_UWP"
