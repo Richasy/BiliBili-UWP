@@ -99,6 +99,25 @@ namespace BiliBili_UWP.Components.Controls
         public static readonly DependencyProperty IsItemClickEnabledProperty =
             DependencyProperty.Register("IsItemClickEnabled", typeof(bool), typeof(HorizontalScrollSectionPanel), new PropertyMetadata(true));
 
+        public string CustomButtonIcon
+        {
+            get { return (string)GetValue(CustomButtonIconProperty); }
+            set { SetValue(CustomButtonIconProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for CustomButtonIcon.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty CustomButtonIconProperty =
+            DependencyProperty.Register("CustomButtonIcon", typeof(string), typeof(HorizontalScrollSectionPanel), new PropertyMetadata("\ue9c7"));
+
+        public string CustomButtonText
+        {
+            get { return (string)GetValue(CustomButtonTextProperty); }
+            set { SetValue(CustomButtonTextProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for CustomButtonText.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty CustomButtonTextProperty =
+            DependencyProperty.Register("CustomButtonText", typeof(string), typeof(HorizontalScrollSectionPanel), new PropertyMetadata("换一换"));
 
 
         private void ShowListView_ItemClick(object sender, ItemClickEventArgs e)

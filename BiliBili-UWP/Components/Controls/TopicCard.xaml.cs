@@ -1,6 +1,7 @@
 ﻿using BiliBili_Lib.Models.BiliBili;
 using BiliBili_Lib.Tools;
 using BiliBili_UWP.Components.Widgets;
+using BiliBili_UWP.Dialogs;
 using BiliBili_UWP.Models.Enums;
 using BiliBili_UWP.Models.UI;
 using Newtonsoft.Json;
@@ -11,8 +12,10 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text.RegularExpressions;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage.Streams;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -42,7 +45,7 @@ namespace BiliBili_UWP.Components.Controls
 
         // Using a DependencyProperty as the backing store for Data.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty DataProperty =
-            DependencyProperty.Register("Data", typeof(Topic), typeof(TopicCard), new PropertyMetadata(null,new PropertyChangedCallback(Data_Changed)));
+            DependencyProperty.Register("Data", typeof(Topic), typeof(TopicCard), new PropertyMetadata(null, new PropertyChangedCallback(Data_Changed)));
 
         private static void Data_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -58,6 +61,18 @@ namespace BiliBili_UWP.Components.Controls
                 }
             }
         }
+
+        public bool EnableConnectAnimation
+        {
+            get { return (bool)GetValue(EnableConnectAnimationProperty); }
+            set { SetValue(EnableConnectAnimationProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for EnableConnectAnimation.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty EnableConnectAnimationProperty =
+            DependencyProperty.Register("EnableConnectAnimation", typeof(bool), typeof(TopicCard), new PropertyMetadata(true));
+
+
 
         public bool IsUsePhase
         {
@@ -115,6 +130,7 @@ namespace BiliBili_UWP.Components.Controls
         private void BodyInit(Topic data)
         {
             MainDisplay.Visibility = Visibility.Visible;
+            MoreButton.Visibility = Visibility.Collapsed;
             if (data.display != null && data.display.emoji_info != null && data.display.emoji_info.emoji_details.Count > 0)
             {
                 var dict = new Dictionary<string, Emote>();
@@ -133,6 +149,7 @@ namespace BiliBili_UWP.Components.Controls
                     DescriptionBlock.Text = Regex.Replace(info.dynamic, @"#(.*?)#", "").Trim();
                 DescriptionBlock.Visibility = string.IsNullOrEmpty(DescriptionBlock.Text) ? Visibility.Collapsed : Visibility.Visible;
                 CommentBlock.Text = AppTool.GetNumberAbbreviation(info.stat.reply);
+                MoreButton.Visibility = Visibility.Visible;
                 MainDisplay.Data = info;
             }
             else if (data.desc.type == 1)
@@ -172,7 +189,7 @@ namespace BiliBili_UWP.Components.Controls
                 CommentBlock.Text = AppTool.GetNumberAbbreviation(info.stats.reply);
                 MainDisplay.Data = info;
             }
-            else if (data.desc.type == 512)
+            else if (data.desc.type == 512 || data.desc.type == 4101)
             {
                 //动漫
                 var info = JsonConvert.DeserializeObject<AnimeDynamic>(data.card);
@@ -231,24 +248,10 @@ namespace BiliBili_UWP.Components.Controls
                 CommentBlock.Text = "";
                 MainDisplay.Data = info;
             }
-            else if (data.desc.type == 4101)
-            {
-                //电视剧
-                var info = JsonConvert.DeserializeObject<SeriesDynamic>(data.card);
-                if (!string.IsNullOrEmpty(info.new_desc))
-                    DescriptionBlock.Text = info.new_desc;
-                DescriptionBlock.Visibility = string.IsNullOrEmpty(info.new_desc) ? Visibility.Collapsed : Visibility.Visible;
-                CommentBlock.Text = AppTool.GetNumberAbbreviation(info.stat.reply);
-            }
             else
             {
                 string yo = "";
             }
-        }
-
-        private void RepostButton_Click(object sender, RoutedEventArgs e)
-        {
-
         }
 
         private void CommentButton_Click(object sender, RoutedEventArgs e)
@@ -273,7 +276,11 @@ namespace BiliBili_UWP.Components.Controls
             else if (MainDisplay._cardType == "shortVideo")
                 type = "5";
             else if (MainDisplay._cardType == "music")
+            {
+                var music = MainDisplay.Data as MusicDynamic;
+                param["oid"] = music.id.ToString();
                 type = "14";
+            }
             param.Add("type", type);
             App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Pages.Sub.ReplyPage), param);
         }
@@ -347,6 +354,8 @@ namespace BiliBili_UWP.Components.Controls
             TagList.Opacity = 0;
             MainDisplay.Opacity = 0;
             ButtonContainer.Opacity = 0;
+            if (Data == null)
+                Data = args.Item as Topic;
 
             args.RegisterUpdateCallback(RenderHeader);
         }
@@ -381,9 +390,54 @@ namespace BiliBili_UWP.Components.Controls
             MainDisplay.Opacity = 1;
         }
 
+        private void ShareDynamicButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (!App.BiliViewModel.CheckAccoutStatus())
+                return;
+            string content = DescriptionBlock.Text;
+            if (string.IsNullOrEmpty(content))
+            {
+                if (MainDisplay.Data is RepostDynamic rep)
+                    content = rep.item.content;
+                else if (MainDisplay.Data is AnimeDynamic ani)
+                    content = ani.show_title;
+                else
+                    content = $"{Data.desc.user_profile.info.uname}的动态";
+            }
+            App.AppViewModel.ShowRepostPopup(content, Data);
+        }
 
-        
+        private void ShareDataButton_Click(object sender, RoutedEventArgs e)
+        {
+            DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();
+            dataTransferManager.DataRequested += DataTransferManager_DataRequested;
+            DataTransferManager.ShowShareUI();
+        }
 
+        private void DataTransferManager_DataRequested(DataTransferManager sender, DataRequestedEventArgs args)
+        {
+            DataRequest request = args.Request;
+            if (!string.IsNullOrEmpty(MainDisplay.Title))
+                request.Data.Properties.Title = MainDisplay.Title;
+            else if (Data.desc.user_profile != null && Data.desc.user_profile.info != null)
+                request.Data.Properties.Title = $"{Data.desc.user_profile.info.uname}的动态";
+            request.Data.Properties.Description = DescriptionBlock.Text ?? "";
+            if (!string.IsNullOrEmpty(DescriptionBlock.Text))
+                request.Data.SetText(DescriptionBlock.Text);
+            else if (MainDisplay.Data is RepostDynamic rep)
+                request.Data.SetText(rep.item.content);
+            if (!string.IsNullOrEmpty(MainDisplay.Url))
+                request.Data.SetWebLink(new Uri(MainDisplay.Url));
+            else
+                request.Data.SetWebLink(new Uri($"https://t.bilibili.com/{Data.desc.dynamic_id_str}?tab=2"));
+            if (!string.IsNullOrWhiteSpace(MainDisplay.ImageUrl))
+                request.Data.SetBitmap(RandomAccessStreamReference.CreateFromUri(new Uri(MainDisplay.ImageUrl)));
+        }
 
+        private async void LaterViewButton_Click(object sender, RoutedEventArgs e)
+        {
+            var data = MainDisplay.Data as VideoDynamic;
+            await App.BiliViewModel.AddViewLater(sender, data.aid);
+        }
     }
 }

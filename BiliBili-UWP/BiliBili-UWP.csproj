@@ -26,8 +26,8 @@
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x86|x64|arm|arm64</AppxBundlePlatforms>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
-    <PackageCertificateThumbprint>8903EAD53E770908B4AE5D4D2E30396C6BD51262</PackageCertificateThumbprint>
     <AppxSymbolPackageEnabled>True</AppxSymbolPackageEnabled>
+    <PackageCertificateThumbprint>8394841C23A7A629FF3D687EA040294A39099B0E</PackageCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -159,6 +159,15 @@
     <Compile Include="Components\Controls\HorizontalScrollSectionPanel.xaml.cs">
       <DependentUpon>HorizontalScrollSectionPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Components\Controls\MessageAtBlock.xaml.cs">
+      <DependentUpon>MessageAtBlock.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Controls\MessageLikeBlock.xaml.cs">
+      <DependentUpon>MessageLikeBlock.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Controls\MessageReplyBlock.xaml.cs">
+      <DependentUpon>MessageReplyBlock.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Components\Controls\RecommendVideoCard.xaml.cs">
       <DependentUpon>RecommendVideoCard.xaml</DependentUpon>
     </Compile>
@@ -173,6 +182,9 @@
     </Compile>
     <Compile Include="Components\Controls\ReplyTextBox.xaml.cs">
       <DependentUpon>ReplyTextBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Controls\RepostPopup.xaml.cs">
+      <DependentUpon>RepostPopup.xaml</DependentUpon>
     </Compile>
     <Compile Include="Components\Controls\ScanChannelPanel.xaml.cs">
       <DependentUpon>ScanChannelPanel.xaml</DependentUpon>
@@ -200,6 +212,9 @@
     </Compile>
     <Compile Include="Components\Others\UpdatePopup.xaml.cs">
       <DependentUpon>UpdatePopup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Widgets\AppBarComboBox.xaml.cs">
+      <DependentUpon>AppBarComboBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Components\Widgets\AsyncButton.xaml.cs">
       <DependentUpon>AsyncButton.xaml</DependentUpon>
@@ -246,8 +261,8 @@
     <Compile Include="Dialogs\ShowImageDialog.xaml.cs">
       <DependentUpon>ShowImageDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainPage.xaml.cs">
-      <DependentUpon>MainPage.xaml</DependentUpon>
+    <Compile Include="DesktopMainPage.xaml.cs">
+      <DependentUpon>DesktopMainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\Core\BiliViewModel.Account.cs" />
     <Compile Include="Models\Core\AppViewModel.cs" />
@@ -277,6 +292,7 @@
     <Compile Include="Models\UI\Interface\IAppPopup.cs" />
     <Compile Include="Models\UI\Interface\IPlayerPage.cs" />
     <Compile Include="Models\UI\Interface\IRefreshPage.cs" />
+    <Compile Include="Models\UI\Others\AtUserTemplateSelector.cs" />
     <Compile Include="Models\UI\Others\CustomResourceLoader.cs" />
     <Compile Include="Models\UI\Others\DanmakuColor.cs" />
     <Compile Include="Models\UI\Others\EmojiTemplateSelector.cs" />
@@ -285,95 +301,108 @@
     <Compile Include="Models\UI\Converter\SelectedColorConverter.cs" />
     <Compile Include="Models\UI\Others\SideMenuItemTemplateSelector.cs" />
     <Compile Include="Models\UI\Others\SystemFont.cs" />
+    <Compile Include="Models\UI\Others\VideoActiveArgs.cs" />
     <Compile Include="Models\UI\Others\VideoTransportControls.cs" />
     <Compile Include="Models\UI\SideMenuItem.cs" />
     <Compile Include="Models\UI\StaticString.cs" />
     <Compile Include="Models\UI\UIHelper.cs" />
-    <Compile Include="Pages\Main\BangumiPage.xaml.cs">
+    <Compile Include="Pages-Desktop\Main\BangumiPage.xaml.cs">
       <DependentUpon>BangumiPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Main\DownloadPage.xaml.cs">
+    <Compile Include="Pages-Desktop\Main\DownloadPage.xaml.cs">
       <DependentUpon>DownloadPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Main\DynamicPage.xaml.cs">
+    <Compile Include="Pages-Desktop\Main\DynamicPage.xaml.cs">
       <DependentUpon>DynamicPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Main\FavoritePage.xaml.cs">
+    <Compile Include="Pages-Desktop\Main\FavoritePage.xaml.cs">
       <DependentUpon>FavoritePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Main\HelpPage.xaml.cs">
+    <Compile Include="Pages-Share\Main\HelpPage.xaml.cs">
       <DependentUpon>HelpPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Main\HistoryPage.xaml.cs">
+    <Compile Include="Pages-Desktop\Main\HistoryPage.xaml.cs">
       <DependentUpon>HistoryPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Main\HomePage.xaml.cs">
+    <Compile Include="Pages-Desktop\Main\HomePage.xaml.cs">
       <DependentUpon>HomePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Main\AnimePage.xaml.cs">
+    <Compile Include="Pages-Desktop\Main\AnimePage.xaml.cs">
       <DependentUpon>AnimePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Main\LivePage.xaml.cs">
+    <Compile Include="Pages-Desktop\Main\LivePage.xaml.cs">
       <DependentUpon>LivePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Main\MiniPlayerPage.xaml.cs">
+    <Compile Include="Pages-Desktop\Main\MessagePage.xaml.cs">
+      <DependentUpon>MessagePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages-Desktop\Main\MiniPlayerPage.xaml.cs">
       <DependentUpon>MiniPlayerPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Main\NetworkErrorPage.xaml.cs">
+    <Compile Include="Pages-Desktop\Main\NetworkErrorPage.xaml.cs">
       <DependentUpon>NetworkErrorPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Main\RankPage.xaml.cs">
+    <Compile Include="Pages-Desktop\Main\RankPage.xaml.cs">
       <DependentUpon>RankPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Main\SettingPage.xaml.cs">
+    <Compile Include="Pages-Share\Main\SettingPage.xaml.cs">
       <DependentUpon>SettingPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Main\VideoPage.xaml.cs">
+    <Compile Include="Pages-Desktop\Main\VideoPage.xaml.cs">
       <DependentUpon>VideoPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Main\RegionPage.xaml.cs">
+    <Compile Include="Pages-Desktop\Main\RegionPage.xaml.cs">
       <DependentUpon>RegionPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Main\ViewLaterPage.xaml.cs">
+    <Compile Include="Pages-Desktop\Main\ViewLaterPage.xaml.cs">
       <DependentUpon>ViewLaterPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Sub\Account\DetailPage.xaml.cs">
+    <Compile Include="Pages-Share\Sub\Account\DetailPage.xaml.cs">
       <DependentUpon>DetailPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Sub\Account\FansPage.xaml.cs">
+    <Compile Include="Pages-Share\Sub\Account\FansPage.xaml.cs">
       <DependentUpon>FansPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Sub\Account\FavoritePage.xaml.cs">
+    <Compile Include="Pages-Share\Sub\Account\FavoriteAnimePage.xaml.cs">
+      <DependentUpon>FavoriteAnimePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages-Share\Sub\Account\FavoritePage.xaml.cs">
       <DependentUpon>FavoritePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Sub\Account\FollowPage.xaml.cs">
+    <Compile Include="Pages-Share\Sub\Account\FollowPage.xaml.cs">
       <DependentUpon>FollowPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Sub\Anime\IndexPage.xaml.cs">
+    <Compile Include="Pages-Share\Sub\Anime\IndexPage.xaml.cs">
       <DependentUpon>IndexPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Sub\Anime\TimelinePage.xaml.cs">
+    <Compile Include="Pages-Share\Sub\Anime\TimelinePage.xaml.cs">
       <DependentUpon>TimelinePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Sub\Channel\ChannelDetailPage.xaml.cs">
+    <Compile Include="Pages-Share\Sub\Channel\ChannelDetailPage.xaml.cs">
       <DependentUpon>ChannelDetailPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Sub\Channel\ChannelListPage.xaml.cs">
+    <Compile Include="Pages-Share\Sub\Channel\ChannelListPage.xaml.cs">
       <DependentUpon>ChannelListPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Sub\Channel\TagDetailPage.xaml.cs">
+    <Compile Include="Pages-Share\Sub\Channel\TagDetailPage.xaml.cs">
       <DependentUpon>TagDetailPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Sub\ReplyPage.xaml.cs">
+    <Compile Include="Pages-Share\Sub\ReplyPage.xaml.cs">
       <DependentUpon>ReplyPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Sub\SearchPage.xaml.cs">
+    <Compile Include="Pages-Share\Sub\SearchPage.xaml.cs">
       <DependentUpon>SearchPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Sub\Video\SubRegionPage.xaml.cs">
+    <Compile Include="Pages-Share\Sub\Video\SubRegionPage.xaml.cs">
       <DependentUpon>SubRegionPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Pages-Tablet\Main\HomePage.xaml.cs">
+      <DependentUpon>HomePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TabletMainPage.xaml.cs">
+      <DependentUpon>TabletMainPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -529,6 +558,18 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Components\Controls\MessageAtBlock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\Controls\MessageLikeBlock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\Controls\MessageReplyBlock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Components\Controls\RecommendVideoCard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -546,6 +587,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Components\Controls\ReplyTextBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\Controls\RepostPopup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -582,6 +627,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Components\Others\UpdatePopup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\Widgets\AppBarComboBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -645,119 +694,135 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainPage.xaml">
+    <Page Include="DesktopMainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Pages\Main\BangumiPage.xaml">
+    <Page Include="Pages-Desktop\Main\BangumiPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\Main\DownloadPage.xaml">
+    <Page Include="Pages-Desktop\Main\DownloadPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\Main\DynamicPage.xaml">
+    <Page Include="Pages-Desktop\Main\DynamicPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\Main\FavoritePage.xaml">
+    <Page Include="Pages-Desktop\Main\FavoritePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\Main\HelpPage.xaml">
+    <Page Include="Pages-Share\Main\HelpPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\Main\HistoryPage.xaml">
+    <Page Include="Pages-Desktop\Main\HistoryPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\Main\HomePage.xaml">
+    <Page Include="Pages-Desktop\Main\HomePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\Main\AnimePage.xaml">
+    <Page Include="Pages-Desktop\Main\AnimePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\Main\LivePage.xaml">
+    <Page Include="Pages-Desktop\Main\LivePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\Main\MiniPlayerPage.xaml">
+    <Page Include="Pages-Desktop\Main\MessagePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\Main\NetworkErrorPage.xaml">
+    <Page Include="Pages-Desktop\Main\MiniPlayerPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\Main\RankPage.xaml">
+    <Page Include="Pages-Desktop\Main\NetworkErrorPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\Main\SettingPage.xaml">
+    <Page Include="Pages-Desktop\Main\RankPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\Main\VideoPage.xaml">
+    <Page Include="Pages-Share\Main\SettingPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\Main\RegionPage.xaml">
+    <Page Include="Pages-Desktop\Main\VideoPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\Main\ViewLaterPage.xaml">
+    <Page Include="Pages-Desktop\Main\RegionPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\Sub\Account\DetailPage.xaml">
+    <Page Include="Pages-Desktop\Main\ViewLaterPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\Sub\Account\FansPage.xaml">
+    <Page Include="Pages-Share\Sub\Account\DetailPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\Sub\Account\FavoritePage.xaml">
+    <Page Include="Pages-Share\Sub\Account\FansPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\Sub\Account\FollowPage.xaml">
+    <Page Include="Pages-Share\Sub\Account\FavoriteAnimePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\Sub\Anime\IndexPage.xaml">
+    <Page Include="Pages-Share\Sub\Account\FavoritePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\Sub\Anime\TimelinePage.xaml">
+    <Page Include="Pages-Share\Sub\Account\FollowPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\Sub\Channel\ChannelDetailPage.xaml">
+    <Page Include="Pages-Share\Sub\Anime\IndexPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\Sub\Channel\ChannelListPage.xaml">
+    <Page Include="Pages-Share\Sub\Anime\TimelinePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\Sub\Channel\TagDetailPage.xaml">
+    <Page Include="Pages-Share\Sub\Channel\ChannelDetailPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\Sub\ReplyPage.xaml">
+    <Page Include="Pages-Share\Sub\Channel\ChannelListPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\Sub\SearchPage.xaml">
+    <Page Include="Pages-Share\Sub\Channel\TagDetailPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\Sub\Video\SubRegionPage.xaml">
+    <Page Include="Pages-Share\Sub\ReplyPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages-Share\Sub\SearchPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages-Share\Sub\Video\SubRegionPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages-Tablet\Main\HomePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TabletMainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -827,9 +892,6 @@
     <PackageReference Include="Microsoft.UI.Xaml">
       <Version>2.4.0</Version>
     </PackageReference>
-    <PackageReference Include="NSDanmaku">
-      <Version>1.5.0</Version>
-    </PackageReference>
     <PackageReference Include="SharpDX.Direct2D1">
       <Version>4.0.1</Version>
     </PackageReference>
@@ -852,6 +914,10 @@
     <ProjectReference Include="..\BiliBili-Notification\BiliBili-Notification.csproj">
       <Project>{8d373cb3-e4fd-474e-aeb6-f3c7c8813680}</Project>
       <Name>BiliBili-Notification</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NSDanmaku\NSDanmaku.csproj">
+      <Project>{964d5bcc-c063-45cc-aeea-89169e4a2e5e}</Project>
+      <Name>NSDanmaku</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

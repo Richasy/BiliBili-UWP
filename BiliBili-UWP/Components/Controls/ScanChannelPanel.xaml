@@ -19,8 +19,8 @@
                     <RowDefinition Height="1*" />
                 </Grid.RowDefinitions>
                 <Grid>
-                    <widgets:BiliImage Source="{x:Bind render_background}" DecodePixelWidth="105"
-                                      CornerRadius="4,4,0,0" Height="40"/>
+                    <widgets:BiliImage Source="{x:Bind render_background}" DecodePixelWidth="105" MaxHeight="42"
+                                      CornerRadius="4,4,0,0" DisplayType="Rect" VerticalAlignment="Stretch" Stretch="UniformToFill"/>
                     <Border Background="{Binding Converter={StaticResource ChannelHeaderMaskConverter}}" CornerRadius="4,4,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
                 </Grid>
                 <StackPanel Grid.RowSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0,20,0,0">

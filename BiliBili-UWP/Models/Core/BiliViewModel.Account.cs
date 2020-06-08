@@ -43,6 +43,7 @@ namespace BiliBili_UWP.Models.Core
 
         public event EventHandler<bool> IsLoginChanged;
         public event EventHandler MyInfoChanged;
+        public DispatcherTimer _messageTimer = new DispatcherTimer() { Interval = TimeSpan.FromMinutes(10) };
         public LoginPopup LoginPopup;
         public void ShowLoginPopup()
         {
@@ -51,6 +52,24 @@ namespace BiliBili_UWP.Models.Core
             LoginPopup.ShowPopup();
         }
 
+        private async void MessageTimer_Tick(object sender, object e)
+        {
+            await CheckUnreadMessage();
+            await _client.Account.SSO();
+        }
+
+        public async Task CheckUnreadMessage()
+        {
+            if (IsLogin)
+            {
+                var unread = await _client.Account.GetMyUnreadMessageAsync();
+                if (unread != null)
+                {
+                    int total = unread.like + unread.reply + unread.at;
+                    App.AppViewModel.CurrentSidePanel.SetMenuItemUnread(Enums.SideMenuItemType.MyMessage, total);
+                }
+            }
+        }
 
         /// <summary>
         /// 获取我的个人信息
@@ -64,7 +83,7 @@ namespace BiliBili_UWP.Models.Core
                 if (!IsLogin)
                 {
                     IsLogin = true;
-                } 
+                }
             }
         }
 
@@ -113,6 +132,7 @@ namespace BiliBili_UWP.Models.Core
                 await _client.Account.SSO();
                 IsLogin = false;
             }
+            await CheckUnreadMessage();
         }
         /// <summary>
         /// 检查用户是否登录

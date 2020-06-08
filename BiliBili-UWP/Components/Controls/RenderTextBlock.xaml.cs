@@ -1,4 +1,5 @@
 ﻿using BiliBili_Lib.Models.BiliBili;
+using BiliBili_Lib.Tools;
 using BiliBili_UWP.Models.UI;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,7 @@ namespace BiliBili_UWP.Components.Controls
 {
     public sealed partial class RenderTextBlock : UserControl
     {
+        
         public RenderTextBlock()
         {
             this.InitializeComponent();
@@ -33,12 +35,24 @@ namespace BiliBili_UWP.Components.Controls
 
         public void RenderText(string text)
         {
+            text = text.Replace("\n", "\n\n");
             if (EmoteSource != null && EmoteSource.Count > 0)
             {
                 foreach (var item in EmoteSource)
                 {
-                    double width = item.Value.meta.size * FontSize;
+                    double width = item.Value.meta.size * Convert.ToInt32(FontSize);
                     text = text.Replace(item.Key, $"<sub>!{item.Key}({item.Value.url} ={width})</sub>");
+                }
+            }
+            else
+            {
+                foreach (var item in App.BiliViewModel._emojis)
+                {
+                    if (text.Contains(item.name))
+                    {
+                        double width = Convert.ToInt32(item.size) * Convert.ToInt32(FontSize);
+                        text = text.Replace(item.name, $"<sub>!{item.name}({item.url} ={width})</sub>");
+                    }
                 }
             }
             richBlock.Text = text;
@@ -71,7 +85,7 @@ namespace BiliBili_UWP.Components.Controls
 
         // Using a DependencyProperty as the backing store for FontSize.  This enables animation, styling, binding, etc...
         public static new readonly DependencyProperty FontSizeProperty =
-            DependencyProperty.Register("FontSize", typeof(double), typeof(RenderTextBlock), new PropertyMetadata(13.0));
+            DependencyProperty.Register("FontSize", typeof(double), typeof(RenderTextBlock), new PropertyMetadata(App.AppViewModel.BasicFontSize));
 
         public new Brush Foreground
         {
@@ -91,7 +105,7 @@ namespace BiliBili_UWP.Components.Controls
 
         // Using a DependencyProperty as the backing store for LineHeight.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty LineHeightProperty =
-            DependencyProperty.Register("LineHeight", typeof(int), typeof(RenderTextBlock), new PropertyMetadata(20));
+            DependencyProperty.Register("LineHeight", typeof(int), typeof(RenderTextBlock), new PropertyMetadata(Convert.ToInt32(Math.Floor(App.AppViewModel.BasicFontSize*1.3))));
 
         public Dictionary<string, Emote> EmoteSource
         {
@@ -105,9 +119,9 @@ namespace BiliBili_UWP.Components.Controls
 
 
 
-        private async void richBlock_LinkClicked(object sender, Microsoft.Toolkit.Uwp.UI.Controls.LinkClickedEventArgs e)
+        private void richBlock_LinkClicked(object sender, Microsoft.Toolkit.Uwp.UI.Controls.LinkClickedEventArgs e)
         {
-            await Launcher.LaunchUriAsync(new Uri(e.Link));
+            App.AppViewModel.HandleUri(e.Link);
         }
     }
 }

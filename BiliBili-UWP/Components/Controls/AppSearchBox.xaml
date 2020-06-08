@@ -20,9 +20,9 @@
             <StackPanel Orientation="Horizontal" Padding="10">
                 <TextBlock Text="{x:Bind position}" Width="25" Style="{StaticResource SmallTipTextStyle}" VerticalAlignment="Center"/>
                 <TextBlock Text="{x:Bind show_name}" Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource ImportantTextColor}"
-                           VerticalAlignment="Center" FontSize="13"/>
+                           VerticalAlignment="Center" FontSize="{CustomResource BasicFontSize}"/>
                 <controls:ImageEx Visibility="{x:Bind icon,Converter={StaticResource StringVisibilityConverter}}" Source="{x:Bind icon}"
-                       Height="13" Margin="5,0,0,0" VerticalAlignment="Center"/>
+                       Height="{CustomResource BasicFontSize}" Margin="5,0,0,0" VerticalAlignment="Center"/>
             </StackPanel>
         </DataTemplate>
         <DataTemplate x:Name="SuggestItemTemplate" x:DataType="bilibili:SearchSuggestion">
@@ -46,8 +46,7 @@
         <AutoSuggestBox Style="{StaticResource BasicSearchBoxStyle}" x:Name="BiliSearchBox"
                         KeyUp="BiliSearchBox_KeyUp" CornerRadius="20"
                         PlaceholderText="搜索" QuerySubmitted="BiliSearchBox_QuerySubmitted"
-                        ItemTemplate="{StaticResource SuggestItemTemplate}"
-                        TabIndex="99"/>
+                        ItemTemplate="{StaticResource SuggestItemTemplate}"/>
         <Button Style="{StaticResource DefaultCircleButtonStyle}" HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="Collapsed"
                 Width="35" Height="35" Content="&#xEA20;" Margin="5,0,0,0" ToolTipService.ToolTip="热搜" x:Name="HotSearchButton" Click="HotSearchButton_Click"/>
         <ProgressRing MaxWidth="15" MaxHeight="15" Foreground="{ThemeResource TipTextColor}"

@@ -26,6 +26,7 @@ namespace BiliBili_UWP.Models.Enums
         VideoPlayer,
         BangumiPlayer,
         Region,
-        MiniPlayer
+        MiniPlayer,
+        MyMessage
     }
 }

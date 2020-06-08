@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:BiliBili_UWP.Components.Controls"
     xmlns:controls1="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
     SizeChanged="UserControl_SizeChanged"
     d:DesignHeight="300"
@@ -58,12 +59,13 @@
                         </Grid.ColumnDefinitions>
                         <Button Style="{StaticResource DefaultCircleButtonStyle}" Foreground="{ThemeResource NormalTextColor}" Content="&#xE933;"
                 x:Name="BackButton" Margin="0,0,20,0" Visibility="Collapsed" Click="BackButton_Click" VerticalAlignment="Center"/>
-                        <controls:AppSearchBox x:Name="BiliSearchBox" VerticalAlignment="Center" Grid.Column="1" MinWidth="300" MaxWidth="550" HorizontalAlignment="Left"/>
+                        <controls:AppSearchBox x:Name="BiliSearchBox" VerticalAlignment="Center" Grid.Column="1" MinWidth="300" MaxWidth="550" HorizontalAlignment="Left"
+                                               TabFocusNavigation="Once" TabNavigation="Once" TabIndex="99"/>
                         <Button Style="{StaticResource DefaultCircleButtonStyle}" x:Name="RefreshButton" Margin="20,0,0,0"
-                    Click="RefreshButton_Click" Grid.Column="2" VerticalAlignment="Center" Content="&#xE9CC;"/>
+                    Click="RefreshButton_Click" Grid.Column="2" VerticalAlignment="Center" Content="&#xE9CC;" TabIndex="1"/>
                     </Grid>
                     <Grid Grid.Row="1" Height="10">
-                        <ProgressBar IsIndeterminate="True" x:Name="LoadingBar" Foreground="{ThemeResource PrimaryColor}"
+                        <muxc:ProgressBar IsIndeterminate="True" x:Name="LoadingBar" Foreground="{ThemeResource PrimaryColor}"
                      Visibility="Collapsed" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
                     </Grid>
                     <ScrollViewer Margin="0,10,0,0" x:Name="PageScrollViewer" Style="{StaticResource BasicScrollViewer}" Padding="0,0,30,0" Grid.Row="2"

@@ -19,5 +19,9 @@ namespace BiliBili_UWP.Models.UI
         public const string SIGN_DYNAMIC = "dynamic.dt.0.0";
         public const string SIGN_RECOMMEND = "tm.recommend.0.0";
         public const string SIGN_CHANNEL = "traffic.new-channel-detail-all.0.0.0.0";
+
+        public const string MESSAGE_REPLYME = "回复我的";
+        public const string MESSAGE_AT = "@我";
+        public const string MESSAGE_LIKE = "收到的赞";
     }
 }

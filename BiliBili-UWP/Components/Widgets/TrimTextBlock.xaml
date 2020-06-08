@@ -18,7 +18,7 @@
                    x:Name="DisplayBlock" MaxLines="{x:Bind MaxLines,Mode=OneWay}" Foreground="{x:Bind Foreground,Mode=OneWay}" FontSize="{x:Bind FontSize,Mode=OneWay}"
                    IsTextSelectionEnabled="True" LineHeight="20"/>
         <Button Content="查看全部" FontFamily="{CustomResource Basic}" Foreground="{ThemeResource SecondaryColor}"
-                         FontSize="12" HorizontalAlignment="Left" Click="ShowTotalButton_Click"  x:Name="ShowTotalButton"
+                         FontSize="{CustomResource SmallFontSize}" HorizontalAlignment="Left" Click="ShowTotalButton_Click"  x:Name="ShowTotalButton"
                          Grid.Row="1" Style="{StaticResource TransparentButtonStyle}" Padding="0" Margin="0,0,0,5"/>
     </Grid>
 </UserControl>

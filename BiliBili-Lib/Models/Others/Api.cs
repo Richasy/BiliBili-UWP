@@ -194,6 +194,18 @@ namespace BiliBili_Lib.Models.Others
         /// 获取关注列表的详情
         /// </summary>
         public const string ACCOUNT_RELATION_FOLLOW_DETAIL = _apiBase + "/x/relation/tag";
+        /// <summary>
+        /// 获取回复列表
+        /// </summary>
+        public const string ACCOUNT_FEEDBACK_REPLY = _apiBase + "/x/msgfeed/reply";
+        /// <summary>
+        /// 获取At列表
+        /// </summary>
+        public const string ACCOUNT_FEEDBACK_AT = _apiBase + "/x/msgfeed/at";
+        /// <summary>
+        /// 获取点赞列表
+        /// </summary>
+        public const string ACCOUNT_FEEDBACK_LIKE = _apiBase + "/x/msgfeed/like";
         #endregion
 
         #region 频道 Channel
@@ -260,6 +272,10 @@ namespace BiliBili_Lib.Models.Others
         /// 特殊类目搜索
         /// </summary>
         public const string APP_SEARCH_TYPE = _appBase + "/x/v2/search/type";
+        /// <summary>
+        /// 用户搜索
+        /// </summary>
+        public const string APP_SEARCH_USER = _appBase + "/x/v2/search/user";
         /// <summary>
         /// 获取搜索建议
         /// </summary>
@@ -347,6 +363,10 @@ namespace BiliBili_Lib.Models.Others
         /// 获取视频字幕
         /// </summary>
         public const string VIDEO_SUBTITLE = _apiBase + "/x/player.so";
+        /// <summary>
+        /// 视频分享转发
+        /// </summary>
+        public const string VIDEO_REPOST = _vcBase + "/dynamic_repost/v1/dynamic_repost/share";
         #endregion
 
         #region 话题及动态 Topic Dynamic
@@ -370,6 +390,10 @@ namespace BiliBili_Lib.Models.Others
         /// 用户空间动态
         /// </summary>
         public const string DYNAMIC_USER_HISTORY = _vcBase + "/dynamic_svr/v1/dynamic_svr/space_history";
+        /// <summary>
+        /// 转发动态
+        /// </summary>
+        public const string DYNAMIC_REPOST = _vcBase + "/dynamic_repost/v1/dynamic_repost/repost";
         #endregion
 
         #region 动漫 Anime
@@ -448,6 +472,10 @@ namespace BiliBili_Lib.Models.Others
         /// 获取直播首页信息
         /// </summary>
         public const string LIVE_SQUARE = _liveBase + "/xlive/app-interface/v2/index/getAllList";
+        #endregion
+
+        #region 其它
+        public const string OTHER_ZONE = _apiBase + "/x/web-interface/zone";
         #endregion
     }
 }

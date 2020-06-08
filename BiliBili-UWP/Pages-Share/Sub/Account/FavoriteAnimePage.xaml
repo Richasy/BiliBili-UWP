@@ -1,0 +1,57 @@
+﻿<Page
+    x:Class="BiliBili_UWP.Pages.Sub.Account.FavoriteAnimePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BiliBili_UWP.Pages.Sub.Account"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:bilibili="using:BiliBili_Lib.Models.BiliBili.Favorites"
+    xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
+    xmlns:controls="using:BiliBili_UWP.Components.Controls"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <DataTemplate x:DataType="bilibili:FavoriteAnime" x:Name="AnimeTemplate">
+            <Grid Margin="0,5">
+                <controls:DefaultVideoPanel Cover="{x:Bind cover}"
+                                            Title="{x:Bind title}"
+                                            Tip="{x:Bind new_ep.index_show}"
+                                            BottomText="{x:Bind progress.index_show}"
+                                            SectionVisibility="Collapsed" ExtraButtonVisibility="Visible"
+                                            >
+                    <controls:DefaultVideoPanel.ExtraFlyout>
+                        <CommandBarFlyout>
+                            <CommandBarFlyout.SecondaryCommands>
+                                <AppBarButton Label="不追了" x:Name="UnfollowButton" FontSize="{CustomResource SmallFontSize}"
+                                              Click="UnfollowButton_Click" Tag="{x:Bind season_id}">
+                                    <AppBarButton.Icon>
+                                        <FontIcon FontFamily="{StaticResource Icon}" Glyph=""/>
+                                    </AppBarButton.Icon>
+                                </AppBarButton>
+                            </CommandBarFlyout.SecondaryCommands>
+                        </CommandBarFlyout>
+                    </controls:DefaultVideoPanel.ExtraFlyout>
+                </controls:DefaultVideoPanel>
+            </Grid>
+        </DataTemplate>
+    </Page.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+        <ScrollViewer Margin="0,15,0,0" Grid.Row="1" Style="{StaticResource BasicScrollViewer}" ViewChanged="ScrollViewer_ViewChanged">
+            <Grid>
+                <ListView x:Name="AnimeListView" ItemContainerStyle="{StaticResource TransparentListViewContainerStyle}"
+                              Style="{StaticResource NoScrollListView}" ItemsSource="{x:Bind AnimeCollection}" HorizontalAlignment="Stretch"
+                              ItemTemplate="{StaticResource AnimeTemplate}" IsItemClickEnabled="True" ItemClick="AnimeListView_ItemClick">
+                </ListView>
+                <TextBlock Text="查不到相关数据" Style="{StaticResource TitleTextStyle}" FontSize="{CustomResource BodyFontSize}" x:Name="HolderText"
+                               Visibility="Collapsed"/>
+            </Grid>
+        </ScrollViewer>
+        <muxc:ProgressBar Style="{StaticResource MuxcProgressBarStyle}" VerticalAlignment="Bottom"
+                             x:Name="LoadingBar" Visibility="Collapsed" Grid.Row="1"/>
+        <muxc:ProgressRing Style="{StaticResource MuxcProgressRingStyle}" Grid.Row="1" x:Name="LoadingRing"/>
+    </Grid>
+</Page>

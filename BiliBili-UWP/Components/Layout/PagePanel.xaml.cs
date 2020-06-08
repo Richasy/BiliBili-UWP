@@ -7,6 +7,7 @@ using BiliBili_UWP.Models.UI.Interface;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -70,6 +71,21 @@ namespace BiliBili_UWP.Components.Layout
         public static readonly DependencyProperty IsSubPageOpenProperty =
             DependencyProperty.Register("IsSubPageOpen", typeof(bool), typeof(PagePanel), new PropertyMetadata(false));
 
+        public bool IsStretch
+        {
+            get { return (bool)GetValue(IsStretchProperty); }
+            set { SetValue(IsStretchProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for IsStretch.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty IsStretchProperty =
+            DependencyProperty.Register("IsStretch", typeof(bool), typeof(PagePanel), new PropertyMetadata(false,new PropertyChangedCallback(IsStretch_Changed)));
+
+        private static void IsStretch_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            
+        }
+
         private static void IsDefaultChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (e.NewValue != e.OldValue && e.NewValue is bool isDefault)
@@ -87,7 +103,8 @@ namespace BiliBili_UWP.Components.Layout
         }
         public void NavigateToPage(SideMenuItemType type, object parameter = null, bool isBack = false)
         {
-            PageSplitView.IsPaneOpen = false;
+            if(PageSplitView.DisplayMode==SplitViewDisplayMode.CompactOverlay)
+                IsSubPageOpen = false;
             var last = MainFrameHistoryList.LastOrDefault();
             var page = GetPageTypeFromMenuType(type);
             bool isRepeat = false;
@@ -98,7 +115,9 @@ namespace BiliBili_UWP.Components.Layout
                 App.AppViewModel.CurrentPageType = page;
                 NavigationTransitionInfo transitionInfo = null;
                 if (type == SideMenuItemType.VideoPlayer || !App.AppViewModel.IsEnableAnimation)
+                {
                     transitionInfo = new SuppressNavigationTransitionInfo();
+                }  
                 else
                 {
                     if (isBack)
@@ -106,6 +125,7 @@ namespace BiliBili_UWP.Components.Layout
                     else
                         transitionInfo = new DrillInNavigationTransitionInfo();
                 }
+                Debug.WriteLine($"页面准备导航：{App._watch.Elapsed.TotalSeconds}s");
                 PageFrame.Navigate(page, parameter, transitionInfo);
                 if (!isBack)
                 {
@@ -120,6 +140,7 @@ namespace BiliBili_UWP.Components.Layout
                         BackButton.Visibility = Visibility.Visible;
                     }
                 }
+                Debug.WriteLine($"页面导航折腾完成：{App._watch.Elapsed.TotalSeconds}s");
                 IsDefault = false;
             }
             else
@@ -173,6 +194,9 @@ namespace BiliBili_UWP.Components.Layout
                     break;
                 case SideMenuItemType.MyDownload:
                     page = typeof(Pages.Main.DownloadPage);
+                    break;
+                case SideMenuItemType.MyMessage:
+                    page = typeof(Pages.Main.MessagePage);
                     break;
                 case SideMenuItemType.ViewLater:
                     page = typeof(Pages.Main.ViewLaterPage);
@@ -229,6 +253,8 @@ namespace BiliBili_UWP.Components.Layout
                 result = SideMenuItemType.Settings;
             else if (type.Equals(typeof(Pages.Main.DownloadPage)))
                 result = SideMenuItemType.MyDownload;
+            else if (type.Equals(typeof(Pages.Main.MessagePage)))
+                result = SideMenuItemType.MyMessage;
             else if (type.Equals(typeof(Pages.Main.HelpPage)))
                 result = SideMenuItemType.Help;
             return result;
@@ -297,9 +323,10 @@ namespace BiliBili_UWP.Components.Layout
         private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             var width = e.NewSize.Width;
+            double OpenWidth = 400 + ((App.AppViewModel.BasicFontSize - 14) * App.AppViewModel.BasicFontSize);
             double breakpoint = Convert.ToDouble(AppTool.GetLocalSetting(Settings.PagePanelDisplayBreakpoint, "1500"));
             PageSplitView.DisplayMode = width < breakpoint ? SplitViewDisplayMode.CompactOverlay : SplitViewDisplayMode.CompactInline;
-            PageSplitView.OpenPaneLength = width < 600 ? width : 400;
+            PageSplitView.OpenPaneLength = width < OpenWidth+200 ? width : OpenWidth;
         }
 
         private void PageSplitView_PaneClosing(SplitView sender, SplitViewPaneClosingEventArgs args)
@@ -444,6 +471,23 @@ namespace BiliBili_UWP.Components.Layout
         {
             var page = GetPageTypeFromMenuType(type);
             MainFrameHistoryList.RemoveAll(p => p.Item1 == page);
+        }
+
+        public void CheckSubReplyPage()
+        {
+            if(SubFrameHistoryList.Count>0 && SubFrameHistoryList.Last().Item1 == typeof(Pages.Sub.ReplyPage))
+            {
+                if(SubFrameHistoryList.Count>1)
+                    SubPageBack();
+                else
+                {
+                    SubPageFrame.Content = null;
+                    SubFrameHistoryList.Clear();
+                    IsSubPageOpen = false;
+                }
+            }
+            if (PageSplitView.DisplayMode == SplitViewDisplayMode.CompactOverlay && IsSubPageOpen)
+                IsSubPageOpen = false;
         }
     }
 }

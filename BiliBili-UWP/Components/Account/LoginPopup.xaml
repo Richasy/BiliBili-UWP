@@ -100,7 +100,7 @@
                 <StackPanel Grid.Row="3" Margin="0,30,0,0">
                     <widgets:IconInputBox PrefixIcon="&#xEA04;" InputType="Text" PlaceholderText="用户名/手机号" HeaderText="用户名" x:Name="UserNameInputBox"/>
                     <widgets:IconInputBox PrefixIcon="&#xE993;" PlaceholderText="密码" HeaderText="密码" InputType="Password" x:Name="PasswordInputBox"
-                                  Margin="0,15,0,0"/>
+                                  Margin="0,15,0,0" KeyDown="PasswordInputBox_KeyDown"/>
                     <widgets:CaptchaBlock x:Name="CaptchaBlock" Margin="0,15,0,0" Visibility="Collapsed"/>
                     <Button HorizontalAlignment="Stretch" Style="{StaticResource PrimaryButtonStyle}" Padding="20,14"
                     Content="登录" x:Name="LoginButton" Click="LoginButton_Click" Margin="0,40,0,0"/>

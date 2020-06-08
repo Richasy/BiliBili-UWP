@@ -156,7 +156,7 @@ namespace BiliBili_UWP.Components.Widgets
 
         private void PopupUpSpinButton_Click(object sender, RoutedEventArgs e)
         {
-            double num = Value + Step;
+            double num = Value + Math.Round(Step,1);
             if (num > Minimum)
                 PopupDownSpinButton.IsEnabled = true;
             if (num >= Maximum)
@@ -169,7 +169,7 @@ namespace BiliBili_UWP.Components.Widgets
 
         private void PopupDownSpinButton_Click(object sender, RoutedEventArgs e)
         {
-            double num = Value - Step;
+            double num = Value - Math.Round(Step, 1);
             if (num < Maximum)
                 PopupUpSpinButton.IsEnabled = true;
             if (num <= Minimum)

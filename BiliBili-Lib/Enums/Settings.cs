@@ -45,6 +45,10 @@ namespace BiliBili_Lib.Enums
         LastSeemDynamicId,
         IsOpenNewDynamicNotification,
         EnableAnimation,
-        IsAutoNextPart
+        IsAutoNextPart,
+        PlayerMode,
+        BasicFontSize,
+        EnableFluentGrid,
+        DisplayMode
     }
 }

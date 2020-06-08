@@ -55,9 +55,9 @@ namespace BiliBili_UWP.Components.Controls
                 card.Duration = data.cover_left_text_1;
                 card.RightBottomText = data.top_rcmd_reason ?? "";
                 if (data.card_goto == "bangumi")
-                    card.ExtraFlyout = instance.VideoFlyout;
-                else
                     card.ExtraFlyout = instance.BangumiFlyout;
+                else
+                    card.ExtraFlyout = instance.VideoFlyout;
                 var feedback = data.three_point_v2.Where(p => p.type == "feedback").FirstOrDefault();
                 if (feedback != null)
                 {

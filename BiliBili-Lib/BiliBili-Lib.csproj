@@ -136,7 +136,6 @@
     <Compile Include="Models\BiliBili\Dynamic\LiveDynamic.cs" />
     <Compile Include="Models\BiliBili\Dynamic\MusicDynamic.cs" />
     <Compile Include="Models\BiliBili\Dynamic\RepostDynamic.cs" />
-    <Compile Include="Models\BiliBili\Dynamic\SeriesDynamic.cs" />
     <Compile Include="Models\BiliBili\Dynamic\ShortVideoDynamic.cs" />
     <Compile Include="Models\BiliBili\Dynamic\VideoDynamic.cs" />
     <Compile Include="Models\BiliBili\Channel.cs" />
@@ -148,6 +147,10 @@
     <Compile Include="Models\BiliBili\Favorites\FavoriteAnime.cs" />
     <Compile Include="Models\BiliBili\Favorites\FavoriteId.cs" />
     <Compile Include="Models\BiliBili\Favorites\FavoriteVideo.cs" />
+    <Compile Include="Models\BiliBili\Feedback\AtMe.cs" />
+    <Compile Include="Models\BiliBili\Feedback\Like.cs" />
+    <Compile Include="Models\BiliBili\Feedback\Other.cs" />
+    <Compile Include="Models\BiliBili\Feedback\Reply.cs" />
     <Compile Include="Models\BiliBili\Interaction.cs" />
     <Compile Include="Models\BiliBili\Reply.cs" />
     <Compile Include="Models\BiliBili\Search.cs" />
@@ -168,6 +171,7 @@
     <Compile Include="Models\Others\ApiKeyInfo.cs" />
     <Compile Include="Models\Others\KeyValueModel.cs" />
     <Compile Include="Models\Others\NotifyBase.cs" />
+    <Compile Include="Models\Others\RepostLocation.cs" />
     <Compile Include="Models\Others\Secure.cs" />
     <Compile Include="Models\Others\TokenPackage.cs" />
     <Compile Include="Models\Others\WebClient.cs" />
@@ -186,6 +190,9 @@
     <EmbeddedResource Include="Properties\BiliBili_Lib.rd.xml" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="MetroLog">
+      <Version>1.0.1</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.9</Version>
     </PackageReference>

@@ -74,6 +74,7 @@ namespace BiliBili_UWP.Components.Widgets
         public static readonly DependencyProperty TextProperty =
             DependencyProperty.Register("Text", typeof(string), typeof(CheckButton), new PropertyMetadata(""));
 
+        
         public bool CanHolding
         {
             get { return (bool)GetValue(CanHoldingProperty); }
@@ -152,6 +153,10 @@ namespace BiliBili_UWP.Components.Widgets
                 gestureRecognizer.CompleteGesture();
             }
         }
+
+        
+
+
 
         public void ShowBubble()
         {

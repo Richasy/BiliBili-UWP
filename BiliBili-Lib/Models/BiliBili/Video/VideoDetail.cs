@@ -12,13 +12,13 @@ namespace BiliBili_Lib.Models.BiliBili.Video
         public string bvid { get; set; }
         public int aid { get; set; }
         public int videos { get; set; }
-        public int tid { get; set; }
+        public long tid { get; set; }
         public string tname { get; set; }
         public int copyright { get; set; }
         public string pic { get; set; }
         public string title { get; set; }
         public int pubdate { get; set; }
-        public int ctime { get; set; }
+        public long ctime { get; set; }
         public string desc { get; set; }
         public int state { get; set; }
         public int attribute { get; set; }

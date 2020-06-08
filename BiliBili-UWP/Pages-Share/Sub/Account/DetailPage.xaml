@@ -1,0 +1,138 @@
+﻿<Page
+    x:Class="BiliBili_UWP.Pages.Sub.Account.DetailPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BiliBili_UWP.Pages.Sub.Account"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
+    xmlns:bilibili="using:BiliBili_Lib.Models.BiliBili.Account"
+    xmlns:controls1="using:BiliBili_UWP.Components.Controls"
+    xmlns:bilibili1="using:BiliBili_Lib.Models.BiliBili" xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <DataTemplate x:DataType="bilibili:ArchiveVideo" x:Key="VideoItemTemplate">
+            <controls1:DefaultVideoPanel Cover="{x:Bind cover}"
+                                         Title="{x:Bind title}"
+                                         Tip="{x:Bind ctime,Converter={StaticResource RelateTimeConverter}}"
+                                         FirstSectionContent="{x:Bind play,Converter={StaticResource NumberAbbrConverter}}"
+                                         SecondSectionContent="{x:Bind danmaku,Converter={StaticResource NumberAbbrConverter}}"
+                                         Margin="0,0,0,10" ExtraButtonVisibility="Visible" VideoId="{x:Bind param}"
+                                         />
+
+        </DataTemplate>
+        <DataTemplate x:DataType="bilibili1:Topic" x:Key="DynamicItemTemplate">
+            <controls1:TopicCard Data="{Binding}" Margin="0,0,0,10" EnableConnectAnimation="False"/>
+        </DataTemplate>
+    </Page.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+                <Grid VerticalAlignment="Center">
+                    <PersonPicture x:Name="UserAvatar" Style="{StaticResource BasicPersonPictureStyle}" Width="55"/>
+                    <widgets:BiliImage Width="90" DecodePixelWidth="90" x:Name="PendantImage"/>
+                </Grid>
+                <Grid Grid.Column="1" VerticalAlignment="Center">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid Margin="0,0,0,5" VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <TextBlock Style="{StaticResource CaptionTextStyle}" Text="--" x:Name="LikeBlock" FontSize="{CustomResource SmallFontSize}" HorizontalAlignment="Center"/>
+                            <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="{CustomResource SmallFontSize}" Text="获赞" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1">
+                            <TextBlock Style="{StaticResource CaptionTextStyle}" Text="--" x:Name="FollowBlock" FontSize="{CustomResource SmallFontSize}" HorizontalAlignment="Center"/>
+                            <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="{CustomResource SmallFontSize}" Text="关注" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="2">
+                            <TextBlock Style="{StaticResource CaptionTextStyle}" Text="--" x:Name="FanBlock" FontSize="{CustomResource SmallFontSize}" HorizontalAlignment="Center"/>
+                            <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="{CustomResource SmallFontSize}" Text="粉丝" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Grid>
+                    <Grid Grid.Row="1" Margin="20,0">
+                        <widgets:AsyncButton HorizontalAlignment="Stretch" Text="关注" Style="{StaticResource PrimaryAsyncButtonStyle}"
+                                         x:Name="FollowButton" Click="FollowButton_Click" Padding="0,3" FontSize="{CustomResource SmallFontSize}"/>
+                        <widgets:AsyncButton HorizontalAlignment="Stretch" Text="退出" Style="{StaticResource PrimaryAsyncButtonStyle}"
+                                         x:Name="LogoutButton" Click="LogoutButton_Click" Visibility="Collapsed"  Padding="0,3" FontSize="{CustomResource SmallFontSize}"/>
+                    </Grid>
+                    
+                </Grid>
+            </Grid>
+            <Grid Grid.Row="1" Margin="0,15,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock x:Name="UserNameBlock" Style="{StaticResource CaptionTextStyle}" FontWeight="Bold"/>
+                    <Image x:Name="LevelImage" Height="10" VerticalAlignment="Top" Margin="5,0,0,0"/>
+                </StackPanel>
+                <TextBlock x:Name="SignBlock" Style="{StaticResource TipWrapTextStyle}" FontSize="{CustomResource SmallFontSize}" LineHeight="20" Grid.Row="1" Margin="0,10,0,0"/>
+            </Grid>
+        </Grid>
+        <Grid Grid.Row="1" HorizontalAlignment="Stretch" BorderBrush="{ThemeResource LineColor}"
+                    BorderThickness="0,0,0,1" Margin="0,10,0,0">
+            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                <ToggleButton x:Name="VideoButton" Style="{StaticResource PrimaryTextToggleButtonStyle}" Content="投稿"
+                              FontSize="{CustomResource BasicFontSize}" Click="VideoButton_Click"/>
+                <ToggleButton x:Name="DynamicButton" Style="{StaticResource PrimaryTextToggleButtonStyle}" Content="动态"
+                              FontSize="{CustomResource BasicFontSize}" Margin="40,0,0,0" Click="DynamicButton_Click"/>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="2" Margin="0,15,0,0" x:Name="VideoContainer">
+            <ScrollViewer Style="{StaticResource BasicScrollViewer}" ViewChanged="ScrollViewer_ViewChanged">
+                <Grid>
+                    <ListView x:Name="VideoListView" ItemContainerStyle="{StaticResource TransparentListViewContainerStyle}"
+                              Style="{StaticResource NoScrollListView}" ItemsSource="{x:Bind VideoCollection}" HorizontalAlignment="Stretch"
+                              ItemTemplate="{StaticResource VideoItemTemplate}" IsItemClickEnabled="True" ItemClick="VideoListView_ItemClick"
+                              ContainerContentChanging="VideoListView_ContainerContentChanging">
+                    </ListView>
+                    <TextBlock Text="没有找到视频哟~" Style="{StaticResource TitleTextStyle}" FontSize="{CustomResource BodyFontSize}" x:Name="VideoHolderText"
+                               Visibility="Collapsed"/>
+                </Grid>
+            </ScrollViewer>
+        </Grid>
+
+        <Grid Grid.Row="2" Margin="0,15,0,0" x:Name="DynamicContainer" Visibility="Collapsed">
+            <ScrollViewer Style="{StaticResource BasicScrollViewer}" ViewChanged="ScrollViewer_ViewChanged">
+                <Grid>
+                    <ListView ItemTemplate="{StaticResource DynamicItemTemplate}"
+                              ItemsSource="{x:Bind DynamicCollection}"
+                              ItemContainerStyle="{StaticResource TransparentListViewContainerStyle}"
+                              Style="{StaticResource NoScrollListView}"
+                              SelectionMode="None"
+                              Padding="0" ContainerContentChanging="ListView_ContainerContentChanging"
+                              />
+                    <TextBlock Text="没有找到动态哟~" Style="{StaticResource TitleTextStyle}" FontSize="{CustomResource BodyFontSize}" x:Name="DynamicHolderText"
+                               Visibility="Collapsed"/>
+                </Grid>
+            </ScrollViewer>
+        </Grid>
+        <Grid Grid.Row="2" x:Name="HolderContainer" Visibility="Collapsed">
+            <Image Source="ms-appx:///Assets/bilibili logo.png" Width="50" Height="50" VerticalAlignment="Center"
+                               HorizontalAlignment="Center"/>
+        </Grid>
+        <muxc:ProgressRing Style="{StaticResource MuxcProgressRingStyle}" Grid.Row="2" x:Name="LoadingRing"/>
+    </Grid>
+</Page>

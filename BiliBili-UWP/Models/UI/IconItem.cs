@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BiliBili_Lib.Models.Others;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,12 +7,17 @@ using System.Threading.Tasks;
 
 namespace BiliBili_UWP.Models.UI
 {
-    public class IconItem
+    public class IconItem : NotifyBase
     {
         public string Icon { get; set; }
         public string Name { get; set; }
-        public object Param { get; set; }
-        public IconItem(string icon,string name,object pa)
+        private object _param;
+        public object Param
+        {
+            get => _param;
+            set => Set(ref _param, value);
+        }
+        public IconItem(string icon, string name, object pa)
         {
             Icon = icon;
             Name = name;
@@ -132,6 +138,15 @@ namespace BiliBili_UWP.Models.UI
                 new IconItem("","兴趣","29"),
                 new IconItem("","轻小说","16"),
                 new IconItem("","科技","17"),
+            };
+        }
+        public static List<IconItem> GetMessageHeaderItems()
+        {
+            return new List<IconItem>
+            {
+                new IconItem("",StaticString.MESSAGE_REPLYME,""),
+                new IconItem("",StaticString.MESSAGE_AT,""),
+                new IconItem("",StaticString.MESSAGE_LIKE,"")
             };
         }
     }

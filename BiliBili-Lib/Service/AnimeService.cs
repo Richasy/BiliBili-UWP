@@ -174,7 +174,14 @@ namespace BiliBili_Lib.Service
                                         </SegmentBase>
                                       </Representation>
                                     </AdaptationSet>
-                                    <AdaptationSet>
+                                    {{audio}}
+                                  </Period>
+                                </MPD>
+                                ";
+                if (audio == null)
+                    mpdStr = mpdStr.Replace("{audio}", "");
+                else
+                    mpdStr = mpdStr.Replace("{audio}", $@"<AdaptationSet>
                                       <ContentComponent contentType=""audio"" id=""2"" />
                                       <Representation bandwidth=""{audio.bandwidth}"" codecs=""{audio.codecs}"" id=""{audio.id}"" mimeType=""{audio.mimeType}"" >
                                         <BaseURL></BaseURL>
@@ -182,16 +189,13 @@ namespace BiliBili_Lib.Service
                                           <Initialization range=""{audio.SegmentBase.Initialization}"" />
                                         </SegmentBase>
                                       </Representation>
-                                    </AdaptationSet>
-                                  </Period>
-                                </MPD>
-                                ";
+                                    </AdaptationSet>");
                 var stream = new MemoryStream(Encoding.UTF8.GetBytes(mpdStr)).AsInputStream();
                 var soure = await AdaptiveMediaSource.CreateFromStreamAsync(stream, new Uri(video.baseUrl), "application/dash+xml", httpClient);
                 var s = soure.Status;
                 soure.MediaSource.DownloadRequested += (sender, args) =>
                 {
-                    if (args.ResourceContentType == "audio/mp4")
+                    if (args.ResourceContentType == "audio/mp4" && audio!=null)
                     {
                         args.Result.ResourceUri = new Uri(audio.baseUrl);
                     }
@@ -209,12 +213,14 @@ namespace BiliBili_Lib.Service
         /// </summary>
         /// <param name="aid">视频ID</param>
         /// <returns></returns>
-        public async Task AddVideoHistoryAsync(int aid,int sid, int epid, int seconds = 0)
+        public async Task AddVideoHistoryAsync(int aid,int cid, int epid, int seconds = 0,int sid=0)
         {
             var param = new Dictionary<string, string>();
             param.Add("aid", aid.ToString());
+            param.Add("cid", cid.ToString());
             param.Add("sid", sid.ToString());
             param.Add("epid", epid.ToString());
+            param.Add("progress", seconds.ToString());
             param.Add("realtime", seconds.ToString());
             param.Add("type", "4");
             var data = BiliTool.UrlContact("", param, true);
@@ -298,6 +304,62 @@ namespace BiliBili_Lib.Service
             param.Add("reason_id", "1");
             var url = BiliTool.UrlContact(Api.VIDEO_RECOMMEND_DISLIKE, param, true);
             var response = await BiliTool.GetTextFromWebAsync(url, true);
+            if (!string.IsNullOrEmpty(response))
+            {
+                var jobj = JObject.Parse(response);
+                return jobj["code"].ToString() == "0";
+            }
+            return false;
+        }
+        /// <summary>
+        /// 转发动漫/电影/电视剧等
+        /// </summary>
+        /// <param name="content">转发内容</param>
+        /// <param name="videoId">视频ID</param>
+        /// <param name="atIds">At的人</param>
+        /// <param name="typeName">番剧：4097,影视:4098,电视剧:4099,国创:4100</param>
+        /// <returns></returns>
+        public async Task<bool> RepostBangumiAsync(string content, int epId, string typeName, List<RepostLocation> atIds)
+        {
+            var param = new Dictionary<string, string>();
+            string type = "";
+            switch (typeName)
+            {
+                case "番剧":
+                    type = "4097";
+                    break;
+                case "影视":
+                    type = "4098";
+                    break;
+                case "电视剧":
+                case "综艺":
+                    type = "4099";
+                    break;
+                case "国创":
+                    type = "4100";
+                    break;
+                case "纪录片":
+                    type = "4101";
+                    break;
+                default:
+                    type = "4097";
+                    break;
+            }
+            param.Add("content", Uri.EscapeDataString(content));
+            param.Add("at_uids", string.Join(',', atIds.Select(p => p.data)));
+            param.Add("ctrl", Uri.EscapeDataString(JsonConvert.SerializeObject(atIds)));
+            param.Add("share_uid", BiliTool.mid.ToString());
+            param.Add("rid", epId.ToString());
+            param.Add("type", type);
+            param.Add("repost_code", "20000");
+            param.Add("sync_comment", "0");
+            param.Add("sketch", "");
+            param.Add("uid", "0");
+            param.Add("share_info", "");
+            param.Add("extension", Uri.EscapeDataString("{\"emoji_type\":1}"));
+            param.Add("statistics", Uri.EscapeDataString("{\"appId\":1,\"version\":\"5.56.1\",\"abtest\":\"\",\"platform\":1}"));
+            var req = BiliTool.UrlContact("", param, true);
+            var response = await BiliTool.PostContentToWebAsync(Api.VIDEO_REPOST, req);
             if (!string.IsNullOrEmpty(response))
             {
                 var jobj = JObject.Parse(response);

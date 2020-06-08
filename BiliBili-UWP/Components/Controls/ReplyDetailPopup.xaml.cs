@@ -55,6 +55,8 @@ namespace BiliBili_UWP.Components.Controls
             _selectReplyId = replyId;
             ReplyCollection.Clear();
             ReplyTextBox.ClearText();
+            HeaderBlock.Visibility = Visibility.Visible;
+            NoDataContainer.Visibility = Visibility.Collapsed;
             await LoadReply();
             LoadingRing.IsActive = false;
         }
@@ -63,25 +65,34 @@ namespace BiliBili_UWP.Components.Controls
             if (_isRequesting || _isEnd)
                 return;
             _isRequesting = true;
+            if(!LoadingRing.IsActive)
             LoadingBar.Visibility = Visibility.Visible;
             var data = await _client.GetReplyDetailAsync(_rootId, _oid, _next, _type);
             if (data != null)
             {
-                if(data.root.replies!=null && data.root.replies.Count > 0)
+                if (data.root == null)
                 {
-                    foreach (var newItem in data.root.replies)
-                    {
-                        if (ReplyCollection.Contains(newItem))
-                            continue;
-                        ReplyCollection.Add(newItem);
-                    }
-                    data.root.replies = null;
+                    NoDataContainer.Visibility = Visibility.Visible;
+                    HeaderBlock.Visibility = Visibility.Collapsed;
                 }
-                _prev = _next;
-                _next = data.cursor.next;
-                _isEnd = data.cursor.is_end;
-                HeaderBlock.Data = data.root;
-                HolderText.Visibility = ReplyCollection.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+                else
+                {
+                    if (data.root.replies != null && data.root.replies.Count > 0)
+                    {
+                        foreach (var newItem in data.root.replies)
+                        {
+                            if (ReplyCollection.Contains(newItem))
+                                continue;
+                            ReplyCollection.Add(newItem);
+                        }
+                        data.root.replies = null;
+                    }
+                    _prev = _next;
+                    _next = data.cursor.next;
+                    _isEnd = data.cursor.is_end;
+                    HeaderBlock.Data = data.root;
+                    HolderText.Visibility = ReplyCollection.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+                }
             }
             _isRequesting = false;
             LoadingBar.Visibility = Visibility.Collapsed;
@@ -117,6 +128,7 @@ namespace BiliBili_UWP.Components.Controls
         private void ReplyMainBlock_CommentButtonClick(object sender, Reply e)
         {
             _selectReplyId = e.rpid_str;
+            ReplyTextBox.AtUser = e.member.uname;
             ReplyTextBox.PlaceholderText = $"回复 @{e.member.uname}：";
         }
 
@@ -131,6 +143,8 @@ namespace BiliBili_UWP.Components.Controls
 
         private async void ReplyTextBox_SendReply(object sender, string e)
         {
+            if (!string.IsNullOrEmpty(ReplyTextBox.AtUser))
+                e = $"回复 @{ReplyTextBox.AtUser} :" + e;
             var result = await _client.AddReplyAsync(_oid, e, _selectReplyId, _rootId, _type);
             if (result != null)
             {

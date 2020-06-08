@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:bilibili="using:BiliBili_Lib.Models.BiliBili"
-    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls" xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -118,6 +118,12 @@
                         <Grid Background="{ThemeResource CardBackground}" Padding="10" CornerRadius="4" Margin="0,0,0,10">
                             <local:ReplyMainBlock x:Name="HeaderBlock" HorizontalAlignment="Stretch" TopBadgeVisibility="Collapsed"
                                           SubReplyVisibility="Collapsed" CommentButtonClick="ReplyMainBlock_CommentButtonClick"/>
+                            <StackPanel x:Name="NoDataContainer" Visibility="Collapsed">
+                                <controls:ImageEx Source="ms-appx:///Assets/null.png"
+                                              Width="60" HorizontalAlignment="Center"/>
+                                <TextBlock Text="找不到数据啦" HorizontalAlignment="Center" Style="{StaticResource TipTextStyle}"
+                                           Margin="0,10,0,0"/>
+                            </StackPanel>
                         </Grid>
                         <Grid Grid.Row="1">
                             <ListView ItemTemplate="{StaticResource ReplyItemTemplate}"
@@ -128,13 +134,12 @@
                       x:Name="ReplyListView"/>
                             <TextBlock Style="{StaticResource TipTextStyle}" Text="暂无追加评论" FontWeight="Bold"
                            x:Name="HolderText" Visibility="Collapsed" VerticalAlignment="Top"/>
-                            <ProgressBar VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Foreground="{ThemeResource PrimaryColor}"
-                             IsIndeterminate="True" Visibility="Collapsed" x:Name="LoadingBar"/>
+                            <muxc:ProgressBar VerticalAlignment="Bottom" Style="{StaticResource MuxcProgressBarStyle}" x:Name="LoadingBar"/>
                         </Grid>
                     </Grid>
                 </ScrollViewer>
                 <local:ReplyTextBox Grid.Row="2" SendReply="ReplyTextBox_SendReply" x:Name="ReplyTextBox" Margin="10"/>
-                <ProgressRing Style="{StaticResource BasicProgressRingStyle}" x:Name="LoadingRing"/>
+                <muxc:ProgressRing Style="{StaticResource MuxcProgressRingStyle}" x:Name="LoadingRing" Grid.Row="1"/>
             </Grid>
         </controls:DropShadowPanel>
     </Grid>

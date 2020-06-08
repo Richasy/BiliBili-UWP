@@ -5,7 +5,7 @@
     xmlns:local="using:BiliBili_UWP.Components.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls" xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -112,7 +112,7 @@
                      ScriptNotify="DetailWebView_ScriptNotify"
                      PointerPressed="DetailWebView_PointerPressed"
                      x:Name="DetailWebView"/>
-                <ProgressRing Style="{StaticResource BasicProgressRingStyle}" x:Name="LoadingRing" Grid.Row="1" />
+                <muxc:ProgressRing Style="{StaticResource MuxcProgressRingStyle}" x:Name="LoadingRing" Grid.Row="1" />
             </Grid>
         </controls:DropShadowPanel>
     </Grid>

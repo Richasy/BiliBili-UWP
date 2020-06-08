@@ -1,5 +1,6 @@
 ﻿using BiliBili_Lib.Models.BiliBili.Video;
 using BiliBili_Lib.Tools;
+using BiliBili_UWP.Components.Widgets;
 using NSDanmaku.Controls;
 using System;
 using System.Collections.Generic;
@@ -22,9 +23,10 @@ namespace BiliBili_UWP.Models.UI.Others
         private AppBarButton _compactOverlayButton;
         private AppBarButton _cinemaButton;
         private AppBarButton _separateButton;
-        private AppBarButton _forwardButton;
-        private AppBarButton _rewindButton;
-        public ListView _qualityListView;
+        private AppBarButton _previousButton;
+        private AppBarButton _nextButton;
+        public AppBarComboBox _qualityComboBox;
+        public AppBarComboBox _playRateComboBox;
         public ListView _subtitleListView;
         public bool IsInit = false;
 
@@ -38,8 +40,9 @@ namespace BiliBili_UWP.Models.UI.Others
         public event EventHandler<bool> PlayButtonClick;
         public event EventHandler<bool> CompactOverlayButtonClick;
         public event EventHandler<int> QualityChanged;
-        public event RoutedEventHandler ForwardButtonClick;
-        public event RoutedEventHandler RewindButtonClick;
+        public event EventHandler<double> PlayRateChanged;
+        public event RoutedEventHandler PreviousButtonClick;
+        public event RoutedEventHandler NextButtonClick;
         public event EventHandler<SubtitleIndexItem> SubtitleChanged;
         public event RoutedEventHandler SeparateButtonClick;
         public MediaPlayerElement MediaPlayerElement;
@@ -60,39 +63,49 @@ namespace BiliBili_UWP.Models.UI.Others
             _cinemaButton.Click += CinemaButtonClick;
             _separateButton = GetTemplateChild("SeparateButton") as AppBarButton;
             _separateButton.Click += SeparateButtonClick;
-            _forwardButton = GetTemplateChild("CustomForwardButton") as AppBarButton;
-            _forwardButton.Click += ForwardButton_Click;
-            _rewindButton = GetTemplateChild("CustomRewindButton") as AppBarButton;
-            _rewindButton.Click += RewindButton_Click;
+            _previousButton = GetTemplateChild("CustomPreviousButton") as AppBarButton;
+            _previousButton.Click += PreviousButton_Click;
+            _nextButton = GetTemplateChild("CustomNextButton") as AppBarButton;
+            _nextButton.Click += NextButton_Click;
 
-            _qualityListView = GetTemplateChild("QualityListView") as ListView;
-            _qualityListView.ItemClick += QualityListView_ItemClick;
-            _subtitleListView= GetTemplateChild("SubtitleListView") as ListView;
+            _qualityComboBox = GetTemplateChild("QualityComboBox") as AppBarComboBox;
+            _qualityComboBox.SelectionChanged += QualityComboBox_SelectionChanged;
+            _playRateComboBox = GetTemplateChild("PlayRateComboBox") as AppBarComboBox;
+            _playRateComboBox.SelectionChanged += PlayRateComboBox_SelectionChanged;
+            _subtitleListView = GetTemplateChild("SubtitleListView") as ListView;
             _subtitleListView.ItemClick += SubtitleListView_ItemClick;
 
             base.OnApplyTemplate();
         }
 
-        private void RewindButton_Click(object sender, RoutedEventArgs e)
+        private void PlayRateComboBox_SelectionChanged(object sender, object e)
         {
-            RewindButtonClick?.Invoke(this, e);
+            var item = e as Tuple<double, string>;
+            if (item != null)
+                PlayRateChanged?.Invoke(this, item.Item1);
         }
 
-        private void ForwardButton_Click(object sender, RoutedEventArgs e)
+        private void QualityComboBox_SelectionChanged(object sender, object e)
         {
-            ForwardButtonClick?.Invoke(this, e);
+            var item = e as Tuple<int, string>;
+            if (item != null)
+                QualityChanged?.Invoke(this, item.Item1);
+        }
+
+        private void PreviousButton_Click(object sender, RoutedEventArgs e)
+        {
+            PreviousButtonClick?.Invoke(this, e);
+        }
+
+        private void NextButton_Click(object sender, RoutedEventArgs e)
+        {
+            NextButtonClick?.Invoke(this, e);
         }
 
         private void SubtitleListView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var item = e.ClickedItem as SubtitleIndexItem;
             SubtitleChanged?.Invoke(this, item);
-        }
-
-        private void QualityListView_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            var item = e.ClickedItem as Tuple<int, string>;
-            QualityChanged?.Invoke(this, item.Item1);
         }
 
         private void CinemaButtonClick(object sender, RoutedEventArgs e)
@@ -144,9 +157,12 @@ namespace BiliBili_UWP.Models.UI.Others
                 instance.IsCinema = false;
             else if (instance.IsCompactOverlay && v)
                 instance.IsCompactOverlay = false;
-            instance._fullWindowButton.Icon = v ? instance.GetIcon("") : instance.GetIcon("");
             instance.FullWindowChanged?.Invoke(instance, v);
-            instance.DanmakuControls.UpdateLayout();
+            if (instance._fullWindowButton != null)
+            {
+                instance._fullWindowButton.Icon = v ? instance.GetIcon("") : instance.GetIcon("");
+                instance.DanmakuControls.UpdateLayout();
+            }
         }
 
         public bool IsCinema
@@ -170,8 +186,11 @@ namespace BiliBili_UWP.Models.UI.Others
             else if (instance.IsCompactOverlay && v)
                 instance.IsCompactOverlay = false;
             instance.CinemaChanged?.Invoke(instance, v);
-            instance._cinemaButton.Icon = v ? instance.GetIcon("") : instance.GetIcon("");
-            instance.DanmakuControls.UpdateLayout();
+            if (instance._cinemaButton != null)
+            {
+                instance._cinemaButton.Icon = v ? instance.GetIcon("") : instance.GetIcon("");
+                instance.DanmakuControls.UpdateLayout();
+            }
         }
 
         public Visibility CinemaButtonVisibility
@@ -336,6 +355,18 @@ namespace BiliBili_UWP.Models.UI.Others
         // Using a DependencyProperty as the backing store for QualityItemsSource.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty QualityItemsSourceProperty =
             DependencyProperty.Register("QualityItemsSource", typeof(object), typeof(VideoTransportControls), new PropertyMetadata(null));
+
+        public object PlayRateItemsSource
+        {
+            get { return (object)GetValue(PlayRateItemsSourceProperty); }
+            set { SetValue(PlayRateItemsSourceProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for PlayRateItemsSource.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty PlayRateItemsSourceProperty =
+            DependencyProperty.Register("PlayRateItemsSource", typeof(object), typeof(VideoTransportControls), new PropertyMetadata(null));
+
+
 
         public int QualitySelectIndex
         {

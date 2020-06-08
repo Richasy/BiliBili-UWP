@@ -77,7 +77,8 @@ namespace BiliBili_UWP.Components.Controls
             string theme = Application.Current.RequestedTheme.ToString();
             string css = await FileIO.ReadTextAsync(await StorageFile.GetFileFromApplicationUriAsync(new Uri($"ms-appx:///Components/HTML/{theme}.css")));
             string fontFamily = AppTool.GetLocalSetting(Settings.FontFamily, "微软雅黑");
-            css = css.Replace("$FontFamily$", fontFamily).Replace("$FontSize$", "15");
+            string fontSize = AppTool.GetLocalSetting(Settings.BasicFontSize, "14");
+            css = css.Replace("$FontFamily$", fontFamily).Replace("$FontSize$", fontSize);
             string result = html.Replace("$theme$", theme.ToLower()).Replace("$style$", css).Replace("$body$", content);
             result = result.Replace("$noscroll$", "style=\"-ms-overflow-style: none;\"");
             result = result.Replace("$return$", "");
@@ -118,6 +119,10 @@ namespace BiliBili_UWP.Components.Controls
         {
             LoadingRing.IsActive = false;
             DetailWebView.Focus(FocusState.Programmatic);
+            if (string.IsNullOrEmpty(TitleBlock.Text))
+            {
+                TitleBlock.Text = DetailWebView.DocumentTitle;
+            }
         }
 
         private async void DetailWebView_ScriptNotify(object sender, NotifyEventArgs e)

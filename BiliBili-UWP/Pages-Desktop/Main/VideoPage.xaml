@@ -1,0 +1,270 @@
+﻿<Page
+    x:Class="BiliBili_UWP.Pages.Main.VideoPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BiliBili_UWP.Pages.Main"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:c="using:BiliBili_UWP.Models.UI.Others"
+    xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
+    xmlns:controls="using:BiliBili_UWP.Components.Controls"
+    xmlns:video="using:BiliBili_Lib.Models.BiliBili.Video"
+    xmlns:controls1="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:bilibili="using:BiliBili_Lib.Models.BiliBili"
+    Loaded="Page_Loaded"
+    xmlns:adaptivegridview="using:BiliBili_Controls.AdaptiveGridView"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <DataTemplate x:DataType="video:VideoRelated" x:Key="RelatedVideoItemTemplate">
+            <controls:DefaultVideoCard Cover="{x:Bind pic}"
+                                       Title="{x:Bind title}"
+                                       Duration="{x:Bind duration,Converter={StaticResource DurationConverter}}"
+                                       Tip="{x:Bind owner.name}"
+                                       FirstSectionContent="{x:Bind stat.view,Converter={StaticResource NumberAbbrConverter}}"
+                                       SecondSectionContent="{x:Bind stat.danmaku,Converter={StaticResource NumberAbbrConverter}}"
+                                       Width="190" VideoId="{x:Bind aid}"
+                                       />
+        </DataTemplate>
+        <DataTemplate x:DataType="video:VideoPart" x:Key="PartListItemTemplate">
+            <ListViewItem x:Name="Container">
+                <Grid Background="{Binding ElementName=Container,Path=IsSelected,Converter={StaticResource SelectedColorConverter}}" CornerRadius="4" Padding="10">
+                    <TextBlock Text="{x:Bind part}" Style="{StaticResource SmallTipTextStyle}" MaxLines="1"
+                               Foreground="{Binding ElementName=Container,Path=IsSelected,Converter={StaticResource SelectedColorConverter},ConverterParameter='Foreground'}"/>
+                </Grid>
+            </ListViewItem>
+        </DataTemplate>
+        <DataTemplate x:DataType="video:VideoPart" x:Key="PartGridItemTemplate">
+            <GridViewItem x:Name="Container">
+                <Grid Background="{Binding ElementName=Container,Path=IsSelected,Converter={StaticResource SelectedColorConverter}}" CornerRadius="4" Padding="10"
+                      Width="180">
+                    <TextBlock Text="{x:Bind part}" Style="{StaticResource SmallTipTextStyle}" MaxLines="1" ToolTipService.ToolTip="{x:Bind part}"
+                               Foreground="{Binding ElementName=Container,Path=IsSelected,Converter={StaticResource SelectedColorConverter},ConverterParameter='Foreground'}"/>
+                </Grid>
+            </GridViewItem>
+        </DataTemplate>
+        <DataTemplate x:DataType="video:VideoTag" x:Key="TagItemTemplate">
+            <Border Background="{ThemeResource SecondaryColorOpacity}" BorderBrush="{ThemeResource SecondaryColor}" Padding="8,5"
+                    CornerRadius="3">
+                <TextBlock Text="{x:Bind tag_name}" Style="{StaticResource SmallTipTextStyle}" FontSize="{CustomResource MiniFontSize}" Foreground="{ThemeResource SecondaryColorOver}"/>
+            </Border>
+        </DataTemplate>
+        <DataTemplate x:DataType="video:Staff" x:Key="StaffItemTemplate">
+            <Grid Margin="10,10,10,0">
+                <StackPanel>
+                    <PersonPicture Width="35" Height="35" ProfilePicture="{x:Bind face}" Style="{StaticResource BasicPersonPictureStyle}"/>
+                    <TextBlock Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource NormalTextColor}" FontSize="{CustomResource MiniFontSize}"
+                               HorizontalAlignment="Center" TextAlignment="Center" Margin="0,5,0,0" Text="{x:Bind name}"/>
+                </StackPanel>
+                <Border BorderBrush="{ThemeResource PrimaryColor}" Background="{ThemeResource CardBackground}" BorderThickness="1"
+                            CornerRadius="2" Padding="5,3" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="15,-5,-20,0">
+                    <TextBlock Text="{x:Bind title}" Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource PrimaryColor}"
+                                   FontSize="{CustomResource MiniFontSize}"/>
+                </Border>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:DataType="video:VideoDetail" x:Key="PlayListItemTemplate">
+            <ListViewItem x:Name="Container">
+                <Grid BorderBrush="{Binding ElementName=Container,Path=IsSelected,Converter={StaticResource SelectedColorConverter}}" CornerRadius="4"
+                      BorderThickness="2" Background="{ThemeResource CardBackground}" Padding="5">
+                    <controls:DefaultVideoPanel Cover="{x:Bind pic}" Title="{x:Bind title}"
+                                                UserName="{x:Bind owner.name}" SectionVisibility="Collapsed"
+                                                Width="280" Duration="{x:Bind duration,Converter={StaticResource DurationConverter}}"/>
+                </Grid>
+            </ListViewItem>
+        </DataTemplate>
+        <Flyout FlyoutPresenterStyle="{StaticResource BasicFlyoutStyle}" x:Name="CoinFlyout">
+            <StackPanel Padding="10">
+                <StackPanel Orientation="Horizontal">
+                    <Button Style="{StaticResource DefaultCircleButtonStyle}" Width="50" Height="50" CornerRadius="4" Tag="1"
+                        Content="1" FontFamily="{CustomResource Basic}" FontWeight="Bold" FontSize="{CustomResource LargeFontSize}" Click="CoinCountButton_Click"/>
+                    <Button Style="{StaticResource DefaultCircleButtonStyle}" Width="50" Height="50" CornerRadius="4" Tag="2"
+                        Content="2" FontFamily="{CustomResource Basic}" FontWeight="Bold" FontSize="{CustomResource LargeFontSize}" Margin="15,0,0,0" Click="CoinCountButton_Click"/>
+                </StackPanel>
+                <CheckBox Style="{StaticResource BasicCheckBoxStyle}" Content="同时点赞内容" IsChecked="True" x:Name="SelectLikeCheckBox"
+                          HorizontalAlignment="Left" Margin="0,5,0,0" FontSize="{CustomResource SmallFontSize}"/>
+            </StackPanel>
+        </Flyout>
+        <Flyout FlyoutPresenterStyle="{StaticResource NoPaddingFlyoutStyle}" x:Name="FavoriteFlyout">
+            <StackPanel>
+                <TextBlock Style="{StaticResource SmallTipTextStyle}" Text="选择收藏夹" Margin="10" FontSize="{CustomResource SmallFontSize}" FontWeight="Bold"/>
+                <ProgressBar HorizontalAlignment="Stretch" Foreground="{ThemeResource PrimaryColor}"
+                             IsIndeterminate="True" x:Name="FavoriteProgressBar" Visibility="Collapsed"/>
+                <StackPanel x:Name="FavoriteContainer">
+                    <ListView Style="{StaticResource BasicListView}" ItemContainerStyle="{StaticResource BasicListViewContainerStyle}"
+                          SelectionMode="Multiple" IsItemClickEnabled="True" x:Name="FavoriteListView" MaxHeight="300" Width="300">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="bilibili:FavoriteItem">
+                                <ListViewItem IsSelected="{x:Bind fav_state,Converter={StaticResource IntBoolConverter}}">
+                                    <StackPanel Padding="5,8" BorderThickness="0,0,0,1" BorderBrush="{ThemeResource LineColor}">
+                                        <TextBlock Text="{x:Bind title}" Style="{StaticResource CaptionTextStyle}" FontSize="{CustomResource SmallFontSize}" FontWeight="Bold"/>
+                                        <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="{CustomResource MiniFontSize}" Margin="0,5,0,0">
+                                        <Run Text="{x:Bind media_count}"/>
+                                        <Run Text="个内容"/>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </ListViewItem>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    <widgets:AsyncButton HorizontalAlignment="Stretch" Margin="5" Style="{StaticResource PrimaryAsyncButtonStyle}"
+                                     Icon="&#xE930;" Text="确认" x:Name="FavoriteSureButton" Click="FavoriteSureButton_Click"/>
+                </StackPanel>
+            </StackPanel>
+        </Flyout>
+        <Flyout FlyoutPresenterStyle="{StaticResource NoPaddingFlyoutStyle}" x:Name="ShareFlyout" Placement="Top">
+            <StackPanel Orientation="Horizontal" Padding="10">
+                <Button Style="{StaticResource TransparentButtonStyle}" HorizontalAlignment="Stretch"
+                        x:Name="ShareDynamicButton" VerticalAlignment="Center" Click="ShareDynamicButton_Click">
+                    <StackPanel>
+                        <TextBlock Text="&#xEA30;" FontSize="{CustomResource SubFontSize}"
+                                   FontFamily="{StaticResource Icon}" HorizontalAlignment="Center"/>
+                        <TextBlock Text="动态" Margin="0,10,0,0" HorizontalAlignment="Center" TextAlignment="Center"
+                                   Style="{StaticResource SmallTipTextStyle}"/>
+                    </StackPanel>
+                </Button>
+                <Button Style="{StaticResource TransparentButtonStyle}" HorizontalAlignment="Stretch" Margin="10,0,0,0"
+                        x:Name="ShareDataButton" Grid.Column="1" VerticalAlignment="Center" Click="ShareDataButton_Click">
+                    <StackPanel>
+                        <TextBlock Text="&#xE9D5;" FontSize="{CustomResource SubFontSize}"
+                                   FontFamily="{StaticResource Icon}" HorizontalAlignment="Center"/>
+                        <TextBlock Text="分享" Margin="0,10,0,0" HorizontalAlignment="Center" TextAlignment="Center"
+                                   Style="{StaticResource SmallTipTextStyle}"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Flyout>
+    </Page.Resources>
+    <Grid>
+        <Grid Height="400" HorizontalAlignment="Stretch" Background="{ThemeResource PageBackground}"
+              x:Name="VideoHolder"/>
+        <Grid x:Name="PageContainer" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid MaxHeight="500" x:Name="VideoContainer">
+                <controls:VideoPlayer x:Name="VideoPlayer" FullWindowChanged="VideoPlayer_FullWindowChanged"
+                                  CinemaButtonVisibility="Visible" CinemaChanged="VideoPlayer_CinemaChanged"
+                                  CompactOverlayChanged="VideoPlayer_CompactOverlayChanged"
+                                  SeparateButtonClick="VideoPlayer_SeparateButtonClick"
+                                  MediaEnded="VideoPlayer_MediaEnded" PartSwitched="VideoPlayer_PartSwitched"/>
+            </Grid>
+            <Grid Grid.Row="1" Padding="0,10,20,20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid Margin="0,10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Style="{StaticResource TitleTextStyle}" x:Name="TitleBlock" FontSize="20" Foreground="{ThemeResource ImportantTextColor}"
+                               MaxLines="2" TextWrapping="Wrap"/>
+                        <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="{CustomResource MiniFontSize}" x:Name="DateBlock"
+                                Margin="0,10,0,0" Grid.Row="1"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,10,0,0" Grid.Row="2">
+                            <widgets:IconTextBlock Icon="&#xEA32;" GutterWidth="5" FontSize="{CustomResource SmallFontSize}" IconForeground="{ThemeResource TipTextColor}" x:Name="PlayCountBlock"/>
+                            <widgets:IconTextBlock Icon="&#xEA35;" GutterWidth="5" Margin="15,0,0,0" FontSize="{CustomResource SmallFontSize}" IconForeground="{ThemeResource TipTextColor}" x:Name="DanmukuCountBlock"/>
+                            <widgets:IconTextBlock Icon="bv" IsTextSelectionEnabled="True" GutterWidth="5" Margin="15,0,0,0" FontSize="{CustomResource SmallFontSize}" IconForeground="{ThemeResource TipTextColor}" x:Name="BVBlock"/>
+                            <widgets:IconTextBlock Icon="av" IsTextSelectionEnabled="True" GutterWidth="5" Margin="15,0,0,0" FontSize="{CustomResource SmallFontSize}" IconForeground="{ThemeResource TipTextColor}" x:Name="AVBlock"/>
+                        </StackPanel>
+                    </Grid>
+                    <StackPanel Grid.Column="1" VerticalAlignment="Top">
+                        <StackPanel Orientation="Horizontal">
+                            <widgets:CheckButton Icon="&#xE9F0;" x:Name="LikeButton" Click="LikeButton_Click" Hold="LikeButton_Hold"/>
+                            <widgets:CheckButton Margin="15,0,0,0" Icon="&#xEA45;" x:Name="CoinButton" Click="CoinButton_Click" FlyoutBase.AttachedFlyout="{StaticResource CoinFlyout}"/>
+                            <widgets:CheckButton Margin="15,0,0,0" Icon="&#xE9E5;" x:Name="FavoriteButton" Click="FavoriteButton_Click" FlyoutBase.AttachedFlyout="{StaticResource FavoriteFlyout}"/>
+                            <widgets:CheckButton Margin="15,0,0,0" Icon="&#xEA44;" x:Name="RepostButton" FlyoutBase.AttachedFlyout="{StaticResource ShareFlyout}" Click="RepostButton_Click"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,10,0,0" HorizontalAlignment="Right">
+                            <ToggleSwitch x:Name="AutoLoopSwitch" Style="{StaticResource BasicToggleSwitchStyle}" VerticalAlignment="Center"
+                                      OnContent="洗脑循环" OffContent="洗脑循环" Toggled="AutoLoopSwitch_Toggled" FontSize="{CustomResource SmallFontSize}"/>
+                            <widgets:AsyncButton Icon="&#xE99E;" Style="{StaticResource SecondaryAsyncButtonStyle}" x:Name="CommentButton" ToolTipService.ToolTip="评论" Click="CommentButton_Click"
+                                          />
+                        </StackPanel>
+
+                    </StackPanel>
+                </Grid>
+                <StackPanel Grid.Row="1" HorizontalAlignment="Stretch" x:Name="PartContainer">
+                    <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,0,0,10">
+                        <ToggleButton Style="{StaticResource BasicToggleButton}" CornerRadius="2,0,0,2" FontFamily="{StaticResource Icon}"
+                                  Content="&#xE9A8;" x:Name="SingleRowButton" IsChecked="True" Click="PartDsplayButton_Click" Tag="row"/>
+                        <ToggleButton Style="{StaticResource BasicToggleButton}" CornerRadius="0,2,2,0" FontFamily="{StaticResource Icon}"
+                                  Content="&#xE97D;" x:Name="GridViewButton" Click="PartDsplayButton_Click" Tag="grid"/>
+                    </StackPanel>
+                    <ListView ItemTemplate="{StaticResource PartListItemTemplate}" ItemsSource="{x:Bind VideoPartCollection}"
+                      IsItemClickEnabled="True" ItemsPanel="{StaticResource HorizontalListViewItemsPanel}"
+                      Padding="0,0,0,5" Style="{StaticResource BasicListView}" ItemContainerStyle="{StaticResource TransparentListViewContainerStyle}"
+                      x:Name="PartListView" ItemClick="PartListView_ItemClick" ScrollViewer.VerticalScrollMode="Disabled"/>
+                    <GridView ItemTemplate="{StaticResource PartGridItemTemplate}" ItemsSource="{x:Bind VideoPartCollection}" 
+                          ItemContainerStyle="{StaticResource TransparentGridViewItemContainerStyle}"
+                          Style="{StaticResource BasicGridView}" Visibility="Collapsed" MaxHeight="400"
+                          IsItemClickEnabled="True" ItemClick="PartListView_ItemClick" HorizontalAlignment="Left"
+                          x:Name="PartGridView" ScrollViewer.HorizontalScrollMode="Disabled"/>
+                </StackPanel>
+                <Grid Grid.Row="2" Margin="0,10,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <widgets:TrimTextBlock x:Name="DescriptionBlock" FontSize="{CustomResource SmallFontSize}" Foreground="{ThemeResource TipTextColor}"
+                                       />
+                    <ListView ItemTemplate="{StaticResource TagItemTemplate}" ItemsSource="{x:Bind TagCollection}" Height="30"
+                      IsItemClickEnabled="True" ItemContainerStyle="{StaticResource TransparentListViewContainerStyle}"
+                      Style="{StaticResource BasicListView}" Padding="0,0,0,5" Margin="0,5,0,0" ItemsPanel="{StaticResource HorizontalListViewItemsPanel}"
+                      x:Name="TagListView" ItemClick="TagListView_ItemClick"  Grid.Row="1" ScrollViewer.VerticalScrollMode="Disabled"/>
+                </Grid>
+                <Grid Grid.Row="3" Margin="0,15,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal" x:Name="SingleUserContainer" Tapped="SingleUserContainer_Tapped">
+                        <PersonPicture x:Name="UPAvatar" Width="35" Height="35" VerticalAlignment="Center" Style="{StaticResource BasicPersonPictureStyle}"/>
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15,0,0,0">
+                            <TextBlock x:Name="UPNameBlock" Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource ImportantTextColor}"/>
+                            <TextBlock FontFamily="{StaticResource Icon}" Text="&#xEA31;" Foreground="{ThemeResource TipTextColor}" FontSize="{CustomResource SmallFontSize}" Margin="0,5,0,0"/>
+                        </StackPanel>
+                    </StackPanel>
+                    <Grid x:Name="StaffContainer" Visibility="Collapsed">
+                        <ListView ItemTemplate="{StaticResource StaffItemTemplate}" ItemsSource="{x:Bind StaffCollection}"
+                      IsItemClickEnabled="True" ItemContainerStyle="{StaticResource TransparentListViewContainerStyle}"
+                      Style="{StaticResource BasicListView}" Padding="0,0,0,5" ItemsPanel="{StaticResource HorizontalListViewItemsPanel}"
+                      x:Name="StaffListView" ItemClick="StaffListView_ItemClick"/>
+                    </Grid>
+                    <widgets:AsyncButton x:Name="FollowButton" Style="{StaticResource PrimaryAsyncButtonStyle}" Text="关注" Grid.Column="1" Margin="10,0,0,0"
+                                     VerticalAlignment="Center" Click="FollowButton_Click"/>
+                </Grid>
+                <Grid Grid.Row="4">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <StackPanel BorderBrush="{ThemeResource LineColor}" BorderThickness="0,1,0,0" Margin="0,25"/>
+                    <controls:HorizontalScrollSectionPanel Title="播放列表" ItemsSource="{x:Bind PlayBackupCollection}" x:Name="PlayListContainer"
+                                                       ItemTemplate="{StaticResource PlayListItemTemplate}" ItemClick="PlayListContainer_ItemClick"
+                                                       HoldText="播放列表内木有视频" Grid.Row="1" Margin="0,0,0,20"/>
+                    <controls:HorizontalScrollSectionPanel Title="相关视频" ItemsSource="{x:Bind RelatedCollection}" x:Name="RelateVideoContainer"
+                                                       ItemTemplate="{StaticResource RelatedVideoItemTemplate}" ItemClick="RelateVideoContainer_ItemClick"
+                                                       HoldText="查询不到相关视频" Grid.Row="2"/>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
+    
+</Page>

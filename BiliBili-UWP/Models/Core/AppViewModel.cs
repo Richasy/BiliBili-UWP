@@ -18,6 +18,7 @@ using Microsoft.Toolkit.Uwp.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,6 +27,7 @@ using Windows.ApplicationModel.Background;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.Storage;
+using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.WindowManagement;
@@ -50,8 +52,11 @@ namespace BiliBili_UWP.Models.Core
         public ReplyDetailPopup _replyDetailPopup;
         public UpdatePopup _updatePopup;
         public DynamicDetailPopup _dynamicDetailPopup;
+        public RepostPopup _repostPopup;
         public WebView _documentWebView;
         public bool IsInBackground;
+        public string ConnectAnimationName = "";
+        public double BasicFontSize = Convert.ToDouble(AppTool.GetLocalSetting(Settings.BasicFontSize, "14"));
 
         public List<Tuple<Guid, Action<Size>>> WindowsSizeChangedNotify { get; set; } = new List<Tuple<Guid, Action<Size>>>();
         public ObservableCollection<SystemFont> FontCollection = new ObservableCollection<SystemFont>();
@@ -67,19 +72,39 @@ namespace BiliBili_UWP.Models.Core
                 WindowsSizeChangedNotify.ForEach(p => p.Item2?.Invoke(e.Size));
             }
         }
-        public void AppInitByActivated(string argument)
+        public async void AppInitByActivated(string argument)
         {
             QueryString args = QueryString.Parse(argument);
             args.TryGetValue("action", out string action);
+            bool isPlay = CurrentVideoPlayer != null && (CurrentVideoPlayer.MTC.IsFullWindow || CurrentVideoPlayer.MTC.IsCinema || CurrentVideoPlayer.MTC.IsCompactOverlay);
             switch (action)
             {
                 case "video":
+                    if (isPlay)
+                        return;
                     args.TryGetValue("aid", out string videoAid);
-                    PlayVideo(Convert.ToInt32(videoAid), fromSign: StaticString.SIGN_DYNAMIC);
+                    args.TryGetValue("bvid", out string videoBvId);
+                    args.TryGetValue("cid", out string videoCid);
+                    var videoArgs = new VideoActiveArgs();
+                    if (!string.IsNullOrEmpty(videoAid))
+                        videoArgs.aid = Convert.ToInt32(videoAid);
+                    if (!string.IsNullOrEmpty(videoBvId))
+                        videoArgs.bvid = videoBvId;
+                    if (!string.IsNullOrEmpty(videoCid))
+                        videoArgs.cid = Convert.ToInt32(videoCid);
+                    PlayVideo(videoArgs);
                     break;
                 case "bangumi":
+                    if (isPlay)
+                        return;
                     args.TryGetValue("epid", out string AnimeEpid);
                     PlayBangumi(Convert.ToInt32(AnimeEpid), isEp: true);
+                    break;
+                case "screenshot":
+                    args.TryGetValue("image", out string screenShotName);
+                    var picLib = await KnownFolders.PicturesLibrary.CreateFolderAsync("Bili ScreenShot", CreationCollisionOption.OpenIfExists);
+                    var screenFile = await picLib.CreateFileAsync(screenShotName, CreationCollisionOption.OpenIfExists);
+                    await Launcher.LaunchFileAsync(screenFile);
                     break;
                 default:
                     break;
@@ -107,16 +132,28 @@ namespace BiliBili_UWP.Models.Core
         /// <param name="fromSign">来源参数</param>
         public void PlayVideo(int aid, object sender = null, string fromSign = "")
         {
-            if (CurrentPagePanel.IsSubPageOpen)
-                CurrentPagePanel.IsSubPageOpen = false;
+            App._watch.Start();
+            CurrentPagePanel.CheckSubReplyPage();
             SelectedSideMenuItem = null;
             if (sender != null && IsEnableAnimation)
             {
-                var image = VisualTreeExtension.VisualTreeFindName<FrameworkElement>((FrameworkElement)sender, "VideoCover");
-                ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("VideoConnectedAnimation", image);
+                //var image = VisualTreeExtension.VisualTreeFindName<FrameworkElement>((FrameworkElement)sender, "VideoCover");
+                string animationName = "VideoConnectedAnimation" + Guid.NewGuid().ToString("N");
+                ConnectAnimationName = animationName;
+                ConnectedAnimationService.GetForCurrentView().PrepareToAnimate(animationName, sender as UIElement);
             }
+            else
+                ConnectAnimationName = "";
             CurrentSidePanel.SetSelectedItem(SideMenuItemType.Line);
             CurrentPagePanel.NavigateToPage(SideMenuItemType.VideoPlayer, new Tuple<int, string>(aid, fromSign));
+            App._watch.Stop();
+        }
+        public void PlayVideo(VideoActiveArgs args)
+        {
+            CurrentPagePanel.CheckSubReplyPage();
+            SelectedSideMenuItem = null;
+            CurrentSidePanel.SetSelectedItem(SideMenuItemType.Line);
+            CurrentPagePanel.NavigateToPage(SideMenuItemType.VideoPlayer, args);
         }
         /// <summary>
         /// 播放视频列表
@@ -125,8 +162,7 @@ namespace BiliBili_UWP.Models.Core
         /// <param name="videoList">播放列表</param>
         public void PlayVideoList(int aid, object sender, List<VideoDetail> videoList)
         {
-            if (CurrentPagePanel.IsSubPageOpen)
-                CurrentPagePanel.IsSubPageOpen = false;
+            CurrentPagePanel.CheckSubReplyPage();
             SelectedSideMenuItem = null;
             if (sender != null && IsEnableAnimation)
             {
@@ -143,13 +179,19 @@ namespace BiliBili_UWP.Models.Core
         /// <param name="sender">触发控件（用于查找封面以实现连接动画）</param>
         public void PlayBangumi(int epid, object sender = null, bool isEp = false)
         {
-            if (CurrentPagePanel.IsSubPageOpen)
-                CurrentPagePanel.IsSubPageOpen = false;
+            CurrentPagePanel.CheckSubReplyPage();
             SelectedSideMenuItem = null;
             if (sender != null && IsEnableAnimation)
             {
                 var image = VisualTreeExtension.VisualTreeFindName<FrameworkElement>((FrameworkElement)sender, "VideoCover");
-                ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("VideoConnectedAnimation", image);
+                if (image != null)
+                {
+                    string animationName = "BangumiConnectedAnimation" + Guid.NewGuid().ToString("N");
+                    ConnectAnimationName = animationName;
+                    ConnectedAnimationService.GetForCurrentView().PrepareToAnimate(animationName, image);
+                }
+                else
+                    ConnectAnimationName = "";
             }
             CurrentSidePanel.SetSelectedItem(SideMenuItemType.Line);
             if (isEp)
@@ -189,7 +231,7 @@ namespace BiliBili_UWP.Models.Core
             if (isFull)
             {
                 page.RemovePlayer();
-                MainPage.Current.InsertPlayer();
+                DesktopMainPage.Current.InsertPlayer();
                 ApplicationView.GetForCurrentView().TryEnterFullScreenMode();
             }
             else
@@ -197,7 +239,7 @@ namespace BiliBili_UWP.Models.Core
                 ApplicationView.GetForCurrentView().ExitFullScreenMode();
                 if (!CurrentVideoPlayer.MTC.IsCinema)
                 {
-                    MainPage.Current.RemovePlayer();
+                    DesktopMainPage.Current.RemovePlayer();
                     page.InsertPlayer();
                     CurrentVideoPlayer.DanmakuBarVisibility = Visibility.Visible;
                 }
@@ -213,13 +255,13 @@ namespace BiliBili_UWP.Models.Core
             if (isCinema)
             {
                 page.RemovePlayer();
-                MainPage.Current.InsertPlayer();
+                DesktopMainPage.Current.InsertPlayer();
             }
             else
             {
                 if (!CurrentVideoPlayer.MTC.IsFullWindow)
                 {
-                    MainPage.Current.RemovePlayer();
+                    DesktopMainPage.Current.RemovePlayer();
                     page.InsertPlayer();
                 }
             }
@@ -234,14 +276,14 @@ namespace BiliBili_UWP.Models.Core
             if (isCompact)
             {
                 page.RemovePlayer();
-                MainPage.Current.InsertPlayer();
+                DesktopMainPage.Current.InsertPlayer();
                 await ApplicationView.GetForCurrentView().TryEnterViewModeAsync(ApplicationViewMode.CompactOverlay);
             }
             else
             {
                 if (!CurrentVideoPlayer.MTC.IsCompactOverlay)
                 {
-                    MainPage.Current.RemovePlayer();
+                    DesktopMainPage.Current.RemovePlayer();
                     page.InsertPlayer();
                     CurrentVideoPlayer.DanmakuBarVisibility = Visibility.Visible;
                     await ApplicationView.GetForCurrentView().TryEnterViewModeAsync(ApplicationViewMode.Default);
@@ -390,7 +432,7 @@ namespace BiliBili_UWP.Models.Core
         /// <param name="dynamic">动态信息</param>
         /// <param name="data">数据</param>
         /// <param name="rid">回复ID</param>
-        public void ShowDynamicDetailPopup(SlimUserInfo user,string dynamic,object data,string rid)
+        public void ShowDynamicDetailPopup(SlimUserInfo user, string dynamic, object data, string rid)
         {
             if (_dynamicDetailPopup == null)
                 _dynamicDetailPopup = new DynamicDetailPopup();
@@ -399,6 +441,53 @@ namespace BiliBili_UWP.Models.Core
             _dynamicDetailPopup.Data = data;
             _dynamicDetailPopup.Dynamic = dynamic;
             _dynamicDetailPopup.InitReply(rid);
+        }
+        public void ShowRepostPopup(string origin, Topic topic)
+        {
+            if (_repostPopup == null)
+                _repostPopup = new RepostPopup();
+            _repostPopup.ShowPopup();
+            _repostPopup.Init(origin, topic);
+        }
+        public void ShowRepostPopup(string origin, VideoDetail video)
+        {
+            if (_repostPopup == null)
+                _repostPopup = new RepostPopup();
+            _repostPopup.ShowPopup();
+            _repostPopup.Init(origin, video);
+        }
+        public void ShowRepostPopup(string origin, BangumiDetail bangumi, Episode part)
+        {
+            if (_repostPopup == null)
+                _repostPopup = new RepostPopup();
+            _repostPopup.ShowPopup();
+            _repostPopup.Init(origin, bangumi, part);
+        }
+        public void HandleUri(string url, string title = "")
+        {
+            var result = BiliTool.GetResultFromUri(url);
+            if (result.Type.ToString().Contains("Video"))
+            {
+                if (result.Type == UriType.VideoA)
+                    PlayVideo(Convert.ToInt32(result.Param));
+                else
+                {
+                    var args = new VideoActiveArgs() { bvid = result.Param };
+                    PlayVideo(args);
+                }
+            }
+            else if (result.Type == UriType.Bangumi)
+            {
+                PlayBangumi(Convert.ToInt32(result.Param), null, true);
+            }
+            else if (result.Type == UriType.Document)
+            {
+                ShowDoucmentPopup(title, Convert.ToInt32(result.Param));
+            }
+            else if (result.Type == UriType.Web)
+            {
+                ShowWebPopup(title, result.Param);
+            }
         }
     }
 }

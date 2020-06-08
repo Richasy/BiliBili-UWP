@@ -95,5 +95,28 @@ namespace BiliBili_Controls.Extensions
             }
             return retValues;
         }
+        /// <summary>
+        /// 获取当前指定的父控件
+        /// </summary>
+        /// <typeparam name="T">转换类型</typeparam>
+        /// <param name="obj">控件</param>
+        /// <param name="name">父控件名</param>
+        /// <returns></returns>
+        public static T GetParentObject<T>(DependencyObject obj, string name) where T : FrameworkElement
+        {
+            DependencyObject parent = VisualTreeHelper.GetParent(obj);
+
+            while (parent != null)
+            {
+                if (parent is T && (((T)parent).Name == name | string.IsNullOrEmpty(name)))
+                {
+                    return (T)parent;
+                }
+
+                parent = VisualTreeHelper.GetParent(parent);
+            }
+
+            return null;
+        }
     }
 }

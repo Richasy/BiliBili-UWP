@@ -12,6 +12,7 @@
     xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
     xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
     xmlns:extensions="using:Microsoft.Toolkit.Uwp.UI.Extensions"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400"
@@ -37,8 +38,8 @@
                 <StackPanel>
                     <TextBlock Style="{StaticResource SmallTipTextStyle}" Text="字号"/>
                     <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-                        <RadioButton GroupName="FontSize" x:Name="DefaultFontSizeRadio" Content="标准" FontSize="12" Style="{StaticResource BasicRadioButtonStyle}" IsChecked="True"/>
-                        <RadioButton GroupName="FontSize" x:Name="SmallFontSizeRadio" Margin="10,0,0,0" Content="小号" FontSize="12" Style="{StaticResource BasicRadioButtonStyle}"/>
+                        <RadioButton GroupName="FontSize" x:Name="DefaultFontSizeRadio" Content="标准" FontSize="{CustomResource SmallFontSize}" Style="{StaticResource BasicRadioButtonStyle}" IsChecked="True"/>
+                        <RadioButton GroupName="FontSize" x:Name="SmallFontSizeRadio" Margin="10,0,0,0" Content="小号" FontSize="{CustomResource SmallFontSize}" Style="{StaticResource BasicRadioButtonStyle}"/>
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Grid.Row="1" Margin="0,10">
@@ -46,13 +47,13 @@
                     <ComboBox Style="{StaticResource BasicComboBoxStyle}" ItemContainerStyle="{StaticResource BasicComboBoxItemContainerStyle}"
                               x:Name="ModeComboBox" HorizontalAlignment="Stretch" Margin="0,5,0,0">
                         <ComboBoxItem Tag="1" IsSelected="True">
-                            <widgets:IconTextBlock Icon="&#xEA27;" IconFontSize="22" FontSize="12" Text="滚动字幕" IconForeground="{ThemeResource PrimaryColor}"/>
+                            <widgets:IconTextBlock Icon="&#xEA27;" IconFontSize="22" FontSize="{CustomResource SmallFontSize}" Text="滚动字幕" IconForeground="{ThemeResource PrimaryColor}"/>
                         </ComboBoxItem>
                         <ComboBoxItem Tag="4">
-                            <widgets:IconTextBlock Icon="&#xEA29;" IconFontSize="22" FontSize="12" Text="底部字幕" IconForeground="{ThemeResource PrimaryColor}"/>
+                            <widgets:IconTextBlock Icon="&#xEA29;" IconFontSize="22" FontSize="{CustomResource SmallFontSize}" Text="底部字幕" IconForeground="{ThemeResource PrimaryColor}"/>
                         </ComboBoxItem>
                         <ComboBoxItem Tag="5">
-                            <widgets:IconTextBlock Icon="&#xEA2B;" IconFontSize="22" FontSize="12" Text="顶部字幕" IconForeground="{ThemeResource PrimaryColor}"/>
+                            <widgets:IconTextBlock Icon="&#xEA2B;" IconFontSize="22" FontSize="{CustomResource SmallFontSize}" Text="顶部字幕" IconForeground="{ThemeResource PrimaryColor}"/>
                         </ComboBoxItem>
                     </ComboBox>
                 </StackPanel>
@@ -64,7 +65,7 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <TextBox Style="{StaticResource BasicTextBoxStyle}" VerticalAlignment="Center" HorizontalAlignment="Stretch"
-                                 IsReadOnly="True" x:Name="ColorTextBox" Text="#FFFFFFFF" FontSize="12" Padding="5,8" VerticalContentAlignment="Center"/>
+                                 IsReadOnly="True" x:Name="ColorTextBox" Text="#FFFFFFFF" FontSize="{CustomResource SmallFontSize}" Padding="5,8" VerticalContentAlignment="Center"/>
                         <Border Width="80" VerticalAlignment="Stretch" CornerRadius="2" Margin="10,0,0,0" Grid.Column="1"
                                 x:Name="ColorViewBorder" Background="White"/>
                     </Grid>
@@ -117,6 +118,10 @@
         </Flyout>
     </UserControl.Resources>
     <Grid Background="{ThemeResource PageBackground}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
@@ -131,6 +136,8 @@
                                                PlayButtonClick="VideoMTC_PlayButtonClick"
                                                CinemaChanged="VideoMTC_CinemaChanged"
                                                QualityItemsSource="{x:Bind QualityCollection}"
+                                               PlayRateItemsSource="{x:Bind PlayRateCollection}"
+                                               PlayRateChanged="VideoMTC_PlayRateChanged"
                                                QualityChanged="VideoMTC_QualityChanged"
                                                CinemaButtonVisibility="{x:Bind CinemaButtonVisibility,Mode=OneWay}"
                                                FullWindowButtonVisibility="{x:Bind FullWindowButtonVisibility,Mode=OneWay}"
@@ -142,36 +149,46 @@
                                                SeparateButtonClick="VideoMTC_SeparateButtonClick"
                                                Loaded="VideoMTC_Loaded"
                                                ShowAndHideAutomatically="False"
-                                               ForwardButtonClick="VideoMTC_ForwardButtonClick"
-                                               RewindButtonClick="VideoMTC_RewindButtonClick"
+                                               PreviousButtonClick="VideoMTC_PreviousButtonClick"
+                                               NextButtonClick="VideoMTC_NextButtonClick"
                                                />
             </MediaPlayerElement.TransportControls>
         </MediaPlayerElement>
+        <Grid Background="{ThemeResource ScreenMaskColor}" Opacity="0.01" x:Name="MaskContainer" Visibility="Collapsed" HorizontalAlignment="Stretch"
+              VerticalAlignment="Stretch" Tapped="MaskContainer_Tapped"/>
         <Grid x:Name="InteractionContainer">
-            <ItemsControl x:Name="ChoiceItemsControl" ItemsSource="{x:Bind ChoiceCollection}" HorizontalAlignment="Center"
+            <ItemsControl x:Name="ChoiceItemsControl" ItemsSource="{x:Bind ChoiceCollection}" HorizontalAlignment="Stretch"
                       Visibility="Collapsed" VerticalAlignment="Bottom" Margin="0,0,0,140" SizeChanged="ChoiceItemsControl_SizeChanged">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <ItemsWrapGrid Orientation="Horizontal"/>
+                        <ItemsWrapGrid Orientation="Horizontal" HorizontalAlignment="Center"/>
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate x:DataType="bilibili:Choice">
                         <Grid Background="{ThemeResource MaskAcrylicBackground}" CornerRadius="4" HorizontalAlignment="Stretch"
-                              VerticalAlignment="Stretch" Padding="20,30" Tapped="Choice_Tapped" Margin="12">
+                              VerticalAlignment="Stretch" Padding="20" Tapped="Choice_Tapped" Margin="12">
                             <TextBlock Text="{x:Bind option}" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                       FontSize="15" Foreground="{ThemeResource ImportantTextColor}" FontWeight="Bold"/>
+                                       FontSize="{CustomResource BasicFontSize}" Foreground="{ThemeResource ImportantTextColor}" FontWeight="Bold"/>
                         </Grid>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,20,0,0">
-                <Button Style="{StaticResource DefaultCircleButtonStyle}" Background="{ThemeResource MaskAcrylicBackground}" Foreground="{ThemeResource ImportantTextColor}"
+            <Grid>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,20,0,0">
+                    <Button Style="{StaticResource DefaultCircleButtonStyle}" Background="{ThemeResource MaskAcrylicBackground}" Foreground="{ThemeResource ImportantTextColor}"
                     x:Name="ExitScreenButton" ToolTipService.ToolTip="返回" Content="&#xE914;" Click="ExitScreenButton_Click" Visibility="Collapsed" Margin="0,0,15,0"/>
-                <Button Style="{StaticResource PrimaryCircleButtonStyle}" Background="{ThemeResource MaskAcrylicBackground}" Foreground="{ThemeResource ImportantTextColor}"
+                    <Button Style="{StaticResource DefaultCircleButtonStyle}" Background="{ThemeResource MaskAcrylicBackground}" Foreground="{ThemeResource ImportantTextColor}"
+                    x:Name="LockScreenButton" ToolTipService.ToolTip="锁定" Content="&#xEA01;" Click="LockScreenButton_Click"  Visibility="Collapsed" Margin="0,0,15,0"/>
+                    <Button Style="{StaticResource PrimaryCircleButtonStyle}" Width="40" Height="40" Background="{ThemeResource MaskAcrylicBackground}" Foreground="{ThemeResource ImportantTextColor}"
                 x:Name="InteractionHomeButton" Visibility="Collapsed" Click="InteractionHomeButton_Click"
                 ToolTipService.ToolTip="返回互动视频起点" Content="&#xE9CB;"/>
-            </StackPanel>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,20,20,0">
+                    <Button Style="{StaticResource DefaultCircleButtonStyle}" Background="{ThemeResource MaskAcrylicBackground}" Foreground="{ThemeResource ImportantTextColor}"
+                    x:Name="ScreenShotButton" ToolTipService.ToolTip="截图" Content="&#xE988;" Click="ScreenShotButton_Click"  Visibility="Collapsed"/>
+                </StackPanel>
+            </Grid>
             <StackPanel Padding="20" CornerRadius="4" HorizontalAlignment="Center" VerticalAlignment="Center" Background="{ThemeResource PaneBackground}"
                 Name="InteractionEndContainer" Visibility="Collapsed">
                 <TextBlock Style="{StaticResource TipWrapTextStyle}" Text="互动视频已经结束，点击左上方按钮可返回起点"/>
@@ -180,7 +197,7 @@
         <Grid x:Name="PopupContainer" VerticalAlignment="Bottom">
             <Border Background="{ThemeResource MediaTransportControlsPanelBackground}" Padding="8,5" CornerRadius="3" Margin="20,0,20,100"
                 x:Name="SubtitleContainer" Visibility="Collapsed" HorizontalAlignment="Center">
-                <TextBlock Style="{StaticResource CaptionTextStyle}" FontSize="20" x:Name="SubtitleContentBlock" TextWrapping="Wrap"/>
+                <TextBlock Style="{StaticResource CaptionTextStyle}" FontSize="{CustomResource SubFontSize}" x:Name="SubtitleContentBlock" TextWrapping="Wrap"/>
             </Border>
             <Border x:Name="TipContainer" Background="{ThemeResource PaneBackground}" Padding="12,8" CornerRadius="4" Margin="20,0,20,100"
                     HorizontalAlignment="Left" Visibility="Collapsed"
@@ -201,8 +218,7 @@
                 </animations:Implicit.HideAnimations>
             </Border>
         </Grid>
-        <ProgressBar IsIndeterminate="True" Foreground="{ThemeResource PrimaryColor}" Visibility="Collapsed"
-                     VerticalAlignment="Bottom" HorizontalAlignment="Stretch" x:Name="LoadingBar"/>
+        <muxc:ProgressBar VerticalAlignment="Bottom" Style="{StaticResource MuxcProgressBarStyle}" x:Name="LoadingBar"/>
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="ErrorContainer" Visibility="Collapsed"
                     Background="{ThemeResource MaskAcrylicBackground}" Padding="10" CornerRadius="4">
             <TextBlock Style="{StaticResource BasicIconTextStyle}" FontSize="20" HorizontalAlignment="Center"
@@ -247,7 +263,7 @@
                 <Run x:Name="HistoryTimeBlock" Foreground="{ThemeResource ImportantTextColor}"/>
             </TextBlock>
             <Button Style="{StaticResource PrimaryButtonStyle}" Content="继续观看" Name="ContinueHistoryButton"
-                    Click="ContinueHistoryButton_Click" VerticalAlignment="Center" FontSize="12"/>
+                    Click="ContinueHistoryButton_Click" VerticalAlignment="Center" FontSize="{CustomResource SmallFontSize}"/>
             <animations:Implicit.ShowAnimations>
                 <animations:TranslationAnimation Duration="0:0:.5" From="200, 0, 0" To="0" ></animations:TranslationAnimation>
                 <animations:OpacityAnimation Duration="0:0:.5" From="0" To="1.0"></animations:OpacityAnimation>
@@ -265,7 +281,7 @@
             <TextBlock Style="{StaticResource SmallTipTextStyle}" VerticalAlignment="Center" Margin="10,0"
                        Text="是否切换到下一P？"/>
             <Button Style="{StaticResource PrimaryButtonStyle}" Content="切换" Name="NextPartButton"
-                    Click="NextPartButton_Click"  VerticalAlignment="Center" FontSize="12"/>
+                    Click="NextPartButton_Click"  VerticalAlignment="Center" FontSize="{CustomResource SmallFontSize}"/>
             <animations:Implicit.ShowAnimations>
                 <animations:TranslationAnimation Duration="0:0:.5" From="200, 0, 0" To="0" ></animations:TranslationAnimation>
                 <animations:OpacityAnimation Duration="0:0:.5" From="0" To="1.0"></animations:OpacityAnimation>

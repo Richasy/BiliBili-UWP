@@ -1,0 +1,29 @@
+﻿<UserControl
+    x:Class="NSDanmaku.Controls.Danmaku"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:NSDanmaku.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <Grid x:Name="gv">
+        <TextBlock x:Name="tb_test" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="25" Foreground="White"></TextBlock>
+        <Canvas x:Name="canvas">
+         
+        </Canvas>
+        <Grid x:Name="grid_Roll" >
+
+        </Grid>
+        <Grid x:Name="grid_Top" >
+
+        </Grid>
+
+        <Grid x:Name="grid_Bottom" >
+
+        </Grid>
+      
+    </Grid>
+</UserControl>

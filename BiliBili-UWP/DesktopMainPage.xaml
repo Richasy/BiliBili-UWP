@@ -1,0 +1,31 @@
+﻿<Page
+    x:Class="BiliBili_UWP.DesktopMainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BiliBili_UWP"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:layout="using:BiliBili_UWP.Components.Layout"
+    mc:Ignorable="d"
+    SizeChanged="Page_SizeChanged"
+    Background="{ThemeResource PageBackground}">
+
+    <Grid>
+        <SplitView OpenPaneLength="310" CompactPaneLength="80" DisplayMode="CompactInline"
+                   IsPaneOpen="True" x:Name="AppSplitView">
+            <SplitView.Pane>
+                <Grid Padding="0,35,0,20" Background="{ThemeResource SideBackground}">
+                    <layout:SidePanel IsWide="{x:Bind AppSplitView.IsPaneOpen,Mode=TwoWay}"
+                                      SideMenuItemClick="SidePanel_SideMenuItemClick"
+                                      x:Name="SidePanel" HorizontalAlignment="Left"
+                                      RegionSelected="SidePanel_RegionSelected"/>
+                </Grid>
+            </SplitView.Pane>
+            <SplitView.Content>
+                <layout:PagePanel x:Name="PagePanel" IsDefault="True" HorizontalAlignment="Stretch"/>
+            </SplitView.Content>
+        </SplitView>
+        <Grid x:Name="FullWindowContainer" Visibility="Collapsed"/>
+        <Grid Background="{ThemeResource PageBackground}" Opacity="0.01" x:Name="TitleContainer" Height="35" VerticalAlignment="Top"/>
+    </Grid>
+</Page>

@@ -37,27 +37,27 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <StackPanel>
-                        <TextBlock Text="{x:Bind title}" FontWeight="Bold" Style="{StaticResource SmallTipTextStyle}" FontSize="13" Foreground="{ThemeResource ImportantTextColor}"
+                        <TextBlock Text="{x:Bind title}" FontWeight="Bold" Style="{StaticResource SmallTipTextStyle}" FontSize="{CustomResource BasicFontSize}" Foreground="{ThemeResource ImportantTextColor}"
                                TextWrapping="Wrap" ToolTipService.ToolTip="{x:Bind title}" MaxLines="2"/>
-                        <TextBlock Text="{x:Bind styles}" Visibility="{x:Bind styles,Converter={StaticResource StringVisibilityConverter}}" Style="{StaticResource SmallTipTextStyle}" FontSize="10" Margin="0,5"/>
-                        <TextBlock Text="{x:Bind label}" Visibility="{x:Bind label,Converter={StaticResource StringVisibilityConverter}}" Style="{StaticResource SmallTipTextStyle}" FontSize="10"/>
-                        <TextBlock Text="{x:Bind staff}" Visibility="{x:Bind staff,Converter={StaticResource StringVisibilityConverter}}" Margin="0,10,0,0" Style="{StaticResource SmallTipTextStyle}" MaxLines="2" FontSize="10"/>
+                        <TextBlock Text="{x:Bind styles}" Visibility="{x:Bind styles,Converter={StaticResource StringVisibilityConverter}}" Style="{StaticResource SmallTipTextStyle}" FontSize="{CustomResource MiniFontSize}" Margin="0,5"/>
+                        <TextBlock Text="{x:Bind label}" Visibility="{x:Bind label,Converter={StaticResource StringVisibilityConverter}}" Style="{StaticResource SmallTipTextStyle}" FontSize="{CustomResource MiniFontSize}"/>
+                        <TextBlock Text="{x:Bind staff}" Visibility="{x:Bind staff,Converter={StaticResource StringVisibilityConverter}}" Margin="0,10,0,0" Style="{StaticResource SmallTipTextStyle}" MaxLines="2" FontSize="{CustomResource MiniFontSize}"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0,5,0,0">
-                        <widgets:AsyncButton Text="立即观看" Style="{StaticResource PrimaryAsyncButtonStyle}" Padding="2,0,2,2" FontSize="10" x:Name="WatchAnimeButton"
+                        <widgets:AsyncButton Text="立即观看" Style="{StaticResource PrimaryAsyncButtonStyle}" Padding="2,0,2,2" FontSize="{CustomResource MiniFontSize}" x:Name="WatchAnimeButton"
                                              Click="WatchAnimeButton_Click"/>
-                        <widgets:AsyncButton FontSize="10" Text="{x:Bind render_follow}" Style="{StaticResource DefaultAsyncButtonStyle}" Margin="10,0,0,0" Padding="2,0,2,2"
+                        <widgets:AsyncButton FontSize="{CustomResource MiniFontSize}" Text="{x:Bind render_follow}" Style="{StaticResource DefaultAsyncButtonStyle}" Margin="10,0,0,0" Padding="2,0,2,2"
                                              Click="FollowAnimeButton_Click" Visibility="{x:Bind is_atten,Converter={StaticResource IntVisibilityConverter},ConverterParameter=Reverse}"/>
                     </StackPanel>
                 </Grid>
                 <StackPanel Grid.Column="2" Visibility="{x:Bind rating,Converter={StaticResource IntVisibilityConverter}}" HorizontalAlignment="Right">
                     <StackPanel Orientation="Horizontal" Margin="15,0,0,0">
-                        <TextBlock Text="{x:Bind rating}" Style="{StaticResource BasicTextStyle}" FontSize="20" FontWeight="Bold"
+                        <TextBlock Text="{x:Bind rating}" Style="{StaticResource BasicTextStyle}" FontSize="{CustomResource SubFontSize}" FontWeight="Bold"
                                    Foreground="{ThemeResource SecondaryColor}"/>
                         <TextBlock Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource SecondaryColor}" Text="分"
                                    VerticalAlignment="Center" Margin="2,0,0,0"/>
                     </StackPanel>
-                    <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="10" Margin="0,5,0,0" HorizontalAlignment="Right" TextAlignment="Right"
+                    <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="{CustomResource MiniFontSize}" Margin="0,5,0,0" HorizontalAlignment="Right" TextAlignment="Right"
                                Text="{x:Bind render_vote}"/>
                 </StackPanel>
             </Grid>
@@ -77,11 +77,11 @@
                         <Image Source="{x:Bind render_level}" VerticalAlignment="Center" Height="8" Margin="5,0,0,0"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-                        <widgets:IconTextBlock Icon="&#xEA09;" GutterWidth="5" Text="{x:Bind fans,Converter={StaticResource NumberAbbrConverter}}" FontSize="10"/>
-                        <widgets:IconTextBlock Icon="&#xEA32;" GutterWidth="5" Text="{x:Bind archives}" Margin="10,0,0,0" FontSize="10"/>
+                        <widgets:IconTextBlock Icon="&#xEA09;" GutterWidth="5" Text="{x:Bind fans,Converter={StaticResource NumberAbbrConverter}}" FontSize="{CustomResource MiniFontSize}"/>
+                        <widgets:IconTextBlock Icon="&#xEA32;" GutterWidth="5" Text="{x:Bind archives}" Margin="10,0,0,0" FontSize="{CustomResource MiniFontSize}"/>
                     </StackPanel>
                 </StackPanel>
-                <widgets:AsyncButton Padding="0" FontSize="10" Style="{StaticResource PrimaryAsyncButtonStyle}"
+                <widgets:AsyncButton Padding="0" FontSize="{CustomResource MiniFontSize}" Style="{StaticResource PrimaryAsyncButtonStyle}"
                                      Text="关注" VerticalAlignment="Center" Grid.Column="2" Visibility="{x:Bind attentions,Converter={StaticResource IntVisibilityConverter},ConverterParameter=yo}"
                                      Margin="15,0,0,0" x:Name="FollowUserButton" Click="FollowUserButton_Click"/>
             </Grid>
@@ -97,14 +97,14 @@
                 <TextBlock Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource ImportantTextColor}"
                            Text="{x:Bind title}" TextWrapping="Wrap" Margin="15,10,15,6" FontWeight="Bold"/>
                 <TextBlock Style="{StaticResource SmallTipTextStyle}" Grid.Row="1"
-                           Text="{x:Bind desc}" LineHeight="16" TextWrapping="Wrap" Margin="15,0,15,5" MaxLines="3" FontSize="10"/>
+                           Text="{x:Bind desc}" LineHeight="{CustomResource BodyFontSize}" TextWrapping="Wrap" Margin="15,0,15,5" MaxLines="3" FontSize="{CustomResource MiniFontSize}"/>
                 <widgets:BiliImage Source="{x:Bind cover,Converter={StaticResource CoverResolutionConverter},ConverterParameter=300}" Visibility="{x:Bind image_urls.Count,Converter={StaticResource IntVisibilityConverter}}"
                                   Grid.Row="2" MaxHeight="90" HorizontalAlignment="Stretch"/>
                 <StackPanel Orientation="Horizontal" Grid.Row="3" Margin="15,10">
-                    <widgets:IconTextBlock Icon="&#xEA31;" Text="{x:Bind name}" FontSize="10" GutterWidth="5" IconForeground="{ThemeResource TipTextColor}"/>
-                    <widgets:IconTextBlock Icon="&#xE963;" Text="{x:Bind view}" FontSize="10" GutterWidth="5" Margin="10,0,0,0" IconForeground="{ThemeResource TipTextColor}"/>
-                    <widgets:IconTextBlock Icon="&#xE9F0;" Text="{x:Bind like}" FontSize="10" GutterWidth="5" Margin="10,0,0,0" IconForeground="{ThemeResource TipTextColor}"/>
-                    <widgets:IconTextBlock Icon="&#xE99E;" Text="{x:Bind reply}" FontSize="10" GutterWidth="5" Margin="10,0,0,0" IconForeground="{ThemeResource TipTextColor}"/>
+                    <widgets:IconTextBlock Icon="&#xEA31;" Text="{x:Bind name}" FontSize="{CustomResource MiniFontSize}" GutterWidth="5" IconForeground="{ThemeResource TipTextColor}"/>
+                    <widgets:IconTextBlock Icon="&#xE963;" Text="{x:Bind view}" FontSize="{CustomResource MiniFontSize}" GutterWidth="5" Margin="10,0,0,0" IconForeground="{ThemeResource TipTextColor}"/>
+                    <widgets:IconTextBlock Icon="&#xE9F0;" Text="{x:Bind like}" FontSize="{CustomResource MiniFontSize}" GutterWidth="5" Margin="10,0,0,0" IconForeground="{ThemeResource TipTextColor}"/>
+                    <widgets:IconTextBlock Icon="&#xE99E;" Text="{x:Bind reply}" FontSize="{CustomResource MiniFontSize}" GutterWidth="5" Margin="10,0,0,0" IconForeground="{ThemeResource TipTextColor}"/>
                 </StackPanel>
             </Grid>
         </DataTemplate>

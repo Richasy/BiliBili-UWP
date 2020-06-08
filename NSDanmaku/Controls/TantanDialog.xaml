@@ -1,0 +1,44 @@
+﻿<ContentDialog
+    x:Class="NSDanmaku.Controls.TantanDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:NSDanmaku.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="匹配弹弹Play弹幕"
+    PrimaryButtonText="确定"
+    SecondaryButtonText="取消"
+    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
+    SecondaryButtonClick="ContentDialog_SecondaryButtonClick">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <AutoSuggestBox x:Name="txt_search" QuerySubmitted="txt_search_QuerySubmitted" QueryIcon="Find" PlaceholderText="输入关键字搜索"></AutoSuggestBox>
+        <ScrollViewer Grid.Row="1" Height="240" MaxWidth="340">
+            <StackPanel>
+                <TextBlock Foreground="Red" x:Name="txt_error" Visibility="Collapsed"></TextBlock>
+                <ListView x:Name="list_Items" Header="搜索结果" SelectionMode="Single"  ScrollViewer.VerticalScrollMode="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
+                            <Setter Property="Padding" Value="0"></Setter>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <TextBlock Foreground="Gray" FontSize="14" Text="{Binding animeTitle}"></TextBlock>
+                                <TextBlock TextTrimming="CharacterEllipsis" Text="{Binding episodeTitle}"></TextBlock>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                   
+                </ListView>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</ContentDialog>

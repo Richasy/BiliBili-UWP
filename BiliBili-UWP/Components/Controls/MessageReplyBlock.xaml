@@ -1,0 +1,48 @@
+﻿<UserControl
+    x:Class="BiliBili_UWP.Components.Controls.MessageReplyBlock"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BiliBili_UWP.Components.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <Grid Background="{ThemeResource CardBackground}" Padding="10" CornerRadius="4"
+          Tapped="Container_Tapped">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Horizontal">
+                <PersonPicture x:Name="UserAvatar" Style="{StaticResource BasicPersonPictureStyle}"
+                           Width="30" Height="30" VerticalAlignment="Center" Margin="0,0,10,0" Tapped="UserAvatar_Tapped"/>
+                <TextBlock Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource NormalTextColor}" VerticalAlignment="Center">
+                <Run x:Name="ShowUserBlock"/>
+                <Run Text="等人" x:Name="MultipleUserBlock" Foreground="{ThemeResource TipTextColor}"/>
+                </TextBlock>
+            </StackPanel>
+            <TextBlock Style="{StaticResource SmallTipTextStyle}" VerticalAlignment="Center" Grid.Column="1" Margin="10,0,0,0"
+                       x:Name="TimeBlock"/>
+        </Grid>
+        
+        <StackPanel Grid.Row="1" Margin="0,7,0,0">
+            <TextBlock Style="{StaticResource SmallTipTextStyle}" TextWrapping="Wrap"
+                       HorizontalAlignment="Left" VerticalAlignment="Top" x:Name="TypeBlock"/>
+            <TextBlock Style="{StaticResource TipWrapTextStyle}" Foreground="{ThemeResource ImportantTextColor}"
+                           x:Name="DetailBlock" Margin="0,5,0,0" IsTextSelectionEnabled="True"/>
+        </StackPanel>
+        <Border Grid.Row="2" Margin="0,5,0,0" Background="{ThemeResource CardBackgroundOver}" Padding="8,5" CornerRadius="3"
+                Tapped="Title_Tapped">
+            <TextBlock x:Name="TitleBlock" Style="{StaticResource SmallTipTextStyle}" TextWrapping="Wrap" MaxLines="2"/>
+        </Border>
+    </Grid>
+</UserControl>

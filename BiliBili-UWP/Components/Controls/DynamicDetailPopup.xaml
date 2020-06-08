@@ -46,11 +46,9 @@
                                       MinZoomFactor="0.5" MaxZoomFactor="3" IsZoomChainingEnabled="True"
                                       HorizontalScrollMode="Enabled" HorizontalScrollBarVisibility="Auto"
                                            Name="ScrollViewerMain">
-                                <controls:ImageEx MaxWidth="{Binding Path=ViewportWidth, ElementName=ScrollViewerMain}"
-                                       MaxHeight="{Binding Path=ViewportHeight, ElementName=ScrollViewerMain}"
-                          x:Name="DisplayImage" Source="{Binding img_src}" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                            PlaceholderSource="ms-appx:///Assets/img_holder.png" PlaceholderStretch="Uniform"/>
-
+                                <widgets:BiliImage DisplayType="Ring"  MaxWidth="{Binding Path=ViewportWidth, ElementName=ScrollViewerMain}"
+                                       MaxHeight="{Binding Path=ViewportHeight, ElementName=ScrollViewerMain}" Stretch="Uniform"
+                          x:Name="DisplayImage" Source="{Binding img_src}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </ScrollViewer>
                         </DataTemplate>
                     </FlipView.ItemTemplate>
@@ -92,7 +90,7 @@
                     <PersonPicture Width="30" Height="30" Style="{StaticResource BasicPersonPictureStyle}" x:Name="UserAvatar"
                            VerticalAlignment="Center"/>
                     <StackPanel VerticalAlignment="Center" Margin="10,0,0,0">
-                        <TextBlock x:Name="UserNameBlock" Style="{StaticResource SmallTipTextStyle}" FontSize="13" FontWeight="Bold"
+                        <TextBlock x:Name="UserNameBlock" Style="{StaticResource SmallTipTextStyle}" FontSize="{CustomResource BasicFontSize}" FontWeight="Bold"
                            Foreground="{ThemeResource ImportantTextColor}" MaxWidth="195"/>
                     </StackPanel>
                 </StackPanel>

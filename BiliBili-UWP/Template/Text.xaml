@@ -20,34 +20,35 @@
     </Style>
     
     <Style x:Key="SideMenuIconStyle" TargetType="TextBlock" BasedOn="{StaticResource BasicIconTextStyle}">
-        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="FontSize" Value="{CustomResource BodyFontSize}"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
 
     <Style x:Key="HeaderTextStyle" TargetType="TextBlock" BasedOn="{StaticResource BasicTextStyle}">
-        <Setter Property="FontSize" Value="30"/>
+        <Setter Property="FontSize" Value="{CustomResource LargeFontSize}"/>
         <Setter Property="Foreground" Value="{ThemeResource ImportantTextColor}"/>
         <Setter Property="FontWeight" Value="Bold"/>
         <Setter Property="MaxLines" Value="2"/>
     </Style>
     
     <Style x:Key="TitleTextStyle" TargetType="TextBlock" BasedOn="{StaticResource HeaderTextStyle}">
-        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="FontSize" Value="{CustomResource SubFontSize}"/>
         <Setter Property="Foreground" Value="{ThemeResource TipTextColor}" />
     </Style>
     <Style x:Key="TipTextStyle" TargetType="TextBlock" BasedOn="{StaticResource BasicTextStyle}">
-        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="FontSize" Value="{CustomResource BasicFontSize}"/>
         <Setter Property="Foreground" Value="{ThemeResource TipTextColor}"/>
     </Style>
     <Style x:Key="TipWrapTextStyle" TargetType="TextBlock" BasedOn="{StaticResource TipTextStyle}">
         <Setter Property="TextWrapping" Value="Wrap" />
     </Style>
     <Style x:Key="SmallTipTextStyle" TargetType="TextBlock" BasedOn="{StaticResource TipTextStyle}">
-        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="FontSize" Value="{CustomResource SmallFontSize}"/>
     </Style>
     <Style x:Key="BodyTextStyle" TargetType="TextBlock" BasedOn="{StaticResource TipTextStyle}">
         <Setter Property="Foreground" Value="{ThemeResource NormalTextColor}"/>
+        <Setter Property="FontSize" Value="{CustomResource BodyFontSize}" />
     </Style>
     <Style x:Key="BodyWrapTextStyle" TargetType="TextBlock" BasedOn="{StaticResource BodyTextStyle}">
         <Setter Property="TextWrapping" Value="Wrap"/>

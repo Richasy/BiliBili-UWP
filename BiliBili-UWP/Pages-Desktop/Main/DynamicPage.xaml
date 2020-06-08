@@ -1,0 +1,60 @@
+﻿<Page
+    x:Class="BiliBili_UWP.Pages.Main.DynamicPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BiliBili_UWP.Pages.Main"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:bilibili="using:BiliBili_Lib.Models.BiliBili"
+    Loaded="Page_Loaded"
+    xmlns:controls1="using:BiliBili_UWP.Components.Controls"
+    xmlns:myControl="using:BiliBili_Controls.CustomPanel"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls" xmlns:items="using:BiliBili_Controls.Items"
+    x:Name="DPage"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <DataTemplate x:DataType="bilibili:Topic" x:Key="DynamicItemTemplate">
+            <controls1:TopicCard Data="{Binding}" IsUsePhase="False"/>
+        </DataTemplate>
+    </Page.Resources>
+    <Grid x:Name="PageContainer">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Style="{StaticResource HeaderTextStyle}" x:Name="TitleBlock" Text="动态" VerticalAlignment="Center"/>
+            <ToggleSwitch Style="{StaticResource BasicToggleSwitchStyle}" VerticalAlignment="Center" OnContent="只看视频" OffContent="只看视频"
+                          Grid.Column="1" Toggled="OnlyVideoSwitch_Toggled"  x:Name="OnlyVideoSwitch"/>
+        </Grid>
+        
+        <Grid Grid.Row="1" Margin="0,15,0,0">
+            <GridView x:Name="DynamicView"
+                              HorizontalAlignment="Stretch"
+                          ItemTemplate="{StaticResource DynamicItemTemplate}"
+                          ItemContainerStyle="{StaticResource TransparentGridViewItemContainerStyle}"
+                          Style="{StaticResource NoScrollGridView}"
+                          SelectionMode="None"
+                          ItemsSource="{x:Bind DynamicCollection}"
+                          >
+                <GridView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <controls:StaggeredPanel DesiredColumnWidth="310"
+                                             HorizontalAlignment="Stretch"
+                                             ColumnSpacing="15" />
+                    </ItemsPanelTemplate>
+                </GridView.ItemsPanel>
+            </GridView>
+            <TextBlock Style="{StaticResource TipTextStyle}" Text="无法加载动态列表，请检查网络或登录后重试" FontWeight="Bold" VerticalAlignment="Top"
+                           x:Name="HolderText" Visibility="Collapsed"/>
+        </Grid>
+        <muxc:ProgressRing Style="{StaticResource MuxcProgressRingStyle}" x:Name="LoadingRing" Grid.Row="1"/>
+        <muxc:ProgressBar Style="{StaticResource MuxcProgressBarStyle}" Grid.Row="1"
+                             x:Name="DynamicLoadingBar" Visibility="Collapsed" VerticalAlignment="Bottom"/>
+    </Grid>
+</Page>

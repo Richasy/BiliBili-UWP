@@ -17,7 +17,7 @@
         </ItemsPanelTemplate>
         <CommandBarFlyout x:Name="VideoFlyout">
             <CommandBarFlyout.SecondaryCommands>
-                <AppBarButton Label="加入稍后再看" FontSize="12" FontFamily="{CustomResource Basic}" x:Name="LaterViewButton" Click="LaterViewButton_Click">
+                <AppBarButton Label="加入稍后再看" FontSize="{CustomResource SmallFontSize}" FontFamily="{CustomResource Basic}" x:Name="LaterViewButton" Click="LaterViewButton_Click">
                     <AppBarButton.Icon>
                         <FontIcon FontFamily="{StaticResource Icon}" Glyph="&#xEA3B;"/>
                     </AppBarButton.Icon>
@@ -27,7 +27,7 @@
                         <StackPanel>
                             <TextBlock Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource NormalTextColor}"
                                            Text="反馈"/>
-                            <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="10" Text="选择后将优化首页此类内容"/>
+                            <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="{CustomResource MiniFontSize}" Text="选择后将优化首页此类内容"/>
                             <ItemsControl x:Name="FeedbackItemsControl"
                                               ItemsPanel="{StaticResource ReasonPanelTemplate}" Margin="0,5,0,0">
                                 <ItemsControl.ItemTemplate>
@@ -44,7 +44,7 @@
                         <StackPanel Margin="0,15,0,0">
                             <TextBlock Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource NormalTextColor}"
                                            Text="不感兴趣"/>
-                            <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="10" Text="选择后将减少相似的内容推荐"/>
+                            <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="{CustomResource MiniFontSize}" Text="选择后将减少相似的内容推荐"/>
                             <ItemsControl x:Name="NotInterestedItemsControl"
                                               ItemsPanel="{StaticResource ReasonPanelTemplate}" Margin="0,5,0,0">
                                 <ItemsControl.ItemTemplate>

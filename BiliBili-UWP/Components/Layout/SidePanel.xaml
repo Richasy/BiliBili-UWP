@@ -34,9 +34,9 @@
                 <Border Width="5" Height="25" CornerRadius="0,2,2,0" VerticalAlignment="Center" x:Name="ItemSign"
                         Background="{x:Bind IsSelected,Converter={StaticResource SideMenuSignColorConverter},Mode=OneWay}"/>
                 <StackPanel Orientation="Horizontal" Grid.Column="2" VerticalAlignment="Center">
-                    <TextBlock Style="{StaticResource SideMenuIconStyle}" Margin="0,0,15,0" Text="{x:Bind Icon}"
+                    <TextBlock Style="{StaticResource SideMenuIconStyle}" Margin="0,0,15,0" Text="{x:Bind Icon}" FontWeight="{x:Bind FontWeight}"
                                Foreground="{x:Bind IsSelected,Mode=OneWay,Converter={StaticResource SelectedColorConverter},ConverterParameter=Side}"/>
-                    <TextBlock Style="{StaticResource CaptionTextStyle}" FontSize="14" Text="{x:Bind Name}"/>
+                    <TextBlock Style="{StaticResource CaptionTextStyle}" FontSize="{CustomResource BasicFontSize}" Text="{x:Bind Name}"/>
                 </StackPanel>
                 <Border Grid.Column="3" VerticalAlignment="Center" Padding="5,3" CornerRadius="2" Background="{ThemeResource PrimaryColorOpacity}"
                         Visibility="{x:Bind Unread,Converter={StaticResource SideMenuExtraVisibleConverter},Mode=OneWay}" Margin="0,0,30,0">
@@ -58,7 +58,7 @@
                 </Grid.ColumnDefinitions>
                 <Border Width="5" Height="25" CornerRadius="0,2,2,0" VerticalAlignment="Center" x:Name="ItemSign"
                         Background="{x:Bind IsSelected,Converter={StaticResource SideMenuSignColorConverter},Mode=OneWay}"/>
-                <TextBlock Style="{StaticResource SideMenuIconStyle}" FontSize="20" Text="{x:Bind Icon}" Grid.ColumnSpan="2"
+                <TextBlock Style="{StaticResource SideMenuIconStyle}" FontSize="{CustomResource SubFontSize}" Text="{x:Bind Icon}" Grid.ColumnSpan="2"
                            VerticalAlignment="Center" HorizontalAlignment="Center" ToolTipService.ToolTip="{x:Bind Name}"/>
                 <Ellipse Visibility="{x:Bind Unread,Converter={StaticResource SideMenuExtraVisibleConverter},Mode=OneWay}" Grid.RowSpan="2" HorizontalAlignment="Center"
                          VerticalAlignment="Center" Margin="25,-15,0,0"/>

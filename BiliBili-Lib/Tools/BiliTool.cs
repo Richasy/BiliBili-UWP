@@ -1,5 +1,6 @@
 ﻿using BiliBili_Lib.Models.BiliBili;
 using BiliBili_Lib.Models.Others;
+using MetroLog;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -29,6 +30,7 @@ namespace BiliBili_Lib.Tools
         public static string _accessToken = "";
         public static string sid = "";
         public static string mid = "";
+        public static ILogger _logger = LogManagerFactory.CreateLogManager().GetLogger("网络请求");
         /// <summary>
         /// 从网络获取文本
         /// </summary>
@@ -45,8 +47,8 @@ namespace BiliBili_Lib.Tools
             {
                 try
                 {
-                    client.DefaultRequestHeaders.Add("user-agent", "Mozilla/5.0 BiliDroid/4.34.0 (bbcallen@gmail.com)");
-                    client.DefaultRequestHeaders.Referer = new Uri("http://www.bilibili.com/");
+                    client.DefaultRequestHeaders.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4150.0 Safari/537.36 Edg/85.0.529.0");
+                    //client.DefaultRequestHeaders.Referer = new Uri("http://www.bilibili.com/");
                     var response = await client.GetAsync(new Uri(url));
                     if (response.IsSuccessStatusCode)
                     {
@@ -68,11 +70,13 @@ namespace BiliBili_Lib.Tools
                     }
                     else
                     {
+                        _logger.Warn($"请求数据异常(Text)：URL: {url}; Message: {await response.Content.ReadAsStringAsync()}");
                         return null;
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    _logger.Error($"请求出现异常:{url}", ex);
                     return null;
                 }
             }
@@ -92,8 +96,10 @@ namespace BiliBili_Lib.Tools
                 {
                     return JsonConvert.DeserializeObject<T>(response);
                 }
-                catch (Exception)
-                { }
+                catch (Exception ex)
+                {
+                    _logger.Error($"数据转化失败: {nameof(T)}", ex);
+                }
             }
             return null;
         }
@@ -116,7 +122,11 @@ namespace BiliBili_Lib.Tools
                     var buffer = await response.Content.ReadAsBufferAsync();
                     return buffer.AsStream();
                 }
-                return null;
+                else
+                {
+                    _logger.Warn($"请求数据(Stream)异常：URL: {url}; Message: {await response.Content.ReadAsStringAsync()}");
+                    return null;
+                }
             }
         }
         /// <summary>
@@ -141,6 +151,10 @@ namespace BiliBili_Lib.Tools
                 if (response.IsSuccessStatusCode)
                 {
                     return await response.Content.ReadAsStringAsync();
+                }
+                else
+                {
+                    _logger.Warn($"上传数据异常：URL: {url}; Message: {await response.Content.ReadAsStringAsync()}");
                 }
                 return "";
             }
@@ -259,22 +273,40 @@ namespace BiliBili_Lib.Tools
         /// <returns></returns>
         public static UriResult GetResultFromUri(string url)
         {
-            if (url.Contains("/ep", StringComparison.OrdinalIgnoreCase))
+            var uri = new Uri(url);
+            string path = uri.AbsolutePath;
+            if (path.Contains("/ep", StringComparison.OrdinalIgnoreCase))
             {
                 var regex_ep = new Regex(@"ep(\d+)");
                 if (regex_ep.IsMatch(url))
                 {
-                    string epId = regex_ep.Match(url).Value.Replace("ep", "");
+                    string epId = regex_ep.Match(path).Value.Replace("ep", "");
                     return new UriResult(Enums.UriType.Bangumi, epId);
                 }
             }
-            else if (url.Contains("/cv", StringComparison.OrdinalIgnoreCase))
+            else if (path.Contains("/cv", StringComparison.OrdinalIgnoreCase))
             {
                 var regex_cv = new Regex(@"cv(\d+)");
                 if (regex_cv.IsMatch(url))
                 {
-                    string epId = regex_cv.Match(url).Value.Replace("cv", "");
-                    return new UriResult(Enums.UriType.Document, epId);
+                    string cId = regex_cv.Match(path).Value.Replace("cv", "");
+                    return new UriResult(Enums.UriType.Document, cId);
+                }
+            }
+            else if (path.Contains("video/", StringComparison.OrdinalIgnoreCase))
+            {
+                var regex_av = new Regex(@"av(\d+)");
+                var regex_bv = new Regex(@"BV(.*)");
+                
+                if (regex_av.IsMatch(path))
+                {
+                    string aid = regex_av.Match(path).Value.Replace("av","");
+                    return new UriResult(Enums.UriType.VideoA, aid);
+                }
+                else if (regex_bv.IsMatch(path))
+                {
+                    string bid = regex_bv.Match(path).Value;
+                    return new UriResult(Enums.UriType.VideoB, bid);
                 }
             }
             return new UriResult(Enums.UriType.Web, url);

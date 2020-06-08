@@ -123,6 +123,22 @@ namespace BiliBili_Lib.Service
             var result = await BiliTool.ConvertEntityFromWebAsync<T>(url, "data.items");
             return result;
         }
+        public async Task<List<Owner>> SearchUserAsync(string keyword,bool isFromDynamic=true)
+        {
+            var param = new Dictionary<string, string>();
+            param.Add("highlight", "0");
+            if(isFromDynamic)
+                param.Add("from_source", "dynamic_uname");
+            param.Add("keyword", Uri.EscapeDataString(keyword));
+            param.Add("order", "totalrank");
+            param.Add("order_sort", "0");
+            param.Add("pn", "0");
+            param.Add("ps", "10");
+            param.Add("user_type", "0");
+            string url = BiliTool.UrlContact(Api.APP_SEARCH_USER, param, true);
+            var result = await BiliTool.ConvertEntityFromWebAsync<List<Owner>>(url, "data.items");
+            return result;
+        }
         /// <summary>
         /// 获取搜索建议
         /// </summary>
@@ -322,6 +338,31 @@ namespace BiliBili_Lib.Service
                 return Convert.ToInt32(jobj["count"].ToString());
             }
             return -1;
+        }
+
+        /// <summary>
+        /// 测试请求，验证网络是否可访问
+        /// </summary>
+        /// <returns></returns>
+        public async Task<bool> ValidateRequestAsync()
+        {
+            string url = Api.OTHER_ZONE;
+            string response = await BiliTool.GetTextFromWebAsync(url, true);
+            try
+            {
+                if (!string.IsNullOrEmpty(response))
+                {
+                    var jobj = JObject.Parse(response);
+                    if (jobj["code"].ToString() == "0")
+                        return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                BiliTool._logger.Error($"测试请求失败", ex);
+                return false;
+            }
+            return false;
         }
     }
 }

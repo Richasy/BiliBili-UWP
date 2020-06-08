@@ -10,7 +10,7 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <Grid>
+    <StackPanel>
         <controls:MarkdownTextBlock x:Name="richBlock" FontSize="{x:Bind FontSize,Mode=OneWay}"
                        FontFamily="{CustomResource Basic}" Foreground="{x:Bind Foreground,Mode=OneWay}"
                        ParagraphLineHeight="{x:Bind LineHeight,Mode=OneWay}" TextWrapping="Wrap"
@@ -24,5 +24,5 @@
                                     Header1FontSize="{x:Bind FontSize,Mode=OneWay}"
                                     Header1FontWeight="Normal"
                                     InlineCodeBorderThickness="0"/>
-    </Grid>
+    </StackPanel>
 </UserControl>
