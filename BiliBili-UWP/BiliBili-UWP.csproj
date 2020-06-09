@@ -303,6 +303,7 @@
     <Compile Include="Models\UI\Converter\SideMenuSignColorConverter.cs" />
     <Compile Include="Models\UI\Converter\StringVisbilityConverter.cs" />
     <Compile Include="Models\UI\IconItem.cs" />
+    <Compile Include="Models\UI\IncreaseCollection.cs" />
     <Compile Include="Models\UI\Interface\IAppPopup.cs" />
     <Compile Include="Models\UI\Interface\IPlayerPage.cs" />
     <Compile Include="Models\UI\Interface\IRefreshPage.cs" />

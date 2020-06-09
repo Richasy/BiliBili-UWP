@@ -9,7 +9,7 @@
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:DataType="bilibili:VideoRecommend" x:Key="VideoTemplate">
-            <controls:RecommendVideoCard IsCoverCard="True" Data="{x:Bind}" Margin="3"
+            <controls:RecommendVideoCard IsCoverCard="True" Data="{x:Bind}" Margin="0,10"
                                          NeedRemoveVideo="VideoContainer_NeedRemoveVideo" HorizontalAlignment="Stretch"/>
         </DataTemplate>
     </Page.Resources>
@@ -20,11 +20,12 @@
         </Grid.ColumnDefinitions>
         <Grid>
             <Grid Padding="30,20">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <StackPanel>
+                <StackPanel x:Name="HoldContainer" VerticalAlignment="Center" HorizontalAlignment="Left">
+                        <TextBlock Text="视频推荐" Style="{StaticResource HeaderTextStyle}" FontSize="{CustomResource LargeFontSize}" TextWrapping="Wrap"/>
+                        <TextBlock Style="{StaticResource BodyWrapTextStyle}" Text="这里是哔哩哔哩根据你的喜好推荐的视频，你可以点击视频卡片右下角的菜单按钮（三个点）来进行更详细的定制"
+                                   Margin="0,20,0,0" MaxWidth="400"/>
+                </StackPanel>
+                <StackPanel x:Name="DetailContainer" Visibility="Collapsed">
                     <TextBlock x:Name="TitleBlock" Style="{StaticResource HeaderTextStyle}" FontSize="{CustomResource LargeFontSize}" TextWrapping="Wrap"/>
                     <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
                         <PersonPicture Width="30" Height="30" x:Name="UserAvatar" Style="{StaticResource BasicPersonPictureStyle}"/>
@@ -44,16 +45,17 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
                         <widgets:AsyncButton Icon="" Text="立即播放" Style="{StaticResource SecondaryAsyncButtonStyle}"
-                                             FontSize="{CustomResource SubFontSize}" Padding="20,10"/>
-                        <widgets:AsyncButton Icon="" Text="稍后再看" Style="{StaticResource DefaultAsyncButtonStyle}"
+                                             FontSize="{CustomResource SubFontSize}" Padding="20,10" Click="PlayButton_Click"  x:Name="PlayButton"/>
+                        <widgets:AsyncButton Icon="" Text="稍后再看" Style="{StaticResource DefaultAsyncButtonStyle}" x:Name="ViewLaterButton"
                                              FontSize="{CustomResource SubFontSize}" Padding="20,10" Margin="20,0,0,0"/>
                     </StackPanel>
+                    <TextBlock x:Name="DescriptionBlock" Margin="0,25,0,0" HorizontalAlignment="Stretch" FontSize="{CustomResource BasicFontSize}"
+                               IsTextSelectionEnabled="True" TextWrapping="Wrap"/>
                 </StackPanel>
-                <widgets:TrimTextBlock x:Name="DescriptionBlock" Grid.Row="1" Margin="0,15,0,0" HorizontalAlignment="Stretch" FontSize="{CustomResource BasicFontSize}"/>
             </Grid>
             <muxc:ProgressRing Style="{StaticResource MuxcProgressRingStyle}" x:Name="LoadingRing"/>
         </Grid>
-        <Grid Grid.Column="1">
+        <Grid Grid.Column="1" Margin="0,20,0,0">
             <ListView x:Name="VideoView" ItemContainerStyle="{StaticResource TransparentListViewContainerStyle}" ItemsSource="{x:Bind VideoCollection}"
                   Style="{StaticResource BasicListView}" Padding="30,10" ItemTemplate="{StaticResource VideoTemplate}"
                   HorizontalAlignment="Right" SelectionChanged="VideoView_SelectionChanged" SelectionMode="Single"/>

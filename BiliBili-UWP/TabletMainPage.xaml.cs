@@ -1,4 +1,5 @@
 ﻿using BiliBili_Lib.Enums;
+using BiliBili_Lib.Models.BiliBili.Video;
 using BiliBili_Lib.Tools;
 using BiliBili_UWP.Components.Widgets;
 using BiliBili_UWP.Models.Enums;
@@ -73,7 +74,7 @@ namespace BiliBili_UWP
                     }
                     else
                     {
-                        NavigateToPage(AppMenuItemType.Home);
+                        NavigateToPage(AppMenuItemType.Recommend);
                     }
                 }
                 catch (Exception)
@@ -116,12 +117,12 @@ namespace BiliBili_UWP
         }
         private void BottomPanel_SettingButtonClick(object sender, EventArgs e)
         {
-            MainFrame.Navigate(typeof(Pages_Share.Main.SettingPage));
+            NavigateToPage(AppMenuItemType.Settings);
         }
 
         private void BottomPanel_HelpButtonClick(object sender, EventArgs e)
         {
-            MainFrame.Navigate(typeof(Pages_Share.Main.HelpPage));
+            NavigateToPage(AppMenuItemType.Help);
         }
 
         public void SetBackgroundImage(string imageUrl)
@@ -156,6 +157,12 @@ namespace BiliBili_UWP
                     break;
                 case AppMenuItemType.Channel:
                     break;
+                case AppMenuItemType.Settings:
+                    page = typeof(Pages_Share.Main.SettingPage);
+                    break;
+                case AppMenuItemType.Help:
+                    page = typeof(Pages_Share.Main.HelpPage);
+                    break;
                 default:
                     break;
             }
@@ -167,6 +174,10 @@ namespace BiliBili_UWP
             AppMenuItemType result = AppMenuItemType.Line;
             if (type.Equals(typeof(RecommendPage)))
                 result = AppMenuItemType.Recommend;
+            if (type.Equals(typeof(Pages_Share.Main.SettingPage)))
+                result = AppMenuItemType.Settings;
+            if (type.Equals(typeof(Pages_Share.Main.HelpPage)))
+                result = AppMenuItemType.Help;
             return result;
         }
 
@@ -279,6 +290,35 @@ namespace BiliBili_UWP
         private void TopPanel_BackButtonClick(object sender, EventArgs e)
         {
             MainPageBack();
+        }
+
+        private void VideoPlayer_MTCLoaded(object sender, EventArgs e)
+        {
+            App.AppViewModel.CurrentVideoPlayer = VideoPlayer;
+            VideoPlayer.CinemaButtonVisibility = Visibility.Collapsed;
+            VideoPlayer.ResetPlayRate();
+        }
+
+        public async void PlayVideo(VideoDetail detail)
+        {
+            VideoContainer.Visibility = Visibility.Visible;
+            await VideoPlayer.Init(detail);
+            VideoPlayer.ChangeDanmakuBarDisplayMode(false, true);
+        }
+
+        private void VideoPlayer_FullWindowChanged(object sender, bool e)
+        {
+
+        }
+
+        private void VideoPlayer_CompactOverlayChanged(object sender, bool e)
+        {
+
+        }
+
+        private void VideoPlayer_SeparateButtonClick(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

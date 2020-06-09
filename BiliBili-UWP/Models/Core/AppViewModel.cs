@@ -18,9 +18,6 @@ using Microsoft.Toolkit.Uwp.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Background;
@@ -30,10 +27,8 @@ using Windows.Storage;
 using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
-using Windows.UI.WindowManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Hosting;
 using Windows.UI.Xaml.Media.Animation;
 
 namespace BiliBili_UWP.Models.Core
@@ -132,8 +127,8 @@ namespace BiliBili_UWP.Models.Core
         /// <param name="fromSign">来源参数</param>
         public void PlayVideo(int aid, object sender = null, string fromSign = "")
         {
-            App._watch.Start();
-            CurrentPagePanel.CheckSubReplyPage();
+            //App._watch.Start();
+            CurrentSubPageControl.CheckSubReplyPage();
             SelectedSideMenuItem = null;
             if (sender != null && IsEnableAnimation)
             {
@@ -144,9 +139,16 @@ namespace BiliBili_UWP.Models.Core
             }
             else
                 ConnectAnimationName = "";
-            CurrentSidePanel.SetSelectedItem(AppMenuItemType.Line);
-            CurrentPagePanel.NavigateToPage(AppMenuItemType.VideoPlayer, new Tuple<int, string>(aid, fromSign));
-            App._watch.Stop();
+            if (App._isTabletMode)
+            {
+            }
+            else
+            {
+                CurrentSidePanel.SetSelectedItem(AppMenuItemType.Line);
+                CurrentPagePanel.NavigateToPage(AppMenuItemType.VideoPlayer, new Tuple<int, string>(aid, fromSign));
+            }
+            
+            //App._watch.Stop();
         }
         public void PlayVideo(VideoActiveArgs args)
         {

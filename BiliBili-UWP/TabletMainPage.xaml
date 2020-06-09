@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:controls="using:HN.Controls"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls" xmlns:ui="using:BiliBili_UWP.Models.UI"
     mc:Ignorable="d" xmlns:ext="using:BiliBili_Controls.Extensions" xmlns:controls1="using:BiliBili_UWP.Components.Controls" xmlns:layout="using:BiliBili_UWP.Components.Layout"
-    SizeChanged="Page_SizeChanged"
+    SizeChanged="Page_SizeChanged" xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
     Background="{ThemeResource PageBackground}">
     <Page.Resources>
         
@@ -53,6 +53,24 @@
                 </Grid>
             </SplitView.Content>
         </SplitView>
+        <Grid x:Name="VideoContainer" Visibility="Collapsed">
+            <animations:Implicit.ShowAnimations>
+                <animations:TranslationAnimation Duration="0:0:.5" From="0, -50, 0" To="0" ></animations:TranslationAnimation>
+                <animations:OpacityAnimation Duration="0:0:.5" From="0" To="1.0"></animations:OpacityAnimation>
+            </animations:Implicit.ShowAnimations>
+
+            <animations:Implicit.HideAnimations>
+                <animations:ScalarAnimation Target="Opacity" Duration="0:0:.5" To="0.0"></animations:ScalarAnimation>
+                <animations:ScalarAnimation Target="Translation.Y" Duration="0:0:1" To="-50">
+                    <animations:ScalarKeyFrame Key="0.1" Value="30"></animations:ScalarKeyFrame>
+                    <animations:ScalarKeyFrame Key="0.5" Value="0.0"></animations:ScalarKeyFrame>
+                </animations:ScalarAnimation>
+            </animations:Implicit.HideAnimations>
+            <controls1:VideoPlayer x:Name="VideoPlayer" MTCLoaded="VideoPlayer_MTCLoaded"
+                              IsRegenerateFonts="True" FullWindowChanged="VideoPlayer_FullWindowChanged"
+                                   CompactOverlayChanged="VideoPlayer_CompactOverlayChanged"
+                                   SeparateButtonClick="VideoPlayer_SeparateButtonClick"/>
+        </Grid>
         <Grid Background="{ThemeResource PageBackground}" Opacity="0.01" x:Name="TitleContainer" Height="35" VerticalAlignment="Top"/>
     </Grid>
 </Page>

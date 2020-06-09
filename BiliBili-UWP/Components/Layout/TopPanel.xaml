@@ -29,14 +29,14 @@
         </Grid.ColumnDefinitions>
         <Button Style="{StaticResource DefaultCircleButtonStyle}" Foreground="{ThemeResource NormalTextColor}" Content="&#xE933;"
                 x:Name="BackButton" Margin="0,0,20,0" Visibility="{x:Bind BackButtonVisibility,Mode=OneWay}" Click="BackButton_Click" VerticalAlignment="Center"/>
-        <TextBlock Style="{StaticResource AppLogoStyle}" x:Name="AppLogo" Text="&#xE902;" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <TextBlock Style="{StaticResource AppLogoStyle}" x:Name="AppLogo" Text="&#xE902;" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1"/>
         <ListView Style="{StaticResource BasicListView}" ItemsPanel="{StaticResource HorizontalListViewItemsPanel}" ItemContainerStyle="{StaticResource TransparentListViewContainerStyle}"
                           ItemTemplate="{StaticResource TopMenuItemTemplate}" IsItemClickEnabled="True" VerticalAlignment="Center" Padding="0,5,0,0"
-                          x:Name="TopMenuListView" ItemClick="TopMenuListView_ItemClick" Grid.Column="1" Margin="15,0,0,0" HorizontalAlignment="Left"
+                          x:Name="TopMenuListView" ItemClick="TopMenuListView_ItemClick" Grid.Column="2" Margin="15,0,0,0" HorizontalAlignment="Left"
                           ext:IndicatorService.Name="Sign" ext:IndicatorService.IsScaleEnabled="True" ItemsSource="{x:Bind MenuItemCollection}"
                   ScrollViewer.VerticalScrollMode="Disabled"/>
-        <controls1:AppSearchBox Grid.Column="2" VerticalAlignment="Center" Background="{ThemeResource PaneBackground}"
+        <controls1:AppSearchBox Grid.Column="3" VerticalAlignment="Center" Background="{ThemeResource PaneBackground}"
                                 Margin="15,0" Width="300" HorizontalAlignment="Right"/>
-        <account:TopSlimAccountPanel Grid.Column="3" VerticalAlignment="Center"/>
+        <account:TopSlimAccountPanel Grid.Column="4" VerticalAlignment="Center"/>
     </Grid>
 </UserControl>

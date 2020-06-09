@@ -18,11 +18,11 @@
                            TextTrimming="None"/>
         </Border>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-            <Border Padding="8,3" Background="{ThemeResource PopupBackground}"
+            <Border Padding="8,3" Background="{ThemeResource PopupBackground}" VerticalAlignment="Center"
                     CornerRadius="3" Margin="0,0,10,10" x:Name="ReasonContainer" Visibility="{x:Bind RightBottomText,Mode=OneWay,Converter={StaticResource StringVisibilityConverter}}">
                 <TextBlock Text="{x:Bind RightBottomText,Mode=OneWay}" Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource SecondaryColor}"/>
             </Border>
-            <Button Style="{StaticResource TransparentButtonStyle}" Content="&#xE9A9;"
+            <Button Style="{StaticResource DefaultCircleButtonStyle}" Content="&#xE9A9;" Width="30" Height="30" Margin="0,-5,10,5" Background="{ThemeResource PaneBackground}"
                     VerticalAlignment="Center" FontFamily="{StaticResource Icon}" FontSize="{CustomResource BasicFontSize}" x:Name="ExtraButton" Visibility="{x:Bind ExtraButtonVisbility,Mode=OneWay}"/>
         </StackPanel>
         

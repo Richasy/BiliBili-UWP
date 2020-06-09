@@ -30,15 +30,23 @@ namespace BiliBili_UWP.Pages_Tablet.Main
     /// </summary>
     public sealed partial class RecommendPage : Page
     {
-        private ObservableCollection<VideoRecommend> VideoCollection = new ObservableCollection<VideoRecommend>();
+        private IncreaseCollection<VideoRecommend> VideoCollection;
         private bool _isInit = false;
-        private bool _isRecommendRequesting = false;
         private VideoService _videoService = App.BiliViewModel._client.Video;
         private List<VideoDetail> _videoDetailList = new List<VideoDetail>();
         public RecommendPage()
         {
             this.InitializeComponent();
             NavigationCacheMode = NavigationCacheMode.Enabled;
+            VideoCollection = new IncreaseCollection<VideoRecommend>(async(col)=>
+            {
+                int idx = 0;
+                if (col.Count > 0)
+                    idx = col.Last().idx;
+                var data = await App.BiliViewModel._client.GetRecommendVideoAsync(idx);
+                col.HasMoreItems = true;
+                return data;
+            });
         }
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)
@@ -46,23 +54,24 @@ namespace BiliBili_UWP.Pages_Tablet.Main
             if (e.NavigationMode == NavigationMode.Back || _isInit)
                 return;
             await RefreshVideo();
+            _isInit = true;
             base.OnNavigatedTo(e);
         }
         private async Task RefreshVideo()
         {
+            DetailContainer.Visibility = Visibility.Collapsed;
+            HoldContainer.Visibility = Visibility.Visible;
             VideoCollection.Clear();
             await LoadMoreRecommendVideo();
         }
         private async Task LoadMoreRecommendVideo()
         {
-            int idx = 0;
             LoadingRing.IsActive = true;
-            if (VideoCollection.Count > 0)
-                idx = VideoCollection.Last().idx;
-            var data = await App.BiliViewModel._client.GetRecommendVideoAsync(idx);
+            var data = await App.BiliViewModel._client.GetRecommendVideoAsync();
             data.ForEach(p => VideoCollection.Add(p));
             CheckRecommendStatus();
             LoadingRing.IsActive = false;
+            VideoCollection.HasMoreItems = true;
         }
         private void CheckRecommendStatus()
         {
@@ -71,28 +80,39 @@ namespace BiliBili_UWP.Pages_Tablet.Main
         private void VideoContainer_NeedRemoveVideo(object sender, BiliBili_Lib.Models.BiliBili.VideoRecommend e)
         {
             VideoCollection.Remove(e);
+            HolderText.Visibility = VideoCollection.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private async void VideoView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var item = VideoView.SelectedItem as VideoRecommend;
+            if(item==null)
+            {
+                DetailContainer.Visibility = Visibility.Collapsed;
+                HoldContainer.Visibility = Visibility.Visible;
+                return;
+            }
+            DetailContainer.Visibility = Visibility.Collapsed;
+            HoldContainer.Visibility = Visibility.Collapsed;
             if (item.card_goto == "bangumi")
             {
 
             }
             else
             {
-                var cache = _videoDetailList.Where(p => p.id == item.args.aid).FirstOrDefault();
+                var cache = _videoDetailList.Where(p => p.aid == item.args.aid).FirstOrDefault();
                 if (cache == null)
                 {
                     LoadingRing.IsActive = true;
-                    cache = await _videoService.GetVideoDetailAsync(item.args.aid, StaticString.SIGN_RECOMMEND);
+                    cache = await _videoService.GetVideoDetailAsync(item.args.aid);
                     _videoDetailList.Add(cache);
                 }
+                
                 TabletMainPage.Current.SetBackgroundImage(cache.pic);
                 InitDetail(cache);
                 LoadingRing.IsActive = false;
             }
+            DetailContainer.Visibility = Visibility.Visible;
         }
 
         private void InitDetail(VideoDetail _detail)
@@ -107,6 +127,25 @@ namespace BiliBili_UWP.Pages_Tablet.Main
             CoinCountBlock.Text = AppTool.GetNumberAbbreviation(_detail.stat.coin);
             FavoriteCountBlock.Text = AppTool.GetNumberAbbreviation(_detail.stat.favorite);
             DescriptionBlock.Text = _detail.desc;
+        }
+        private void PlayButton_Click(object sender, RoutedEventArgs e)
+        {
+            var selectItem = VideoView.SelectedItem as VideoRecommend;
+            if (selectItem != null)
+            {
+                if (selectItem.card_goto == "bangumi")
+                {
+
+                }
+                else
+                {
+                    var detail = _videoDetailList.Where(p => p.aid == selectItem.args.aid).FirstOrDefault();
+                    if (detail != null)
+                    {
+                        TabletMainPage.Current.PlayVideo(detail);
+                    }
+                }
+            }
         }
     }
 }
