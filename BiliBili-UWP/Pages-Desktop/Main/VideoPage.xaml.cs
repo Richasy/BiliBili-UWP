@@ -44,7 +44,7 @@ namespace BiliBili_UWP.Pages.Main
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class VideoPage : Page, IRefreshPage, IPlayerPage
+    public sealed partial class VideoPage : Page, IRefreshPage, IPlayerHost
     {
         private ObservableCollection<VideoPart> VideoPartCollection = new ObservableCollection<VideoPart>();
         private VideoDetail _detail = null;

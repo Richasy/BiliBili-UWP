@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BiliBili_UWP.Models.UI.Interface
 {
-    public interface IPlayerPage
+    public interface IPlayerHost
     {
         void InsertPlayer();
         void RemovePlayer();

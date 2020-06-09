@@ -10,25 +10,27 @@ using Microsoft.QueryStringDotNET;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
+using Windows.Foundation;
+using Windows.Foundation.Collections;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Media.Animation;
-using Windows.UI.Xaml.Media.Imaging;
+using Windows.UI.Xaml.Data;
+using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
+//https://go.microsoft.com/fwlink/?LinkId=234236 上介绍了“用户控件”项模板
 
-namespace BiliBili_UWP.Pages.Main
+namespace BiliBili_UWP.Components.Controls
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
-    public sealed partial class BangumiPage : Page, IRefreshPage, IPlayerHost
+    public sealed partial class TabletBangumiDetailBlock : UserControl,IPlayerHost
     {
         private ObservableCollection<Episode> BangumiPartCollection = new ObservableCollection<Episode>();
         private ObservableCollection<BangumiStyle> TagCollection = new ObservableCollection<BangumiStyle>();
@@ -37,63 +39,12 @@ namespace BiliBili_UWP.Pages.Main
         private Episode _currentPart = null;
         private int bangumiId = 0;
         private bool isEp = false;
-        private string _lastSelectPartType = "row";
-        public static BangumiPage Current;
-        private bool _isInit = false;
-        private bool _isCurrently = false;
-        public BangumiPage()
+        public VideoPlayer VideoPlayer;
+        public TabletBangumiDetailBlock()
         {
             this.InitializeComponent();
-            Current = this;
-            NavigationCacheMode = NavigationCacheMode.Enabled;
-        }
-        protected async override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            if (e.Parameter != null)
-            {
-                App.AppViewModel.CurrentVideoPlayer = VideoPlayer;
-                App.AppViewModel.CurrentPlayerType = Models.Enums.PlayerType.Bangumi;
-                if (e.Parameter is int aid)
-                {
-                    bangumiId = aid;
-                    isEp = false;
-                }
-                else if (e.Parameter is Tuple<int, bool> data)
-                {
-                    bangumiId = data.Item1;
-                    isEp = data.Item2;
-                }
-                if (_isCurrently && _isInit)
-                    await Refresh();
-            }
-            _isCurrently = true;
-            
         }
 
-        private async void ConnectAnimation_Completed(ConnectedAnimation sender, object args)
-        {
-            sender = null;
-            UpdateLayout();
-            if (!_isInit)
-            {
-                await Refresh();
-                _isInit = true;
-            }
-        }
-
-        protected async override void OnNavigatedFrom(NavigationEventArgs e)
-        {
-            if (e.SourcePageType != typeof(BangumiPage))
-                _isCurrently = false;
-            if (_currentPart != null)
-                await _animeService.AddVideoHistoryAsync(_currentPart.aid, _currentPart.cid, _currentPart.id, VideoPlayer.CurrentProgress, _detail.season_id);
-            VideoPlayer.Close(); 
-            App.AppViewModel.CurrentVideoPlayer = null;
-            App.AppViewModel.CurrentPlayerType = Models.Enums.PlayerType.None;
-            App.AppViewModel.CurrentPagePanel.CheckSubReplyPage();
-            Reset();
-            base.OnNavigatedFrom(e);
-        }
         private void Reset()
         {
             _detail = null;
@@ -105,50 +56,43 @@ namespace BiliBili_UWP.Pages.Main
 
             TitleBlock.Text = "--";
             PlayCountBlock.Text = "-";
-            DanmukuCountBlock.Text = "-";
-            CommentButton.Text = "评论";
+            DanmakuCountBlock.Text = "-";
+            CommentButton.Text = "-";
             RepostButton.Text = "-";
             BasicInfoBlock.Text = "-";
-            Section1Title.Text = "--";
-            Section1Content.Text = "--";
-            Section2Content.Text = "--";
-            Section2Title.Text = "--";
 
             DescriptionBlock.Text = "--";
-            CoverImage.Source = null;
             ScoreBlock.Text = "--";
             ScoreCountBlock.Text = "0人";
             RatingContainer.Visibility = Visibility.Visible;
-            Section1Container.Visibility = Visibility.Visible;
-            Section2Container.Visibility = Visibility.Visible;
 
             FollowButton.Style = UIHelper.GetStyle("PrimaryAsyncButtonStyle");
             FollowButton.Text = "追番";
         }
-        public async Task Refresh()
+        public async Task Init(int bangumiId, bool isep=false)
         {
-            Reset();
-            var tip = new WaitingPopup("加载视频中...");
-            tip.ShowPopup();
+            LoadingRing.IsActive = true;
+            MyVideoPlayer.Close();
+            isEp = isep;
+            DetailContainer.Visibility = Visibility.Collapsed;
             var detail = await _animeService.GetBangumiDetailAsync(bangumiId, isEp);
-            if (detail != null && detail.season_id > 0)
+            LoadingRing.IsActive = false;
+            DetailContainer.Visibility = Visibility.Visible;
+            if (detail != null)
             {
-                _detail = detail;
-                CheckCoin();
-                if (await InitDetail())
-                {
-                    await VideoPlayer.Init(_detail, _currentPart);
-                }
+                await Init(detail, bangumiId);
             }
-            tip.HidePopup();
-            App.AppViewModel.CurrentPagePanel.PageScrollViewer.ChangeView(0, 0, 1);
         }
 
-        private async Task<bool> InitDetail()
+        public async Task<bool> Init(BangumiDetail detail, int partId)
         {
+            Reset();
+            App.AppViewModel.CurrentPlayerType = Models.Enums.PlayerType.Bangumi;
+            App.AppViewModel.CurrentVideoPlayer = VideoPlayer;
+            _detail = detail;
             TitleBlock.Text = _detail.title;
             PlayCountBlock.Text = _detail.stat.play;
-            DanmukuCountBlock.Text = AppTool.GetNumberAbbreviation(_detail.stat.danmakus);
+            DanmakuCountBlock.Text = AppTool.GetNumberAbbreviation(_detail.stat.danmakus);
             RepostButton.Text = AppTool.GetNumberAbbreviation(_detail.stat.share);
             CommentButton.Text = AppTool.GetNumberAbbreviation(_detail.stat.reply);
 
@@ -167,21 +111,6 @@ namespace BiliBili_UWP.Pages.Main
 
             CoinButton.Text = AppTool.GetNumberAbbreviation(_detail.stat.coins);
 
-            CoverImage.Source = new BitmapImage(new Uri(_detail.cover + "@200w.jpg"));
-
-            Section1Title.Text = _detail.actor.title;
-            Section1Content.Text = _detail.actor.info;
-            if (string.IsNullOrEmpty(_detail.actor.info))
-            {
-                Section1Container.Visibility = Visibility.Collapsed;
-            }
-            Section2Title.Text = _detail.staff.title;
-            Section2Content.Text = _detail.staff.info;
-            if (string.IsNullOrEmpty(_detail.staff.info))
-            {
-                Section2Container.Visibility = Visibility.Collapsed;
-            }
-
             _detail.episodes.ForEach(p => BangumiPartCollection.Add(p));
             if (isEp)
             {
@@ -191,9 +120,8 @@ namespace BiliBili_UWP.Pages.Main
                     if (part.id == bangumiId)
                     {
                         _currentPart = part;
-                        PartListView.SelectedIndex = PartGridView.SelectedIndex = i;
+                        PartListView.SelectedIndex = i;
                         PartListView.ScrollIntoView(part, ScrollIntoViewAlignment.Leading);
-                        PartGridView.ScrollIntoView(part, ScrollIntoViewAlignment.Leading);
                         break;
                     }
                 }
@@ -205,25 +133,24 @@ namespace BiliBili_UWP.Pages.Main
                 if (_currentPart != null)
                 {
                     int lastIndex = _detail.episodes.IndexOf(_currentPart);
-                    PartListView.SelectedIndex = PartGridView.SelectedIndex = lastIndex - 1 < -1 ? -1 : lastIndex;
+                    PartListView.SelectedIndex = lastIndex - 1 < -1 ? -1 : lastIndex;
                     PartListView.ScrollIntoView(_currentPart, ScrollIntoViewAlignment.Leading);
-                    PartGridView.ScrollIntoView(_currentPart, ScrollIntoViewAlignment.Leading);
                 }
             }
 
             if (_currentPart == null && _detail.episodes.Count > 0)
             {
                 _currentPart = _detail.episodes.First();
-                PartListView.SelectedIndex = PartGridView.SelectedIndex = 0;
+                PartListView.SelectedIndex = 0;
             }
             if (_detail.styles != null && _detail.styles.Count > 0)
             {
-                TagListView.Visibility = Visibility.Visible;
+                TagGridView.Visibility = Visibility.Visible;
                 _detail.styles.ForEach(p => TagCollection.Add(p));
             }
             else
             {
-                TagListView.Visibility = Visibility.Collapsed;
+                TagGridView.Visibility = Visibility.Collapsed;
             }
 
             CheckFollowButton();
@@ -250,6 +177,14 @@ namespace BiliBili_UWP.Pages.Main
                 FollowButton.Text = _detail.user_status.follow == 1 ? followString : unfollowString;
             }
         }
+        private async void CheckCoin()
+        {
+            if (_currentPart != null)
+            {
+                bool isCoin = await _animeService.CheckUserCoinAsync(_currentPart.id);
+                CoinButton.IsCheck = isCoin;
+            }
+        }
         public void RemovePlayer()
         {
             VideoContainer.Children.Clear();
@@ -261,7 +196,6 @@ namespace BiliBili_UWP.Pages.Main
             App.AppViewModel.CurrentVideoPlayer.Focus(FocusState.Programmatic);
             App.AppViewModel.CurrentVideoPlayer.ResetDanmakuStatus();
         }
-
         private void VideoPlayer_FullWindowChanged(object sender, bool e)
         {
             App.AppViewModel.PlayVideoFullScreen(e);
@@ -298,15 +232,6 @@ namespace BiliBili_UWP.Pages.Main
             }
         }
 
-        private async void CheckCoin()
-        {
-            if (_currentPart != null)
-            {
-                bool isCoin = await _animeService.CheckUserCoinAsync(_currentPart.id);
-                CoinButton.IsCheck = isCoin;
-            }
-        }
-
         private async void PartListView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var item = e.ClickedItem as Episode;
@@ -316,7 +241,7 @@ namespace BiliBili_UWP.Pages.Main
                 await VideoPlayer.Init(_detail, _currentPart);
             }
         }
-        private void TagListView_ItemClick(object sender, ItemClickEventArgs e)
+        private void TagGridView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var item = e.ClickedItem as BangumiStyle;
             string param = item.url.Split("?").Last().TrimStart('?');
@@ -332,7 +257,7 @@ namespace BiliBili_UWP.Pages.Main
             }
             if (list.Count > 0)
             {
-                App.AppViewModel.NavigateToSubPage(typeof(Sub.Anime.IndexPage), list);
+                App.AppViewModel.NavigateToSubPage(typeof(Pages.Sub.Anime.IndexPage), list);
             }
         }
         private async void FollowButton_Click(object sender, RoutedEventArgs e)
@@ -377,18 +302,18 @@ namespace BiliBili_UWP.Pages.Main
 
         private void VideoPlayer_PartSwitched(object sender, int e)
         {
-            PartListView.SelectedIndex= PartGridView.SelectedIndex = e;
+            PartListView.SelectedIndex = e;
             PartListView.ScrollIntoView(BangumiPartCollection[e], ScrollIntoViewAlignment.Leading);
         }
 
-        private void CommentButton_Click(object sender, RoutedEventArgs e)
+        private void CommentButton_Click(object sender, EventArgs e)
         {
             if (_currentPart != null)
             {
                 var param = new Dictionary<string, string>();
                 param.Add("oid", _currentPart.aid.ToString());
                 param.Add("type", "1");
-                App.AppViewModel.NavigateToSubPage(typeof(Sub.ReplyPage), param);
+                App.AppViewModel.NavigateToSubPage(typeof(Pages.Sub.ReplyPage), param);
             }
         }
 
@@ -425,51 +350,9 @@ namespace BiliBili_UWP.Pages.Main
                 FlyoutBase.ShowAttachedFlyout(sender as FrameworkElement);
             }
         }
-        private void PartDsplayButton_Click(object sender, RoutedEventArgs e)
+        private void MyVideoPlayer_Loaded(object sender, RoutedEventArgs e)
         {
-            var btn = sender as ToggleButton;
-            string tag = btn.Tag.ToString();
-            if (tag == _lastSelectPartType)
-                return;
-            _lastSelectPartType = tag;
-            if (tag == "grid")
-            {
-                SingleRowButton.IsChecked = false;
-                GridViewButton.IsChecked = true;
-                PartListView.Visibility = Visibility.Collapsed;
-                PartGridView.Visibility = Visibility.Visible;
-                PartGridView.SelectedIndex = PartListView.SelectedIndex;
-            }
-            else
-            {
-                SingleRowButton.IsChecked = true;
-                GridViewButton.IsChecked = false;
-                PartListView.Visibility = Visibility.Visible;
-                PartGridView.Visibility = Visibility.Collapsed;
-                PartListView.SelectedIndex = PartGridView.SelectedIndex;
-            }
-        }
-
-        private async void Page_Loaded(object sender, RoutedEventArgs e)
-        {
-            if (_isInit)
-                await Refresh();
-            if (!string.IsNullOrEmpty(App.AppViewModel.ConnectAnimationName))
-            {
-                var anim = ConnectedAnimationService.GetForCurrentView().GetAnimation(App.AppViewModel.ConnectAnimationName);
-                if (anim != null)
-                {
-                    anim.Completed -= ConnectAnimation_Completed;
-                    anim.Completed += ConnectAnimation_Completed;
-                    anim.TryStart(VideoPlayer);
-                }
-                App.AppViewModel.ConnectAnimationName = "";
-            }
-            else if (!_isInit)
-            {
-                await Refresh();
-                _isInit = true;
-            }
+            VideoPlayer = MyVideoPlayer;
         }
     }
 }

@@ -66,10 +66,6 @@
                     <animations:ScalarKeyFrame Key="0.5" Value="0.0"></animations:ScalarKeyFrame>
                 </animations:ScalarAnimation>
             </animations:Implicit.HideAnimations>
-            <controls1:VideoPlayer x:Name="VideoPlayer" MTCLoaded="VideoPlayer_MTCLoaded"
-                              IsRegenerateFonts="True" FullWindowChanged="VideoPlayer_FullWindowChanged"
-                                   CompactOverlayChanged="VideoPlayer_CompactOverlayChanged"
-                                   SeparateButtonClick="VideoPlayer_SeparateButtonClick"/>
         </Grid>
         <Grid Background="{ThemeResource PageBackground}" Opacity="0.01" x:Name="TitleContainer" Height="35" VerticalAlignment="Top"/>
     </Grid>

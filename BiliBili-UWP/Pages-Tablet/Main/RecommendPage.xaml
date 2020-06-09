@@ -14,51 +14,24 @@
         </DataTemplate>
     </Page.Resources>
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
         <Grid>
-            <Grid Padding="30,20">
-                <StackPanel x:Name="HoldContainer" VerticalAlignment="Center" HorizontalAlignment="Left">
-                        <TextBlock Text="视频推荐" Style="{StaticResource HeaderTextStyle}" FontSize="{CustomResource LargeFontSize}" TextWrapping="Wrap"/>
-                        <TextBlock Style="{StaticResource BodyWrapTextStyle}" Text="这里是哔哩哔哩根据你的喜好推荐的视频，你可以点击视频卡片右下角的菜单按钮（三个点）来进行更详细的定制"
-                                   Margin="0,20,0,0" MaxWidth="400"/>
-                </StackPanel>
-                <StackPanel x:Name="DetailContainer" Visibility="Collapsed">
-                    <TextBlock x:Name="TitleBlock" Style="{StaticResource HeaderTextStyle}" FontSize="{CustomResource LargeFontSize}" TextWrapping="Wrap"/>
-                    <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
-                        <PersonPicture Width="30" Height="30" x:Name="UserAvatar" Style="{StaticResource BasicPersonPictureStyle}"/>
-                        <TextBlock Style="{StaticResource TipTextStyle}" VerticalAlignment="Center" Margin="10,0,0,0" Foreground="{ThemeResource ImportantTextColor}" x:Name="UserNameBlock"/>
-                    </StackPanel>
-                    <TextBlock Style="{StaticResource BodyTextStyle}" x:Name="PublishBlock" Margin="0,20,0,0"/>
-                    <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
-                        <widgets:IconTextBlock Icon="" x:Name="PlayCountBlock" FontSize="{CustomResource BasicFontSize}" IconForeground="{ThemeResource NormalTextColor}"/>
-                        <widgets:IconTextBlock Icon="" x:Name="DanmakuCountBlock" Margin="15,0,0,0" FontSize="{CustomResource BasicFontSize}" IconForeground="{ThemeResource NormalTextColor}"/>
-                        <StackPanel Height="{CustomResource BasicFontSize}" Width="1" Background="{ThemeResource LineColor}"
-                                    Margin="15,0"/>
-                        <widgets:IconTextBlock Icon="" x:Name="LikeCountBlock" FontSize="{CustomResource BasicFontSize}" IconForeground="{ThemeResource NormalTextColor}"/>
-                        <widgets:IconTextBlock Icon="" x:Name="CoinCountBlock" Margin="15,0,0,0" FontSize="{CustomResource BasicFontSize}"
-                                               IconForeground="{ThemeResource NormalTextColor}"/>
-                        <widgets:IconTextBlock Icon="" x:Name="FavoriteCountBlock" Margin="15,0,0,0" IconForeground="{ThemeResource NormalTextColor}"
-                                               FontSize="{CustomResource BasicFontSize}"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
-                        <widgets:AsyncButton Icon="" Text="立即播放" Style="{StaticResource SecondaryAsyncButtonStyle}"
-                                             FontSize="{CustomResource SubFontSize}" Padding="20,10" Click="PlayButton_Click"  x:Name="PlayButton"/>
-                        <widgets:AsyncButton Icon="" Text="稍后再看" Style="{StaticResource DefaultAsyncButtonStyle}" x:Name="ViewLaterButton"
-                                             FontSize="{CustomResource SubFontSize}" Padding="20,10" Margin="20,0,0,0"/>
-                    </StackPanel>
-                    <TextBlock x:Name="DescriptionBlock" Margin="0,25,0,0" HorizontalAlignment="Stretch" FontSize="{CustomResource BasicFontSize}"
-                               IsTextSelectionEnabled="True" TextWrapping="Wrap"/>
+            <Grid Padding="30,20" x:Name="DetailContainer">
+                <StackPanel x:Name="HoldContainer" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <TextBlock Text="视频推荐" Style="{StaticResource HeaderTextStyle}" HorizontalAlignment="Center" FontSize="{CustomResource LargeFontSize}" TextWrapping="Wrap"/>
+                    <TextBlock Style="{StaticResource BodyWrapTextStyle}" Text="这里是哔哩哔哩根据你的喜好推荐的视频，你可以点击视频卡片右下角的菜单按钮（三个点）来进行更详细的定制"
+                                   Margin="0,20,0,0" MaxWidth="400" TextAlignment="Center"/>
                 </StackPanel>
             </Grid>
             <muxc:ProgressRing Style="{StaticResource MuxcProgressRingStyle}" x:Name="LoadingRing"/>
         </Grid>
-        <Grid Grid.Column="1" Margin="0,20,0,0">
+        <Grid Grid.Row="1" Margin="0,20,0,0">
             <ListView x:Name="VideoView" ItemContainerStyle="{StaticResource TransparentListViewContainerStyle}" ItemsSource="{x:Bind VideoCollection}"
-                  Style="{StaticResource BasicListView}" Padding="30,10" ItemTemplate="{StaticResource VideoTemplate}"
-                  HorizontalAlignment="Right" SelectionChanged="VideoView_SelectionChanged" SelectionMode="Single"/>
+                  Style="{StaticResource BasicListView}" Padding="0,10" ItemTemplate="{StaticResource VideoTemplate}" ItemsPanel="{StaticResource HorizontalListViewItemsPanel}"
+                  HorizontalAlignment="Right" SelectionChanged="VideoView_SelectionChanged" SelectionMode="Single" ScrollViewer.VerticalScrollMode="Disabled"/>
             <TextBlock Style="{StaticResource TipTextStyle}" Text="无法加载推荐视频列表" FontWeight="Bold" VerticalAlignment="Center"
                            x:Name="HolderText" Visibility="Collapsed"/>
         </Grid>

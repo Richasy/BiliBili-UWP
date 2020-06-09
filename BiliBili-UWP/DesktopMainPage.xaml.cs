@@ -1,6 +1,7 @@
 ﻿using BiliBili_Lib.Tools;
 using BiliBili_UWP.Components.Widgets;
 using BiliBili_UWP.Models.Core;
+using BiliBili_UWP.Models.UI.Interface;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -25,7 +26,7 @@ namespace BiliBili_UWP
     /// <summary>
     /// 可用于自身或导航至 Frame 内部的空白页。
     /// </summary>
-    public sealed partial class DesktopMainPage : Page
+    public sealed partial class DesktopMainPage : Page,IPlayerHost
     {
         private bool _isInit = false;
         string tempArgument = string.Empty;

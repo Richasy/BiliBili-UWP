@@ -53,6 +53,8 @@ namespace BiliBili_UWP.Models.Core
         public bool IsInBackground;
         public string ConnectAnimationName = "";
         public double BasicFontSize = Convert.ToDouble(AppTool.GetLocalSetting(Settings.BasicFontSize, "14"));
+        public TabletVideoDetailBlock CurrentVideoDetailBlock;
+        public TabletBangumiDetailBlock CurrentBangumiDetailBlock;
         public List<Tuple<Guid, Action<Size>>> WindowsSizeChangedNotify { get; set; } = new List<Tuple<Guid, Action<Size>>>();
         public ObservableCollection<SystemFont> FontCollection = new ObservableCollection<SystemFont>();
         public bool IsEnableAnimation = AppTool.GetBoolSetting(Settings.EnableAnimation);
@@ -141,6 +143,7 @@ namespace BiliBili_UWP.Models.Core
                 ConnectAnimationName = "";
             if (App._isTabletMode)
             {
+
             }
             else
             {
@@ -205,9 +208,9 @@ namespace BiliBili_UWP.Models.Core
         /// 获取当前的播放页
         /// </summary>
         /// <returns></returns>
-        public IPlayerPage GetCurrentPlayerPage()
+        public IPlayerHost GetCurrentPlayerPage()
         {
-            IPlayerPage page = null;
+            IPlayerHost page = null;
             switch (CurrentPlayerType)
             {
                 case PlayerType.Video:
@@ -224,16 +227,39 @@ namespace BiliBili_UWP.Models.Core
             return page;
         }
         /// <summary>
+        /// 获取当前的播放容器
+        /// </summary>
+        /// <returns></returns>
+        public IPlayerHost GetCurrentPlayerBlock()
+        {
+            IPlayerHost host = null;
+            switch (CurrentPlayerType)
+            {
+                case PlayerType.Video:
+                    host = CurrentVideoDetailBlock;
+                    break;
+                case PlayerType.Bangumi:
+                    host = CurrentBangumiDetailBlock;
+                    break;
+                case PlayerType.Live:
+                    break;
+                default:
+                    break;
+            }
+            return host;
+        }
+        /// <summary>
         /// 进入全屏模式
         /// </summary>
         /// <param name="isFull">是否为全屏模式</param>
         public void PlayVideoFullScreen(bool isFull)
         {
-            IPlayerPage page = GetCurrentPlayerPage();
+            IPlayerHost hostPage = App._isTabletMode ? TabletMainPage.Current as IPlayerHost : DesktopMainPage.Current as IPlayerHost;
+            IPlayerHost host = App._isTabletMode ? GetCurrentPlayerBlock() : GetCurrentPlayerPage();
             if (isFull)
             {
-                page.RemovePlayer();
-                DesktopMainPage.Current.InsertPlayer();
+                host.RemovePlayer();
+                hostPage.InsertPlayer();
                 ApplicationView.GetForCurrentView().TryEnterFullScreenMode();
             }
             else
@@ -241,9 +267,8 @@ namespace BiliBili_UWP.Models.Core
                 ApplicationView.GetForCurrentView().ExitFullScreenMode();
                 if (!CurrentVideoPlayer.MTC.IsCinema)
                 {
-                    DesktopMainPage.Current.RemovePlayer();
-                    page.InsertPlayer();
-                    CurrentVideoPlayer.DanmakuBarVisibility = Visibility.Visible;
+                    hostPage.RemovePlayer();
+                    host.InsertPlayer();
                 }
             }
         }
@@ -253,18 +278,19 @@ namespace BiliBili_UWP.Models.Core
         /// <param name="isCinema">是否为影院模式</param>
         public void PlayVideoCinema(bool isCinema)
         {
-            IPlayerPage page = GetCurrentPlayerPage();
+            IPlayerHost hostPage = App._isTabletMode ? TabletMainPage.Current as IPlayerHost : DesktopMainPage.Current as IPlayerHost;
+            IPlayerHost host = App._isTabletMode ? GetCurrentPlayerBlock() : GetCurrentPlayerPage();
             if (isCinema)
             {
-                page.RemovePlayer();
-                DesktopMainPage.Current.InsertPlayer();
+                host.RemovePlayer();
+                hostPage.InsertPlayer();
             }
             else
             {
                 if (!CurrentVideoPlayer.MTC.IsFullWindow)
                 {
-                    DesktopMainPage.Current.RemovePlayer();
-                    page.InsertPlayer();
+                    hostPage.RemovePlayer();
+                    host.InsertPlayer();
                 }
             }
         }
@@ -274,19 +300,20 @@ namespace BiliBili_UWP.Models.Core
         /// <param name="isCompact">是否为影院模式</param>
         public async void PlayVideoCompactOverlay(bool isCompact)
         {
-            IPlayerPage page = GetCurrentPlayerPage();
+            IPlayerHost hostPage = App._isTabletMode ? TabletMainPage.Current as IPlayerHost : DesktopMainPage.Current as IPlayerHost;
+            IPlayerHost host = App._isTabletMode ? GetCurrentPlayerBlock() : GetCurrentPlayerPage();
             if (isCompact)
             {
-                page.RemovePlayer();
-                DesktopMainPage.Current.InsertPlayer();
+                host.RemovePlayer();
+                hostPage.InsertPlayer();
                 await ApplicationView.GetForCurrentView().TryEnterViewModeAsync(ApplicationViewMode.CompactOverlay);
             }
             else
             {
                 if (!CurrentVideoPlayer.MTC.IsCompactOverlay)
                 {
-                    DesktopMainPage.Current.RemovePlayer();
-                    page.InsertPlayer();
+                    hostPage.RemovePlayer();
+                    host.InsertPlayer();
                     CurrentVideoPlayer.DanmakuBarVisibility = Visibility.Visible;
                     await ApplicationView.GetForCurrentView().TryEnterViewModeAsync(ApplicationViewMode.Default);
                 }
@@ -311,7 +338,7 @@ namespace BiliBili_UWP.Models.Core
                 newViewId = ApplicationView.GetForCurrentView().Id;
             });
             bool viewShown = await ApplicationViewSwitcher.TryShowAsStandaloneAsync(newViewId);
-            if (CurrentPageType == typeof(VideoPage) && isCloseCurrentPage)
+            if (!App._isTabletMode && CurrentPageType == typeof(VideoPage) && isCloseCurrentPage)
                 CurrentPagePanel.MainPageBack();
         }
         /// <summary>
@@ -333,7 +360,7 @@ namespace BiliBili_UWP.Models.Core
                 newViewId = ApplicationView.GetForCurrentView().Id;
             });
             bool viewShown = await ApplicationViewSwitcher.TryShowAsStandaloneAsync(newViewId);
-            if (CurrentPageType == typeof(VideoPage))
+            if (!App._isTabletMode && CurrentPageType == typeof(BangumiPage))
                 CurrentPagePanel.MainPageBack();
         }
         /// <summary>

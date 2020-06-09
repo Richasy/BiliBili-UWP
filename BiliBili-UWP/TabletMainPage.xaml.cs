@@ -1,9 +1,11 @@
 ﻿using BiliBili_Lib.Enums;
 using BiliBili_Lib.Models.BiliBili.Video;
 using BiliBili_Lib.Tools;
+using BiliBili_UWP.Components.Controls;
 using BiliBili_UWP.Components.Widgets;
 using BiliBili_UWP.Models.Enums;
 using BiliBili_UWP.Models.UI;
+using BiliBili_UWP.Models.UI.Interface;
 using BiliBili_UWP.Pages_Tablet.Main;
 using System;
 using System.Collections.Generic;
@@ -30,7 +32,7 @@ namespace BiliBili_UWP
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class TabletMainPage : Page
+    public sealed partial class TabletMainPage : Page, IPlayerHost
     {
         public static TabletMainPage Current;
         private bool _isInit = false;
@@ -40,6 +42,10 @@ namespace BiliBili_UWP
         {
             this.InitializeComponent();
             Current = this;
+            if (App.AppViewModel.CurrentVideoDetailBlock == null)
+                App.AppViewModel.CurrentVideoDetailBlock = new TabletVideoDetailBlock();
+            if (App.AppViewModel.CurrentBangumiDetailBlock == null)
+                App.AppViewModel.CurrentBangumiDetailBlock = new TabletBangumiDetailBlock();
             SystemNavigationManager.GetForCurrentView().BackRequested += OnBackrequested;
         }
 
@@ -292,33 +298,18 @@ namespace BiliBili_UWP
             MainPageBack();
         }
 
-        private void VideoPlayer_MTCLoaded(object sender, EventArgs e)
-        {
-            App.AppViewModel.CurrentVideoPlayer = VideoPlayer;
-            VideoPlayer.CinemaButtonVisibility = Visibility.Collapsed;
-            VideoPlayer.ResetPlayRate();
-        }
-
-        public async void PlayVideo(VideoDetail detail)
+        public void InsertPlayer()
         {
             VideoContainer.Visibility = Visibility.Visible;
-            await VideoPlayer.Init(detail);
-            VideoPlayer.ChangeDanmakuBarDisplayMode(false, true);
+            if (VideoContainer.Children.Count == 0)
+                VideoContainer.Children.Add(App.AppViewModel.CurrentVideoPlayer);
+            App.AppViewModel.CurrentVideoPlayer.Focus(FocusState.Programmatic);
+            App.AppViewModel.CurrentVideoPlayer.ResetDanmakuStatus();
         }
-
-        private void VideoPlayer_FullWindowChanged(object sender, bool e)
+        public void RemovePlayer()
         {
-
-        }
-
-        private void VideoPlayer_CompactOverlayChanged(object sender, bool e)
-        {
-
-        }
-
-        private void VideoPlayer_SeparateButtonClick(object sender, RoutedEventArgs e)
-        {
-
+            VideoContainer.Visibility = Visibility.Collapsed;
+            VideoContainer.Children.Clear();
         }
     }
 }

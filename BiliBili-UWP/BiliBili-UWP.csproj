@@ -203,6 +203,12 @@
     <Compile Include="Components\Controls\SubscribeChannelPanel.xaml.cs">
       <DependentUpon>SubscribeChannelPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Components\Controls\TabletBangumiDetailBlock.xaml.cs">
+      <DependentUpon>TabletBangumiDetailBlock.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Controls\TabletVideoDetailBlock.xaml.cs">
+      <DependentUpon>TabletVideoDetailBlock.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Components\Controls\TopicCard.xaml.cs">
       <DependentUpon>TopicCard.xaml</DependentUpon>
     </Compile>
@@ -305,7 +311,7 @@
     <Compile Include="Models\UI\IconItem.cs" />
     <Compile Include="Models\UI\IncreaseCollection.cs" />
     <Compile Include="Models\UI\Interface\IAppPopup.cs" />
-    <Compile Include="Models\UI\Interface\IPlayerPage.cs" />
+    <Compile Include="Models\UI\Interface\IPlayerHost.cs" />
     <Compile Include="Models\UI\Interface\IRefreshPage.cs" />
     <Compile Include="Models\UI\Others\AtUserTemplateSelector.cs" />
     <Compile Include="Models\UI\Others\CustomResourceLoader.cs" />
@@ -630,6 +636,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Components\Controls\SubscribeChannelPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\Controls\TabletBangumiDetailBlock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\Controls\TabletVideoDetailBlock.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

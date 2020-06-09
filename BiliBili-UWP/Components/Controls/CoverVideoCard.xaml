@@ -9,7 +9,7 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
     <Grid>
-        <widgets:BiliImage x:Name="VideoCover" HorizontalAlignment="Stretch" CornerRadius="5" Height="200" Width="350"
+        <widgets:BiliImage x:Name="VideoCover" HorizontalAlignment="Stretch" CornerRadius="5" Height="120" Width="250"
                           DecodePixelWidth="{x:Bind DecodePixelWidth,Mode=OneWay}" DisplayType="Rect"
                               Source="{x:Bind Cover,Mode=OneWay,Converter={StaticResource CoverResolutionConverter},ConverterParameter=400}"/>
         <Border Padding="8,3" Background="{ThemeResource PopupBackground}" RequestedTheme="Dark" HorizontalAlignment="Left" VerticalAlignment="Bottom"

@@ -1,7 +1,9 @@
 ﻿using BiliBili_Lib.Models.BiliBili;
+using BiliBili_Lib.Models.BiliBili.Anime;
 using BiliBili_Lib.Models.BiliBili.Video;
 using BiliBili_Lib.Service;
 using BiliBili_Lib.Tools;
+using BiliBili_UWP.Components.Controls;
 using BiliBili_UWP.Models.UI;
 using System;
 using System.Collections.Generic;
@@ -34,6 +36,8 @@ namespace BiliBili_UWP.Pages_Tablet.Main
         private bool _isInit = false;
         private VideoService _videoService = App.BiliViewModel._client.Video;
         private List<VideoDetail> _videoDetailList = new List<VideoDetail>();
+        private TabletVideoDetailBlock _videoBlock = App.AppViewModel.CurrentVideoDetailBlock;
+        private TabletBangumiDetailBlock _bangumiBlock = App.AppViewModel.CurrentBangumiDetailBlock;
         public RecommendPage()
         {
             this.InitializeComponent();
@@ -51,15 +55,47 @@ namespace BiliBili_UWP.Pages_Tablet.Main
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
+            DetailContainer.Children.Add(_videoBlock);
+            DetailContainer.Children.Add(_bangumiBlock);
+            _bangumiBlock.Visibility = Visibility.Collapsed;
+            _videoBlock.Visibility = Visibility.Collapsed;
+            if(VideoCollection.Count>0 && VideoView.SelectedItem != null)
+            {
+                var item = VideoView.SelectedItem as VideoRecommend;
+                TabletMainPage.Current.SetBackgroundImage(item.cover);
+                if (item.card_goto != "bangumi")
+                    await _videoBlock.Init(item.args.aid);
+                else
+                    await InitBangumi(item);
+            }
             if (e.NavigationMode == NavigationMode.Back || _isInit)
                 return;
             await RefreshVideo();
             _isInit = true;
             base.OnNavigatedTo(e);
         }
+        private async Task InitBangumi(VideoRecommend item)
+        {
+            var sp = item.uri.Split("#");
+            if (sp.Length > 1)
+                await _bangumiBlock.Init(Convert.ToInt32(sp.Last()), true);
+            else
+                await _bangumiBlock.Init(Convert.ToInt32(item.param), true);
+        }
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        {
+            DetailContainer.Children.Remove(_videoBlock);
+            DetailContainer.Children.Remove(_bangumiBlock);
+            TabletMainPage.Current.HideBackgroundImage();
+            App.AppViewModel.CurrentVideoPlayer = null;
+            _videoBlock.VideoPlayer.Close();
+            _bangumiBlock.VideoPlayer.Close();
+            base.OnNavigatingFrom(e);
+        }
         private async Task RefreshVideo()
         {
-            DetailContainer.Visibility = Visibility.Collapsed;
+            _videoBlock.Visibility = Visibility.Collapsed;
+            _bangumiBlock.Visibility = Visibility.Collapsed;
             HoldContainer.Visibility = Visibility.Visible;
             VideoCollection.Clear();
             await LoadMoreRecommendVideo();
@@ -88,62 +124,37 @@ namespace BiliBili_UWP.Pages_Tablet.Main
             var item = VideoView.SelectedItem as VideoRecommend;
             if(item==null)
             {
-                DetailContainer.Visibility = Visibility.Collapsed;
+                _videoBlock.Visibility = Visibility.Collapsed;
+                _bangumiBlock.Visibility = Visibility.Collapsed;
                 HoldContainer.Visibility = Visibility.Visible;
                 return;
             }
-            DetailContainer.Visibility = Visibility.Collapsed;
+            
             HoldContainer.Visibility = Visibility.Collapsed;
+            TabletMainPage.Current.SetBackgroundImage(item.cover);
             if (item.card_goto == "bangumi")
             {
-
+                _bangumiBlock.Visibility = Visibility.Visible;
+                await InitBangumi(item);
             }
             else
             {
-                var cache = _videoDetailList.Where(p => p.aid == item.args.aid).FirstOrDefault();
-                if (cache == null)
+                _videoBlock.Visibility = Visibility.Visible;
+                try
                 {
-                    LoadingRing.IsActive = true;
-                    cache = await _videoService.GetVideoDetailAsync(item.args.aid);
-                    _videoDetailList.Add(cache);
-                }
-                
-                TabletMainPage.Current.SetBackgroundImage(cache.pic);
-                InitDetail(cache);
-                LoadingRing.IsActive = false;
-            }
-            DetailContainer.Visibility = Visibility.Visible;
-        }
-
-        private void InitDetail(VideoDetail _detail)
-        {
-            TitleBlock.Text = _detail.title;
-            UserAvatar.ProfilePicture = new BitmapImage(new Uri(_detail.owner.face + "@50w.jpg"));
-            UserNameBlock.Text = _detail.owner.name;
-            PublishBlock.Text = "发布: " + AppTool.GetReadDateString(_detail.pubdate);
-            PlayCountBlock.Text = AppTool.GetNumberAbbreviation(_detail.stat.view);
-            DanmakuCountBlock.Text = AppTool.GetNumberAbbreviation(_detail.stat.danmaku);
-            LikeCountBlock.Text = AppTool.GetNumberAbbreviation(_detail.stat.like);
-            CoinCountBlock.Text = AppTool.GetNumberAbbreviation(_detail.stat.coin);
-            FavoriteCountBlock.Text = AppTool.GetNumberAbbreviation(_detail.stat.favorite);
-            DescriptionBlock.Text = _detail.desc;
-        }
-        private void PlayButton_Click(object sender, RoutedEventArgs e)
-        {
-            var selectItem = VideoView.SelectedItem as VideoRecommend;
-            if (selectItem != null)
-            {
-                if (selectItem.card_goto == "bangumi")
-                {
-
-                }
-                else
-                {
-                    var detail = _videoDetailList.Where(p => p.aid == selectItem.args.aid).FirstOrDefault();
-                    if (detail != null)
+                    var cache = _videoDetailList.Where(p => p.aid == item.args.aid).FirstOrDefault();
+                    if (cache == null)
                     {
-                        TabletMainPage.Current.PlayVideo(detail);
+                        await _videoBlock.Init(item.args.aid);
+                        cache = _videoBlock._detail;
+                        _videoDetailList.Add(cache);
                     }
+                    else
+                        await _videoBlock.Init(cache);
+                }
+                catch (InvalidDataException)
+                {
+                    await _bangumiBlock.Init(Convert.ToInt32(item.param), true);
                 }
             }
         }
