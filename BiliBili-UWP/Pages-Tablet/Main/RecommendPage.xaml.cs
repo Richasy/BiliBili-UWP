@@ -4,6 +4,7 @@ using BiliBili_Lib.Models.BiliBili.Video;
 using BiliBili_Lib.Service;
 using BiliBili_Lib.Tools;
 using BiliBili_UWP.Components.Controls;
+using BiliBili_UWP.Components.Widgets;
 using BiliBili_UWP.Models.UI;
 using System;
 using System.Collections.Generic;
@@ -63,10 +64,17 @@ namespace BiliBili_UWP.Pages_Tablet.Main
             {
                 var item = VideoView.SelectedItem as VideoRecommend;
                 TabletMainPage.Current.SetBackgroundImage(item.cover);
+                HoldContainer.Visibility = Visibility.Collapsed;
                 if (item.card_goto != "bangumi")
+                {
+                    _videoBlock.Visibility = Visibility.Visible;
                     await _videoBlock.Init(item.args.aid);
+                }
                 else
+                {
+                    _bangumiBlock.Visibility = Visibility.Visible;
                     await InitBangumi(item);
+                }
             }
             if (e.NavigationMode == NavigationMode.Back || _isInit)
                 return;
@@ -102,11 +110,15 @@ namespace BiliBili_UWP.Pages_Tablet.Main
         }
         private async Task LoadMoreRecommendVideo()
         {
-            LoadingRing.IsActive = true;
+            var tip = new WaitingPopup("正在加载数据");
+            tip.ShowPopup();
             var data = await App.BiliViewModel._client.GetRecommendVideoAsync();
-            data.ForEach(p => VideoCollection.Add(p));
+            if (data != null)
+            {
+                data.ForEach(p => VideoCollection.Add(p));
+            }
             CheckRecommendStatus();
-            LoadingRing.IsActive = false;
+            tip.HidePopup();
             VideoCollection.HasMoreItems = true;
         }
         private void CheckRecommendStatus()

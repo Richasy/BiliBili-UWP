@@ -15,7 +15,7 @@
 
     <SplitView x:Name="PageSplitView" PaneClosing="PageSplitView_PaneClosing" PaneOpening="PageSplitView_PaneOpening"
                PanePlacement="Right" CompactPaneLength="0" OpenPaneLength="400" IsPaneOpen="{x:Bind IsSubPageOpen,Mode=TwoWay}"
-               AllowFocusOnInteraction="True">
+               AllowFocusOnInteraction="True" PaneBackground="{ThemeResource PaneBackground}">
         <SplitView.Pane>
             <controls:SubPageControl x:Name="SubPageControl" CloseButtonClick="SubPageControl_CloseButtonClick"/>
         </SplitView.Pane>

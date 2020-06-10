@@ -9,7 +9,7 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <Grid Padding="25,35,25,0" Background="{ThemeResource PaneBackground}">
+    <Grid Padding="25,35,25,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="1*" />

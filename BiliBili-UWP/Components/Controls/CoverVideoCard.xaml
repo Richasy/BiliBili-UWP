@@ -9,29 +9,38 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
     <Grid>
-        <widgets:BiliImage x:Name="VideoCover" HorizontalAlignment="Stretch" CornerRadius="5" Height="120" Width="250"
-                          DecodePixelWidth="{x:Bind DecodePixelWidth,Mode=OneWay}" DisplayType="Rect"
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid>
+            <widgets:BiliImage x:Name="VideoCover" HorizontalAlignment="Stretch" CornerRadius="5" Height="120"
+                          DecodePixelWidth="{x:Bind DecodePixelWidth,Mode=OneWay}" DisplayType="Rect" VerticalAlignment="Top"
                               Source="{x:Bind Cover,Mode=OneWay,Converter={StaticResource CoverResolutionConverter},ConverterParameter=400}"/>
-        <Border Padding="8,3" Background="{ThemeResource PopupBackground}" RequestedTheme="Dark" HorizontalAlignment="Left" VerticalAlignment="Bottom"
+            <Border Padding="8,3" Background="{ThemeResource PopupBackground}" RequestedTheme="Dark" HorizontalAlignment="Left" VerticalAlignment="Bottom"
                     CornerRadius="3" Margin="10,0,0,10" Visibility="{x:Bind Duration,Mode=OneWay,Converter={StaticResource StringVisibilityConverter}}">
-            <TextBlock Text="{x:Bind Duration,Mode=OneWay}" Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource ImportantTextColor}"
+                <TextBlock Text="{x:Bind Duration,Mode=OneWay}" Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource ImportantTextColor}"
                            TextTrimming="None"/>
-        </Border>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-            <Border Padding="8,3" Background="{ThemeResource PopupBackground}" VerticalAlignment="Center"
-                    CornerRadius="3" Margin="0,0,10,10" x:Name="ReasonContainer" Visibility="{x:Bind RightBottomText,Mode=OneWay,Converter={StaticResource StringVisibilityConverter}}">
-                <TextBlock Text="{x:Bind RightBottomText,Mode=OneWay}" Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource SecondaryColor}"/>
             </Border>
-            <Button Style="{StaticResource DefaultCircleButtonStyle}" Content="&#xE9A9;" Width="30" Height="30" Margin="0,-5,10,5" Background="{ThemeResource PaneBackground}"
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                <Border Padding="8,3" Background="{ThemeResource PopupBackground}" VerticalAlignment="Center"
+                    CornerRadius="3" Margin="0,0,10,10" x:Name="ReasonContainer" Visibility="{x:Bind RightBottomText,Mode=OneWay,Converter={StaticResource StringVisibilityConverter}}">
+                    <TextBlock Text="{x:Bind RightBottomText,Mode=OneWay}" Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource SecondaryColor}"/>
+                </Border>
+                <Button Style="{StaticResource DefaultCircleButtonStyle}" Content="&#xE9A9;" Width="30" Height="30" Margin="0,-5,10,5" Background="{ThemeResource PaneBackground}"
                     VerticalAlignment="Center" FontFamily="{StaticResource Icon}" FontSize="{CustomResource BasicFontSize}" x:Name="ExtraButton" Visibility="{x:Bind ExtraButtonVisbility,Mode=OneWay}"/>
-        </StackPanel>
-        
-        <Border Background="{ThemeResource PaneBackground}" Padding="8,5" CornerRadius="3" HorizontalAlignment="Right"
+            </StackPanel>
+
+            <Border Background="{ThemeResource PaneBackground}" Padding="8,5" CornerRadius="3" HorizontalAlignment="Right"
                             Visibility="{x:Bind RightTopText,Mode=OneWay,Converter={StaticResource StringVisibilityConverter}}" VerticalAlignment="Top" Margin="0,5,5,0">
-            <TextBlock Text="{x:Bind RightTopText,Mode=OneWay}" FontSize="{CustomResource MiniFontSize}" Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource PrimaryColor}"
+                <TextBlock Text="{x:Bind RightTopText,Mode=OneWay}" FontSize="{CustomResource MiniFontSize}" Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource PrimaryColor}"
                            />
-        </Border>
-        <widgets:BiliImage Width="20" Source="{x:Bind RightTopImage,Mode=OneWay}" Visibility="{x:Bind RightTopImage,Mode=OneWay,Converter={StaticResource StringVisibilityConverter}}"
+            </Border>
+            <widgets:BiliImage Width="20" Source="{x:Bind RightTopImage,Mode=OneWay}" Visibility="{x:Bind RightTopImage,Mode=OneWay,Converter={StaticResource StringVisibilityConverter}}"
                                VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,0,10,0"/>
+        </Grid>
+        <TextBlock Style="{StaticResource BodyWrapTextStyle}" FontSize="{CustomResource SmallFontSize}" Grid.Row="1" Margin="0,10,0,0" MaxLines="2"
+                   Text="{x:Bind Title,Mode=OneWay}" Visibility="{x:Bind Title,Converter={StaticResource StringVisibilityConverter},Mode=OneWay}"
+                   ToolTipService.ToolTip="{x:Bind Title,Mode=OneWay}"/>
     </Grid>
 </UserControl>

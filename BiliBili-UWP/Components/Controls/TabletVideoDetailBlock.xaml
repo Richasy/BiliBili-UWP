@@ -5,14 +5,14 @@
     xmlns:local="using:BiliBili_UWP.Components.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:widgets="using:BiliBili_UWP.Components.Widgets" xmlns:video="using:BiliBili_Lib.Models.BiliBili.Video" xmlns:bilibili="using:BiliBili_Lib.Models.BiliBili"
-    mc:Ignorable="d" xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    mc:Ignorable="d" xmlns:muxc="using:Microsoft.UI.Xaml.Controls" xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     d:DesignHeight="300"
     d:DesignWidth="400">
     <UserControl.Resources>
         <DataTemplate x:DataType="video:VideoTag" x:Key="TagItemTemplate">
-            <Border Background="{ThemeResource SecondaryColorOpacity}" BorderBrush="{ThemeResource SecondaryColor}" Padding="8,5"
-                    CornerRadius="3">
-                <TextBlock Text="{x:Bind tag_name}" Style="{StaticResource SmallTipTextStyle}" FontSize="{CustomResource MiniFontSize}" Foreground="{ThemeResource SecondaryColorOver}"/>
+            <Border Background="{ThemeResource CardBackground}" BorderBrush="{ThemeResource SecondaryColor}" Padding="8,5"
+                    CornerRadius="3" Width="80">
+                <TextBlock Text="{x:Bind tag_name}" HorizontalAlignment="Center" Style="{StaticResource SmallTipTextStyle}" FontSize="{CustomResource MiniFontSize}" Foreground="{ThemeResource SecondaryColorOver}"/>
             </Border>
         </DataTemplate>
         <DataTemplate x:DataType="video:VideoPart" x:Key="PartListItemTemplate">
@@ -105,55 +105,58 @@
             <ColumnDefinition Width="40"/>
             <ColumnDefinition Width="1.2*"/>
         </Grid.ColumnDefinitions>
-        <Grid>
-            <StackPanel x:Name="DetailContainer">
-                <TextBlock x:Name="TitleBlock" Style="{StaticResource HeaderTextStyle}" FontSize="{CustomResource HeaderFontSize}" TextWrapping="Wrap"/>
-                <TextBlock Style="{StaticResource BodyTextStyle}" FontSize="{CustomResource BasicFontSize}" x:Name="PublishBlock" Margin="0,20,0,0"/>
-                <Grid Margin="0,15,0,0">
-                    <StackPanel Orientation="Horizontal" x:Name="SingleUserContainer" Tapped="SingleUserContainer_Tapped">
-                        <PersonPicture x:Name="UPAvatar" Width="35" Height="35" VerticalAlignment="Center" Style="{StaticResource BasicPersonPictureStyle}"/>
-                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15,0,0,0">
-                            <TextBlock x:Name="UPNameBlock" Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource ImportantTextColor}"/>
-                            <TextBlock FontFamily="{StaticResource Icon}" Text="&#xEA31;" Foreground="{ThemeResource TipTextColor}" FontSize="{CustomResource SmallFontSize}" Margin="0,5,0,0"/>
+        <ScrollViewer Style="{StaticResource BasicScrollViewer}">
+            <Grid>
+                <StackPanel x:Name="DetailContainer">
+                    <TextBlock x:Name="TitleBlock" Style="{StaticResource HeaderTextStyle}" FontSize="{CustomResource HeaderFontSize}" TextWrapping="Wrap"/>
+                    <TextBlock Style="{StaticResource BodyTextStyle}" FontSize="{CustomResource BasicFontSize}" x:Name="PublishBlock" Margin="0,20,0,0"/>
+                    <Grid Margin="0,15,0,0">
+                        <StackPanel Orientation="Horizontal" x:Name="SingleUserContainer" Tapped="SingleUserContainer_Tapped">
+                            <PersonPicture x:Name="UPAvatar" Width="35" Height="35" VerticalAlignment="Center" Style="{StaticResource BasicPersonPictureStyle}"/>
+                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" Margin="15,0,0,0">
+                                <TextBlock x:Name="UPNameBlock" Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource ImportantTextColor}"/>
+                                <TextBlock FontFamily="{StaticResource Icon}" Text="&#xEA31;" Foreground="{ThemeResource TipTextColor}" FontSize="{CustomResource SmallFontSize}" Margin="0,5,0,0"/>
+                            </StackPanel>
                         </StackPanel>
-                    </StackPanel>
-                    <Grid x:Name="StaffContainer" Visibility="Collapsed">
-                        <ListView ItemTemplate="{StaticResource StaffItemTemplate}" ItemsSource="{x:Bind StaffCollection}"
+                        <Grid x:Name="StaffContainer" Visibility="Collapsed">
+                            <ListView ItemTemplate="{StaticResource StaffItemTemplate}" ItemsSource="{x:Bind StaffCollection}"
                       IsItemClickEnabled="True" ItemContainerStyle="{StaticResource TransparentListViewContainerStyle}"
                       Style="{StaticResource BasicListView}" Padding="0,0,0,5" ItemsPanel="{StaticResource HorizontalListViewItemsPanel}"
                       x:Name="StaffListView" ItemClick="StaffListView_ItemClick"/>
+                        </Grid>
                     </Grid>
-                </Grid>
-                <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
-                    <widgets:IconTextBlock Icon="" x:Name="PlayCountBlock" FontSize="{CustomResource BasicFontSize}" IconForeground="{ThemeResource NormalTextColor}"/>
-                    <widgets:IconTextBlock Icon="" x:Name="DanmakuCountBlock" Margin="15,0,0,0" FontSize="{CustomResource BasicFontSize}" IconForeground="{ThemeResource NormalTextColor}"/>
-                    <widgets:IconTextBlock Icon="bv" IsTextSelectionEnabled="True" GutterWidth="5" Margin="15,0,0,0" FontSize="{CustomResource SmallFontSize}" IconForeground="{ThemeResource TipTextColor}" x:Name="BVBlock"/>
-                    <widgets:IconTextBlock Icon="av" IsTextSelectionEnabled="True" GutterWidth="5" Margin="15,0,0,0" FontSize="{CustomResource SmallFontSize}" IconForeground="{ThemeResource TipTextColor}" x:Name="AVBlock"/>
-                </StackPanel>
-                
-                <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
-                    <widgets:CheckButton Icon="&#xE9F0;" x:Name="LikeButton" Click="LikeButton_Click" Hold="LikeButton_Hold"/>
-                    <widgets:CheckButton Margin="15,0,0,0" Icon="&#xEA45;" x:Name="CoinButton" Click="CoinButton_Click" FlyoutBase.AttachedFlyout="{StaticResource CoinFlyout}"/>
-                    <widgets:CheckButton Margin="15,0,0,0" Icon="&#xE9E5;" x:Name="FavoriteButton" Click="FavoriteButton_Click" FlyoutBase.AttachedFlyout="{StaticResource FavoriteFlyout}"/>
-                    <widgets:CheckButton Margin="15,0,0,0" Icon="&#xEA44;" x:Name="RepostButton" FlyoutBase.AttachedFlyout="{StaticResource ShareFlyout}" Click="RepostButton_Click"/>
-                    <widgets:CheckButton Margin="15,0,0,0" Icon="&#xE99E;" x:Name="CommentButton" Click="CommentButton_Click"/>
-                </StackPanel>
-                <Grid x:Name="PartContainer" Margin="0,15,0,0">
-                    <ListView ItemTemplate="{StaticResource PartListItemTemplate}" ItemsSource="{x:Bind VideoPartCollection}"
+                    <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+                        <widgets:IconTextBlock Icon="" x:Name="PlayCountBlock" FontSize="{CustomResource BasicFontSize}" IconForeground="{ThemeResource NormalTextColor}"/>
+                        <widgets:IconTextBlock Icon="" x:Name="DanmakuCountBlock" Margin="15,0,0,0" FontSize="{CustomResource BasicFontSize}" IconForeground="{ThemeResource NormalTextColor}"/>
+                        <widgets:IconTextBlock Icon="bv" IsTextSelectionEnabled="True" GutterWidth="5" Margin="15,0,0,0" FontSize="{CustomResource SmallFontSize}" IconForeground="{ThemeResource TipTextColor}" x:Name="BVBlock"/>
+                        <widgets:IconTextBlock Icon="av" IsTextSelectionEnabled="True" GutterWidth="5" Margin="15,0,0,0" FontSize="{CustomResource SmallFontSize}" IconForeground="{ThemeResource TipTextColor}" x:Name="AVBlock"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+                        <widgets:CheckButton Icon="&#xE9F0;" x:Name="LikeButton" Click="LikeButton_Click" Hold="LikeButton_Hold"/>
+                        <widgets:CheckButton Margin="15,0,0,0" Icon="&#xEA45;" x:Name="CoinButton" Click="CoinButton_Click" FlyoutBase.AttachedFlyout="{StaticResource CoinFlyout}"/>
+                        <widgets:CheckButton Margin="15,0,0,0" Icon="&#xE9E5;" x:Name="FavoriteButton" Click="FavoriteButton_Click" FlyoutBase.AttachedFlyout="{StaticResource FavoriteFlyout}"/>
+                        <widgets:CheckButton Margin="15,0,0,0" Icon="&#xEA44;" x:Name="RepostButton" FlyoutBase.AttachedFlyout="{StaticResource ShareFlyout}" Click="RepostButton_Click"/>
+                        <widgets:CheckButton Margin="15,0,0,0" Icon="&#xE99E;" x:Name="CommentButton" Click="CommentButton_Click"/>
+                    </StackPanel>
+                    <Grid x:Name="PartContainer" Margin="0,15,0,0">
+                        <ListView ItemTemplate="{StaticResource PartListItemTemplate}" ItemsSource="{x:Bind VideoPartCollection}"
                       IsItemClickEnabled="True" ItemsPanel="{StaticResource HorizontalListViewItemsPanel}"
                       Padding="0,0,0,5" Style="{StaticResource BasicListView}" ItemContainerStyle="{StaticResource TransparentListViewContainerStyle}"
                       x:Name="PartListView" ItemClick="PartListView_ItemClick" ScrollViewer.VerticalScrollMode="Disabled"/>
-                </Grid>
-                
-                <TextBlock x:Name="DescriptionBlock" Margin="0,25,0,0" HorizontalAlignment="Stretch" FontSize="{CustomResource BasicFontSize}"
-                               IsTextSelectionEnabled="True" TextWrapping="Wrap" MaxLines="3"/>
-                <GridView ItemTemplate="{StaticResource TagItemTemplate}" ItemsSource="{x:Bind TagCollection}" Height="30"
+                    </Grid>
+
+                    <widgets:TrimTextBlock x:Name="DescriptionBlock" Margin="0,15,0,0" HorizontalAlignment="Stretch" FontSize="{CustomResource BasicFontSize}"
+                              />
+                    <GridView ItemTemplate="{StaticResource TagItemTemplate}" ItemsSource="{x:Bind TagCollection}"
                       IsItemClickEnabled="True" ItemContainerStyle="{StaticResource TransparentGridViewItemContainerStyle}"
-                      Style="{StaticResource BasicGridView}" Padding="0,0,0,5" Margin="0,15,0,0" ItemsPanel="{StaticResource HorizontalListViewItemsPanel}"
-                      x:Name="TagGridView" ItemClick="TagGridView_ItemClick"  Grid.Row="1" ScrollViewer.VerticalScrollMode="Disabled"/>
-            </StackPanel>
-            <muxc:ProgressRing Style="{StaticResource MuxcProgressRingStyle}" x:Name="LoadingRing"/>
-        </Grid>
+                      Style="{StaticResource BasicGridView}" Padding="0,0,0,5" Margin="0,15,0,0"
+                      x:Name="TagGridView" ItemClick="TagGridView_ItemClick" HorizontalAlignment="Left" ScrollViewer.VerticalScrollMode="Disabled"/>
+                </StackPanel>
+                <muxc:ProgressRing Style="{StaticResource MuxcProgressRingStyle}" x:Name="LoadingRing"/>
+            </Grid>
+        </ScrollViewer>
+        
         
         <Grid Grid.Column="2" x:Name="VideoContainer">
             <local:VideoPlayer x:Name="MyVideoPlayer" FullWindowChanged="VideoPlayer_FullWindowChanged"

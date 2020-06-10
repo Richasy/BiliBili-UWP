@@ -152,7 +152,7 @@ namespace BiliBili_UWP
             switch (type)
             {
                 case AppMenuItemType.Rank:
-                    //page = typeof(Pages.Main.RankPage);
+                    page = typeof(RankPage);
                     break;
                 case AppMenuItemType.Anime:
                     break;
@@ -180,9 +180,11 @@ namespace BiliBili_UWP
             AppMenuItemType result = AppMenuItemType.Line;
             if (type.Equals(typeof(RecommendPage)))
                 result = AppMenuItemType.Recommend;
-            if (type.Equals(typeof(Pages_Share.Main.SettingPage)))
+            else if (type.Equals(typeof(RankPage)))
+                result = AppMenuItemType.Rank;
+            else if (type.Equals(typeof(Pages_Share.Main.SettingPage)))
                 result = AppMenuItemType.Settings;
-            if (type.Equals(typeof(Pages_Share.Main.HelpPage)))
+            else if (type.Equals(typeof(Pages_Share.Main.HelpPage)))
                 result = AppMenuItemType.Help;
             return result;
         }
@@ -234,14 +236,11 @@ namespace BiliBili_UWP
 
         private void PageSplitView_PaneClosing(SplitView sender, SplitViewPaneClosingEventArgs args)
         {
-            MaskGrid.Visibility = Visibility.Collapsed;
             SubPageControl.FrameVisibility = Visibility.Collapsed;
         }
 
         private void PageSplitView_PaneOpening(SplitView sender, object args)
         {
-            if (AppSplitView.DisplayMode == SplitViewDisplayMode.CompactOverlay)
-                MaskGrid.Visibility = Visibility.Visible;
             SubPageControl.FrameVisibility = Visibility.Visible;
         }
 
@@ -283,7 +282,7 @@ namespace BiliBili_UWP
             var menu = GetTypeFromPage(previousType);
             if (App.AppViewModel.SelectedSideMenuItem == null || menu != App.AppViewModel.SelectedSideMenuItem.Type)
             {
-                App.AppViewModel.CurrentSidePanel.SetSelectedItem(menu);
+                TopPanel.SetSelectedItem(menu);
             }
             MainFrameHistoryList.RemoveAt(MainFrameHistoryList.Count - 1);
             if (MainFrameHistoryList.Count <= 1)

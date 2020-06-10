@@ -417,6 +417,9 @@
     <Compile Include="Pages-Share\Sub\Video\SubRegionPage.xaml.cs">
       <DependentUpon>SubRegionPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages-Tablet\Main\RankPage.xaml.cs">
+      <DependentUpon>RankPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages-Tablet\Main\RecommendPage.xaml.cs">
       <DependentUpon>RecommendPage.xaml</DependentUpon>
     </Compile>
@@ -864,6 +867,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages-Share\Sub\Video\SubRegionPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages-Tablet\Main\RankPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

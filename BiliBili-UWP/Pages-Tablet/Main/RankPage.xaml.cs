@@ -1,8 +1,6 @@
 ﻿using BiliBili_Lib.Models.BiliBili;
-using BiliBili_Lib.Tools;
+using BiliBili_Lib.Models.BiliBili.Video;
 using BiliBili_UWP.Components.Controls;
-using BiliBili_UWP.Models.UI;
-using BiliBili_UWP.Models.UI.Interface;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -22,37 +20,53 @@ using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
-namespace BiliBili_UWP.Pages.Main
+namespace BiliBili_UWP.Pages_Tablet.Main
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class RankPage : Page, IRefreshPage
+    public sealed partial class RankPage : Page
     {
         private List<Tuple<int, List<WebVideo>>> RankDetailList = new List<Tuple<int, List<WebVideo>>>();
         private ObservableCollection<WebVideo> DisplayCollection = new ObservableCollection<WebVideo>();
+        private List<VideoDetail> _videoDetailList = new List<VideoDetail>();
         private ObservableCollection<RegionContainer> RegionCollection = new ObservableCollection<RegionContainer>();
         private bool _isInit = false;
         private int _selectRegion = 0;
-        
+        private TabletVideoDetailBlock _videoBlock = App.AppViewModel.CurrentVideoDetailBlock;
         public RankPage()
         {
             this.InitializeComponent();
             NavigationCacheMode = NavigationCacheMode.Enabled;
         }
-
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
+            DetailContainer.Children.Add(_videoBlock);
+            _videoBlock.Visibility = Visibility.Collapsed;
+            if (DisplayCollection.Count > 0 && VideoGridView.SelectedItem != null)
+            {
+                var item = VideoGridView.SelectedItem as WebVideo;
+                TabletMainPage.Current.SetBackgroundImage(item.pic);
+                HoldContainer.Visibility = Visibility.Collapsed;
+                _videoBlock.Visibility = Visibility.Visible;
+                await _videoBlock.Init(Convert.ToInt32(item.aid));
+            }
             if (e.NavigationMode == NavigationMode.Back || _isInit)
                 return;
             VideoGridView.EnableAnimation = App.AppViewModel.IsEnableAnimation;
             VideoGridView.DesiredWidth = 220 + ((App.AppViewModel.BasicFontSize - 14) * 5);
-            bool isFluent = AppTool.GetBoolSetting(BiliBili_Lib.Enums.Settings.EnableFluentGrid, false);
-            FluentGridView.Visibility = isFluent ? Visibility.Visible : Visibility.Collapsed;
-            VideoGridView.Visibility = isFluent ? Visibility.Collapsed : Visibility.Visible;
             await Refresh();
             base.OnNavigatedTo(e);
             _isInit = true;
+        }
+
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        {
+            DetailContainer.Children.Remove(_videoBlock);
+            TabletMainPage.Current.HideBackgroundImage();
+            App.AppViewModel.CurrentVideoPlayer = null;
+            _videoBlock.VideoPlayer.Close();
+            base.OnNavigatingFrom(e);
         }
 
         private void Reset()
@@ -98,8 +112,9 @@ namespace BiliBili_UWP.Pages.Main
 
         private async Task LoadRegionRankVideo()
         {
-            LoadingRing.IsActive = true;
-            NoDataContainer.Visibility = Visibility.Collapsed;
+            LoadingBar.Visibility = Visibility.Visible;
+            NoDataContainer.Visibility = Visibility.Visible;
+
             var source = RankDetailList.Where(p => p.Item1 == _selectRegion).FirstOrDefault();
             if (source != null)
             {
@@ -107,7 +122,7 @@ namespace BiliBili_UWP.Pages.Main
                 if (source.Item2.Count == 0)
                 {
                     var videos = await App.BiliViewModel._client.Video.GetRegionRankAsync(_selectRegion);
-                    if (videos!=null && videos.Count > 0)
+                    if (videos != null && videos.Count > 0)
                     {
                         for (int i = 0; i < videos.Count; i++)
                         {
@@ -121,7 +136,7 @@ namespace BiliBili_UWP.Pages.Main
                 source.Item2.ForEach(p => DisplayCollection.Add(p));
             }
             NoDataContainer.Visibility = source.Item2.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
-            LoadingRing.IsActive = false;
+            LoadingBar.Visibility=Visibility.Collapsed;
         }
         private async void RegionListView_ItemClick(object sender, ItemClickEventArgs e)
         {
@@ -130,18 +145,28 @@ namespace BiliBili_UWP.Pages.Main
             await LoadRegionRankVideo();
         }
 
-        private void VideoGridView_ItemClick(object sender, ItemClickEventArgs e)
+        private async void VideoGridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var item = e.ClickedItem as WebVideo;
-            var container = VideoGridView.ContainerFromItem(item);
-            App.AppViewModel.PlayVideo(Convert.ToInt32(item.aid), container, "");
-        }
+            var item = VideoGridView.SelectedItem as WebVideo;
+            if (item == null)
+            {
+                _videoBlock.Visibility = Visibility.Collapsed;
+                HoldContainer.Visibility = Visibility.Visible;
+                return;
+            }
+            HoldContainer.Visibility = Visibility.Collapsed;
+            TabletMainPage.Current.SetBackgroundImage(item.pic);
 
-        private void VideoGridView_ContainerContentChanging(ListViewBase sender, ContainerContentChangingEventArgs args)
-        {
-            args.Handled = true;
-            DefaultVideoCard card = (DefaultVideoCard)args.ItemContainer.ContentTemplateRoot;
-            card.RenderContainer(args);
+            _videoBlock.Visibility = Visibility.Visible;
+            var cache = _videoDetailList.Where(p => p.aid == Convert.ToInt32(item.aid)).FirstOrDefault();
+            if (cache == null)
+            {
+                await _videoBlock.Init(Convert.ToInt32(item.aid));
+                cache = _videoBlock._detail;
+                _videoDetailList.Add(cache);
+            }
+            else
+                await _videoBlock.Init(cache);
         }
     }
 }

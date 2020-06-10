@@ -64,10 +64,10 @@ namespace BiliBili_UWP.Components.Controls
                 if (instance.IsCoverCard)
                 {
                     card.Visibility = Visibility.Collapsed;
+                    cover.Title = data.title;
                     cover.Cover = data.cover;
                     cover.Duration = data.cover_left_text_1;
                     cover.RightBottomText = data.top_rcmd_reason ?? "";
-                    ToolTipService.SetToolTip(cover, data.title);
                     instance.LaterViewButton.Visibility = Visibility.Collapsed;
                     if (data.card_goto == "bangumi")
                         cover.ExtraFlyout = instance.BangumiFlyout;

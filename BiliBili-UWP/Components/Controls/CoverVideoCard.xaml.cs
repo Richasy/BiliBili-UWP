@@ -33,6 +33,16 @@ namespace BiliBili_UWP.Components.Controls
         public static readonly DependencyProperty VideoIdProperty =
             DependencyProperty.Register("VideoId", typeof(int), typeof(CoverVideoCard), new PropertyMetadata(0));
 
+        public string Title
+        {
+            get { return (string)GetValue(TitleProperty); }
+            set { SetValue(TitleProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Title.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty TitleProperty =
+            DependencyProperty.Register("Title", typeof(string), typeof(DefaultVideoCard), new PropertyMetadata(""));
+
         public string Cover
         {
             get { return (string)GetValue(CoverProperty); }

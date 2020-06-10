@@ -27,8 +27,8 @@
             </ListViewItem>
         </DataTemplate>
         <DataTemplate x:DataType="anime:BangumiStyle" x:Key="TagItemTemplate">
-            <Border Background="{ThemeResource SecondaryColorOpacity}" Padding="8,5,8,3"
-                    CornerRadius="3">
+            <Border Background="{ThemeResource CardBackground}" Padding="8,5,8,3"
+                    CornerRadius="3" Width="80">
                 <TextBlock Text="{x:Bind name}" Style="{StaticResource SmallTipTextStyle}" FontSize="{CustomResource MiniFontSize}" Foreground="{ThemeResource SecondaryColorOver}"/>
             </Border>
         </DataTemplate>
@@ -110,10 +110,10 @@
                       Padding="0,0,0,5" Style="{StaticResource BasicListView}" ItemContainerStyle="{StaticResource TransparentListViewContainerStyle}"
                       x:Name="PartListView" ItemClick="PartListView_ItemClick" ScrollViewer.VerticalScrollMode="Disabled"/>
                 </Grid>
-                <GridView ItemTemplate="{StaticResource TagItemTemplate}" ItemsSource="{x:Bind TagCollection}" Height="30"
+                <GridView ItemTemplate="{StaticResource TagItemTemplate}" ItemsSource="{x:Bind TagCollection}"
                       IsItemClickEnabled="True" ItemContainerStyle="{StaticResource TransparentGridViewItemContainerStyle}"
                       Style="{StaticResource BasicGridView}" Padding="0,0,0,5" Margin="0,15,0,0"
-                      x:Name="TagGridView" ItemClick="TagGridView_ItemClick"  Grid.Row="1" ScrollViewer.HorizontalScrollMode="Disabled"/>
+                      x:Name="TagGridView" ItemClick="TagGridView_ItemClick" HorizontalAlignment="Left" ScrollViewer.HorizontalScrollMode="Disabled"/>
             </StackPanel>
             <muxc:ProgressRing Style="{StaticResource MuxcProgressRingStyle}" x:Name="LoadingRing"/>
         </Grid>
