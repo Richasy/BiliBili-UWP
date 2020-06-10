@@ -46,7 +46,7 @@ namespace BiliBili_UWP.Pages.Sub.Channel
         }
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
-            App.AppViewModel.CurrentPagePanel.SubPageTitle = StaticString.TAG_DETAIL;
+            App.AppViewModel.CurrentSubPageControl.SubPageTitle = StaticString.TAG_DETAIL;
             if (e.NavigationMode == NavigationMode.Back)
                 return;
             if (e.Parameter != null && e.Parameter is int tagId)

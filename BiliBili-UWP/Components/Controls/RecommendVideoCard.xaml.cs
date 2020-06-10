@@ -31,6 +31,19 @@ namespace BiliBili_UWP.Components.Controls
 
         public event EventHandler<VideoRecommend> NeedRemoveVideo;
 
+
+        public bool IsCoverCard
+        {
+            get { return (bool)GetValue(IsCoverCardProperty); }
+            set { SetValue(IsCoverCardProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for IsCoverCard.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty IsCoverCardProperty =
+            DependencyProperty.Register("IsCoverCard", typeof(bool), typeof(RecommendVideoCard), new PropertyMetadata(false));
+
+
+
         public VideoRecommend Data
         {
             get { return (VideoRecommend)GetValue(DataProperty); }
@@ -47,33 +60,68 @@ namespace BiliBili_UWP.Components.Controls
             {
                 var instance = d as RecommendVideoCard;
                 var card = instance.VideoCard;
-                card.Cover = data.cover;
-                card.Title = data.title;
-                card.Tip = data.desc;
-                card.FirstSectionContent = data.cover_left_text_2.Replace("观看", "");
-                card.SecondSectionContent = data.cover_left_text_3.Replace("弹幕", "");
-                card.Duration = data.cover_left_text_1;
-                card.RightBottomText = data.top_rcmd_reason ?? "";
-                if (data.card_goto == "bangumi")
-                    card.ExtraFlyout = instance.BangumiFlyout;
-                else
-                    card.ExtraFlyout = instance.VideoFlyout;
-                var feedback = data.three_point_v2.Where(p => p.type == "feedback").FirstOrDefault();
-                if (feedback != null)
+                var cover = instance.CoverCard;
+                if (instance.IsCoverCard)
                 {
-                    instance.FeedbackItemsControl.Visibility = Visibility.Visible;
-                    instance.FeedbackItemsControl.ItemsSource = feedback.reasons;
+                    card.Visibility = Visibility.Collapsed;
+                    cover.Title = data.title;
+                    cover.Cover = data.cover;
+                    cover.Duration = data.cover_left_text_1;
+                    cover.RightBottomText = data.top_rcmd_reason ?? "";
+                    instance.LaterViewButton.Visibility = Visibility.Collapsed;
+                    if (data.card_goto == "bangumi")
+                        cover.ExtraFlyout = instance.BangumiFlyout;
+                    else
+                        cover.ExtraFlyout = instance.VideoFlyout;
+                    var feedback = data.three_point_v2.Where(p => p.type == "feedback").FirstOrDefault();
+                    if (feedback != null)
+                    {
+                        instance.FeedbackItemsControl.Visibility = Visibility.Visible;
+                        instance.FeedbackItemsControl.ItemsSource = feedback.reasons;
+                    }
+                    else
+                        instance.FeedbackItemsControl.Visibility = Visibility.Collapsed;
+                    var notInterested = data.three_point_v2.Where(p => p.type == "dislike").FirstOrDefault();
+                    if (notInterested != null)
+                    {
+                        instance.NotInterestedItemsControl.Visibility = Visibility.Visible;
+                        instance.NotInterestedItemsControl.ItemsSource = notInterested.reasons;
+                    }
+                    else
+                        instance.NotInterestedItemsControl.Visibility = Visibility.Collapsed;
                 }
                 else
-                    instance.FeedbackItemsControl.Visibility = Visibility.Collapsed;
-                var notInterested = data.three_point_v2.Where(p => p.type == "dislike").FirstOrDefault();
-                if (notInterested != null)
                 {
-                    instance.NotInterestedItemsControl.Visibility = Visibility.Visible;
-                    instance.NotInterestedItemsControl.ItemsSource = notInterested.reasons;
+                    cover.Visibility = Visibility.Collapsed;
+                    card.Cover = data.cover;
+                    card.Title = data.title;
+                    card.Tip = data.desc;
+                    card.FirstSectionContent = data.cover_left_text_2.Replace("观看", "");
+                    card.SecondSectionContent = data.cover_left_text_3.Replace("弹幕", "");
+                    card.Duration = data.cover_left_text_1;
+                    card.RightBottomText = data.top_rcmd_reason ?? "";
+                    if (data.card_goto == "bangumi")
+                        card.ExtraFlyout = instance.BangumiFlyout;
+                    else
+                        card.ExtraFlyout = instance.VideoFlyout;
+                    var feedback = data.three_point_v2.Where(p => p.type == "feedback").FirstOrDefault();
+                    if (feedback != null)
+                    {
+                        instance.FeedbackItemsControl.Visibility = Visibility.Visible;
+                        instance.FeedbackItemsControl.ItemsSource = feedback.reasons;
+                    }
+                    else
+                        instance.FeedbackItemsControl.Visibility = Visibility.Collapsed;
+                    var notInterested = data.three_point_v2.Where(p => p.type == "dislike").FirstOrDefault();
+                    if (notInterested != null)
+                    {
+                        instance.NotInterestedItemsControl.Visibility = Visibility.Visible;
+                        instance.NotInterestedItemsControl.ItemsSource = notInterested.reasons;
+                    }
+                    else
+                        instance.NotInterestedItemsControl.Visibility = Visibility.Collapsed;
                 }
-                else
-                    instance.NotInterestedItemsControl.Visibility = Visibility.Collapsed;
+                
             }
         }
 

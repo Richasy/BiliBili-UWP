@@ -173,7 +173,7 @@
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <TextBlock Style="{StaticResource TitleTextStyle}" x:Name="TitleBlock" FontSize="20" Foreground="{ThemeResource ImportantTextColor}"
-                               MaxLines="2" TextWrapping="Wrap"/>
+                               MaxLines="2" TextWrapping="Wrap" IsTextSelectionEnabled="True"/>
                         <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="{CustomResource MiniFontSize}" x:Name="DateBlock"
                                 Margin="0,10,0,0" Grid.Row="1"/>
                         <StackPanel Orientation="Horizontal" Margin="0,10,0,0" Grid.Row="2">

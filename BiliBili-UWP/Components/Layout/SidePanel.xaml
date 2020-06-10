@@ -23,7 +23,7 @@
                 <TextBlock Style="{StaticResource BodyTextStyle}" Width="60" TextAlignment="Center" Text="{x:Bind name}" HorizontalAlignment="Center" Margin="0,8,0,0"/>
             </StackPanel>
         </DataTemplate>
-        <DataTemplate x:Name="DefaultWideSideItemTemplate" x:DataType="ui:SideMenuItem">
+        <DataTemplate x:Name="DefaultWideSideItemTemplate" x:DataType="ui:AppMenuItem">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -45,12 +45,12 @@
                 </Border>
             </Grid>
         </DataTemplate>
-        <DataTemplate x:Name="WideLineTemplate" x:DataType="ui:SideMenuItem">
+        <DataTemplate x:Name="WideLineTemplate" x:DataType="ui:AppMenuItem">
             <ListViewItem IsEnabled="False" IsTabStop="False" AllowFocusOnInteraction="False">
                 <Border BorderBrush="{ThemeResource LineColorOver}" BorderThickness="0,1,0,0" Margin="35,0"/>
             </ListViewItem>
         </DataTemplate>
-        <DataTemplate x:Name="DefaultNarrowSideItemTemplate" x:DataType="ui:SideMenuItem">
+        <DataTemplate x:Name="DefaultNarrowSideItemTemplate" x:DataType="ui:AppMenuItem">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -58,13 +58,13 @@
                 </Grid.ColumnDefinitions>
                 <Border Width="5" Height="25" CornerRadius="0,2,2,0" VerticalAlignment="Center" x:Name="ItemSign"
                         Background="{x:Bind IsSelected,Converter={StaticResource SideMenuSignColorConverter},Mode=OneWay}"/>
-                <TextBlock Style="{StaticResource SideMenuIconStyle}" FontSize="{CustomResource SubFontSize}" Text="{x:Bind Icon}" Grid.ColumnSpan="2"
-                           VerticalAlignment="Center" HorizontalAlignment="Center" ToolTipService.ToolTip="{x:Bind Name}"/>
+                <TextBlock Style="{StaticResource SideMenuIconStyle}" FontSize="{CustomResource BasicFontSize}" Text="{x:Bind Icon}" Grid.ColumnSpan="2"
+                           VerticalAlignment="Center" HorizontalAlignment="Center" ToolTipService.ToolTip="{x:Bind Name}" FontWeight="{x:Bind FontWeight}"/>
                 <Ellipse Visibility="{x:Bind Unread,Converter={StaticResource SideMenuExtraVisibleConverter},Mode=OneWay}" Grid.RowSpan="2" HorizontalAlignment="Center"
                          VerticalAlignment="Center" Margin="25,-15,0,0"/>
             </Grid>
         </DataTemplate>
-        <DataTemplate x:Name="NarrowLineTemplate" x:DataType="ui:SideMenuItem">
+        <DataTemplate x:Name="NarrowLineTemplate" x:DataType="ui:AppMenuItem">
             <ListViewItem IsEnabled="False" IsTabStop="False" AllowFocusOnInteraction="False">
                 <Border BorderBrush="{ThemeResource LineColorOver}" BorderThickness="0,1,0,0" Margin="15,5"/>
             </ListViewItem>
@@ -124,7 +124,7 @@
                     x:Name="RegionButton" Flyout="{StaticResource RegionFlyout}" FontSize="20"/>
         </RelativePanel>
         <Grid Grid.Row="1" x:Name="AccountContainer" Padding="{StaticResource ContainerPadding}" Margin="0,20,0,0">
-            <account:SlimAccountPanel x:Name="AccountPanel"/>
+            <account:SideSlimAccountPanel x:Name="AccountPanel"/>
         </Grid>
         <ListView Style="{StaticResource BasicListView}"
                   ItemContainerStyle="{StaticResource SideMenuListViewItemContainerStyle}"

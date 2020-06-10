@@ -76,7 +76,7 @@ namespace BiliBili_UWP.Pages.Sub
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
-            App.AppViewModel.CurrentPagePanel.SubPageTitle = StaticString.SEARCH_RESULT;
+            App.AppViewModel.CurrentSubPageControl.SubPageTitle = StaticString.SEARCH_RESULT;
             if (e.NavigationMode == NavigationMode.Back)
                 return;
             if (e.Parameter != null && e.Parameter is string _key)
@@ -374,7 +374,7 @@ namespace BiliBili_UWP.Pages.Sub
         private void UserListView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var user = e.ClickedItem as SearchUser;
-            App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Account.DetailPage), user.mid);
+            App.AppViewModel.NavigateToSubPage(typeof(Account.DetailPage), user.mid);
         }
 
         private void DocumentListView_ItemClick(object sender, ItemClickEventArgs e)

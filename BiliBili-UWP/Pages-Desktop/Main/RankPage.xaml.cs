@@ -34,6 +34,7 @@ namespace BiliBili_UWP.Pages.Main
         private ObservableCollection<RegionContainer> RegionCollection = new ObservableCollection<RegionContainer>();
         private bool _isInit = false;
         private int _selectRegion = 0;
+        
         public RankPage()
         {
             this.InitializeComponent();

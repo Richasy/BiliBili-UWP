@@ -50,7 +50,7 @@ namespace BiliBili_UWP.Pages.Sub.Channel
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
-            App.AppViewModel.CurrentPagePanel.SubPageTitle = StaticString.CHANNEL_TOTAL;
+            App.AppViewModel.CurrentSubPageControl.SubPageTitle = StaticString.CHANNEL_TOTAL;
             if (_isInit || e.NavigationMode == NavigationMode.Back)
             {
                 return;
@@ -125,7 +125,7 @@ namespace BiliBili_UWP.Pages.Sub.Channel
             if (args.ChosenSuggestion != null)
             {
                 var item = args.ChosenSuggestion as ChannelListItem;
-                App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(ChannelDetailPage), item.id);
+                App.AppViewModel.NavigateToSubPage(typeof(ChannelDetailPage), item.id);
                 ChannelSearchBox.Text = "";
             }
         }
@@ -133,7 +133,7 @@ namespace BiliBili_UWP.Pages.Sub.Channel
         private void ChannelListView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var item = e.ClickedItem as ChannelListItem;
-            App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(ChannelDetailPage), item.id);
+            App.AppViewModel.NavigateToSubPage(typeof(ChannelDetailPage), item.id);
         }
 
         private async void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)

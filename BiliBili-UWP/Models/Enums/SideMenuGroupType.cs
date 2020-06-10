@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BiliBili_UWP.Models.Enums
 {
-    public enum SideMenuGroupType
+    public enum AppMenuGroupType
     {
         Basic,
         My,

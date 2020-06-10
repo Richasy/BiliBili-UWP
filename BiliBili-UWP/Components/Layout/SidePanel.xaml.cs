@@ -14,13 +14,13 @@ namespace BiliBili_UWP.Components.Layout
 {
     public sealed partial class SidePanel : UserControl
     {
-        private ObservableCollection<SideMenuItem> MenuItemCollection = new ObservableCollection<SideMenuItem>();
+        private ObservableCollection<AppMenuItem> MenuItemCollection = new ObservableCollection<AppMenuItem>();
         private ObservableCollection<RegionContainer> RegionCollection = App.BiliViewModel.RegionCollection;
         public SidePanel()
         {
             this.InitializeComponent();
             App.AppViewModel.CurrentSidePanel = this;
-            var list = SideMenuItem.GetSideMenuItems(App.BiliViewModel.IsLogin);
+            var list = AppMenuItem.GetSideMenuItems(App.BiliViewModel.IsLogin);
             list.ForEach(p => MenuItemCollection.Add(p));
             App.AppViewModel.SelectedSideMenuItem = list.Where(p=>p.IsSelected).FirstOrDefault();
             App.BiliViewModel.IsLoginChanged -= IsLoginChanged;
@@ -29,7 +29,7 @@ namespace BiliBili_UWP.Components.Layout
 
         
         public event EventHandler<Region> RegionSelected;
-        public event EventHandler<SideMenuItem> SideMenuItemClick;
+        public event EventHandler<AppMenuItem> SideMenuItemClick;
         public bool IsWide
         {
             get { return (bool)GetValue(IsWideProperty); }
@@ -54,11 +54,10 @@ namespace BiliBili_UWP.Components.Layout
 
         private void IsLoginChanged(object sender, bool e)
         {
-
             SideMenuListView.SelectedIndex = -1;
             var selectItem = MenuItemCollection.Where(p => p.IsSelected).FirstOrDefault();
-            var type = selectItem == null ? SideMenuItemType.Line : selectItem.Type;
-            var list = SideMenuItem.GetSideMenuItems(e, type);
+            var type = selectItem == null ? AppMenuItemType.Line : selectItem.Type;
+            var list = AppMenuItem.GetSideMenuItems(e, type);
             MenuItemCollection.Clear();
             list.ForEach(p => MenuItemCollection.Add(p));
             var select = MenuItemCollection.Where(p => p.IsSelected).FirstOrDefault();
@@ -67,8 +66,8 @@ namespace BiliBili_UWP.Components.Layout
 
         private void SideMenuListView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            var item = e.ClickedItem as SideMenuItem;
-            if (item.Type != SideMenuItemType.Line && item != App.AppViewModel.SelectedSideMenuItem)
+            var item = e.ClickedItem as AppMenuItem;
+            if (item.Type != AppMenuItemType.Line && item != App.AppViewModel.SelectedSideMenuItem)
             {
                 SetSelectedItem(item.Type);
                 App.AppViewModel.SelectedSideMenuItem = item;
@@ -82,9 +81,9 @@ namespace BiliBili_UWP.Components.Layout
             AppTool.WriteLocalSetting(BiliBili_Lib.Enums.Settings.IsLastSidePanelOpen, IsWide.ToString());
         }
 
-        public void SetSelectedItem(SideMenuItemType type)
+        public void SetSelectedItem(AppMenuItemType type)
         {
-            if (type == SideMenuItemType.Line)
+            if (type == AppMenuItemType.Line)
             {
                 SideMenuListView.SelectedIndex = -1;
                 SideMenuListView.SelectedItem = null;
@@ -117,7 +116,7 @@ namespace BiliBili_UWP.Components.Layout
             SideMenuListView.SelectedIndex = index;
         }
 
-        public void SetMenuItemUnread(SideMenuItemType type,int value)
+        public void SetMenuItemUnread(AppMenuItemType type,int value)
         {
             var item = MenuItemCollection.Where(p => p.Type == type).FirstOrDefault();
             if (item != null)

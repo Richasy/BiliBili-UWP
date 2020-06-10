@@ -44,7 +44,7 @@ namespace BiliBili_UWP.Pages.Sub.Account
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
-            App.AppViewModel.CurrentPagePanel.SubPageTitle = "我的粉丝";
+            App.AppViewModel.CurrentSubPageControl.SubPageTitle = "我的粉丝";
             if (e.NavigationMode == NavigationMode.Back)
                 return;
             await Refresh();
@@ -117,7 +117,7 @@ namespace BiliBili_UWP.Pages.Sub.Account
         private void UserListView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var item = e.ClickedItem as FanUser;
-            App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(DetailPage), item.mid);
+            App.AppViewModel.NavigateToSubPage(typeof(DetailPage), item.mid);
         }
     }
 }

@@ -85,13 +85,13 @@ namespace BiliBili_UWP.Components.Controls
             param.Add("type", Data.item.business_id.ToString());
             param.Add("oid", Data.item.subject_id.ToString());
             param.Add("mode", "2");
-            App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Pages.Sub.ReplyPage), param);
+            App.AppViewModel.NavigateToSubPage(typeof(Pages.Sub.ReplyPage), param);
         }
 
         private void UserAvatar_Tapped(object sender, TappedRoutedEventArgs e)
         {
             e.Handled = true;
-            App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Pages.Sub.Account.DetailPage), Data.user.mid);
+            App.AppViewModel.NavigateToSubPage(typeof(Pages.Sub.Account.DetailPage), Data.user.mid);
         }
     }
 }

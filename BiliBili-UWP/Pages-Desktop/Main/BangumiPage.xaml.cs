@@ -10,20 +10,13 @@ using Microsoft.QueryStringDotNET;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
@@ -35,7 +28,7 @@ namespace BiliBili_UWP.Pages.Main
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class BangumiPage : Page, IRefreshPage, IPlayerPage
+    public sealed partial class BangumiPage : Page, IRefreshPage, IPlayerHost
     {
         private ObservableCollection<Episode> BangumiPartCollection = new ObservableCollection<Episode>();
         private ObservableCollection<BangumiStyle> TagCollection = new ObservableCollection<BangumiStyle>();
@@ -339,7 +332,7 @@ namespace BiliBili_UWP.Pages.Main
             }
             if (list.Count > 0)
             {
-                App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Sub.Anime.IndexPage), list);
+                App.AppViewModel.NavigateToSubPage(typeof(Sub.Anime.IndexPage), list);
             }
         }
         private async void FollowButton_Click(object sender, RoutedEventArgs e)
@@ -395,7 +388,7 @@ namespace BiliBili_UWP.Pages.Main
                 var param = new Dictionary<string, string>();
                 param.Add("oid", _currentPart.aid.ToString());
                 param.Add("type", "1");
-                App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Sub.ReplyPage), param);
+                App.AppViewModel.NavigateToSubPage(typeof(Sub.ReplyPage), param);
             }
         }
 

@@ -43,6 +43,10 @@
         <Setter Property="CornerRadius" Value="3"/>
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Hidden"/>
     </Style>
+    <Style TargetType="MenuFlyoutItem" x:Key="BasicMenuFlyoutItemStyle">
+        <Setter Property="FontFamily" Value="{CustomResource Basic}" />
+        <Setter Property="FontSize" Value="{CustomResource BasicFontSize}" />
+    </Style>
     <Style TargetType="GridViewHeaderItem">
         <Setter Property="Margin" Value="0"/>
         <Setter Property="Template">

@@ -48,7 +48,7 @@ namespace BiliBili_UWP.Pages.Sub.Account
             {
                 _type = t;
             }
-            App.AppViewModel.CurrentPagePanel.SubPageTitle = _type == "cinema" ? "我的追剧" : "我的追番";
+            App.AppViewModel.CurrentSubPageControl.SubPageTitle = _type == "cinema" ? "我的追剧" : "我的追番";
             await Refresh();
         }
 

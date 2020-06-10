@@ -116,7 +116,7 @@ namespace BiliBili_UWP.Components.Controls
 
         private void Account_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Pages.Sub.Account.DetailPage), Data.member.mid);
+            App.AppViewModel.NavigateToSubPage(typeof(Pages.Sub.Account.DetailPage), Data.member.mid);
         }
 
     }

@@ -18,9 +18,6 @@ using Microsoft.Toolkit.Uwp.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Background;
@@ -30,10 +27,8 @@ using Windows.Storage;
 using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
-using Windows.UI.WindowManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Hosting;
 using Windows.UI.Xaml.Media.Animation;
 
 namespace BiliBili_UWP.Models.Core
@@ -41,10 +36,11 @@ namespace BiliBili_UWP.Models.Core
     public class AppViewModel
     {
         public double StateChangeWidth = 1000;
-        public SideMenuItem SelectedSideMenuItem { get; set; }
+        public AppMenuItem SelectedSideMenuItem { get; set; }
         public Type CurrentPageType { get; set; }
         public SidePanel CurrentSidePanel;
         public PagePanel CurrentPagePanel;
+        public SubPageControl CurrentSubPageControl;
         public VideoPlayer CurrentVideoPlayer;
         public PlayerType CurrentPlayerType;
         public WebPopup _webPopup;
@@ -57,7 +53,8 @@ namespace BiliBili_UWP.Models.Core
         public bool IsInBackground;
         public string ConnectAnimationName = "";
         public double BasicFontSize = Convert.ToDouble(AppTool.GetLocalSetting(Settings.BasicFontSize, "14"));
-
+        public TabletVideoDetailBlock CurrentVideoDetailBlock;
+        public TabletBangumiDetailBlock CurrentBangumiDetailBlock;
         public List<Tuple<Guid, Action<Size>>> WindowsSizeChangedNotify { get; set; } = new List<Tuple<Guid, Action<Size>>>();
         public ObservableCollection<SystemFont> FontCollection = new ObservableCollection<SystemFont>();
         public bool IsEnableAnimation = AppTool.GetBoolSetting(Settings.EnableAnimation);
@@ -132,8 +129,8 @@ namespace BiliBili_UWP.Models.Core
         /// <param name="fromSign">来源参数</param>
         public void PlayVideo(int aid, object sender = null, string fromSign = "")
         {
-            App._watch.Start();
-            CurrentPagePanel.CheckSubReplyPage();
+            //App._watch.Start();
+            CurrentSubPageControl.CheckSubReplyPage();
             SelectedSideMenuItem = null;
             if (sender != null && IsEnableAnimation)
             {
@@ -144,16 +141,24 @@ namespace BiliBili_UWP.Models.Core
             }
             else
                 ConnectAnimationName = "";
-            CurrentSidePanel.SetSelectedItem(SideMenuItemType.Line);
-            CurrentPagePanel.NavigateToPage(SideMenuItemType.VideoPlayer, new Tuple<int, string>(aid, fromSign));
-            App._watch.Stop();
+            if (App._isTabletMode)
+            {
+
+            }
+            else
+            {
+                CurrentSidePanel.SetSelectedItem(AppMenuItemType.Line);
+                CurrentPagePanel.NavigateToPage(AppMenuItemType.VideoPlayer, new Tuple<int, string>(aid, fromSign));
+            }
+            
+            //App._watch.Stop();
         }
         public void PlayVideo(VideoActiveArgs args)
         {
             CurrentPagePanel.CheckSubReplyPage();
             SelectedSideMenuItem = null;
-            CurrentSidePanel.SetSelectedItem(SideMenuItemType.Line);
-            CurrentPagePanel.NavigateToPage(SideMenuItemType.VideoPlayer, args);
+            CurrentSidePanel.SetSelectedItem(AppMenuItemType.Line);
+            CurrentPagePanel.NavigateToPage(AppMenuItemType.VideoPlayer, args);
         }
         /// <summary>
         /// 播放视频列表
@@ -169,8 +174,8 @@ namespace BiliBili_UWP.Models.Core
                 var image = VisualTreeExtension.VisualTreeFindName<FrameworkElement>((FrameworkElement)sender, "VideoCover");
                 ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("VideoConnectedAnimation", image);
             }
-            CurrentSidePanel.SetSelectedItem(SideMenuItemType.Line);
-            CurrentPagePanel.NavigateToPage(SideMenuItemType.VideoPlayer, new Tuple<int, List<VideoDetail>>(aid, videoList));
+            CurrentSidePanel.SetSelectedItem(AppMenuItemType.Line);
+            CurrentPagePanel.NavigateToPage(AppMenuItemType.VideoPlayer, new Tuple<int, List<VideoDetail>>(aid, videoList));
         }
         /// <summary>
         /// 播放番剧
@@ -193,19 +198,19 @@ namespace BiliBili_UWP.Models.Core
                 else
                     ConnectAnimationName = "";
             }
-            CurrentSidePanel.SetSelectedItem(SideMenuItemType.Line);
+            CurrentSidePanel.SetSelectedItem(AppMenuItemType.Line);
             if (isEp)
-                CurrentPagePanel.NavigateToPage(SideMenuItemType.BangumiPlayer, new Tuple<int, bool>(epid, isEp));
+                CurrentPagePanel.NavigateToPage(AppMenuItemType.BangumiPlayer, new Tuple<int, bool>(epid, isEp));
             else
-                CurrentPagePanel.NavigateToPage(SideMenuItemType.BangumiPlayer, epid);
+                CurrentPagePanel.NavigateToPage(AppMenuItemType.BangumiPlayer, epid);
         }
         /// <summary>
         /// 获取当前的播放页
         /// </summary>
         /// <returns></returns>
-        public IPlayerPage GetCurrentPlayerPage()
+        public IPlayerHost GetCurrentPlayerPage()
         {
-            IPlayerPage page = null;
+            IPlayerHost page = null;
             switch (CurrentPlayerType)
             {
                 case PlayerType.Video:
@@ -222,16 +227,39 @@ namespace BiliBili_UWP.Models.Core
             return page;
         }
         /// <summary>
+        /// 获取当前的播放容器
+        /// </summary>
+        /// <returns></returns>
+        public IPlayerHost GetCurrentPlayerBlock()
+        {
+            IPlayerHost host = null;
+            switch (CurrentPlayerType)
+            {
+                case PlayerType.Video:
+                    host = CurrentVideoDetailBlock;
+                    break;
+                case PlayerType.Bangumi:
+                    host = CurrentBangumiDetailBlock;
+                    break;
+                case PlayerType.Live:
+                    break;
+                default:
+                    break;
+            }
+            return host;
+        }
+        /// <summary>
         /// 进入全屏模式
         /// </summary>
         /// <param name="isFull">是否为全屏模式</param>
         public void PlayVideoFullScreen(bool isFull)
         {
-            IPlayerPage page = GetCurrentPlayerPage();
+            IPlayerHost hostPage = App._isTabletMode ? TabletMainPage.Current as IPlayerHost : DesktopMainPage.Current as IPlayerHost;
+            IPlayerHost host = App._isTabletMode ? GetCurrentPlayerBlock() : GetCurrentPlayerPage();
             if (isFull)
             {
-                page.RemovePlayer();
-                DesktopMainPage.Current.InsertPlayer();
+                host.RemovePlayer();
+                hostPage.InsertPlayer();
                 ApplicationView.GetForCurrentView().TryEnterFullScreenMode();
             }
             else
@@ -239,9 +267,8 @@ namespace BiliBili_UWP.Models.Core
                 ApplicationView.GetForCurrentView().ExitFullScreenMode();
                 if (!CurrentVideoPlayer.MTC.IsCinema)
                 {
-                    DesktopMainPage.Current.RemovePlayer();
-                    page.InsertPlayer();
-                    CurrentVideoPlayer.DanmakuBarVisibility = Visibility.Visible;
+                    hostPage.RemovePlayer();
+                    host.InsertPlayer();
                 }
             }
         }
@@ -251,18 +278,19 @@ namespace BiliBili_UWP.Models.Core
         /// <param name="isCinema">是否为影院模式</param>
         public void PlayVideoCinema(bool isCinema)
         {
-            IPlayerPage page = GetCurrentPlayerPage();
+            IPlayerHost hostPage = App._isTabletMode ? TabletMainPage.Current as IPlayerHost : DesktopMainPage.Current as IPlayerHost;
+            IPlayerHost host = App._isTabletMode ? GetCurrentPlayerBlock() : GetCurrentPlayerPage();
             if (isCinema)
             {
-                page.RemovePlayer();
-                DesktopMainPage.Current.InsertPlayer();
+                host.RemovePlayer();
+                hostPage.InsertPlayer();
             }
             else
             {
                 if (!CurrentVideoPlayer.MTC.IsFullWindow)
                 {
-                    DesktopMainPage.Current.RemovePlayer();
-                    page.InsertPlayer();
+                    hostPage.RemovePlayer();
+                    host.InsertPlayer();
                 }
             }
         }
@@ -272,19 +300,20 @@ namespace BiliBili_UWP.Models.Core
         /// <param name="isCompact">是否为影院模式</param>
         public async void PlayVideoCompactOverlay(bool isCompact)
         {
-            IPlayerPage page = GetCurrentPlayerPage();
+            IPlayerHost hostPage = App._isTabletMode ? TabletMainPage.Current as IPlayerHost : DesktopMainPage.Current as IPlayerHost;
+            IPlayerHost host = App._isTabletMode ? GetCurrentPlayerBlock() : GetCurrentPlayerPage();
             if (isCompact)
             {
-                page.RemovePlayer();
-                DesktopMainPage.Current.InsertPlayer();
+                host.RemovePlayer();
+                hostPage.InsertPlayer();
                 await ApplicationView.GetForCurrentView().TryEnterViewModeAsync(ApplicationViewMode.CompactOverlay);
             }
             else
             {
                 if (!CurrentVideoPlayer.MTC.IsCompactOverlay)
                 {
-                    DesktopMainPage.Current.RemovePlayer();
-                    page.InsertPlayer();
+                    hostPage.RemovePlayer();
+                    host.InsertPlayer();
                     CurrentVideoPlayer.DanmakuBarVisibility = Visibility.Visible;
                     await ApplicationView.GetForCurrentView().TryEnterViewModeAsync(ApplicationViewMode.Default);
                 }
@@ -309,7 +338,7 @@ namespace BiliBili_UWP.Models.Core
                 newViewId = ApplicationView.GetForCurrentView().Id;
             });
             bool viewShown = await ApplicationViewSwitcher.TryShowAsStandaloneAsync(newViewId);
-            if (CurrentPageType == typeof(VideoPage) && isCloseCurrentPage)
+            if (!App._isTabletMode && CurrentPageType == typeof(VideoPage) && isCloseCurrentPage)
                 CurrentPagePanel.MainPageBack();
         }
         /// <summary>
@@ -331,7 +360,7 @@ namespace BiliBili_UWP.Models.Core
                 newViewId = ApplicationView.GetForCurrentView().Id;
             });
             bool viewShown = await ApplicationViewSwitcher.TryShowAsStandaloneAsync(newViewId);
-            if (CurrentPageType == typeof(VideoPage))
+            if (!App._isTabletMode && CurrentPageType == typeof(BangumiPage))
                 CurrentPagePanel.MainPageBack();
         }
         /// <summary>
@@ -487,6 +516,131 @@ namespace BiliBili_UWP.Models.Core
             else if (result.Type == UriType.Web)
             {
                 ShowWebPopup(title, result.Param);
+            }
+        }
+
+        public void NavigateToSubPage(Type page, object parameter = null, bool isBack = false)
+        {
+            CurrentSubPageControl.NavigateToSubPage(page, parameter, isBack);
+            if (App._isTabletMode)
+                TabletMainPage.Current.IsSubPageOpen = true;
+            else
+                CurrentPagePanel.IsSubPageOpen = true;
+        }
+        public async void AccelertorKeyActivedHandle(CoreDispatcher sender, AcceleratorKeyEventArgs args)
+        {
+            if (args.EventType.ToString().Contains("Down"))
+            {
+                var esc = Window.Current.CoreWindow.GetKeyState(VirtualKey.Escape);
+                var space = Window.Current.CoreWindow.GetKeyState(VirtualKey.Space);
+                var f11 = Window.Current.CoreWindow.GetKeyState(VirtualKey.F11);
+                var f10 = Window.Current.CoreWindow.GetKeyState(VirtualKey.F10);
+                var f2 = Window.Current.CoreWindow.GetKeyState(VirtualKey.F2);
+                var left = Window.Current.CoreWindow.GetKeyState(VirtualKey.Left);
+                var right = Window.Current.CoreWindow.GetKeyState(VirtualKey.Right);
+                var up = Window.Current.CoreWindow.GetKeyState(VirtualKey.Up);
+                var down = Window.Current.CoreWindow.GetKeyState(VirtualKey.Down);
+                var shift = Window.Current.CoreWindow.GetKeyState(VirtualKey.Shift);
+                var player = CurrentVideoPlayer;
+
+                if (esc.HasFlag(CoreVirtualKeyStates.Down))
+                {
+                    if (App.AppViewModel._dynamicDetailPopup != null && App.AppViewModel._dynamicDetailPopup._popup.IsOpen)
+                    {
+                        App.AppViewModel._dynamicDetailPopup.HidePopup();
+                        return;
+                    }
+                    if (player != null)
+                    {
+                        if (player.MTC.IsFullWindow)
+                        {
+                            args.Handled = true;
+                            player.MTC.IsFullWindow = false;
+                        }
+                        else if (player.MTC.IsCinema)
+                        {
+                            args.Handled = true;
+                            player.MTC.IsCinema = false;
+                        }
+                        player.Focus(FocusState.Programmatic);
+                    }
+                }
+                else if (space.HasFlag(CoreVirtualKeyStates.Down))
+                {
+                    if (player != null && player.IsFocus && (player.MTC.IsFullWindow || player.MTC.IsCinema))
+                    {
+                        args.Handled = true;
+                        player.MTC.IsPlaying = !player.MTC.IsPlaying;
+                        player.Focus(FocusState.Programmatic);
+                    }
+                }
+                else if (f11.HasFlag(CoreVirtualKeyStates.Down))
+                {
+                    if (player != null && player.IsFocus)
+                    {
+                        args.Handled = true;
+                        player.MTC.IsFullWindow = !player.MTC.IsFullWindow;
+                    }
+                }
+                else if (f10.HasFlag(CoreVirtualKeyStates.Down))
+                {
+                    if (player != null && player.IsFocus)
+                    {
+                        args.Handled = true;
+                        player.MTC.IsCompactOverlay = !player.MTC.IsCompactOverlay;
+                    }
+                }
+                else if (f2.HasFlag(CoreVirtualKeyStates.Down))
+                {
+                    if (player != null && player.IsFocus)
+                    {
+                        args.Handled = true;
+                        await player.ChangeDanmakuStatus();
+                    }
+                }
+                else if (left.HasFlag(CoreVirtualKeyStates.Down))
+                {
+                    if (player != null && player.IsFocus)
+                    {
+                        args.Handled = true;
+                        player.SkipRewind();
+                    }
+                }
+                else if (right.HasFlag(CoreVirtualKeyStates.Down))
+                {
+                    if (player != null && player.IsFocus)
+                    {
+                        args.Handled = true;
+                        player.SkipForward();
+                    }
+                }
+                else if (up.HasFlag(CoreVirtualKeyStates.Down))
+                {
+                    if (player != null && player.IsFocus)
+                    {
+                        args.Handled = true;
+                        player.UpVolume();
+                    }
+                }
+                else if (down.HasFlag(CoreVirtualKeyStates.Down))
+                {
+                    if (player != null && player.IsFocus)
+                    {
+                        args.Handled = true;
+                        player.DownVolume();
+                    }
+                }
+                else if (shift.HasFlag(CoreVirtualKeyStates.Down))
+                {
+                    if (args.VirtualKey == VirtualKey.S)
+                    {
+                        //截图
+                        if (player != null && player.IsFocus)
+                        {
+                            await player.ScreenShot();
+                        }
+                    }
+                }
             }
         }
     }

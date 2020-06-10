@@ -111,18 +111,18 @@ namespace BiliBili_UWP.Pages.Main
             var param = App.BiliViewModel.RegionCollection.Where(p => p.name == name).FirstOrDefault();
             if (param != null)
             {
-                App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Sub.Video.SubRegionPage), param);
+                App.AppViewModel.NavigateToSubPage(typeof(Sub.Video.SubRegionPage), param);
             }
         }
 
         private void IndexButton_Click(object sender, RoutedEventArgs e)
         {
-            App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Sub.Anime.IndexPage), 1);
+            App.AppViewModel.NavigateToSubPage(typeof(Sub.Anime.IndexPage), 1);
         }
 
         private void TimelineButton_Click(object sender, RoutedEventArgs e)
         {
-            App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Sub.Anime.TimelinePage), isJP ? 2 : 3);
+            App.AppViewModel.NavigateToSubPage(typeof(Sub.Anime.TimelinePage), isJP ? 2 : 3);
         }
 
         private void BannerListView_ItemClick(object sender, ItemClickEventArgs e)

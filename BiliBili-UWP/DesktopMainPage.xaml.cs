@@ -1,6 +1,7 @@
 ﻿using BiliBili_Lib.Tools;
 using BiliBili_UWP.Components.Widgets;
 using BiliBili_UWP.Models.Core;
+using BiliBili_UWP.Models.UI.Interface;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -25,15 +26,13 @@ namespace BiliBili_UWP
     /// <summary>
     /// 可用于自身或导航至 Frame 内部的空白页。
     /// </summary>
-    public sealed partial class DesktopMainPage : Page
+    public sealed partial class DesktopMainPage : Page,IPlayerHost
     {
         private bool _isInit = false;
         string tempArgument = string.Empty;
         public static DesktopMainPage Current;
         public DesktopMainPage()
         {
-            App.AppViewModel = new AppViewModel();
-            App.BiliViewModel = new BiliViewModel();
             this.InitializeComponent();
             NavigationCacheMode = NavigationCacheMode.Enabled;
             Current = this;
@@ -57,14 +56,14 @@ namespace BiliBili_UWP
                 {
                     await App.BiliViewModel.GetRegionsAsync();
                     App.AppViewModel.FontInit();
-                    Window.Current.Dispatcher.AcceleratorKeyActivated += AccelertorKeyActivedHandle;
+                    Window.Current.Dispatcher.AcceleratorKeyActivated += App.AppViewModel.AccelertorKeyActivedHandle;
                     if (e.Parameter != null && e.Parameter is string argument && !string.IsNullOrEmpty(argument))
                     {
                         App.AppViewModel.AppInitByActivated(argument);
                     }
                     else
                     {
-                        PagePanel.NavigateToPage(Models.Enums.SideMenuItemType.Home);
+                        PagePanel.NavigateToPage(Models.Enums.AppMenuItemType.Home);
                     }
                 }
                 catch (Exception)
@@ -82,131 +81,16 @@ namespace BiliBili_UWP
             _isInit = true;
         }
 
-        private async void AccelertorKeyActivedHandle(CoreDispatcher sender, AcceleratorKeyEventArgs args)
-        {
-            if (args.EventType.ToString().Contains("Down"))
-            {
-                var esc = Window.Current.CoreWindow.GetKeyState(VirtualKey.Escape);
-                var space = Window.Current.CoreWindow.GetKeyState(VirtualKey.Space);
-                var f11= Window.Current.CoreWindow.GetKeyState(VirtualKey.F11);
-                var f10 = Window.Current.CoreWindow.GetKeyState(VirtualKey.F10);
-                var f2 = Window.Current.CoreWindow.GetKeyState(VirtualKey.F2);
-                var left = Window.Current.CoreWindow.GetKeyState(VirtualKey.Left);
-                var right = Window.Current.CoreWindow.GetKeyState(VirtualKey.Right);
-                var up = Window.Current.CoreWindow.GetKeyState(VirtualKey.Up);
-                var down = Window.Current.CoreWindow.GetKeyState(VirtualKey.Down);
-                var shift = Window.Current.CoreWindow.GetKeyState(VirtualKey.Shift);
-                var player = App.AppViewModel.CurrentVideoPlayer;
-                
-                if (esc.HasFlag(CoreVirtualKeyStates.Down))
-                {
-                    if (App.AppViewModel._dynamicDetailPopup != null && App.AppViewModel._dynamicDetailPopup._popup.IsOpen)
-                    {
-                        App.AppViewModel._dynamicDetailPopup.HidePopup();
-                        return;
-                    }
-                    if (player != null)
-                    {
-                        if (player.MTC.IsFullWindow)
-                        {
-                            args.Handled = true;
-                            player.MTC.IsFullWindow = false;
-                        }
-                        else if (player.MTC.IsCinema)
-                        {
-                            args.Handled = true;
-                            player.MTC.IsCinema = false;
-                        }
-                        player.Focus(FocusState.Programmatic);
-                    }
-                }
-                else if (space.HasFlag(CoreVirtualKeyStates.Down))
-                {
-                    if (player != null && player.IsFocus && (player.MTC.IsFullWindow || player.MTC.IsCinema))
-                    {
-                        args.Handled = true;
-                        player.MTC.IsPlaying = !player.MTC.IsPlaying;
-                        player.Focus(FocusState.Programmatic);
-                    }
-                }
-                else if (f11.HasFlag(CoreVirtualKeyStates.Down))
-                {
-                    if(player != null && player.IsFocus)
-                    {
-                        args.Handled = true;
-                        player.MTC.IsFullWindow = !player.MTC.IsFullWindow;
-                    }
-                }
-                else if (f10.HasFlag(CoreVirtualKeyStates.Down))
-                {
-                    if (player != null && player.IsFocus)
-                    {
-                        args.Handled = true;
-                        player.MTC.IsCompactOverlay = !player.MTC.IsCompactOverlay;
-                    }
-                }
-                else if (f2.HasFlag(CoreVirtualKeyStates.Down))
-                {
-                    if (player != null && player.IsFocus)
-                    {
-                        args.Handled = true;
-                        await player.ChangeDanmakuStatus();
-                    }
-                }
-                else if (left.HasFlag(CoreVirtualKeyStates.Down))
-                {
-                    if (player != null && player.IsFocus)
-                    {
-                        args.Handled = true;
-                        player.SkipRewind();
-                    }
-                }
-                else if (right.HasFlag(CoreVirtualKeyStates.Down))
-                {
-                    if (player != null && player.IsFocus)
-                    {
-                        args.Handled = true;
-                        player.SkipForward();
-                    }
-                }
-                else if (up.HasFlag(CoreVirtualKeyStates.Down))
-                {
-                    if (player != null && player.IsFocus)
-                    {
-                        args.Handled = true;
-                        player.UpVolume();
-                    }
-                }
-                else if (down.HasFlag(CoreVirtualKeyStates.Down))
-                {
-                    if (player != null && player.IsFocus)
-                    {
-                        args.Handled = true;
-                        player.DownVolume();
-                    }
-                }
-                else if (shift.HasFlag(CoreVirtualKeyStates.Down))
-                {
-                    if (args.VirtualKey == VirtualKey.S)
-                    {
-                        //截图
-                        if(player!=null && player.IsFocus)
-                        {
-                            await player.ScreenShot();
-                        }
-                    }
-                }
-            }
-        }
+        
 
-        private void SidePanel_SideMenuItemClick(object sender, Models.UI.SideMenuItem e)
+        private void SidePanel_SideMenuItemClick(object sender, Models.UI.AppMenuItem e)
         {
             PagePanel.NavigateToPage(e.Type);
         }
 
         private void SidePanel_RegionSelected(object sender, BiliBili_Lib.Models.BiliBili.Region e)
         {
-            SidePanel.SetSelectedItem(Models.Enums.SideMenuItemType.Line);
+            SidePanel.SetSelectedItem(Models.Enums.AppMenuItemType.Line);
             App.AppViewModel.SelectedSideMenuItem = null;
             PagePanel.NavigateToRegion(e);
         }

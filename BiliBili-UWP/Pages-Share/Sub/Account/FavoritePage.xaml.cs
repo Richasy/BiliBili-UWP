@@ -52,7 +52,7 @@ namespace BiliBili_UWP.Pages.Sub.Account
                 if (_favoriteId == item.id)
                     return;
                 _favoriteId = item.id;
-                App.AppViewModel.CurrentPagePanel.SubPageTitle = item.title;
+                App.AppViewModel.CurrentSubPageControl.SubPageTitle = item.title;
                 await Refresh();
             }
         }

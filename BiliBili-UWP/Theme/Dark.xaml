@@ -12,6 +12,7 @@
     <SolidColorBrush x:Key="CardBackground" Color="#282828"/>
     <SolidColorBrush x:Key="CardBackgroundOver" Color="#393939"/>
     <SolidColorBrush x:Key="PointerOverMaskBackground" Color="White" Opacity="0.05"/>
+    <SolidColorBrush x:Key="TransparentBackground" Color="Black" Opacity="0.01"/>
 
     <SolidColorBrush x:Key="ImportantTextColor" Color="#FFFFFF"/>
     <SolidColorBrush x:Key="NormalTextColor" Color="#E2E2E5"/>

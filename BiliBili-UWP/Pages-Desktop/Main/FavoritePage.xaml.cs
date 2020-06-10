@@ -112,7 +112,7 @@ namespace BiliBili_UWP.Pages.Main
         private void MyFavoriteListView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var item = e.ClickedItem as FavoriteItem;
-            App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Sub.Account.FavoritePage), item);
+            App.AppViewModel.NavigateToSubPage(typeof(Sub.Account.FavoritePage), item);
         }
 
         private void MyAnimeListView_ItemClick(object sender, ItemClickEventArgs e)
@@ -127,12 +127,12 @@ namespace BiliBili_UWP.Pages.Main
 
         private void MyAnimeListView_RefreshButtonClick(object sender, EventArgs e)
         {
-            App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Sub.Account.FavoriteAnimePage), "anime");
+            App.AppViewModel.NavigateToSubPage(typeof(Sub.Account.FavoriteAnimePage), "anime");
         }
 
         private void MyCinemaListView_RefreshButtonClick(object sender, EventArgs e)
         {
-            App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Sub.Account.FavoriteAnimePage), "cinema");
+            App.AppViewModel.NavigateToSubPage(typeof(Sub.Account.FavoriteAnimePage), "cinema");
         }
         public void RemoveBangumi(string type, FavoriteAnime data)
         {

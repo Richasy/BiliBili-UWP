@@ -37,7 +37,7 @@ namespace BiliBili_UWP.Pages.Sub.Anime
         }
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
-            App.AppViewModel.CurrentPagePanel.SubPageTitle = "时间表";
+            App.AppViewModel.CurrentSubPageControl.SubPageTitle = "时间表";
             if (e.NavigationMode == NavigationMode.Back)
                 return;
             if(e.Parameter!=null && e.Parameter is int type)

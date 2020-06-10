@@ -231,7 +231,7 @@ namespace BiliBili_UWP.Components.Controls
             e.Handled = true;
             var data = Data as RepostDynamic;
             if (data.item.orig_type != 4101)
-                App.AppViewModel.CurrentPagePanel.NavigateToSubPage(typeof(Pages.Sub.Account.DetailPage), data.origin_user.info.uid);
+                App.AppViewModel.NavigateToSubPage(typeof(Pages.Sub.Account.DetailPage), data.origin_user.info.uid);
             else
                 App.AppViewModel.PlayBangumi(data.origin_user.info.uid);
         }
