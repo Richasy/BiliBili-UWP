@@ -63,7 +63,7 @@ namespace BiliBili_UWP
                     }
                     else
                     {
-                        PagePanel.NavigateToPage(Models.Enums.AppMenuItemType.Recommend);
+                        PagePanel.NavigateToPage(Models.Enums.AppMenuItemType.Home);
                     }
                 }
                 catch (Exception)
