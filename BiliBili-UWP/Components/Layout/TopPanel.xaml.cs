@@ -27,6 +27,7 @@ namespace BiliBili_UWP.Components.Layout
         public TopPanel()
         {
             this.InitializeComponent();
+            App.AppViewModel.CurrentTopPanel = this;
             var menus = AppMenuItem.GetTopMenuItems();
             MenuItemCollection.Clear();
             menus.ForEach(p => MenuItemCollection.Add(p));
@@ -84,6 +85,14 @@ namespace BiliBili_UWP.Components.Layout
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
             BackButtonClick?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (e.NewSize.Width < 1100)
+                VisualStateManager.GoToState(this, "Narrow", true);
+            else
+                VisualStateManager.GoToState(this, "Wide", true);
         }
     }
 }

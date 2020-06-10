@@ -133,12 +133,14 @@ namespace BiliBili_UWP
 
         public void SetBackgroundImage(string imageUrl)
         {
-            BackgroundImageContainer.Visibility = Visibility.Visible;
+            MaskGrid.Background = UIHelper.GetThemeBrush(ColorType.MaskAcrylicBackground);
+            BackgroundImage.Visibility = Visibility.Visible;
             BackgroundImage.Source = imageUrl;
         }
         public void HideBackgroundImage()
         {
-            BackgroundImageContainer.Visibility = Visibility.Collapsed;
+            MaskGrid.Background = UIHelper.GetThemeBrush(ColorType.SideBackground);
+            BackgroundImage.Visibility = Visibility.Collapsed;
         }
 
         private void TopPanel_TopMenuItemClick(object sender, Models.UI.AppMenuItem e)
@@ -155,13 +157,18 @@ namespace BiliBili_UWP
                     page = typeof(RankPage);
                     break;
                 case AppMenuItemType.Anime:
+                    page = typeof(AnimePage);
                     break;
                 case AppMenuItemType.Region:
+                    page = typeof(RegionPage);
                     break;
                 case AppMenuItemType.Recommend:
                     page = typeof(RecommendPage);
                     break;
                 case AppMenuItemType.Channel:
+                    break;
+                case AppMenuItemType.VideoPlayer:
+                    page = typeof(PlayerPage);
                     break;
                 case AppMenuItemType.Settings:
                     page = typeof(Pages_Share.Main.SettingPage);
@@ -182,6 +189,12 @@ namespace BiliBili_UWP
                 result = AppMenuItemType.Recommend;
             else if (type.Equals(typeof(RankPage)))
                 result = AppMenuItemType.Rank;
+            else if (type.Equals(typeof(AnimePage)))
+                result = AppMenuItemType.Anime;
+            else if (type.Equals(typeof(RegionPage)))
+                result = AppMenuItemType.Region;
+            else if (type.Equals(typeof(PlayerPage)))
+                result = AppMenuItemType.VideoPlayer;
             else if (type.Equals(typeof(Pages_Share.Main.SettingPage)))
                 result = AppMenuItemType.Settings;
             else if (type.Equals(typeof(Pages_Share.Main.HelpPage)))
@@ -209,6 +222,8 @@ namespace BiliBili_UWP
                 MainFrame.Navigate(page, parameter, transitionInfo);
                 if (!isBack)
                 {
+                    if (page.Equals(typeof(PlayerPage)))
+                        MainFrameHistoryList.RemoveAll(p => p.Item1 == page);
                     if (!isRepeat)
                     {
                         MainFrameHistoryList.Add(new Tuple<Type, object>(page, parameter));
@@ -237,11 +252,13 @@ namespace BiliBili_UWP
         private void PageSplitView_PaneClosing(SplitView sender, SplitViewPaneClosingEventArgs args)
         {
             SubPageControl.FrameVisibility = Visibility.Collapsed;
+            BottomPanel.OpenSideButtonVisibility = Visibility.Visible;
         }
 
         private void PageSplitView_PaneOpening(SplitView sender, object args)
         {
             SubPageControl.FrameVisibility = Visibility.Visible;
+            BottomPanel.OpenSideButtonVisibility = Visibility.Collapsed;
         }
 
         private void SubPageControl_CloseButtonClick(object sender, EventArgs e)
@@ -309,6 +326,11 @@ namespace BiliBili_UWP
         {
             VideoContainer.Visibility = Visibility.Collapsed;
             VideoContainer.Children.Clear();
+        }
+
+        private void BottomPanel_OpenSideButtonClick(object sender, EventArgs e)
+        {
+            IsSubPageOpen = true;
         }
     }
 }

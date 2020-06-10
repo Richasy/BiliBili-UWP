@@ -55,6 +55,7 @@ namespace BiliBili_UWP.Models.Core
         public double BasicFontSize = Convert.ToDouble(AppTool.GetLocalSetting(Settings.BasicFontSize, "14"));
         public TabletVideoDetailBlock CurrentVideoDetailBlock;
         public TabletBangumiDetailBlock CurrentBangumiDetailBlock;
+        public TopPanel CurrentTopPanel;
         public List<Tuple<Guid, Action<Size>>> WindowsSizeChangedNotify { get; set; } = new List<Tuple<Guid, Action<Size>>>();
         public ObservableCollection<SystemFont> FontCollection = new ObservableCollection<SystemFont>();
         public bool IsEnableAnimation = AppTool.GetBoolSetting(Settings.EnableAnimation);
@@ -143,7 +144,8 @@ namespace BiliBili_UWP.Models.Core
                 ConnectAnimationName = "";
             if (App._isTabletMode)
             {
-
+                CurrentTopPanel.SetSelectedItem(AppMenuItemType.Line);
+                TabletMainPage.Current.NavigateToPage(AppMenuItemType.VideoPlayer,aid);
             }
             else
             {
@@ -155,10 +157,18 @@ namespace BiliBili_UWP.Models.Core
         }
         public void PlayVideo(VideoActiveArgs args)
         {
-            CurrentPagePanel.CheckSubReplyPage();
             SelectedSideMenuItem = null;
-            CurrentSidePanel.SetSelectedItem(AppMenuItemType.Line);
-            CurrentPagePanel.NavigateToPage(AppMenuItemType.VideoPlayer, args);
+            CurrentSubPageControl.CheckSubReplyPage();
+            if (App._isTabletMode)
+            {
+                CurrentTopPanel.SetSelectedItem(AppMenuItemType.Line);
+                TabletMainPage.Current.NavigateToPage(AppMenuItemType.VideoPlayer, args);
+            }
+            else
+            {
+                CurrentSidePanel.SetSelectedItem(AppMenuItemType.Line);
+                CurrentPagePanel.NavigateToPage(AppMenuItemType.VideoPlayer, args);
+            }
         }
         /// <summary>
         /// 播放视频列表
@@ -184,7 +194,7 @@ namespace BiliBili_UWP.Models.Core
         /// <param name="sender">触发控件（用于查找封面以实现连接动画）</param>
         public void PlayBangumi(int epid, object sender = null, bool isEp = false)
         {
-            CurrentPagePanel.CheckSubReplyPage();
+            CurrentSubPageControl.CheckSubReplyPage();
             SelectedSideMenuItem = null;
             if (sender != null && IsEnableAnimation)
             {
@@ -198,11 +208,19 @@ namespace BiliBili_UWP.Models.Core
                 else
                     ConnectAnimationName = "";
             }
-            CurrentSidePanel.SetSelectedItem(AppMenuItemType.Line);
-            if (isEp)
-                CurrentPagePanel.NavigateToPage(AppMenuItemType.BangumiPlayer, new Tuple<int, bool>(epid, isEp));
+            if (App._isTabletMode)
+            {
+                CurrentTopPanel.SetSelectedItem(AppMenuItemType.Line);
+                TabletMainPage.Current.NavigateToPage(AppMenuItemType.VideoPlayer, new Tuple<int, bool>(epid, isEp));
+            }
             else
-                CurrentPagePanel.NavigateToPage(AppMenuItemType.BangumiPlayer, epid);
+            {
+                CurrentSidePanel.SetSelectedItem(AppMenuItemType.Line);
+                if (isEp)
+                    CurrentPagePanel.NavigateToPage(AppMenuItemType.BangumiPlayer, new Tuple<int, bool>(epid, isEp));
+                else
+                    CurrentPagePanel.NavigateToPage(AppMenuItemType.BangumiPlayer, epid);
+            }
         }
         /// <summary>
         /// 获取当前的播放页

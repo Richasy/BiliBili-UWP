@@ -58,7 +58,7 @@ namespace BiliBili_UWP.Pages.Sub.Anime
                     _type = type;
                     await Refresh();
                 }
-                else if(e.Parameter is List<KeyValueModel> data)
+                else if (e.Parameter is List<KeyValueModel> data)
                 {
                     var tempType = Convert.ToInt32(data.Where(p => p.Key == "season_type").First().Value);
                     if (tempType != _type)
@@ -76,7 +76,7 @@ namespace BiliBili_UWP.Pages.Sub.Anime
             }
             base.OnNavigatedTo(e);
         }
-        private async Task<bool> Reset(List<KeyValueModel> temp=null)
+        private async Task<bool> Reset(List<KeyValueModel> temp = null)
         {
             SelectConditions.Clear();
             BangumiCollection.Clear();
@@ -187,9 +187,10 @@ namespace BiliBili_UWP.Pages.Sub.Anime
             var data = combo.DataContext as ConditionContainer;
             var select = combo.SelectedItem as ConditionItem;
             var old = SelectConditions.Where(p => p.Key == data.field).FirstOrDefault();
-            if (old==null || old.Value != select.keyword)
+            if (old == null || old.Value != select.keyword)
             {
-                old.Value = select.keyword;
+                if (old != null)
+                    old.Value = select.keyword;
                 _page = 1;
                 _isEnd = false;
                 BangumiCollection.Clear();

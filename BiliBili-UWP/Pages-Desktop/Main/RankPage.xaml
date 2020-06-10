@@ -12,6 +12,7 @@
     xmlns:adaptivegridview="using:BiliBili_Controls.AdaptiveGridView"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:controls1="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    Loaded="Page_Loaded"
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:DataType="bilibili:WebVideo" x:Key="RankItemTemplate">
@@ -25,22 +26,8 @@
                                        SecondSectionContent="{x:Bind coins,Converter={StaticResource NumberAbbrConverter}}"
                                        />
         </DataTemplate>
-        <DataTemplate x:DataType="bilibili:RegionContainer" x:Key="RegionItemTemplate">
-            <ListViewItem x:Name="TabContainer" Margin="10,0">
-                <StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <controls1:ImageEx DecodePixelWidth="25" Width="25" Height="25" VerticalAlignment="Center"
-                                   Source="{x:Bind logo}" IsCacheEnabled="True"/>
-                        <TextBlock Text="{x:Bind name}" Style="{StaticResource CaptionTextStyle}" FontSize="{CustomResource BasicFontSize}"
-                           VerticalAlignment="Center" Margin="10,0,0,0"/>
-                    </StackPanel>
-                    <Border Height="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" x:Name="ItemSign" Margin="0,5,0,0"
-                            Background="{Binding ElementName=TabContainer,Path=IsSelected,Converter={StaticResource SideMenuSignColorConverter},Mode=OneWay}"/>
-                </StackPanel>
-            </ListViewItem>
-        </DataTemplate>
     </Page.Resources>
-    <Grid>
+    <Grid x:Name="PageContainer">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />

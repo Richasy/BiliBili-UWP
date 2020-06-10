@@ -5,12 +5,26 @@
     xmlns:others="using:BiliBili_UWP.Models.UI.Others"
     xmlns:c="using:NSDanmaku.Controls"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
-    xmlns:local="using:BiliBili_UWP.Template">
+    xmlns:local="using:BiliBili_UWP.Template" xmlns:bilibili="using:BiliBili_Lib.Models.BiliBili">
     <ResourceDictionary.ThemeDictionaries>
         <ResourceDictionary x:Key="Light" Source="ms-appx:///Theme/Light.xaml"/>
         <ResourceDictionary x:Key="Dark" Source="ms-appx:///Theme/Dark.xaml"/>
     </ResourceDictionary.ThemeDictionaries>
     <x:Double x:Key="StateChangeWidth">1000</x:Double>
+    <DataTemplate x:Key="RegionItemTemplate">
+        <ListViewItem x:Name="TabContainer" Margin="10,0">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <controls:ImageEx DecodePixelWidth="25" Width="25" Height="25" VerticalAlignment="Center"
+                                   Source="{Binding logo}" IsCacheEnabled="True"/>
+                    <TextBlock Text="{Binding name}" Style="{StaticResource CaptionTextStyle}" FontSize="{CustomResource BasicFontSize}"
+                           VerticalAlignment="Center" Margin="10,0,0,0"/>
+                </StackPanel>
+                <Border Height="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" x:Name="ItemSign" Margin="0,5,0,0"
+                            Background="{Binding ElementName=TabContainer,Path=IsSelected,Converter={StaticResource SideMenuSignColorConverter},Mode=OneWay}"/>
+            </StackPanel>
+        </ListViewItem>
+    </DataTemplate>
     <Style TargetType="FlyoutPresenter" x:Key="BasicFlyoutStyle">
         <Setter Property="Background" Value="{ThemeResource PopupBackground}"/>
         <Setter Property="BorderThickness" Value="0"/>

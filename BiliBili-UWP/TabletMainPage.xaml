@@ -10,7 +10,7 @@
     SizeChanged="Page_SizeChanged" xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
     Background="{ThemeResource PageBackground}">
     <Grid>
-        <Grid x:Name="BackgroundImageContainer" Visibility="Collapsed">
+        <Grid x:Name="BackgroundImageContainer">
             <controls:ImageEx x:Name="BackgroundImage" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                               Stretch="UniformToFill">
                 <controls:ImageEx.PlaceholderTemplate>
@@ -19,7 +19,7 @@
                     </DataTemplate>
                 </controls:ImageEx.PlaceholderTemplate>
             </controls:ImageEx>
-            <Grid x:Name="MaskGrid" Background="{ThemeResource MaskAcrylicBackground}"/>
+            <Grid x:Name="MaskGrid" Background="{ThemeResource SideBackground}"/>
         </Grid>
         <SplitView x:Name="AppSplitView" PaneClosing="PageSplitView_PaneClosing" PaneOpening="PageSplitView_PaneOpening"
                PanePlacement="Right" CompactPaneLength="0" OpenPaneLength="400" IsPaneOpen="{x:Bind IsSubPageOpen,Mode=TwoWay}"
@@ -46,7 +46,7 @@
                         </Grid>
                     </Grid>
                     
-                    <layout:BottomPanel Grid.Row="2" SettingButtonClick="BottomPanel_SettingButtonClick" HelpButtonClick="BottomPanel_HelpButtonClick"/>
+                    <layout:BottomPanel Grid.Row="2" x:Name="BottomPanel" OpenSideButtonClick="BottomPanel_OpenSideButtonClick" SettingButtonClick="BottomPanel_SettingButtonClick" HelpButtonClick="BottomPanel_HelpButtonClick"/>
                 </Grid>
             </SplitView.Content>
         </SplitView>

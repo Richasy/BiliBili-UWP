@@ -64,12 +64,12 @@ namespace BiliBili_UWP.Components.Controls
             FavoriteListView.ItemsSource = null;
         }
 
-        public async Task Init(int aid,int partId = 0)
+        public async Task Init(int aid,int partId = 0,string bvId="")
         {
             LoadingRing.IsActive = true;
             MyVideoPlayer.Close();
             DetailContainer.Visibility = Visibility.Collapsed;
-            var detail = await _videoService.GetVideoDetailAsync(aid);
+            var detail = await _videoService.GetVideoDetailAsync(aid,bvId:bvId);
             LoadingRing.IsActive = false;
             DetailContainer.Visibility = Visibility.Visible;
             if (detail != null)
@@ -405,6 +405,18 @@ namespace BiliBili_UWP.Components.Controls
                         new TipPopup("一键三连失败QAQ").ShowError();
                     }
                 }
+            }
+        }
+
+        private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (e.NewSize.Width < 1000)
+            {
+                VisualStateManager.GoToState(this, "Narrow", true);
+            }
+            else
+            {
+                VisualStateManager.GoToState(this, "Wide", true);
             }
         }
     }

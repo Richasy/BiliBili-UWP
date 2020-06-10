@@ -417,11 +417,20 @@
     <Compile Include="Pages-Share\Sub\Video\SubRegionPage.xaml.cs">
       <DependentUpon>SubRegionPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages-Tablet\Main\AnimePage.xaml.cs">
+      <DependentUpon>AnimePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages-Tablet\Main\PlayerPage.xaml.cs">
+      <DependentUpon>PlayerPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages-Tablet\Main\RankPage.xaml.cs">
       <DependentUpon>RankPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages-Tablet\Main\RecommendPage.xaml.cs">
       <DependentUpon>RecommendPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages-Tablet\Main\RegionPage.xaml.cs">
+      <DependentUpon>RegionPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TabletMainPage.xaml.cs">
@@ -870,11 +879,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages-Tablet\Main\AnimePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages-Tablet\Main\PlayerPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages-Tablet\Main\RankPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages-Tablet\Main\RecommendPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages-Tablet\Main\RegionPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

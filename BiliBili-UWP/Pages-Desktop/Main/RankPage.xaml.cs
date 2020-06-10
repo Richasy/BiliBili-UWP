@@ -34,7 +34,8 @@ namespace BiliBili_UWP.Pages.Main
         private ObservableCollection<RegionContainer> RegionCollection = new ObservableCollection<RegionContainer>();
         private bool _isInit = false;
         private int _selectRegion = 0;
-        
+        private double _scrollOffset = 0;
+
         public RankPage()
         {
             this.InitializeComponent();
@@ -43,6 +44,7 @@ namespace BiliBili_UWP.Pages.Main
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
+            App.AppViewModel.CurrentPagePanel.ScrollChanged = ScrollViewerChanged;
             if (e.NavigationMode == NavigationMode.Back || _isInit)
                 return;
             VideoGridView.EnableAnimation = App.AppViewModel.IsEnableAnimation;
@@ -54,7 +56,17 @@ namespace BiliBili_UWP.Pages.Main
             base.OnNavigatedTo(e);
             _isInit = true;
         }
-
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        {
+            PageContainer.Visibility = Visibility.Collapsed;
+            App.AppViewModel.CurrentPagePanel.ScrollChanged = null;
+            base.OnNavigatingFrom(e);
+        }
+        private void ScrollViewerChanged()
+        {
+            double offset = App.AppViewModel.CurrentPagePanel.PageScrollViewer.VerticalOffset;
+            _scrollOffset = offset;
+        }
         private void Reset()
         {
             RankDetailList.Clear();
@@ -91,6 +103,8 @@ namespace BiliBili_UWP.Pages.Main
 
         public async Task Refresh()
         {
+            if (PageContainer.Visibility == Visibility.Collapsed)
+                PageContainer.Visibility = Visibility.Visible;
             Reset();
             await LoadRegionRankVideo();
             VideoGridView.EnableAnimation = false;
@@ -142,6 +156,15 @@ namespace BiliBili_UWP.Pages.Main
             args.Handled = true;
             DefaultVideoCard card = (DefaultVideoCard)args.ItemContainer.ContentTemplateRoot;
             card.RenderContainer(args);
+        }
+        private async void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            PageContainer.Visibility = Visibility.Visible;
+            await Task.Delay(100);
+            if (_scrollOffset > 0)
+            {
+                App.AppViewModel.CurrentPagePanel.PageScrollViewer.ChangeView(0, _scrollOffset, 1);
+            }
         }
     }
 }

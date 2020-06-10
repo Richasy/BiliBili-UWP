@@ -27,5 +27,7 @@ namespace BiliBili_UWP.Models.Enums
         PageBackground,
         CardBackgroundOver,
         TipTextColor,
+        MaskAcrylicBackground,
+        SideBackground,
     }
 }

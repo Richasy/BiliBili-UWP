@@ -7,12 +7,13 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:widgets="using:BiliBili_UWP.Components.Widgets" xmlns:video="using:BiliBili_Lib.Models.BiliBili.Video" xmlns:bilibili="using:BiliBili_Lib.Models.BiliBili"
     mc:Ignorable="d" xmlns:muxc="using:Microsoft.UI.Xaml.Controls" xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     d:DesignHeight="300"
+    SizeChanged="UserControl_SizeChanged"
     d:DesignWidth="400">
     <UserControl.Resources>
         <DataTemplate x:DataType="video:VideoTag" x:Key="TagItemTemplate">
             <Border Background="{ThemeResource CardBackground}" BorderBrush="{ThemeResource SecondaryColor}" Padding="8,5"
                     CornerRadius="3" Width="80">
-                <TextBlock Text="{x:Bind tag_name}" HorizontalAlignment="Center" Style="{StaticResource SmallTipTextStyle}" FontSize="{CustomResource MiniFontSize}" Foreground="{ThemeResource SecondaryColorOver}"/>
+                <TextBlock Text="{x:Bind tag_name}" HorizontalAlignment="Center" Style="{StaticResource SmallTipTextStyle}" FontSize="{CustomResource MiniFontSize}" Foreground="{ThemeResource SecondaryColor}"/>
             </Border>
         </DataTemplate>
         <DataTemplate x:DataType="video:VideoPart" x:Key="PartListItemTemplate">
@@ -100,12 +101,29 @@
         </Flyout>
     </UserControl.Resources>
     <Grid>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="Common">
+                <VisualState x:Name="Wide"/>
+                <VisualState x:Name="Narrow">
+                    <VisualState.Setters>
+                        <Setter Target="NarrowRow.Height" Value="0.7*" />
+                        <Setter Target="WideColumn.Width" Value="Auto" />
+                        <Setter Target="InfoScrollViewer.(Grid.Row)" Value="1" />
+                        <Setter Target="VideoContainer.(Grid.Column)" Value="0" />
+                        <Setter Target="VideoContainer.Margin" Value="0,0,0,30" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto" x:Name="NarrowRow"/>
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="40"/>
-            <ColumnDefinition Width="1.2*"/>
+            <ColumnDefinition Width="1.2*" x:Name="WideColumn"/>
         </Grid.ColumnDefinitions>
-        <ScrollViewer Style="{StaticResource BasicScrollViewer}">
+        <ScrollViewer Style="{StaticResource BasicScrollViewer}" x:Name="InfoScrollViewer">
             <Grid>
                 <StackPanel x:Name="DetailContainer">
                     <TextBlock x:Name="TitleBlock" Style="{StaticResource HeaderTextStyle}" FontSize="{CustomResource HeaderFontSize}" TextWrapping="Wrap"/>
@@ -156,9 +174,7 @@
                 <muxc:ProgressRing Style="{StaticResource MuxcProgressRingStyle}" x:Name="LoadingRing"/>
             </Grid>
         </ScrollViewer>
-        
-        
-        <Grid Grid.Column="2" x:Name="VideoContainer">
+        <Grid Grid.Column="1" x:Name="VideoContainer" Margin="40,0,0,0">
             <local:VideoPlayer x:Name="MyVideoPlayer" FullWindowChanged="VideoPlayer_FullWindowChanged"
                                   CinemaButtonVisibility="Visible" CinemaChanged="VideoPlayer_CinemaChanged"
                                   CompactOverlayChanged="VideoPlayer_CompactOverlayChanged" Loaded="MyVideoPlayer_Loaded"

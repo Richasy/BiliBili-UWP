@@ -7,10 +7,11 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:ui="using:BiliBili_UWP.Models.UI"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d" xmlns:ext="using:BiliBili_Controls.Extensions" xmlns:controls1="using:BiliBili_UWP.Components.Controls" xmlns:account="using:BiliBili_UWP.Components.Account"
+    SizeChanged="UserControl_SizeChanged"
     d:DesignHeight="300"
     d:DesignWidth="400">
     <UserControl.Resources>
-        <DataTemplate x:DataType="ui:AppMenuItem" x:Key="TopMenuItemTemplate">
+        <DataTemplate x:DataType="ui:AppMenuItem" x:Key="WideTopMenuItemTemplate">
             <StackPanel Margin="10,0">
                 <TextBlock Style="{StaticResource BodyTextStyle}" FontSize="{CustomResource BasicFontSize}"
                            Foreground="{ThemeResource ImportantTextColor}" Text="{x:Bind Name}"/>
@@ -18,8 +19,29 @@
                          x:Name="Sign" CornerRadius="3"/>
             </StackPanel>
         </DataTemplate>
+        <DataTemplate x:DataType="ui:AppMenuItem" x:Key="NarrowTopMenuItemTemplate">
+            <StackPanel Margin="10,0">
+                <TextBlock Style="{StaticResource BodyTextStyle}" FontSize="{CustomResource SubFontSize}" FontFamily="{StaticResource Icon}"
+                           Foreground="{ThemeResource ImportantTextColor}" Text="{x:Bind Icon}" ToolTipService.ToolTip="{x:Bind Name}"
+                           FontWeight="{x:Bind FontWeight}"/>
+                <Border HorizontalAlignment="Center" Margin="0,5,0,0" Width="5" Height="5" Background="{x:Bind IsSelected,Converter={StaticResource SideMenuSignColorConverter},Mode=OneWay}"
+                         x:Name="Sign" CornerRadius="3"/>
+            </StackPanel>
+        </DataTemplate>
     </UserControl.Resources>
     <Grid>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="Common">
+                <VisualState x:Name="Wide"/>
+                <VisualState x:Name="Narrow">
+                    <VisualState.Setters>
+                        <Setter Target="AppLogo.Text" Value="&#xE903;" />
+                        <Setter Target="AppSearchBox.Width" Value="180" />
+                        <Setter Target="TopMenuListView.ItemTemplate" Value="{StaticResource NarrowTopMenuItemTemplate}" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
@@ -31,12 +53,12 @@
                 x:Name="BackButton" Margin="0,0,20,0" Visibility="{x:Bind BackButtonVisibility,Mode=OneWay}" Click="BackButton_Click" VerticalAlignment="Center"/>
         <TextBlock Style="{StaticResource AppLogoStyle}" x:Name="AppLogo" Text="&#xE902;" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1"/>
         <ListView Style="{StaticResource BasicListView}" ItemsPanel="{StaticResource HorizontalListViewItemsPanel}" ItemContainerStyle="{StaticResource TransparentListViewContainerStyle}"
-                          ItemTemplate="{StaticResource TopMenuItemTemplate}" IsItemClickEnabled="True" VerticalAlignment="Center" Padding="0,5,0,0"
+                          ItemTemplate="{StaticResource WideTopMenuItemTemplate}" IsItemClickEnabled="True" VerticalAlignment="Center" Padding="0,5,0,0"
                           x:Name="TopMenuListView" ItemClick="TopMenuListView_ItemClick" Grid.Column="2" Margin="15,0,0,0" HorizontalAlignment="Left"
                           ext:IndicatorService.Name="Sign" ext:IndicatorService.IsScaleEnabled="True" ItemsSource="{x:Bind MenuItemCollection}"
                   ScrollViewer.VerticalScrollMode="Disabled"/>
         <controls1:AppSearchBox Grid.Column="3" VerticalAlignment="Center" Background="{ThemeResource MaskAcrylicBackground}"
-                                Margin="15,0" Width="300" HorizontalAlignment="Right"/>
+                                Margin="15,0" Width="300" HorizontalAlignment="Right" x:Name="AppSearchBox"/>
         <account:TopSlimAccountPanel Grid.Column="4" VerticalAlignment="Center"/>
     </Grid>
 </UserControl>

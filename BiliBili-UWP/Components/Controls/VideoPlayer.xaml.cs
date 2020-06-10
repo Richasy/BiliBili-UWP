@@ -294,7 +294,10 @@ namespace BiliBili_UWP.Components.Controls
                 if (sender.PlaybackState == MediaPlaybackState.Paused && VideoMTC.IsPlaying)
                     VideoMTC.IsPlaying = false;
                 else if (sender.PlaybackState == MediaPlaybackState.Playing && !VideoMTC.IsPlaying)
+                {
                     VideoMTC.IsPlaying = true;
+                    HideMTC();
+                }
                 VideoMTC.IsInit = true;
             });
         }
@@ -304,6 +307,7 @@ namespace BiliBili_UWP.Components.Controls
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
              {
                  bool isAutoPlay = AppTool.GetBoolSetting(Settings.IsAutoPlay);
+                 HideMTC();
                  if (isAutoPlay)
                  {
                      MTC.IsPlaying = true;
@@ -959,6 +963,7 @@ namespace BiliBili_UWP.Components.Controls
             dispRequest = null;
             _defaultTimer.Stop();
             DanmakuList.Clear();
+            mediaElement.SetMediaPlayer(null);
             if (_tempSource != null)
                 _tempSource.Dispose();
         }
@@ -1143,6 +1148,7 @@ namespace BiliBili_UWP.Components.Controls
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             SetFocus();
+            HideMTC();
         }
         private void UserControl_PointerExited(object sender, PointerRoutedEventArgs e)
         {

@@ -26,7 +26,7 @@ namespace BiliBili_UWP.Components.Layout
             this.InitializeComponent();
             Init();
         }
-
+        public event EventHandler OpenSideButtonClick;
         private void Init()
         {
             _timer = new DispatcherTimer();
@@ -81,5 +81,23 @@ namespace BiliBili_UWP.Components.Layout
         {
             HelpButtonClick?.Invoke(this, EventArgs.Empty);
         }
+
+        private void OpenSideButton_Click(object sender, RoutedEventArgs e)
+        {
+            OpenSideButtonClick?.Invoke(this, EventArgs.Empty);
+        }
+
+
+        public Visibility OpenSideButtonVisibility
+        {
+            get { return (Visibility)GetValue(OpenSideButtonVisibilityProperty); }
+            set { SetValue(OpenSideButtonVisibilityProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for OpenSideButtonVisibility.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty OpenSideButtonVisibilityProperty =
+            DependencyProperty.Register("OpenSideButtonVisibility", typeof(Visibility), typeof(BottomPanel), new PropertyMetadata(Visibility.Collapsed));
+
+
     }
 }

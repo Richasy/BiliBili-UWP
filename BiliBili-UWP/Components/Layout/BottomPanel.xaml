@@ -23,9 +23,11 @@
         </StackPanel>
         <StackPanel Orientation="Horizontal" Grid.Column="2" VerticalAlignment="Center">
             <widgets:IconTextBlock Icon="&#xEA3B;" x:Name="TimeBlock" VerticalAlignment="Center" FontSize="{CustomResource SmallFontSize}"
-                                   IconForeground="{ThemeResource TipTextColor}" TextForeground="{ThemeResource ImportantTextColor}"/>
+                                   IconForeground="{ThemeResource NormalTextColor}" TextForeground="{ThemeResource ImportantTextColor}"/>
             <TextBlock Style="{StaticResource TipTextStyle}" Foreground="{ThemeResource ImportantTextColor}" x:Name="NetworkStatusBlock"
-                       FontFamily="{StaticResource Icon}" Margin="15,0,0,0"/>
+                       FontFamily="{StaticResource Icon}" Margin="15,0,0,0" VerticalAlignment="Center"/>
+            <Button Style="{StaticResource DefaultCircleButtonStyle}" Content="&#xE937;" VerticalAlignment="Center"
+                    x:Name="OpenSideButton" Click="OpenSideButton_Click" Margin="15,0,0,0" Visibility="{x:Bind OpenSideButtonVisibility,Mode=OneWay}"/>
         </StackPanel>
     </Grid>
 </UserControl>

@@ -35,7 +35,7 @@ namespace BiliBili_UWP.Components.Controls
         private ObservableCollection<Episode> BangumiPartCollection = new ObservableCollection<Episode>();
         private ObservableCollection<BangumiStyle> TagCollection = new ObservableCollection<BangumiStyle>();
         private AnimeService _animeService = App.BiliViewModel._client.Anime;
-        private BangumiDetail _detail = null;
+        public BangumiDetail _detail = null;
         private Episode _currentPart = null;
         private int bangumiId = 0;
         private bool isEp = false;
@@ -110,8 +110,15 @@ namespace BiliBili_UWP.Components.Controls
             BasicInfoBlock.Text = $"{_detail.type_desc}\n{_detail.publish.release_date_show}\n{_detail.publish.time_length_show}";
 
             CoinButton.Text = AppTool.GetNumberAbbreviation(_detail.stat.coins);
-
-            _detail.episodes.ForEach(p => BangumiPartCollection.Add(p));
+            if(_detail.episodes!=null && _detail.episodes.Count > 0)
+            {
+                PartGridView.Visibility = Visibility.Visible;
+                _detail.episodes.ForEach(p => BangumiPartCollection.Add(p));
+            }
+            else
+            {
+                PartGridView.Visibility = Visibility.Collapsed;
+            }
             if (isEp)
             {
                 for (int i = 0; i < _detail.episodes.Count; i++)
@@ -120,8 +127,8 @@ namespace BiliBili_UWP.Components.Controls
                     if (part.id == bangumiId)
                     {
                         _currentPart = part;
-                        PartListView.SelectedIndex = i;
-                        PartListView.ScrollIntoView(part, ScrollIntoViewAlignment.Leading);
+                        PartGridView.SelectedIndex = i;
+                        PartGridView.ScrollIntoView(part, ScrollIntoViewAlignment.Leading);
                         break;
                     }
                 }
@@ -133,15 +140,15 @@ namespace BiliBili_UWP.Components.Controls
                 if (_currentPart != null)
                 {
                     int lastIndex = _detail.episodes.IndexOf(_currentPart);
-                    PartListView.SelectedIndex = lastIndex - 1 < -1 ? -1 : lastIndex;
-                    PartListView.ScrollIntoView(_currentPart, ScrollIntoViewAlignment.Leading);
+                    PartGridView.SelectedIndex = lastIndex - 1 < -1 ? -1 : lastIndex;
+                    PartGridView.ScrollIntoView(_currentPart, ScrollIntoViewAlignment.Leading);
                 }
             }
 
             if (_currentPart == null && _detail.episodes.Count > 0)
             {
                 _currentPart = _detail.episodes.First();
-                PartListView.SelectedIndex = 0;
+                PartGridView.SelectedIndex = 0;
             }
             if (_detail.styles != null && _detail.styles.Count > 0)
             {
@@ -160,6 +167,7 @@ namespace BiliBili_UWP.Components.Controls
                 await new ConfirmDialog(_detail.limit.content).ShowAsync();
                 return false;
             }
+            await VideoPlayer.Init(_detail, _currentPart);
             return true;
         }
         private void CheckFollowButton()
@@ -232,7 +240,7 @@ namespace BiliBili_UWP.Components.Controls
             }
         }
 
-        private async void PartListView_ItemClick(object sender, ItemClickEventArgs e)
+        private async void PartGridView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var item = e.ClickedItem as Episode;
             if (item.cid != _currentPart?.cid)
@@ -302,8 +310,8 @@ namespace BiliBili_UWP.Components.Controls
 
         private void VideoPlayer_PartSwitched(object sender, int e)
         {
-            PartListView.SelectedIndex = e;
-            PartListView.ScrollIntoView(BangumiPartCollection[e], ScrollIntoViewAlignment.Leading);
+            PartGridView.SelectedIndex = e;
+            PartGridView.ScrollIntoView(BangumiPartCollection[e], ScrollIntoViewAlignment.Leading);
         }
 
         private void CommentButton_Click(object sender, EventArgs e)
@@ -353,6 +361,18 @@ namespace BiliBili_UWP.Components.Controls
         private void MyVideoPlayer_Loaded(object sender, RoutedEventArgs e)
         {
             VideoPlayer = MyVideoPlayer;
+        }
+
+        private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (e.NewSize.Width < 1000)
+            {
+                VisualStateManager.GoToState(this, "Narrow", true);
+            }
+            else
+            {
+                VisualStateManager.GoToState(this, "Wide", true);
+            }
         }
     }
 }
