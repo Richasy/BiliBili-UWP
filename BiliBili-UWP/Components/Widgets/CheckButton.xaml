@@ -34,17 +34,18 @@
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
+          
         </VisualStateManager.VisualStateGroups>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="1*" />
         </Grid.ColumnDefinitions>
-        <Grid VerticalAlignment="Center" Width="40" Height="40">
+        <Grid VerticalAlignment="Center" Width="40" Height="40" x:Name="LayoutRoot">
             <bubble:BubbleView HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="BubbleView"
                                Foreground="{ThemeResource PrimaryColor}"/>
             <Border Width="35" Height="35" CornerRadius="20" BorderBrush="{ThemeResource LineColor}" BorderThickness="1"
                     Background="{ThemeResource TransparentBackground}" x:Name="IconContainer" VerticalAlignment="Center" HorizontalAlignment="Center"
-                    PointerPressed="Grid_PointerPressed" PointerMoved="Grid_PointerMoved" PointerReleased="Grid_PointerReleased">
+                    PointerPressed="Grid_PointerPressed" PointerMoved="Grid_PointerMoved" PointerReleased="Grid_PointerReleased" >
                 <TextBlock Text="{x:Bind Icon,Mode=OneWay}" FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Center"
                            FontFamily="{StaticResource Icon}" x:Name="IconBlock" Foreground="{ThemeResource NormalTextColor}"/>
             </Border>

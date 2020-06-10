@@ -24,13 +24,19 @@ namespace BiliBili_UWP.Components.Widgets
 {
     public sealed partial class CheckButton : UserControl
     {
+       
         public CheckButton()
         {
             this.InitializeComponent();
             gestureRecognizer.GestureSettings = GestureSettings.HoldWithMouse | GestureSettings.Tap | GestureSettings.Hold;
+            IsEnabledChanged += OnIsEnabledChanged;
         }
+
+     
+
         private bool _isAnimateBegin = false;
         GestureRecognizer gestureRecognizer = new GestureRecognizer();
+        private bool _isPointerCaptured;
         public event EventHandler Click;
         public event EventHandler<bool> Hold;
 
@@ -129,6 +135,18 @@ namespace BiliBili_UWP.Components.Widgets
         }
         private void Grid_PointerPressed(object sender, PointerRoutedEventArgs e)
         {
+            if (e.Handled)
+                return;
+
+            if (IsEnabled == false)
+                return;
+
+            e.Handled = true;
+            _isPointerCaptured = IconContainer.CapturePointer(e.Pointer);
+            if (_isPointerCaptured == false)
+                return;
+
+            Focus(FocusState.Pointer);
             var ps = e.GetIntermediatePoints(null);
             if (ps != null && ps.Count > 0)
             {
@@ -145,6 +163,15 @@ namespace BiliBili_UWP.Components.Widgets
 
         private void Grid_PointerReleased(object sender, PointerRoutedEventArgs e)
         {
+            if (e.Handled)
+                return;
+
+            if (IsEnabled == false)
+                return;
+
+            ReleasePointerCapture(e.Pointer);
+            _isPointerCaptured = false;
+
             var ps = e.GetIntermediatePoints(null);
             if (ps != null && ps.Count > 0)
             {
@@ -154,13 +181,20 @@ namespace BiliBili_UWP.Components.Widgets
             }
         }
 
-        
-
+        private void OnIsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (!IsEnabled)
+            {
+                _isPointerCaptured = false;
+            }
+        }
 
 
         public void ShowBubble()
         {
             BubbleView.IsBubbing = true;
         }
+
+       
     }
 }
