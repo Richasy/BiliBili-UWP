@@ -1,0 +1,46 @@
+﻿<Page
+    x:Class="BiliBili_UWP.Pages_Share.Main.WelcomePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BiliBili_UWP.Pages_Share.Main"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource PageBackground}">
+
+    <ScrollViewer Style="{StaticResource BasicScrollViewer}">
+        <Grid>
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Image Source="ms-appx:///Assets/logo_small.png" Width="80" HorizontalAlignment="Center"/>
+                <TextBlock Text="&#xE902;" FontFamily="{StaticResource Icon}" FontSize="40" Foreground="{ThemeResource PrimaryColor}"
+                       HorizontalAlignment="Center" TextAlignment="Center" Margin="0,20,0,0"/>
+                <TextBlock Text="欢迎使用《哔哩》&#10;这是一款第三方应用，不代表任何官方立场。本着不主动、不拒绝、不负责的渣男态度，开发者也不会对您在使用过程中碰到的任何可能引起不适的内容负责&#10;——————&#10;由于缺乏盈利条件，用爱发电也不靠谱，所以不会承诺对此应用后续的维护与更新，不承诺一定修复在使用过程中出现的BUG，但是！我承诺绝不会窃取用户数据（你要相信我真的很懒）"
+                       HorizontalAlignment="Center" TextAlignment="Center" FontFamily="{CustomResource Basic}" FontSize="{CustomResource SmallFontSize}"
+                       Foreground="{ThemeResource NormalTextColor}" Margin="0,20" TextWrapping="Wrap" MaxWidth="300"/>
+                <TextBlock Style="{StaticResource TitleTextStyle}" Text="选择你喜欢的显示模式" Margin="0,0,0,15" HorizontalAlignment="Center"/>
+                <TextBlock Style="{StaticResource SmallTipTextStyle}" Text="在此之后，显示模式可以随时在应用设置中切换" HorizontalAlignment="Center"/>
+                <GridView Margin="0,25,0,0" ItemContainerStyle="{StaticResource TransparentGridViewItemContainerStyle}"
+                      Style="{StaticResource NoScrollGridView}" ItemClick="GridView_ItemClick" IsItemClickEnabled="True">
+                    <Grid Padding="30,20" Width="250" Height="200" Margin="0,0,10,0" Background="{ThemeResource CardBackground}">
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <TextBlock Text="&#xE9FB;" Style="{StaticResource AppLogoStyle}" HorizontalAlignment="Center"/>
+                            <TextBlock Style="{StaticResource TitleTextStyle}" Text="桌面模式" Foreground="{ThemeResource ImportantTextColor}"
+                                   TextAlignment="Center" Margin="0,20"/>
+                            <TextBlock Text="适合大屏幕及高配电脑使用，信息密度大" Style="{StaticResource TipTextStyle}"
+                                   HorizontalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center" MaxWidth="150"/>
+                        </StackPanel>
+                    </Grid>
+                    <Grid Padding="30,20" Margin="10,0,0,0" Width="250" Height="200" Background="{ThemeResource CardBackground}">
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <TextBlock Text="&#xE9EA;" Style="{StaticResource AppLogoStyle}" HorizontalAlignment="Center"/>
+                            <TextBlock Style="{StaticResource TitleTextStyle}" Text="平板模式" Foreground="{ThemeResource ImportantTextColor}"
+                                   TextAlignment="Center" Margin="0,20"/>
+                            <TextBlock Text="适合平板或低配设备，信息密度较低" Style="{StaticResource TipTextStyle}"
+                                   HorizontalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center" MaxWidth="150"/>
+                        </StackPanel>
+                    </Grid>
+                </GridView>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+</Page>

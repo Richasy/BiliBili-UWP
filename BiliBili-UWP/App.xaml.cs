@@ -4,6 +4,7 @@ using BiliBili_UWP.Components.Widgets;
 using BiliBili_UWP.Models.Core;
 using BiliBili_UWP.Models.UI;
 using BiliBili_UWP.Models.UI.Others;
+using BiliBili_UWP.Pages_Share.Main;
 using MetroLog;
 using Microsoft.Toolkit.Uwp.Helpers;
 using System;
@@ -54,7 +55,7 @@ namespace BiliBili_UWP
             App.AppViewModel = new AppViewModel();
             App.BiliViewModel = new BiliViewModel();
             bool isThemeWithSystem = AppTool.GetBoolSetting(Settings.IsThemeWithSystem);
-            _isTabletMode = AppTool.GetLocalSetting(Settings.DisplayMode, "Desktop") == "Tablet";
+            _isTabletMode = AppTool.GetLocalSetting(Settings.DisplayMode, "") == "Tablet";
             if (!isThemeWithSystem)
             {
                 string theme = AppTool.GetLocalSetting(Settings.Theme, "Light");
@@ -119,10 +120,18 @@ namespace BiliBili_UWP
                 {
                     if (rootFrame.Content == null)
                     {
-                        if (_isTabletMode)
-                            rootFrame.Navigate(typeof(TabletMainPage), (e as LaunchActivatedEventArgs).Arguments);
+                        string display = AppTool.GetLocalSetting(Settings.DisplayMode, "");
+                        if (string.IsNullOrEmpty(display))
+                        {
+                            rootFrame.Navigate(typeof(WelcomePage), (e as LaunchActivatedEventArgs).Arguments);
+                        }
                         else
-                            rootFrame.Navigate(typeof(DesktopMainPage), (e as LaunchActivatedEventArgs).Arguments);
+                        {
+                            if (_isTabletMode)
+                                rootFrame.Navigate(typeof(TabletMainPage), (e as LaunchActivatedEventArgs).Arguments);
+                            else
+                                rootFrame.Navigate(typeof(DesktopMainPage), (e as LaunchActivatedEventArgs).Arguments);
+                        }
                     }
                     // Ensure the current window is active
 
@@ -132,9 +141,9 @@ namespace BiliBili_UWP
                     if (rootFrame.Content == null)
                     {
                         if (_isTabletMode)
-                            rootFrame.Navigate(typeof(TabletMainPage));
+                            rootFrame.Navigate(typeof(TabletMainPage),null);
                         else
-                            rootFrame.Navigate(typeof(DesktopMainPage));
+                            rootFrame.Navigate(typeof(DesktopMainPage),null);
                     }
                 }
                 else if (e is ToastNotificationActivatedEventArgs toastActivationArgs)

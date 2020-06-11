@@ -378,6 +378,9 @@
     <Compile Include="Pages-Desktop\Main\ViewLaterPage.xaml.cs">
       <DependentUpon>ViewLaterPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages-Share\Main\WelcomePage.xaml.cs">
+      <DependentUpon>WelcomePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages-Share\Sub\Account\DetailPage.xaml.cs">
       <DependentUpon>DetailPage.xaml</DependentUpon>
     </Compile>
@@ -839,6 +842,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages-Desktop\Main\ViewLaterPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages-Share\Main\WelcomePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
