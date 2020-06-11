@@ -177,15 +177,23 @@ namespace BiliBili_UWP.Models.Core
         /// <param name="videoList">播放列表</param>
         public void PlayVideoList(int aid, object sender, List<VideoDetail> videoList)
         {
-            CurrentPagePanel.CheckSubReplyPage();
+            CurrentSubPageControl.CheckSubReplyPage();
             SelectedSideMenuItem = null;
             if (sender != null && IsEnableAnimation)
             {
                 var image = VisualTreeExtension.VisualTreeFindName<FrameworkElement>((FrameworkElement)sender, "VideoCover");
                 ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("VideoConnectedAnimation", image);
             }
-            CurrentSidePanel.SetSelectedItem(AppMenuItemType.Line);
-            CurrentPagePanel.NavigateToPage(AppMenuItemType.VideoPlayer, new Tuple<int, List<VideoDetail>>(aid, videoList));
+            if (App._isTabletMode)
+            {
+                CurrentTopPanel.SetSelectedItem(AppMenuItemType.Line);
+                TabletMainPage.Current.NavigateToPage(AppMenuItemType.VideoPlayer, new Tuple<int, List<VideoDetail>>(aid, videoList));
+            }
+            else
+            {
+                CurrentSidePanel.SetSelectedItem(AppMenuItemType.Line);
+                CurrentPagePanel.NavigateToPage(AppMenuItemType.VideoPlayer, new Tuple<int, List<VideoDetail>>(aid, videoList));
+            }
         }
         /// <summary>
         /// 播放番剧

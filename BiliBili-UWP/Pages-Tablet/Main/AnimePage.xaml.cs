@@ -102,18 +102,18 @@ namespace BiliBili_UWP.Pages_Tablet.Main
             var param = App.BiliViewModel.RegionCollection.Where(p => p.name == name).FirstOrDefault();
             if (param != null)
             {
-                App.AppViewModel.NavigateToSubPage(typeof(Pages.Sub.Video.SubRegionPage), param);
+                App.AppViewModel.NavigateToSubPage(typeof(Pages_Share.Sub.Video.SubRegionPage), param);
             }
         }
 
         private void IndexButton_Click(object sender, RoutedEventArgs e)
         {
-            App.AppViewModel.NavigateToSubPage(typeof(Pages.Sub.Anime.IndexPage), 1);
+            App.AppViewModel.NavigateToSubPage(typeof(Pages_Share.Sub.Anime.IndexPage), 1);
         }
 
         private void TimelineButton_Click(object sender, RoutedEventArgs e)
         {
-            App.AppViewModel.NavigateToSubPage(typeof(Pages.Sub.Anime.TimelinePage), isJP ? 2 : 3);
+            App.AppViewModel.NavigateToSubPage(typeof(Pages_Share.Sub.Anime.TimelinePage), isJP ? 2 : 3);
         }
         private async void HotContainer_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -125,7 +125,6 @@ namespace BiliBili_UWP.Pages_Tablet.Main
                 return;
             }
             HoldContainer.Visibility = Visibility.Collapsed;
-            TabletMainPage.Current.SetBackgroundImage(item.cover);
             _bangumiBlock.Visibility = Visibility.Visible;
             await _bangumiBlock.Init(item.oid, false);
         }

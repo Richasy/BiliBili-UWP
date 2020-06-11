@@ -10,6 +10,16 @@
     SizeChanged="UserControl_SizeChanged"
     d:DesignWidth="400">
     <UserControl.Resources>
+        <DataTemplate x:DataType="video:VideoDetail" x:Key="PlayListItemTemplate">
+            <ListViewItem x:Name="Container">
+                <Grid BorderBrush="{Binding ElementName=Container,Path=IsSelected,Converter={StaticResource SelectedColorConverter}}" CornerRadius="4"
+                      BorderThickness="2" Background="{ThemeResource CardBackground}" Padding="5">
+                    <local:DefaultVideoPanel Cover="{x:Bind pic}" Title="{x:Bind title}"
+                                                UserName="{x:Bind owner.name}" SectionVisibility="Collapsed"
+                                                Width="280" Duration="{x:Bind duration,Converter={StaticResource DurationConverter}}"/>
+                </Grid>
+            </ListViewItem>
+        </DataTemplate>
         <DataTemplate x:DataType="video:VideoTag" x:Key="TagItemTemplate">
             <Border Background="{ThemeResource CardBackground}" BorderBrush="{ThemeResource SecondaryColor}" Padding="8,5"
                     CornerRadius="3" Width="80">
@@ -108,7 +118,7 @@
                     <VisualState.Setters>
                         <Setter Target="NarrowRow.Height" Value="0.7*" />
                         <Setter Target="WideColumn.Width" Value="Auto" />
-                        <Setter Target="InfoScrollViewer.(Grid.Row)" Value="1" />
+                        <Setter Target="InfoScrollViewer.(Grid.Row)" Value="2" />
                         <Setter Target="VideoContainer.(Grid.Column)" Value="0" />
                         <Setter Target="VideoContainer.Margin" Value="0,0,0,30" />
                     </VisualState.Setters>
@@ -116,6 +126,7 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto" x:Name="NarrowRow"/>
         </Grid.RowDefinitions>
@@ -123,7 +134,12 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="1.2*" x:Name="WideColumn"/>
         </Grid.ColumnDefinitions>
-        <ScrollViewer Style="{StaticResource BasicScrollViewer}" x:Name="InfoScrollViewer">
+        <Grid Grid.ColumnSpan="2">
+            <local:HorizontalScrollSectionPanel Title="播放列表" ItemsSource="{x:Bind PlayBackupCollection}" x:Name="PlayListContainer"
+                                                       ItemTemplate="{StaticResource PlayListItemTemplate}" ItemClick="PlayListContainer_ItemClick"
+                                                       HoldText="播放列表内木有视频" Margin="0,0,0,20" Visibility="Collapsed"/>
+        </Grid>
+        <ScrollViewer Style="{StaticResource BasicScrollViewer}" x:Name="InfoScrollViewer" Grid.Row="1">
             <Grid>
                 <StackPanel x:Name="DetailContainer">
                     <TextBlock x:Name="TitleBlock" Style="{StaticResource HeaderTextStyle}" FontSize="{CustomResource HeaderFontSize}" TextWrapping="Wrap"/>
@@ -174,12 +190,14 @@
                 <muxc:ProgressRing Style="{StaticResource MuxcProgressRingStyle}" x:Name="LoadingRing"/>
             </Grid>
         </ScrollViewer>
-        <Grid Grid.Column="1" x:Name="VideoContainer" Margin="40,0,0,0">
+        <Grid Grid.Column="1" Grid.Row="1" x:Name="VideoContainer" Margin="40,0,0,0">
             <local:VideoPlayer x:Name="MyVideoPlayer" FullWindowChanged="VideoPlayer_FullWindowChanged"
                                   CinemaButtonVisibility="Visible" CinemaChanged="VideoPlayer_CinemaChanged"
                                   CompactOverlayChanged="VideoPlayer_CompactOverlayChanged" Loaded="MyVideoPlayer_Loaded"
                                   SeparateButtonClick="VideoPlayer_SeparateButtonClick" DanmakuBarVisibility="Collapsed"
-                                  PartSwitched="VideoPlayer_PartSwitched"/>
+                                  PartSwitched="VideoPlayer_PartSwitched" MediaEnded="MyVideoPlayer_MediaEnded"
+                               PreviousVideoRequest="MyVideoPlayer_PreviousVideoRequest"
+                               NextVideoRequest="MyVideoPlayer_NextVideoRequest"/>
         </Grid>
     </Grid>
 </UserControl>

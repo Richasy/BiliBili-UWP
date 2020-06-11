@@ -130,5 +130,10 @@ namespace BiliBili_UWP.Components.Controls
                 instance.ExtraButton.Flyout = flyout;
             }
         }
+
+        private async void LaterViewButton_Click(object sender, RoutedEventArgs e)
+        {
+            await App.BiliViewModel.AddViewLater(sender, Convert.ToInt32(VideoId));
+        }
     }
 }

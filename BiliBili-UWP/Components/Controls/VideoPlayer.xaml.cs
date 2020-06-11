@@ -129,6 +129,8 @@ namespace BiliBili_UWP.Components.Controls
         public event EventHandler MTCLoaded;
         public event EventHandler<int> MediaEnded;
         public event EventHandler<int> PartSwitched;
+        public event EventHandler PreviousVideoRequest;
+        public event EventHandler NextVideoRequest;
         #endregion
 
         public VideoPlayer()
@@ -1411,7 +1413,10 @@ namespace BiliBili_UWP.Components.Controls
         {
             var index = GetPreviousPartIndex();
             if (index == -1)
+            {
+                PreviousVideoRequest?.Invoke(this, EventArgs.Empty);
                 return;
+            }
             if (isBangumi)
                 await RefreshVideoSource(_bangumiDetail.episodes[index], true);
             else
@@ -1423,7 +1428,10 @@ namespace BiliBili_UWP.Components.Controls
         {
             var index = GetNextPartIndex();
             if (index == -1)
+            {
+                NextVideoRequest?.Invoke(this, EventArgs.Empty);
                 return;
+            }
             if (isBangumi)
                 await RefreshVideoSource(_bangumiDetail.episodes[index], true);
             else

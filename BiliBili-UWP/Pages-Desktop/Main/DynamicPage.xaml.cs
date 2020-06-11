@@ -147,7 +147,7 @@ namespace BiliBili_UWP.Pages.Main
                         index = DynamicCollection.IndexOf(temp);
                     else
                         index = DynamicCollection.Count;
-                    if ((_isOnlyVideo && (item.desc.type == 8) || (item.desc.type == 512)) || !_isOnlyVideo)
+                    if ((_isOnlyVideo && ((item.desc.type == 8) || (item.desc.type == 512))) || !_isOnlyVideo)
                     {
                         DynamicCollection.Insert(index, item);
                     }
@@ -210,7 +210,7 @@ namespace BiliBili_UWP.Pages.Main
             {
                 for (int i = DynamicCollection.Count - 1; i >= 0; i--)
                 {
-                    if (DynamicCollection[i].desc.type != 8)
+                    if (DynamicCollection[i].desc.type != 8 && DynamicCollection[i].desc.type != 512)
                         DynamicCollection.RemoveAt(i);
                 }
                 //判断过滤后的动态是否能让滚动条显示，不能则再请求一次

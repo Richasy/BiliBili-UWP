@@ -80,7 +80,7 @@ namespace BiliBili_UWP.Components.Controls
             {
                 BiliSearchBox.ItemsSource = null;
                 string key = args.ChosenSuggestion.ToString();
-                App.AppViewModel.NavigateToSubPage(typeof(Pages.Sub.SearchPage), key);
+                App.AppViewModel.NavigateToSubPage(typeof(Pages_Share.Sub.SearchPage), key);
                 BiliSearchBox.Text = "";
                 BiliSearchBox.ItemsSource = null;
             }
@@ -91,7 +91,7 @@ namespace BiliBili_UWP.Components.Controls
             if (e.Key==Windows.System.VirtualKey.Enter && !string.IsNullOrEmpty(BiliSearchBox.Text))
             {
                 string key = BiliSearchBox.Text;
-                App.AppViewModel.NavigateToSubPage(typeof(Pages.Sub.SearchPage), key);
+                App.AppViewModel.NavigateToSubPage(typeof(Pages_Share.Sub.SearchPage), key);
             }
         }
 
@@ -104,7 +104,7 @@ namespace BiliBili_UWP.Components.Controls
         {
             var hot = e.ClickedItem as HotSearch;
             string key = hot.keyword;
-            App.AppViewModel.NavigateToSubPage(typeof(Pages.Sub.SearchPage), key);
+            App.AppViewModel.NavigateToSubPage(typeof(Pages_Share.Sub.SearchPage), key);
             HotSearchFlyout.Hide();
         }
 

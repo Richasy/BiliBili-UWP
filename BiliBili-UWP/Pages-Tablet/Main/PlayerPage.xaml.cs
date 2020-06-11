@@ -52,8 +52,21 @@ namespace BiliBili_UWP.Pages_Tablet.Main
                 {
                     await InitVideo(args.aid, args.cid, args.bvid);
                 }
+                else if(e.Parameter is Tuple<int,List<VideoDetail>> listData)
+                {
+                    await InitPlayList(listData.Item1, listData.Item2);
+                }
             }
             base.OnNavigatedTo(e);
+        }
+        private async Task InitPlayList(int startId, List<VideoDetail> list)
+        {
+            if (!Container.Children.Contains(_videoBlock))
+            {
+                Container.Children.Add(_videoBlock);
+            }
+            _videoBlock.Visibility = Visibility.Visible;
+            await _videoBlock.Init(startId, list);
         }
         private async Task InitVideo(int aid, int cid, string bvid)
         {
@@ -73,8 +86,6 @@ namespace BiliBili_UWP.Pages_Tablet.Main
                 var result = BiliTool.GetResultFromUri(_videoBlock._detail.redirect_url);
                 await InitBangumi(Convert.ToInt32(result.Param), true);
             }
-
-            TabletMainPage.Current.SetBackgroundImage(_videoBlock._detail.pic);
         }
         private async Task InitBangumi(int epId, bool isEp)
         {
@@ -84,7 +95,7 @@ namespace BiliBili_UWP.Pages_Tablet.Main
             }
             _bangumiBlock.Visibility = Visibility.Visible;
             await _bangumiBlock.Init(epId, isEp);
-            TabletMainPage.Current.SetBackgroundImage(_bangumiBlock._detail.square_cover ?? _bangumiBlock._detail.cover);
+            
         }
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
@@ -93,6 +104,7 @@ namespace BiliBili_UWP.Pages_Tablet.Main
             App.AppViewModel.CurrentVideoPlayer = null;
             _videoBlock.Visibility = Visibility.Collapsed;
             _bangumiBlock.Visibility = Visibility.Collapsed;
+            _videoBlock.ClearPlayList();
             _videoBlock.VideoPlayer.Close();
             _bangumiBlock.VideoPlayer.Close();
             base.OnNavigatingFrom(e);

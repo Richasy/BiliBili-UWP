@@ -1,8 +1,8 @@
 ﻿<Page
-    x:Class="BiliBili_UWP.Pages.Sub.Account.FavoritePage"
+    x:Class="BiliBili_UWP.Pages_Share.Sub.Account.FavoriteDetailPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:BiliBili_UWP.Pages.Sub.Account"
+    xmlns:local="using:BiliBili_UWP.Pages_Share.Sub.Account"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:BiliBili_UWP.Components.Controls"

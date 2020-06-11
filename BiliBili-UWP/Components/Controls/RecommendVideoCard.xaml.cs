@@ -68,7 +68,6 @@ namespace BiliBili_UWP.Components.Controls
                     cover.Cover = data.cover;
                     cover.Duration = data.cover_left_text_1;
                     cover.RightBottomText = data.top_rcmd_reason ?? "";
-                    instance.LaterViewButton.Visibility = Visibility.Collapsed;
                     if (data.card_goto == "bangumi")
                         cover.ExtraFlyout = instance.BangumiFlyout;
                     else

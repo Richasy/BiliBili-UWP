@@ -73,7 +73,7 @@ namespace BiliBili_UWP.Components.Controls
         {
             e.Handled = true;
             var user = (sender as FrameworkElement).DataContext as FeedUser;
-            App.AppViewModel.NavigateToSubPage(typeof(Pages.Sub.Account.DetailPage), user.mid);
+            App.AppViewModel.NavigateToSubPage(typeof(Pages_Share.Sub.Account.DetailPage), user.mid);
         }
     }
 }

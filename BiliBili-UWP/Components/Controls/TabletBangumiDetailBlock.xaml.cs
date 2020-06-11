@@ -92,6 +92,7 @@ namespace BiliBili_UWP.Components.Controls
             _detail = detail;
             TitleBlock.Text = _detail.title;
             PlayCountBlock.Text = _detail.stat.play;
+            TabletMainPage.Current.SetBackgroundImage(_detail.square_cover ?? _detail.cover);
             DanmakuCountBlock.Text = AppTool.GetNumberAbbreviation(_detail.stat.danmakus);
             RepostButton.Text = AppTool.GetNumberAbbreviation(_detail.stat.share);
             CommentButton.Text = AppTool.GetNumberAbbreviation(_detail.stat.reply);
@@ -265,7 +266,7 @@ namespace BiliBili_UWP.Components.Controls
             }
             if (list.Count > 0)
             {
-                App.AppViewModel.NavigateToSubPage(typeof(Pages.Sub.Anime.IndexPage), list);
+                App.AppViewModel.NavigateToSubPage(typeof(Pages_Share.Sub.Anime.IndexPage), list);
             }
         }
         private async void FollowButton_Click(object sender, RoutedEventArgs e)
@@ -321,7 +322,7 @@ namespace BiliBili_UWP.Components.Controls
                 var param = new Dictionary<string, string>();
                 param.Add("oid", _currentPart.aid.ToString());
                 param.Add("type", "1");
-                App.AppViewModel.NavigateToSubPage(typeof(Pages.Sub.ReplyPage), param);
+                App.AppViewModel.NavigateToSubPage(typeof(Pages_Share.Sub.ReplyPage), param);
             }
         }
 

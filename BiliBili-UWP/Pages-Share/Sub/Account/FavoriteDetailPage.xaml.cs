@@ -24,12 +24,12 @@ using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
-namespace BiliBili_UWP.Pages.Sub.Account
+namespace BiliBili_UWP.Pages_Share.Sub.Account
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class FavoritePage : Page, IRefreshPage
+    public sealed partial class FavoriteDetailPage : Page, IRefreshPage
     {
         private ObservableCollection<FavoriteVideo> VideoCollection = new ObservableCollection<FavoriteVideo>();
         private List<FavoriteId> IdList = new List<FavoriteId>();
@@ -37,7 +37,7 @@ namespace BiliBili_UWP.Pages.Sub.Account
         private int _favoriteId = 0;
         private int index = 0;
         private bool isRequesting = false;
-        public FavoritePage()
+        public FavoriteDetailPage()
         {
             this.InitializeComponent();
             NavigationCacheMode = NavigationCacheMode.Enabled;

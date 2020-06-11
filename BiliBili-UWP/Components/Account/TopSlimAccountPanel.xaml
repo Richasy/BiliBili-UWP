@@ -10,56 +10,52 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
     <UserControl.Resources>
-        <MenuFlyout MenuFlyoutPresenterStyle="{StaticResource BasicMenuFlyoutStyle}" x:Name="AccountFlyout" Placement="Bottom">
-            <MenuFlyoutItem Text="我的主页" Style="{StaticResource BasicMenuFlyoutItemStyle}" Tag="MyPage" Click="AccountMenuItem_Click">
-                <MenuFlyoutItem.Icon>
-                    <FontIcon FontFamily="{StaticResource Icon}" Glyph="&#xEA04;"/>
-                </MenuFlyoutItem.Icon>
-            </MenuFlyoutItem>
-            <MenuFlyoutSeparator/>
-            <MenuFlyoutItem Text="视频动态" Style="{StaticResource BasicMenuFlyoutItemStyle}" Tag="VideoDynamic" Click="AccountMenuItem_Click">
-                <MenuFlyoutItem.Icon>
-                    <FontIcon FontFamily="{StaticResource Icon}" Glyph="&#xEA30;" FontWeight="Bold"/>
-                </MenuFlyoutItem.Icon>
-            </MenuFlyoutItem>
-            <MenuFlyoutItem Text="我的收藏" Style="{StaticResource BasicMenuFlyoutItemStyle}" Tag="MyFavorite" Click="AccountMenuItem_Click">
-                <MenuFlyoutItem.Icon>
-                    <FontIcon FontFamily="{StaticResource Icon}" Glyph="&#xE9E5;"/>
-                </MenuFlyoutItem.Icon>
-            </MenuFlyoutItem>
-            <MenuFlyoutItem Text="我的追番" Style="{StaticResource BasicMenuFlyoutItemStyle}" Tag="MyAnime" Click="AccountMenuItem_Click">
-                <MenuFlyoutItem.Icon>
-                    <FontIcon FontFamily="{StaticResource Icon}" Glyph="&#xE9E5;"/>
-                </MenuFlyoutItem.Icon>
-            </MenuFlyoutItem>
-            <MenuFlyoutItem Text="我的追剧" Style="{StaticResource BasicMenuFlyoutItemStyle}" Tag="MyMovie" Click="AccountMenuItem_Click">
-                <MenuFlyoutItem.Icon>
-                    <FontIcon FontFamily="{StaticResource Icon}" Glyph="&#xE9E5;"/>
-                </MenuFlyoutItem.Icon>
-            </MenuFlyoutItem>
-            <MenuFlyoutSeparator/>
-            <MenuFlyoutItem Text="稍后再看" Style="{StaticResource BasicMenuFlyoutItemStyle}" Tag="ViewLater" Click="AccountMenuItem_Click">
-                <MenuFlyoutItem.Icon>
-                    <FontIcon FontFamily="{StaticResource Icon}" Glyph="&#xEA2E;" FontWeight="Bold"/>
-                </MenuFlyoutItem.Icon>
-            </MenuFlyoutItem>
-            <MenuFlyoutItem Text="历史记录" Style="{StaticResource BasicMenuFlyoutItemStyle}" Tag="History" Click="AccountMenuItem_Click">
-                <MenuFlyoutItem.Icon>
-                    <FontIcon FontFamily="{StaticResource Icon}" Glyph="&#xEA3B;"/>
-                </MenuFlyoutItem.Icon>
-            </MenuFlyoutItem>
-            <MenuFlyoutSeparator/>
-            <MenuFlyoutItem Text="我的关注" Style="{StaticResource BasicMenuFlyoutItemStyle}" Tag="MyFollow" Click="AccountMenuItem_Click">
-                <MenuFlyoutItem.Icon>
-                    <FontIcon FontFamily="{StaticResource Icon}" Glyph="&#xEA09;"/>
-                </MenuFlyoutItem.Icon>
-            </MenuFlyoutItem>
-            <MenuFlyoutItem Text="我的粉丝" Style="{StaticResource BasicMenuFlyoutItemStyle}" Tag="MyFans" Click="AccountMenuItem_Click">
-                <MenuFlyoutItem.Icon>
-                    <FontIcon FontFamily="{StaticResource Icon}" Glyph="&#xE9E2;"/>
-                </MenuFlyoutItem.Icon>
-            </MenuFlyoutItem>
-        </MenuFlyout>
+        <Flyout FlyoutPresenterStyle="{StaticResource NoPaddingFlyoutStyle}" x:Name="AccountFlyout" Placement="Bottom">
+            <Grid Padding="25,10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <local:SideSlimAccountPanel/>
+                <ListView ItemContainerStyle="{StaticResource BasicListViewContainerStyle}" Style="{StaticResource BasicListView}" Margin="0,15,0,0"
+                          IsItemClickEnabled="True" SelectionMode="None" x:Name="MenuListView" ItemClick="MenuListView_ItemClick" Grid.Row="1" MinWidth="250">
+                    <ListViewItem Tag="VideoDynamic" Padding="8">
+                        <widgets:IconTextBlock Icon="&#xEA30;" Text="视频动态" Foreground="{ThemeResource ImportantTextColor}"
+                                               FontSize="{CustomResource BodyFontSize}" IconFontSize="{CustomResource BodyFontSize}"/>
+                    </ListViewItem>
+                    <ListViewItem IsEnabled="False" IsFocusEngaged="False">
+                        <StackPanel HorizontalAlignment="Stretch" Height="1" Background="{ThemeResource LineColor}" Margin="0,10"/>
+                    </ListViewItem>
+                    <ListViewItem Tag="MyFavorite" Padding="8">
+                        <widgets:IconTextBlock Icon="&#xE9E5;" Text="我的收藏夹" Foreground="{ThemeResource ImportantTextColor}"
+                                               FontSize="{CustomResource BodyFontSize}" IconFontSize="{CustomResource BodyFontSize}"/>
+                    </ListViewItem>
+                    <ListViewItem Tag="MyCollect" Padding="8">
+                        <widgets:IconTextBlock Icon="&#xE9E5;" Text="我的收集列表" Foreground="{ThemeResource ImportantTextColor}"
+                                               FontSize="{CustomResource BodyFontSize}" IconFontSize="{CustomResource BodyFontSize}"/>
+                    </ListViewItem>
+                    <ListViewItem Tag="MyFavorite" Padding="8">
+                        <widgets:IconTextBlock Icon="&#xE9E5;" Text="我的追番" Foreground="{ThemeResource ImportantTextColor}"
+                                               FontSize="{CustomResource BodyFontSize}" IconFontSize="{CustomResource BodyFontSize}"/>
+                    </ListViewItem>
+                    <ListViewItem Tag="MyCollection" Padding="8">
+                        <widgets:IconTextBlock Icon="&#xE9E5;" Text="我的追剧" Foreground="{ThemeResource ImportantTextColor}"
+                                               FontSize="{CustomResource BodyFontSize}" IconFontSize="{CustomResource BodyFontSize}"/>
+                    </ListViewItem>
+                    <ListViewItem IsEnabled="False" IsFocusEngaged="False">
+                        <StackPanel HorizontalAlignment="Stretch" Height="1" Background="{ThemeResource LineColor}" Margin="0,10"/>
+                    </ListViewItem>
+                    <ListViewItem Tag="ViewLater" Padding="8">
+                        <widgets:IconTextBlock Icon="&#xEA2E;" Text="稍后再看" Foreground="{ThemeResource ImportantTextColor}"
+                                               FontSize="{CustomResource BodyFontSize}" IconFontSize="{CustomResource BodyFontSize}"/>
+                    </ListViewItem>
+                    <ListViewItem Tag="History" Padding="8">
+                        <widgets:IconTextBlock Icon="&#xEA3B;" Text="历史记录" Foreground="{ThemeResource ImportantTextColor}"
+                                               FontSize="{CustomResource BodyFontSize}" IconFontSize="{CustomResource BodyFontSize}"/>
+                    </ListViewItem>
+                </ListView>
+            </Grid>
+        </Flyout>
     </UserControl.Resources>
     <Grid>
         <Grid x:Name="DetailContainer" Visibility="Collapsed" Background="{ThemeResource TransparentBackground}"

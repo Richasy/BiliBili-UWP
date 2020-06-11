@@ -151,7 +151,7 @@ namespace BiliBili_UWP.Pages_Tablet.Main
         {
             var region = RegionListView.SelectedItem as RegionContainer;
             if (region != null)
-                App.AppViewModel.NavigateToSubPage(typeof(Pages.Sub.Video.SubRegionPage), region);
+                App.AppViewModel.NavigateToSubPage(typeof(Pages_Share.Sub.Video.SubRegionPage), region);
         }
 
         private async void BannerListView_ItemClick(object sender, ItemClickEventArgs e)

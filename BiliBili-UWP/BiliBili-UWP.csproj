@@ -387,8 +387,11 @@
     <Compile Include="Pages-Share\Sub\Account\FavoriteAnimePage.xaml.cs">
       <DependentUpon>FavoriteAnimePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages-Share\Sub\Account\FavoritePage.xaml.cs">
-      <DependentUpon>FavoritePage.xaml</DependentUpon>
+    <Compile Include="Pages-Share\Sub\Account\FavoriteContainerPage.xaml.cs">
+      <DependentUpon>FavoriteContainerPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages-Share\Sub\Account\FavoriteDetailPage.xaml.cs">
+      <DependentUpon>FavoriteDetailPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages-Share\Sub\Account\FollowPage.xaml.cs">
       <DependentUpon>FollowPage.xaml</DependentUpon>
@@ -414,8 +417,17 @@
     <Compile Include="Pages-Share\Sub\SearchPage.xaml.cs">
       <DependentUpon>SearchPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages-Share\Sub\Video\HistoryPage.xaml.cs">
+      <DependentUpon>HistoryPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages-Share\Sub\Video\SubRegionPage.xaml.cs">
       <DependentUpon>SubRegionPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages-Share\Sub\Video\VideoDynamicPage.xaml.cs">
+      <DependentUpon>VideoDynamicPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages-Share\Sub\Video\ViewLaterPage.xaml.cs">
+      <DependentUpon>ViewLaterPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages-Tablet\Main\AnimePage.xaml.cs">
       <DependentUpon>AnimePage.xaml</DependentUpon>
@@ -842,7 +854,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages-Share\Sub\Account\FavoritePage.xaml">
+    <Page Include="Pages-Share\Sub\Account\FavoriteContainerPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages-Share\Sub\Account\FavoriteDetailPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -878,7 +894,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages-Share\Sub\Video\HistoryPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages-Share\Sub\Video\SubRegionPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages-Share\Sub\Video\VideoDynamicPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages-Share\Sub\Video\ViewLaterPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

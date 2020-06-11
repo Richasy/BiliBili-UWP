@@ -151,7 +151,8 @@
                                   CinemaButtonVisibility="Visible" CinemaChanged="VideoPlayer_CinemaChanged"
                                   CompactOverlayChanged="VideoPlayer_CompactOverlayChanged"
                                   SeparateButtonClick="VideoPlayer_SeparateButtonClick"
-                                  MediaEnded="VideoPlayer_MediaEnded" PartSwitched="VideoPlayer_PartSwitched"/>
+                                  MediaEnded="VideoPlayer_MediaEnded" PartSwitched="VideoPlayer_PartSwitched"
+                                      PreviousVideoRequest="VideoPlayer_PreviousVideoRequest" NextVideoRequest="VideoPlayer_NextVideoRequest"/>
             </Grid>
             <Grid Grid.Row="1" Padding="0,10,20,20">
                 <Grid.RowDefinitions>

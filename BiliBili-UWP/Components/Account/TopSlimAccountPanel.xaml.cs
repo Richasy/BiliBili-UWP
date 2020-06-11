@@ -1,4 +1,5 @@
-﻿using BiliBili_Lib.Tools;
+﻿using BiliBili_Controls.Extensions;
+using BiliBili_Lib.Tools;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using System;
 using System.Collections.Generic;
@@ -97,31 +98,38 @@ namespace BiliBili_UWP.Components.Account
             AccountFlyout.ShowAt(DetailContainer);
         }
 
-        private void AccountMenuItem_Click(object sender, RoutedEventArgs e)
+        private void MenuListView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            var item = sender as MenuFlyoutItem;
-            string tag = item.Tag.ToString();
+            var item = e.ClickedItem as FrameworkElement;
+            var parent = VisualTreeExtension.GetParentObject<ListViewItem>(item, "");
+            string tag = parent.Tag.ToString();
             switch (tag)
             {
-                case "MyPage":
-                    var me = App.BiliViewModel._client.Account.Me;
-                    App.AppViewModel.NavigateToSubPage(typeof(Pages.Sub.Account.DetailPage),new Tuple<int, bool>(me.mid, true));
-                    break;
-                case "MyFollow":
-                    App.AppViewModel.NavigateToSubPage(typeof(Pages.Sub.Account.FollowPage));
-                    break;
-                case "MyFans":
-                    App.AppViewModel.NavigateToSubPage(typeof(Pages.Sub.Account.FansPage));
+                case "VideoDynamic":
+                    App.AppViewModel.NavigateToSubPage(typeof(Pages_Share.Sub.Video.VideoDynamicPage));
                     break;
                 case "MyAnime":
-                    App.AppViewModel.NavigateToSubPage(typeof(Pages.Sub.Account.FavoriteAnimePage),"anime");
+                    App.AppViewModel.NavigateToSubPage(typeof(Pages_Share.Sub.Account.FavoriteAnimePage), "anime");
                     break;
                 case "MyMovie":
-                    App.AppViewModel.NavigateToSubPage(typeof(Pages.Sub.Account.FavoriteAnimePage),"cinema");
+                    App.AppViewModel.NavigateToSubPage(typeof(Pages_Share.Sub.Account.FavoriteAnimePage), "cinema");
+                    break;
+                case "MyFavorite":
+                    App.AppViewModel.NavigateToSubPage(typeof(Pages_Share.Sub.Account.FavoriteContainerPage), "Favorite");
+                    break;
+                case "MyCollect":
+                    App.AppViewModel.NavigateToSubPage(typeof(Pages_Share.Sub.Account.FavoriteContainerPage), "Collect");
+                    break;
+                case "ViewLater":
+                    App.AppViewModel.NavigateToSubPage(typeof(Pages_Share.Sub.Video.ViewLaterPage));
+                    break;
+                case "History":
+                    App.AppViewModel.NavigateToSubPage(typeof(Pages_Share.Sub.Video.HistoryPage));
                     break;
                 default:
                     break;
             }
+            AccountFlyout.Hide();
         }
     }
 }

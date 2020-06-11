@@ -1,8 +1,8 @@
 ﻿<Page
-    x:Class="BiliBili_UWP.Pages.Sub.Anime.TimelinePage"
+    x:Class="BiliBili_UWP.Pages_Share.Sub.Anime.TimelinePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:BiliBili_UWP.Pages.Sub.Anime"
+    xmlns:local="using:BiliBili_UWP.Pages_Share.Sub.Anime"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:anime="using:BiliBili_Lib.Models.BiliBili.Anime"

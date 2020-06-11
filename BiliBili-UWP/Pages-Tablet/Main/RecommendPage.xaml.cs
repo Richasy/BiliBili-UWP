@@ -63,7 +63,6 @@ namespace BiliBili_UWP.Pages_Tablet.Main
             if(VideoCollection.Count>0 && VideoView.SelectedItem != null)
             {
                 var item = VideoView.SelectedItem as VideoRecommend;
-                TabletMainPage.Current.SetBackgroundImage(item.cover);
                 HoldContainer.Visibility = Visibility.Collapsed;
                 if (item.card_goto != "bangumi")
                 {
@@ -143,7 +142,6 @@ namespace BiliBili_UWP.Pages_Tablet.Main
             }
             
             HoldContainer.Visibility = Visibility.Collapsed;
-            TabletMainPage.Current.SetBackgroundImage(item.cover);
             if (item.card_goto == "bangumi")
             {
                 _bangumiBlock.Visibility = Visibility.Visible;

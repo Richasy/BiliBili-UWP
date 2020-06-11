@@ -53,19 +53,19 @@ namespace BiliBili_UWP.Pages_Tablet.Main
         private void SearchChannelButton_Click(object sender, RoutedEventArgs e)
         {
             if (App.BiliViewModel.CheckAccoutStatus())
-                App.AppViewModel.NavigateToSubPage(typeof(Pages.Sub.Channel.ChannelListPage));
+                App.AppViewModel.NavigateToSubPage(typeof(Pages_Share.Sub.Channel.ChannelListPage));
         }
 
         private void ScanGridView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var item = e.ClickedItem as ChannelView;
-            App.AppViewModel.NavigateToSubPage(typeof(Pages.Sub.Channel.ChannelDetailPage), item.id);
+            App.AppViewModel.NavigateToSubPage(typeof(Pages_Share.Sub.Channel.ChannelDetailPage), item.id);
         }
 
         private void ChannelListView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var item = e.ClickedItem as ChannelBase;
-            App.AppViewModel.NavigateToSubPage(typeof(Pages.Sub.Channel.ChannelDetailPage), item.id);
+            App.AppViewModel.NavigateToSubPage(typeof(Pages_Share.Sub.Channel.ChannelDetailPage), item.id);
         }
     }
 }

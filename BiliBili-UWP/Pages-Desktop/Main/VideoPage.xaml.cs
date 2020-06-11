@@ -64,7 +64,7 @@ namespace BiliBili_UWP.Pages.Main
         private bool _isPlayList = false;
         private bool _isInit = false;
         private bool _isCurrently = false;
-        
+
 
         public VideoPage()
         {
@@ -98,7 +98,7 @@ namespace BiliBili_UWP.Pages.Main
                     _isPlayList = true;
                     _fromSign = "";
                 }
-                else if(e.Parameter is VideoActiveArgs args)
+                else if (e.Parameter is VideoActiveArgs args)
                 {
                     if (args.aid > 0)
                     {
@@ -137,7 +137,7 @@ namespace BiliBili_UWP.Pages.Main
             if (videoId > 0 && _currentPartId > 0)
                 await _videoService.AddVideoHistoryAsync(videoId, _currentPartId, VideoPlayer.CurrentProgress);
             VideoPlayer.Close();
-            if(e.SourcePageType!=typeof(VideoPage))
+            if (e.SourcePageType != typeof(VideoPage))
                 _isCurrently = false;
             App.AppViewModel.CurrentVideoPlayer = null;
             App.AppViewModel.CurrentPlayerType = Models.Enums.PlayerType.None;
@@ -189,7 +189,7 @@ namespace BiliBili_UWP.Pages.Main
             Reset();
             var tip = new WaitingPopup("加载视频中...");
             tip.ShowPopup();
-            var detail = await _videoService.GetVideoDetailAsync(videoId, _fromSign,bvId);
+            var detail = await _videoService.GetVideoDetailAsync(videoId, _fromSign, bvId);
             if (detail != null && detail.aid > 0)
             {
                 _detail = detail;
@@ -439,13 +439,13 @@ namespace BiliBili_UWP.Pages.Main
         private void TagListView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var item = e.ClickedItem as VideoTag;
-            App.AppViewModel.NavigateToSubPage(typeof(Sub.Channel.TagDetailPage), item.tag_id);
+            App.AppViewModel.NavigateToSubPage(typeof(Pages_Share.Sub.Channel.TagDetailPage), item.tag_id);
         }
 
         private void StaffListView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var item = e.ClickedItem as Staff;
-            App.AppViewModel.NavigateToSubPage(typeof(Sub.Account.DetailPage), item.mid);
+            App.AppViewModel.NavigateToSubPage(typeof(Pages_Share.Sub.Account.DetailPage), item.mid);
         }
 
         private async void FollowButton_Click(object sender, RoutedEventArgs e)
@@ -500,7 +500,7 @@ namespace BiliBili_UWP.Pages.Main
         private void SingleUserContainer_Tapped(object sender, TappedRoutedEventArgs e)
         {
             var accId = _detail.owner.mid;
-            App.AppViewModel.NavigateToSubPage(typeof(Pages.Sub.Account.DetailPage), accId);
+            App.AppViewModel.NavigateToSubPage(typeof(Pages_Share.Sub.Account.DetailPage), accId);
         }
 
         private async void PlayListContainer_ItemClick(object sender, ItemClickEventArgs e)
@@ -515,6 +515,18 @@ namespace BiliBili_UWP.Pages.Main
             if (_isPlayList)
             {
                 await PlayNextVideo();
+            }
+        }
+        private async Task PlayPreviousVideo()
+        {
+            int index = PlayBackupCollection.IndexOf(PlayBackupCollection.Where(p => p.aid == videoId).FirstOrDefault());
+            if (index <= 0)
+                new TipPopup("已经是列表里的第一个视频了").ShowMessage();
+            else
+            {
+                var item = PlayBackupCollection[index - 1];
+                videoId = item.aid;
+                await Refresh();
             }
         }
 
@@ -534,7 +546,7 @@ namespace BiliBili_UWP.Pages.Main
         private void VideoPlayer_PartSwitched(object sender, int e)
         {
             PartListView.SelectedIndex = PartGridView.SelectedIndex = e;
-            PartListView.ScrollIntoView(VideoPartCollection[e],ScrollIntoViewAlignment.Leading);
+            PartListView.ScrollIntoView(VideoPartCollection[e], ScrollIntoViewAlignment.Leading);
         }
 
         private async void LikeButton_Hold(object sender, bool e)
@@ -575,14 +587,14 @@ namespace BiliBili_UWP.Pages.Main
             var param = new Dictionary<string, string>();
             param.Add("oid", _detail.aid.ToString());
             param.Add("type", "1");
-            App.AppViewModel.NavigateToSubPage(typeof(Sub.ReplyPage), param);
+            App.AppViewModel.NavigateToSubPage(typeof(Pages_Share.Sub.ReplyPage), param);
         }
 
         private void ShareDynamicButton_Click(object sender, RoutedEventArgs e)
         {
             if (!App.BiliViewModel.CheckAccoutStatus())
                 return;
-            string content = _detail.title + "\n" + (_detail.desc??"");
+            string content = _detail.title + "\n" + (_detail.desc ?? "");
             App.AppViewModel.ShowRepostPopup(content, _detail);
         }
 
@@ -652,7 +664,7 @@ namespace BiliBili_UWP.Pages.Main
                 }
                 App.AppViewModel.ConnectAnimationName = "";
             }
-            else if(!_isInit)
+            else if (!_isInit)
             {
                 await Refresh();
                 _isInit = true;
@@ -665,6 +677,22 @@ namespace BiliBili_UWP.Pages.Main
             if (!_isInit)
                 return;
             VideoPlayer.AutoLoop = AutoLoopSwitch.IsOn;
+        }
+
+        private async void VideoPlayer_PreviousVideoRequest(object sender, EventArgs e)
+        {
+            if (_isPlayList)
+            {
+                await PlayPreviousVideo();
+            }
+        }
+
+        private async void VideoPlayer_NextVideoRequest(object sender, EventArgs e)
+        {
+            if (_isPlayList)
+            {
+                await PlayNextVideo();
+            }
         }
     }
 }

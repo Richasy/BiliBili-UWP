@@ -8,6 +8,17 @@
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
+    <UserControl.Resources>
+        <CommandBarFlyout x:Name="DefaultFlyout">
+            <CommandBarFlyout.SecondaryCommands>
+                <AppBarButton Label="加入稍后再看" FontSize="{CustomResource SmallFontSize}" FontFamily="{CustomResource Basic}" x:Name="LaterViewButton" Click="LaterViewButton_Click">
+                    <AppBarButton.Icon>
+                        <FontIcon FontFamily="{StaticResource Icon}" Glyph="&#xEA3B;"/>
+                    </AppBarButton.Icon>
+                </AppBarButton>
+            </CommandBarFlyout.SecondaryCommands>
+        </CommandBarFlyout>
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -28,7 +39,8 @@
                     <TextBlock Text="{x:Bind RightBottomText,Mode=OneWay}" Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource SecondaryColor}"/>
                 </Border>
                 <Button Style="{StaticResource DefaultCircleButtonStyle}" Content="&#xE9A9;" Width="30" Height="30" Margin="0,-5,10,5" Background="{ThemeResource PaneBackground}"
-                    VerticalAlignment="Center" FontFamily="{StaticResource Icon}" FontSize="{CustomResource BasicFontSize}" x:Name="ExtraButton" Visibility="{x:Bind ExtraButtonVisbility,Mode=OneWay}"/>
+                    VerticalAlignment="Center" FontFamily="{StaticResource Icon}" FontSize="{CustomResource BasicFontSize}" x:Name="ExtraButton" Visibility="{x:Bind ExtraButtonVisbility,Mode=OneWay}"
+                         Flyout="{StaticResource DefaultFlyout}"/>
             </StackPanel>
 
             <Border Background="{ThemeResource PaneBackground}" Padding="8,5" CornerRadius="3" HorizontalAlignment="Right"

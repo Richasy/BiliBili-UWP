@@ -28,7 +28,7 @@
                                        Duration="{x:Bind duration,Converter={StaticResource DurationConverter}}"
                                        Title="{x:Bind title}"
                                        VideoId="{x:Bind param}"
-                                     Margin="8"
+                                        Margin="8"
                                        />
         </DataTemplate>
     </Page.Resources>

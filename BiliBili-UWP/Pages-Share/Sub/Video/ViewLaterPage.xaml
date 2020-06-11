@@ -1,0 +1,65 @@
+﻿<Page
+    x:Class="BiliBili_UWP.Pages_Share.Sub.Video.ViewLaterPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BiliBili_UWP.Pages_Share.Sub.Video"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:bilibili="using:BiliBili_Lib.Models.BiliBili.Video" xmlns:controls="using:BiliBili_UWP.Components.Controls" xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <DataTemplate x:DataType="bilibili:VideoDetail" x:Key="VideoItemTemplate">
+            <controls:DefaultVideoPanel Cover="{x:Bind pic}"
+                                       Title="{x:Bind title}"
+                                       Duration="{x:Bind duration,Converter={StaticResource DurationConverter}}"
+                                       Tip="{x:Bind owner.name}" ExtraButtonVisibility="Visible"
+                                       FirstSectionContent="{x:Bind stat.view,Converter={StaticResource NumberAbbrConverter}}"
+                                       SecondSectionContent="{x:Bind stat.danmaku,Converter={StaticResource NumberAbbrConverter}}"
+                                        Margin="0,5">
+                <controls:DefaultVideoPanel.ExtraFlyout>
+                    <CommandBarFlyout>
+                        <CommandBarFlyout.SecondaryCommands>
+                            <AppBarButton Label="移出稍后观看" Click="RemoveItem_Click" Tag="{x:Bind aid}" FontSize="{CustomResource SmallFontSize}">
+                                <AppBarButton.Icon>
+                                    <FontIcon FontFamily="{StaticResource Icon}" Glyph="&#xE9F5;"/>
+                                </AppBarButton.Icon>
+                            </AppBarButton>
+                        </CommandBarFlyout.SecondaryCommands>
+                    </CommandBarFlyout>
+                </controls:DefaultVideoPanel.ExtraFlyout>
+            </controls:DefaultVideoPanel>
+        </DataTemplate>
+    </Page.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <widgets:AsyncButton Icon="&#xE9F5;" Text="清空记录" x:Name="ClearButton" CornerRadius="15" FontSize="{CustomResource SmallFontSize}" BorderThickness="1"
+                                 Style="{StaticResource DefaultAsyncButtonStyle}" BorderBrush="{ThemeResource LineColor}" HorizontalAlignment="Right"
+                                 Click="ClearButton_Click" Grid.Row="1" Margin="0,10"/>
+        <Grid>
+            <ScrollViewer Style="{StaticResource BasicScrollViewer}" ViewChanged="ScrollViewer_ViewChanged">
+                <Grid>
+                    <ListView x:Name="VideoListView"
+                                  ItemContainerStyle="{StaticResource TransparentListViewContainerStyle}"
+                                  Style="{StaticResource NoScrollListView}"
+                                  ItemTemplate="{StaticResource VideoItemTemplate}"
+                              ItemsSource="{x:Bind ViewLaterCollection}"
+                                  IsItemClickEnabled="True"
+                                  SelectionMode="None" 
+                                  CanReorderItems="True"
+                                  AllowDrop="True"
+                                  IsSwipeEnabled="True"
+                                  ItemClick="ViewLaterVideoView_ItemClick"
+                                  />
+                    <TextBlock Style="{StaticResource TipTextStyle}" Text="暂无稍后再看记录" FontWeight="Bold" VerticalAlignment="Top"
+                           x:Name="HolderText" Visibility="Collapsed"/>
+                </Grid>
+            </ScrollViewer>
+        </Grid>
+
+        <muxc:ProgressBar Style="{StaticResource MuxcProgressBarStyle}"
+                             x:Name="VideoLoadingBar" VerticalAlignment="Bottom"/>
+    </Grid>
+</Page>

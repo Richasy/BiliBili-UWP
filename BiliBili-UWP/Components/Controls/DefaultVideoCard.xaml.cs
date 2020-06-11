@@ -225,7 +225,7 @@ namespace BiliBili_UWP.Components.Controls
         public static readonly DependencyProperty DecodePixelWidthProperty =
             DependencyProperty.Register("DecodePixelWidth", typeof(int), typeof(DefaultVideoCard), new PropertyMetadata(225));
 
-        private async void RankLaterViewButton_Click(object sender, RoutedEventArgs e)
+        private async void LaterViewButton_Click(object sender, RoutedEventArgs e)
         {
             await App.BiliViewModel.AddViewLater(sender, Convert.ToInt32(VideoId));
         }

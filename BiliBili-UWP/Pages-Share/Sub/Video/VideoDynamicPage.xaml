@@ -1,0 +1,34 @@
+﻿<Page
+    x:Class="BiliBili_UWP.Pages_Share.Sub.Video.VideoDynamicPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BiliBili_UWP.Pages_Share.Sub.Video"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:bilibili="using:BiliBili_Lib.Models.BiliBili" xmlns:controls1="using:BiliBili_UWP.Components.Controls"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <DataTemplate x:DataType="bilibili:Topic" x:Key="DynamicItemTemplate">
+            <controls1:TopicCard Data="{Binding}" IsUsePhase="True" Margin="0,5"
+                                 EnableConnectAnimation="False"/>
+        </DataTemplate>
+    </Page.Resources>
+    <Grid>
+        <ScrollViewer Style="{StaticResource BasicScrollViewer}" ViewChanged="ScrollViewer_ViewChanged">
+            <Grid>
+                <ListView ItemTemplate="{StaticResource DynamicItemTemplate}"
+                              ItemsSource="{x:Bind DynamicCollection}"
+                              ItemContainerStyle="{StaticResource TransparentListViewContainerStyle}"
+                              Style="{StaticResource NoScrollListView}"
+                              SelectionMode="None"
+                              Padding="0" ContainerContentChanging="ListView_ContainerContentChanging"
+                              />
+                <TextBlock Text="没有找到动态哟~" Style="{StaticResource TitleTextStyle}" FontSize="{CustomResource BodyFontSize}" x:Name="DynamicHolderText"
+                               Visibility="Collapsed"/>
+            </Grid>
+        </ScrollViewer>
+        <muxc:ProgressBar Style="{StaticResource MuxcProgressBarStyle}" VerticalAlignment="Bottom"
+                             x:Name="LoadingBar" Visibility="Collapsed" Grid.Row="1"/>
+        <muxc:ProgressRing Style="{StaticResource MuxcProgressRingStyle}" Grid.Row="1" x:Name="LoadingRing"/>
+    </Grid>
+</Page>

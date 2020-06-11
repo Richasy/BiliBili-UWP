@@ -23,14 +23,14 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace BiliBili_UWP.Components.Controls
 {
-    public sealed partial class TabletVideoDetailBlock : UserControl,IPlayerHost
+    public sealed partial class TabletVideoDetailBlock : UserControl, IPlayerHost
     {
         private ObservableCollection<VideoPart> VideoPartCollection = new ObservableCollection<VideoPart>();
         public VideoDetail _detail = null;
         private ObservableCollection<VideoTag> TagCollection = new ObservableCollection<VideoTag>();
         private ObservableCollection<Staff> StaffCollection = new ObservableCollection<Staff>();
+        private ObservableCollection<VideoDetail> PlayBackupCollection = new ObservableCollection<VideoDetail>();
         private VideoService _videoService = App.BiliViewModel._client.Video;
-
         private int _currentPartId = 0;
         private int videoId = 0;
         private string bvId = "";
@@ -62,14 +62,36 @@ namespace BiliBili_UWP.Components.Controls
 
             SelectLikeCheckBox.IsChecked = true;
             FavoriteListView.ItemsSource = null;
+
+            if (PlayBackupCollection.Count > 0)
+            {
+                int index = PlayBackupCollection.IndexOf(PlayBackupCollection.Where(p => p.aid == videoId).FirstOrDefault());
+                PlayListContainer.ShowListView.SelectedIndex = index;
+                if (index != -1)
+                    PlayListContainer.ShowListView.ScrollIntoView(PlayBackupCollection[index], ScrollIntoViewAlignment.Leading);
+            }
         }
 
-        public async Task Init(int aid,int partId = 0,string bvId="")
+        public async Task Init(int startId, List<VideoDetail> playList)
+        {
+            PlayListContainer.Visibility = Visibility.Visible;
+            playList.ForEach(p => PlayBackupCollection.Add(p));
+            videoId = startId;
+            await Init(startId);
+        }
+
+        public void ClearPlayList()
+        {
+            PlayBackupCollection.Clear();
+            PlayListContainer.Visibility = Visibility.Collapsed;
+        }
+
+        public async Task Init(int aid, int partId = 0, string bvId = "")
         {
             LoadingRing.IsActive = true;
             MyVideoPlayer.Close();
             DetailContainer.Visibility = Visibility.Collapsed;
-            var detail = await _videoService.GetVideoDetailAsync(aid,bvId:bvId);
+            var detail = await _videoService.GetVideoDetailAsync(aid, bvId: bvId);
             LoadingRing.IsActive = false;
             DetailContainer.Visibility = Visibility.Visible;
             if (detail != null)
@@ -78,13 +100,14 @@ namespace BiliBili_UWP.Components.Controls
             }
         }
 
-        public async Task Init(VideoDetail detail,int partId = 0)
+        public async Task Init(VideoDetail detail, int partId = 0)
         {
             Reset();
             App.AppViewModel.CurrentPlayerType = Models.Enums.PlayerType.Video;
             App.AppViewModel.CurrentVideoPlayer = VideoPlayer;
             _detail = detail;
             _currentPartId = partId;
+            TabletMainPage.Current.SetBackgroundImage(_detail.pic);
             if (!string.IsNullOrEmpty(_detail.redirect_url))
             {
                 var result = BiliTool.GetResultFromUri(_detail.redirect_url);
@@ -118,10 +141,12 @@ namespace BiliBili_UWP.Components.Controls
             UPAvatar.ProfilePicture = string.IsNullOrEmpty(_detail.owner.face) ? null : new BitmapImage(new Uri(_detail.owner.face + "@50w.jpg")) { DecodePixelWidth = 40 };
             UPNameBlock.Text = _detail.owner.name;
 
-            _detail.pages.ForEach(p => VideoPartCollection.Add(p));
-            PartListView.SelectedIndex = 0;
+            if (_detail.pages != null)
+            {
+                _detail.pages.ForEach(p => VideoPartCollection.Add(p));
+                PartListView.SelectedIndex = 0;
+            }
             PartContainer.Visibility = _detail.pages.Count > 1 ? Visibility.Visible : Visibility.Collapsed;
-
             if (_detail.tag != null && _detail.tag.Count > 0)
             {
                 TagGridView.Visibility = Visibility.Visible;
@@ -280,13 +305,13 @@ namespace BiliBili_UWP.Components.Controls
         private void TagGridView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var item = e.ClickedItem as VideoTag;
-            App.AppViewModel.NavigateToSubPage(typeof(Pages.Sub.Channel.TagDetailPage), item.tag_id);
+            App.AppViewModel.NavigateToSubPage(typeof(Pages_Share.Sub.Channel.TagDetailPage), item.tag_id);
         }
 
         private void StaffListView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var item = e.ClickedItem as Staff;
-            App.AppViewModel.NavigateToSubPage(typeof(Pages.Sub.Account.DetailPage), item.mid);
+            App.AppViewModel.NavigateToSubPage(typeof(Pages_Share.Sub.Account.DetailPage), item.mid);
         }
         private async void UpdateVideoInfo()
         {
@@ -300,7 +325,7 @@ namespace BiliBili_UWP.Components.Controls
             var param = new Dictionary<string, string>();
             param.Add("oid", _detail.aid.ToString());
             param.Add("type", "1");
-            App.AppViewModel.NavigateToSubPage(typeof(Pages.Sub.ReplyPage), param);
+            App.AppViewModel.NavigateToSubPage(typeof(Pages_Share.Sub.ReplyPage), param);
         }
 
         private void ShareDynamicButton_Click(object sender, RoutedEventArgs e)
@@ -381,7 +406,7 @@ namespace BiliBili_UWP.Components.Controls
         private void SingleUserContainer_Tapped(object sender, TappedRoutedEventArgs e)
         {
             var accId = _detail.owner.mid;
-            App.AppViewModel.NavigateToSubPage(typeof(Pages.Sub.Account.DetailPage), accId);
+            App.AppViewModel.NavigateToSubPage(typeof(Pages_Share.Sub.Account.DetailPage), accId);
         }
         private async void LikeButton_Hold(object sender, bool e)
         {
@@ -417,6 +442,63 @@ namespace BiliBili_UWP.Components.Controls
             else
             {
                 VisualStateManager.GoToState(this, "Wide", true);
+            }
+        }
+
+        private async void MyVideoPlayer_MediaEnded(object sender, int e)
+        {
+            if (PlayBackupCollection.Count > 0)
+            {
+                await PlayNextVideo();
+            }
+        }
+        private async Task PlayNextVideo()
+        {
+            int index = PlayBackupCollection.IndexOf(PlayBackupCollection.Where(p => p.aid == videoId).FirstOrDefault());
+            if (index >= PlayBackupCollection.Count - 1)
+                new TipPopup("播放列表内的视频已经全部播放完啦~").ShowMessage();
+            else
+            {
+                var item = PlayBackupCollection[index + 1];
+                videoId = item.aid;
+                await Init(item.aid);
+            }
+        }
+        private async Task PlayPreviousVideo()
+        {
+            int index = PlayBackupCollection.IndexOf(PlayBackupCollection.Where(p => p.aid == videoId).FirstOrDefault());
+            if (index <= 0)
+                new TipPopup("已经是列表里的第一个视频了").ShowMessage();
+            else
+            {
+                var item = PlayBackupCollection[index - 1];
+                videoId = item.aid;
+                await Init(item.aid);
+            }
+        }
+
+        private async void PlayListContainer_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            var item = e.ClickedItem as VideoDetail;
+            if (item.aid != videoId)
+            {
+                await Init(item.aid);
+            }
+        }
+
+        private async void MyVideoPlayer_PreviousVideoRequest(object sender, EventArgs e)
+        {
+            if (PlayBackupCollection.Count>0)
+            {
+                await PlayPreviousVideo();
+            }
+        }
+
+        private async void MyVideoPlayer_NextVideoRequest(object sender, EventArgs e)
+        {
+            if (PlayBackupCollection.Count > 0)
+            {
+                await PlayNextVideo();
             }
         }
     }

@@ -37,7 +37,7 @@ namespace BiliBili_UWP.Components.Controls
         private void ChannelListView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var item = e.ClickedItem as ChannelView;
-            App.AppViewModel.NavigateToSubPage(typeof(Pages.Sub.Channel.ChannelDetailPage), item.id);
+            App.AppViewModel.NavigateToSubPage(typeof(Pages_Share.Sub.Channel.ChannelDetailPage), item.id);
         }
     }
 }

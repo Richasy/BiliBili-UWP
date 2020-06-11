@@ -133,7 +133,7 @@ namespace BiliBili_UWP.Components.Controls
             else if (Data is DocumentDynamic doc)
                 type = "12";
             param.Add("type", type);
-            ReplyFrame.Navigate(typeof(Pages.Sub.ReplyPage), param);
+            ReplyFrame.Navigate(typeof(Pages_Share.Sub.ReplyPage), param);
         }
 
         public int ReplyId
@@ -159,7 +159,7 @@ namespace BiliBili_UWP.Components.Controls
         {
             if (User != null)
             {
-                App.AppViewModel.NavigateToSubPage(typeof(Pages.Sub.Account.DetailPage), User.uid);
+                App.AppViewModel.NavigateToSubPage(typeof(Pages_Share.Sub.Account.DetailPage), User.uid);
             }
         }
 

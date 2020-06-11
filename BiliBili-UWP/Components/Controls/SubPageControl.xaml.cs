@@ -64,7 +64,7 @@ namespace BiliBili_UWP.Components.Controls
             {
                 if (!isRepeat)
                 {
-                    if (page.Equals(typeof(Pages.Sub.ReplyPage)))
+                    if (page.Equals(typeof(Pages_Share.Sub.ReplyPage)))
                         SubFrameHistoryList.RemoveAll(p => p.Item1 == page);
                     SubFrameHistoryList.Add(new Tuple<Type, object>(page, parameter));
                 }
@@ -113,7 +113,7 @@ namespace BiliBili_UWP.Components.Controls
         public bool CheckSubReplyPage()
         {
             bool needClose = false;
-            if (SubFrameHistoryList.Count > 0 && SubFrameHistoryList.Last().Item1 == typeof(Pages.Sub.ReplyPage))
+            if (SubFrameHistoryList.Count > 0 && SubFrameHistoryList.Last().Item1 == typeof(Pages_Share.Sub.ReplyPage))
             {
                 if (SubFrameHistoryList.Count > 1)
                     SubPageBack();

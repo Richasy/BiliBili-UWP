@@ -133,7 +133,7 @@ namespace BiliBili_UWP.Components.Account
         private void ToMe()
         {
             var me = App.BiliViewModel._client.Account.Me;
-            App.AppViewModel.NavigateToSubPage(typeof(Pages.Sub.Account.DetailPage), me.mid);
+            App.AppViewModel.NavigateToSubPage(typeof(Pages_Share.Sub.Account.DetailPage), me.mid);
         }
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -159,17 +159,17 @@ namespace BiliBili_UWP.Components.Account
         private void Dynamic_Tapped(object sender, TappedRoutedEventArgs e)
         {
             var me = App.BiliViewModel._client.Account.Me;
-            App.AppViewModel.NavigateToSubPage(typeof(Pages.Sub.Account.DetailPage), new Tuple<int, bool>(me.mid, true));
+            App.AppViewModel.NavigateToSubPage(typeof(Pages_Share.Sub.Account.DetailPage), new Tuple<int, bool>(me.mid, true));
         }
 
         private void Fans_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            App.AppViewModel.NavigateToSubPage(typeof(Pages.Sub.Account.FansPage));
+            App.AppViewModel.NavigateToSubPage(typeof(Pages_Share.Sub.Account.FansPage));
         }
 
         private void Follow_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            App.AppViewModel.NavigateToSubPage(typeof(Pages.Sub.Account.FollowPage));
+            App.AppViewModel.NavigateToSubPage(typeof(Pages_Share.Sub.Account.FollowPage));
         }
     }
 }

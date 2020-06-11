@@ -13,7 +13,8 @@
     <Page.Resources>
         <DataTemplate x:DataType="bilibili:WebVideo" x:Key="RankItemTemplate">
             <controls:CoverVideoCard Cover="{x:Bind pic}" Duration="{x:Bind duration}" Margin="8"
-                                     RightTopImage="{x:Bind render_sign}" Title="{x:Bind title}"/>
+                                     RightTopImage="{x:Bind render_sign}" Title="{x:Bind title}"
+                                     VideoId="{x:Bind aid}" ExtraButtonVisbility="Visible"/>
         </DataTemplate>
     </Page.Resources>
     <Grid>

@@ -46,7 +46,6 @@ namespace BiliBili_UWP.Pages_Tablet.Main
             if (DisplayCollection.Count > 0 && VideoGridView.SelectedItem != null)
             {
                 var item = VideoGridView.SelectedItem as WebVideo;
-                TabletMainPage.Current.SetBackgroundImage(item.pic);
                 HoldContainer.Visibility = Visibility.Collapsed;
                 _videoBlock.Visibility = Visibility.Visible;
                 await _videoBlock.Init(Convert.ToInt32(item.aid));
@@ -154,7 +153,6 @@ namespace BiliBili_UWP.Pages_Tablet.Main
                 return;
             }
             HoldContainer.Visibility = Visibility.Collapsed;
-            TabletMainPage.Current.SetBackgroundImage(item.pic);
 
             _videoBlock.Visibility = Visibility.Visible;
             var cache = _videoDetailList.Where(p => p.aid == Convert.ToInt32(item.aid)).FirstOrDefault();

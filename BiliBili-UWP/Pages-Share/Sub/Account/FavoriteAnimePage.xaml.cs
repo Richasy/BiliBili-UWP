@@ -21,7 +21,7 @@ using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
-namespace BiliBili_UWP.Pages.Sub.Account
+namespace BiliBili_UWP.Pages_Share.Sub.Account
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
@@ -134,8 +134,8 @@ namespace BiliBili_UWP.Pages.Sub.Account
                 if (result)
                 {
                     AnimeCollection.Remove(data);
-                    if (Main.FavoritePage.Current != null && App.AppViewModel.CurrentPageType==typeof(Main.FavoritePage))
-                        Main.FavoritePage.Current.RemoveBangumi(_type, data);
+                    if (Pages.Main.FavoritePage.Current != null && App.AppViewModel.CurrentPageType==typeof(Pages.Main.FavoritePage))
+                        Pages.Main.FavoritePage.Current.RemoveBangumi(_type, data);
                     new TipPopup("操作成功").ShowMessage();
                 }
                 else

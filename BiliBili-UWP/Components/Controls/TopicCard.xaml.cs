@@ -282,7 +282,7 @@ namespace BiliBili_UWP.Components.Controls
                 type = "14";
             }
             param.Add("type", type);
-            App.AppViewModel.NavigateToSubPage(typeof(Pages.Sub.ReplyPage), param);
+            App.AppViewModel.NavigateToSubPage(typeof(Pages_Share.Sub.ReplyPage), param);
         }
 
         private async void LikeButton_Click(object sender, RoutedEventArgs e)
@@ -327,12 +327,12 @@ namespace BiliBili_UWP.Components.Controls
         private void Tag_Tapped(object sender, TappedRoutedEventArgs e)
         {
             var data = (sender as FrameworkElement).DataContext as TopicDetail;
-            App.AppViewModel.NavigateToSubPage(typeof(Pages.Sub.Channel.TagDetailPage), data.topic_id);
+            App.AppViewModel.NavigateToSubPage(typeof(Pages_Share.Sub.Channel.TagDetailPage), data.topic_id);
         }
 
         private void Account_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            App.AppViewModel.NavigateToSubPage(typeof(Pages.Sub.Account.DetailPage), Data.desc.uid);
+            App.AppViewModel.NavigateToSubPage(typeof(Pages_Share.Sub.Account.DetailPage), Data.desc.uid);
         }
 
         private void MainDisplay_ImageTapped(object sender, EventArgs e)

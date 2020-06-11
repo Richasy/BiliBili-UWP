@@ -39,7 +39,7 @@ namespace BiliBili_UWP.Components.Controls
         private void SearchChannelButton_Click(object sender, RoutedEventArgs e)
         {
             if (App.BiliViewModel.IsLogin)
-                App.AppViewModel.NavigateToSubPage(typeof(Pages.Sub.Channel.ChannelListPage));
+                App.AppViewModel.NavigateToSubPage(typeof(Pages_Share.Sub.Channel.ChannelListPage));
             else
                 new TipPopup("请先登录").ShowError();
         }
@@ -48,9 +48,9 @@ namespace BiliBili_UWP.Components.Controls
         {
             var item = e.ClickedItem as ChannelSlim;
             if(item.@goto=="channel")
-                App.AppViewModel.NavigateToSubPage(typeof(Pages.Sub.Channel.ChannelDetailPage), item.id);
+                App.AppViewModel.NavigateToSubPage(typeof(Pages_Share.Sub.Channel.ChannelDetailPage), item.id);
             else if(item.@goto=="tag")
-                App.AppViewModel.NavigateToSubPage(typeof(Pages.Sub.Channel.TagDetailPage), item.id);
+                App.AppViewModel.NavigateToSubPage(typeof(Pages_Share.Sub.Channel.TagDetailPage), item.id);
         }
     }
 }
