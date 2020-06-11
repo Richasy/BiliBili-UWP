@@ -52,9 +52,6 @@ namespace BiliBili_UWP.Pages.Main
             App.AppViewModel.CurrentPagePanel.ScrollToBottom = ScrollViewerBottomHandle;
             App.AppViewModel.CurrentPagePanel.ScrollChanged = ScrollViewerChanged;
             HistoryVideoView.DesiredWidth = 215 + ((App.AppViewModel.BasicFontSize - 14) * 5);
-            bool isFluent = AppTool.GetBoolSetting(BiliBili_Lib.Enums.Settings.EnableFluentGrid, false);
-            HistoryGridView.Visibility = isFluent ? Visibility.Visible : Visibility.Collapsed;
-            HistoryVideoView.Visibility = isFluent ? Visibility.Collapsed : Visibility.Visible;
             if (_isInit || e.NavigationMode == NavigationMode.Back)
             {
                 return;

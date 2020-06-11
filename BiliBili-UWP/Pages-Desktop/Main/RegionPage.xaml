@@ -96,21 +96,6 @@
                           ItemsSource="{x:Bind VideoCollection}"
                           ContainerContentChanging="RecommendVideoView_ContainerContentChanging"
                           />
-                <GridView x:Name="RecommendGridView" Visibility="Collapsed"
-                          ItemTemplate="{StaticResource VideoItemTemplate}"
-                          ItemContainerStyle="{StaticResource TransparentGridViewItemContainerStyle}"
-                          Style="{StaticResource NoScrollGridView}"
-                          SelectionMode="None" IsItemClickEnabled="True"
-                              ItemClick="RecommendVideoView_ItemClick"
-                              ContainerContentChanging="RecommendVideoView_ContainerContentChanging"
-                          ItemsSource="{x:Bind VideoCollection}"
-                          >
-                    <GridView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <ItemsWrapGrid Orientation="Horizontal" ItemWidth="215" HorizontalAlignment="Center"/>
-                        </ItemsPanelTemplate>
-                    </GridView.ItemsPanel>
-                </GridView>
                 <TextBlock Style="{StaticResource TipTextStyle}" Text="无法加载视频列表" FontWeight="Bold" VerticalAlignment="Center"
                            x:Name="HolderText" Visibility="Collapsed"/>
             </Grid>

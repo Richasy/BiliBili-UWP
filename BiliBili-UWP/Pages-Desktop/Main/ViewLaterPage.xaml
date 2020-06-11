@@ -66,18 +66,6 @@
                                   ItemsSource="{x:Bind ViewLaterCollection}"
                                   ContainerContentChanging="ViewLaterVideoView_ContainerContentChanging"
                                   />
-            <GridView x:Name="ViewLaterGridView" ItemTemplate="{StaticResource VideoItemTemplate}" HorizontalAlignment="Stretch"
-                      ItemContainerStyle="{StaticResource TransparentGridViewItemContainerStyle}" CanReorderItems="True"
-                      AllowDrop="True" IsSwipeEnabled="True"
-                      Style="{StaticResource NoScrollGridView}" SelectionMode="None" IsItemClickEnabled="True"
-                      ItemClick="ViewLaterVideoView_ItemClick" ItemsSource="{x:Bind ViewLaterCollection}"
-                      ContainerContentChanging="ViewLaterVideoView_ContainerContentChanging" Visibility="Collapsed">
-                <GridView.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <ItemsWrapGrid Orientation="Horizontal" ItemWidth="200" HorizontalAlignment="Center"/>
-                    </ItemsPanelTemplate>
-                </GridView.ItemsPanel>
-            </GridView>
             <TextBlock Style="{StaticResource TipTextStyle}" Text="暂无稍后再看记录" FontWeight="Bold" VerticalAlignment="Center"
                            x:Name="HolderText" Visibility="Collapsed"/>
         </Grid>

@@ -61,8 +61,6 @@ namespace BiliBili_UWP.Pages_Share.Main
             PagePaneDisplayBreakpointBox.Value = pageBreakpoint;
             bool isEnableAnimation = AppTool.GetBoolSetting(Settings.EnableAnimation);
             EnableAnimationSwitch.IsOn = isEnableAnimation;
-            bool isEnableFluentGrid = AppTool.GetBoolSetting(Settings.EnableFluentGrid,false);
-            FluentGridSwitch.IsOn = isEnableFluentGrid;
             StartupTask startupTask = await StartupTask.GetAsync("RichasyBiliBili");
             bool isEnableStartup = startupTask.State.ToString().Contains("Enable");
             EnableStartupSwitch.IsOn = isEnableStartup;
@@ -369,13 +367,6 @@ namespace BiliBili_UWP.Pages_Share.Main
             if (!_isInit)
                 return;
             AppTool.WriteLocalSetting(Settings.BasicFontSize, e.ToString());
-        }
-
-        private void FluentGridSwitch_Toggled(object sender, RoutedEventArgs e)
-        {
-            if (!_isInit)
-                return;
-            AppTool.WriteLocalSetting(Settings.EnableFluentGrid, FluentGridSwitch.IsOn.ToString());
         }
 
         private async void ExportLogButton_Click(object sender, RoutedEventArgs e)

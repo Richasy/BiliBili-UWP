@@ -52,21 +52,6 @@
                                         ItemsSource="{x:Bind DisplayCollection}"
                                         ContainerContentChanging="VideoGridView_ContainerContentChanging"
                                         />
-            <GridView x:Name="FluentGridView" Visibility="Collapsed"
-                          ItemTemplate="{StaticResource RankItemTemplate}"
-                          ItemContainerStyle="{StaticResource TransparentGridViewItemContainerStyle}"
-                          Style="{StaticResource NoScrollGridView}"
-                          SelectionMode="None" IsItemClickEnabled="True"
-                              ItemClick="VideoGridView_ItemClick"
-                              ContainerContentChanging="VideoGridView_ContainerContentChanging"
-                          ItemsSource="{x:Bind DisplayCollection}"
-                          >
-                <GridView.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <ItemsWrapGrid Orientation="Horizontal" ItemWidth="215" HorizontalAlignment="Center"/>
-                    </ItemsPanelTemplate>
-                </GridView.ItemsPanel>
-            </GridView>
             <muxc:ProgressRing Style="{StaticResource MuxcProgressRingStyle}" x:Name="LoadingRing"/>
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="NoDataContainer" Visibility="Collapsed">
                 <Image Source="ms-appx:///Assets/null.png" Width="100" HorizontalAlignment="Center"/>

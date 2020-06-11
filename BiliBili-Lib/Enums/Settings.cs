@@ -48,7 +48,6 @@ namespace BiliBili_Lib.Enums
         IsAutoNextPart,
         PlayerMode,
         BasicFontSize,
-        EnableFluentGrid,
         DisplayMode
     }
 }
