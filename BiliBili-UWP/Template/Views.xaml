@@ -578,6 +578,7 @@
         <Setter Property="FocusVisualMargin" Value="-2"/>
         <Setter Property="Padding" Value="0"/>
         <Setter Property="CornerRadius" Value="3"/>
+        <Setter Property="FocusVisualPrimaryBrush" Value="{ThemeResource PrimaryColor}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="GridViewItem">

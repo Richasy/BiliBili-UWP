@@ -166,6 +166,7 @@ namespace BiliBili_UWP
                     page = typeof(RecommendPage);
                     break;
                 case AppMenuItemType.Channel:
+                    page = typeof(ChannelPage);
                     break;
                 case AppMenuItemType.VideoPlayer:
                     page = typeof(PlayerPage);
@@ -193,6 +194,8 @@ namespace BiliBili_UWP
                 result = AppMenuItemType.Anime;
             else if (type.Equals(typeof(RegionPage)))
                 result = AppMenuItemType.Region;
+            else if (type.Equals(typeof(ChannelPage)))
+                result = AppMenuItemType.Channel;
             else if (type.Equals(typeof(PlayerPage)))
                 result = AppMenuItemType.VideoPlayer;
             else if (type.Equals(typeof(Pages_Share.Main.SettingPage)))
@@ -200,6 +203,12 @@ namespace BiliBili_UWP
             else if (type.Equals(typeof(Pages_Share.Main.HelpPage)))
                 result = AppMenuItemType.Help;
             return result;
+        }
+
+        public void RemoveMainHistory(AppMenuItemType type)
+        {
+            var page = GetPageFromType(type);
+            MainFrameHistoryList.RemoveAll(p => p.Item1 == page);
         }
 
         public void NavigateToPage(AppMenuItemType pageType, object parameter = null, bool isBack = false)

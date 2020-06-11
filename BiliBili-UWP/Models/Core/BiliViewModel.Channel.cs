@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Weakly;
 using Windows.UI.Xaml;
 
 namespace BiliBili_UWP.Models.Core
@@ -32,8 +33,10 @@ namespace BiliBili_UWP.Models.Core
             if (data == null)
                 return;
             MySubscribeChannelCollection.Clear();
-            var mySub = data.Subscribes;
-            mySub.Distinct().Take(6).ToList().ForEach(p => MySubscribeChannelCollection.Add(p));
+            var mySub = data.Subscribes.Distinct();
+            if (!App._isTabletMode)
+                mySub = mySub.Take(6);
+            mySub.ForEach(p => MySubscribeChannelCollection.Add(p));
             if (data.Scaneds != null)
             {
                 if (MyScanedChannelCollection.Count == 0)

@@ -91,8 +91,9 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="1.2*" x:Name="WideColumn"/>
         </Grid.ColumnDefinitions>
-        <Grid>
-            <ScrollViewer Style="{StaticResource BasicScrollViewer}" VerticalScrollBarVisibility="Hidden">
+        <ScrollViewer Style="{StaticResource BasicScrollViewer}" VerticalScrollBarVisibility="Hidden"
+                       x:Name="InfoScrollViewer">
+            <Grid>
                 <StackPanel x:Name="DetailContainer">
                     <TextBlock x:Name="TitleBlock" Style="{StaticResource HeaderTextStyle}" FontSize="{CustomResource HeaderFontSize}" TextWrapping="Wrap"/>
                     <Grid>
@@ -133,10 +134,10 @@
                       x:Name="PartGridView" ItemClick="PartGridView_ItemClick" ScrollViewer.HorizontalScrollMode="Disabled"/>
                     </Grid>
                 </StackPanel>
-            </ScrollViewer>
-            <muxc:ProgressRing Style="{StaticResource MuxcProgressRingStyle}" x:Name="LoadingRing"/>
-        </Grid>
+                <muxc:ProgressRing Style="{StaticResource MuxcProgressRingStyle}" x:Name="LoadingRing"/>
+            </Grid>
 
+        </ScrollViewer>
         <Grid Grid.Column="1" x:Name="VideoContainer" Margin="40,0,0,0">
             <local:VideoPlayer x:Name="MyVideoPlayer" FullWindowChanged="VideoPlayer_FullWindowChanged"
                                   CinemaButtonVisibility="Visible" CinemaChanged="VideoPlayer_CinemaChanged"

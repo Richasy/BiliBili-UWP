@@ -114,6 +114,7 @@ namespace BiliBili_UWP.Pages_Tablet.Main
         private void VideoGridView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var item = e.ClickedItem as RegionVideo;
+            App.AppViewModel.PlayVideo(Convert.ToInt32(item.param));
         }
 
         private async void RegionListView_ItemClick(object sender, ItemClickEventArgs e)

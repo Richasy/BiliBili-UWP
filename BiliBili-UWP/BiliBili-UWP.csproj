@@ -420,6 +420,9 @@
     <Compile Include="Pages-Tablet\Main\AnimePage.xaml.cs">
       <DependentUpon>AnimePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages-Tablet\Main\ChannelPage.xaml.cs">
+      <DependentUpon>ChannelPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages-Tablet\Main\PlayerPage.xaml.cs">
       <DependentUpon>PlayerPage.xaml</DependentUpon>
     </Compile>
@@ -880,6 +883,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages-Tablet\Main\AnimePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages-Tablet\Main\ChannelPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

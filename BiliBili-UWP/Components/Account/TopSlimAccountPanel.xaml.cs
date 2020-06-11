@@ -1,4 +1,5 @@
 ﻿using BiliBili_Lib.Tools;
+using Microsoft.Toolkit.Uwp.UI.Controls;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -94,6 +95,33 @@ namespace BiliBili_UWP.Components.Account
         private void DetailContainer_Tapped(object sender, TappedRoutedEventArgs e)
         {
             AccountFlyout.ShowAt(DetailContainer);
+        }
+
+        private void AccountMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var item = sender as MenuFlyoutItem;
+            string tag = item.Tag.ToString();
+            switch (tag)
+            {
+                case "MyPage":
+                    var me = App.BiliViewModel._client.Account.Me;
+                    App.AppViewModel.NavigateToSubPage(typeof(Pages.Sub.Account.DetailPage),new Tuple<int, bool>(me.mid, true));
+                    break;
+                case "MyFollow":
+                    App.AppViewModel.NavigateToSubPage(typeof(Pages.Sub.Account.FollowPage));
+                    break;
+                case "MyFans":
+                    App.AppViewModel.NavigateToSubPage(typeof(Pages.Sub.Account.FansPage));
+                    break;
+                case "MyAnime":
+                    App.AppViewModel.NavigateToSubPage(typeof(Pages.Sub.Account.FavoriteAnimePage),"anime");
+                    break;
+                case "MyMovie":
+                    App.AppViewModel.NavigateToSubPage(typeof(Pages.Sub.Account.FavoriteAnimePage),"cinema");
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

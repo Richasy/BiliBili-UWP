@@ -90,10 +90,10 @@ namespace BiliBili_UWP.Components.Controls
                 var result = BiliTool.GetResultFromUri(_detail.redirect_url);
                 videoId = 0;
                 _currentPartId = 0;
-                App.AppViewModel.CurrentPagePanel.RemoveMainHistory(Models.Enums.AppMenuItemType.VideoPlayer);
+                TabletMainPage.Current.RemoveMainHistory(Models.Enums.AppMenuItemType.VideoPlayer);
                 if (result.Type == UriType.Bangumi)
                 {
-                    throw new InvalidDataException("Bangumi");
+                    throw new InvalidDataException(result.Param);
                 }
             }
             TitleBlock.Text = detail.title;

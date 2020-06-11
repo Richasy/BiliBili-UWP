@@ -1,0 +1,93 @@
+﻿<Page
+    x:Class="BiliBili_UWP.Pages_Tablet.Main.ChannelPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BiliBili_UWP.Pages_Tablet.Main"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:channels="using:BiliBili_Lib.Models.BiliBili"
+    xmlns:others="using:BiliBili_Controls.Extensions" xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
+    xmlns:ada="using:BiliBili_Controls.AdaptiveGridView" xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <DataTemplate x:DataType="channels:ChannelBase" x:Key="SubscribeChannelItemTemplate">
+            <StackPanel Margin="10,0">
+                <controls:ImageEx Width="70" Height="70" CornerRadius="8"
+                              Source="{x:Bind cover,Converter={StaticResource CoverResolutionConverter},ConverterParameter=80}" ToolTipService.ToolTip="{x:Bind title}"/>
+                <TextBlock Style="{StaticResource TipTextStyle}" HorizontalAlignment="Center" TextWrapping="Wrap" Foreground="{ThemeResource NormalTextColor}"
+                            Margin="0,5,0,0" Text="{x:Bind title}"/>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:DataType="channels:ChannelView" x:Key="ScanChannelItemTemplate">
+            <Grid Height="140" Background="{ThemeResource CardBackground}" CornerRadius="4" Margin="5,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="60" />
+                    <RowDefinition Height="1*" />
+                </Grid.RowDefinitions>
+                <Grid>
+                    <widgets:BiliImage Source="{x:Bind render_background}" DecodePixelWidth="125" Height="82"
+                                      CornerRadius="4,4,0,0" DisplayType="Rect" VerticalAlignment="Stretch" Stretch="UniformToFill"/>
+                    <Border Background="{Binding Converter={StaticResource ChannelHeaderMaskConverter}}" CornerRadius="4,4,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                </Grid>
+                <StackPanel Grid.RowSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0,30,0,0">
+                    <controls:ImageEx HorizontalAlignment="Center" BorderBrush="{ThemeResource CardBackground}" BorderThickness="3"
+                                      Source="{x:Bind render_cover}" Width="55" Height="55" CornerRadius="30"/>
+                    <TextBlock HorizontalAlignment="Center" TextAlignment="Center" Style="{StaticResource CaptionTextStyle}" FontSize="15" Margin="0,5"
+                               Text="{x:Bind title}" MaxWidth="105"/>
+                    <TextBlock HorizontalAlignment="Center" TextAlignment="Center" Style="{StaticResource SmallTipTextStyle}"
+                               Text="{x:Bind desc}" MaxWidth="105" FontSize="10"/>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+    </Page.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <muxc:ProgressBar Style="{StaticResource MuxcProgressBarStyle}" x:Name="LoadingBar"/>
+        <Grid Grid.Row="1" Margin="0,15,0,0" x:Name="SubscribeContainer">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock Style="{StaticResource TipTextStyle}" Text="订阅频道" HorizontalAlignment="Left" Foreground="{ThemeResource NormalTextColor}" FontWeight="Bold"/>
+            <Grid Grid.Row="1" Margin="0,15,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid>
+                    <ListView ItemTemplate="{StaticResource SubscribeChannelItemTemplate}"
+                              ItemContainerStyle="{StaticResource TransparentListViewContainerStyle}"
+                              Style="{StaticResource BasicListView}" Padding="-10,0"
+                              ItemsPanel="{StaticResource HorizontalListViewItemsPanel}"
+                              IsItemClickEnabled="True" ItemsSource="{x:Bind channelVM.MySubscribeChannelCollection}"
+                              SelectionMode="None" ItemClick="ChannelListView_ItemClick"
+                              x:Name="ChannelListView" VerticalAlignment="Center"/>
+                    <TextBlock Style="{StaticResource TipTextStyle}" Text="暂无订阅的频道" FontWeight="Bold" VerticalAlignment="Center"
+                           x:Name="SubscribeHolderText"/>
+                </Grid>
+                <widgets:AsyncButton Style="{StaticResource DefaultAsyncButtonStyle}" CornerRadius="5" Margin="10,0,0,0" Icon="&#xE9D0;"
+                            x:Name="SearchChannelButton" Click="SearchChannelButton_Click"  VerticalAlignment="Center" Text="更多频道"
+                            others:PressEffect.IsEnabled="True" Grid.Column="1"/>
+            </Grid>
+        </Grid>
+        <Grid Grid.Row="2" Margin="0,25,0,0" x:Name="ScanContainer">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock Style="{StaticResource TipTextStyle}" Text="我看过的" HorizontalAlignment="Left" Foreground="{ThemeResource NormalTextColor}" FontWeight="Bold"/>
+            <Grid Grid.Row="1" Margin="0,15,0,0">
+                <ada:AdaptiveGridView ItemTemplate="{StaticResource ScanChannelItemTemplate}"
+                                   x:Name="ScanGridView" ItemContainerStyle="{StaticResource TransparentGridViewItemContainerStyle}"
+                                  Style="{StaticResource BasicGridView}" ItemsSource="{x:Bind channelVM.MyScanedChannelCollection}" IsItemClickEnabled="True"
+                                  StretchContentForSingleRow="False" DesiredWidth="135" ItemClick="ScanGridView_ItemClick"/>
+                <TextBlock Style="{StaticResource TipTextStyle}" Text="暂无订阅的频道" FontWeight="Bold" VerticalAlignment="Center"
+                           x:Name="ScanHolderText"/>
+            </Grid>
+        </Grid>
+    </Grid>
+</Page>

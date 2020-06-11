@@ -11,45 +11,50 @@
     d:DesignWidth="400">
     <UserControl.Resources>
         <MenuFlyout MenuFlyoutPresenterStyle="{StaticResource BasicMenuFlyoutStyle}" x:Name="AccountFlyout" Placement="Bottom">
-            <MenuFlyoutItem Text="我的主页" Style="{StaticResource BasicMenuFlyoutItemStyle}">
+            <MenuFlyoutItem Text="我的主页" Style="{StaticResource BasicMenuFlyoutItemStyle}" Tag="MyPage" Click="AccountMenuItem_Click">
                 <MenuFlyoutItem.Icon>
                     <FontIcon FontFamily="{StaticResource Icon}" Glyph="&#xEA04;"/>
                 </MenuFlyoutItem.Icon>
             </MenuFlyoutItem>
             <MenuFlyoutSeparator/>
-            <MenuFlyoutItem Text="视频动态" Style="{StaticResource BasicMenuFlyoutItemStyle}">
+            <MenuFlyoutItem Text="视频动态" Style="{StaticResource BasicMenuFlyoutItemStyle}" Tag="VideoDynamic" Click="AccountMenuItem_Click">
                 <MenuFlyoutItem.Icon>
                     <FontIcon FontFamily="{StaticResource Icon}" Glyph="&#xEA30;" FontWeight="Bold"/>
                 </MenuFlyoutItem.Icon>
             </MenuFlyoutItem>
-            <MenuFlyoutItem Text="我的收藏" Style="{StaticResource BasicMenuFlyoutItemStyle}">
+            <MenuFlyoutItem Text="我的收藏" Style="{StaticResource BasicMenuFlyoutItemStyle}" Tag="MyFavorite" Click="AccountMenuItem_Click">
                 <MenuFlyoutItem.Icon>
                     <FontIcon FontFamily="{StaticResource Icon}" Glyph="&#xE9E5;"/>
                 </MenuFlyoutItem.Icon>
             </MenuFlyoutItem>
-            <MenuFlyoutItem Text="我的追番" Style="{StaticResource BasicMenuFlyoutItemStyle}">
+            <MenuFlyoutItem Text="我的追番" Style="{StaticResource BasicMenuFlyoutItemStyle}" Tag="MyAnime" Click="AccountMenuItem_Click">
                 <MenuFlyoutItem.Icon>
-                    <FontIcon FontFamily="{StaticResource Icon}" Glyph="&#xE963;"/>
+                    <FontIcon FontFamily="{StaticResource Icon}" Glyph="&#xE9E5;"/>
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+            <MenuFlyoutItem Text="我的追剧" Style="{StaticResource BasicMenuFlyoutItemStyle}" Tag="MyMovie" Click="AccountMenuItem_Click">
+                <MenuFlyoutItem.Icon>
+                    <FontIcon FontFamily="{StaticResource Icon}" Glyph="&#xE9E5;"/>
                 </MenuFlyoutItem.Icon>
             </MenuFlyoutItem>
             <MenuFlyoutSeparator/>
-            <MenuFlyoutItem Text="稍后再看" Style="{StaticResource BasicMenuFlyoutItemStyle}">
+            <MenuFlyoutItem Text="稍后再看" Style="{StaticResource BasicMenuFlyoutItemStyle}" Tag="ViewLater" Click="AccountMenuItem_Click">
                 <MenuFlyoutItem.Icon>
                     <FontIcon FontFamily="{StaticResource Icon}" Glyph="&#xEA2E;" FontWeight="Bold"/>
                 </MenuFlyoutItem.Icon>
             </MenuFlyoutItem>
-            <MenuFlyoutItem Text="历史记录" Style="{StaticResource BasicMenuFlyoutItemStyle}">
+            <MenuFlyoutItem Text="历史记录" Style="{StaticResource BasicMenuFlyoutItemStyle}" Tag="History" Click="AccountMenuItem_Click">
                 <MenuFlyoutItem.Icon>
                     <FontIcon FontFamily="{StaticResource Icon}" Glyph="&#xEA3B;"/>
                 </MenuFlyoutItem.Icon>
             </MenuFlyoutItem>
             <MenuFlyoutSeparator/>
-            <MenuFlyoutItem Text="我的关注" Style="{StaticResource BasicMenuFlyoutItemStyle}">
+            <MenuFlyoutItem Text="我的关注" Style="{StaticResource BasicMenuFlyoutItemStyle}" Tag="MyFollow" Click="AccountMenuItem_Click">
                 <MenuFlyoutItem.Icon>
                     <FontIcon FontFamily="{StaticResource Icon}" Glyph="&#xEA09;"/>
                 </MenuFlyoutItem.Icon>
             </MenuFlyoutItem>
-            <MenuFlyoutItem Text="我的粉丝" Style="{StaticResource BasicMenuFlyoutItemStyle}">
+            <MenuFlyoutItem Text="我的粉丝" Style="{StaticResource BasicMenuFlyoutItemStyle}" Tag="MyFans" Click="AccountMenuItem_Click">
                 <MenuFlyoutItem.Icon>
                     <FontIcon FontFamily="{StaticResource Icon}" Glyph="&#xE9E2;"/>
                 </MenuFlyoutItem.Icon>
