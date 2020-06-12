@@ -123,11 +123,15 @@ namespace BiliBili_UWP
         }
         private void BottomPanel_SettingButtonClick(object sender, EventArgs e)
         {
+            TopPanel.SetSelectedItem(AppMenuItemType.Line);
+            App.AppViewModel.SelectedSideMenuItem = null;
             NavigateToPage(AppMenuItemType.Settings);
         }
 
         private void BottomPanel_HelpButtonClick(object sender, EventArgs e)
         {
+            TopPanel.SetSelectedItem(AppMenuItemType.Line);
+            App.AppViewModel.SelectedSideMenuItem = null;
             NavigateToPage(AppMenuItemType.Help);
         }
 

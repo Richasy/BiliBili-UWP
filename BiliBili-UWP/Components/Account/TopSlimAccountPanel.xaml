@@ -89,7 +89,10 @@
                 <TextBlock Text="--" x:Name="UserNameBlock" Style="{StaticResource CaptionTextStyle}" FontWeight="Bold"
                            HorizontalAlignment="Center" TextAlignment="Center" MaxWidth="200" Margin="0,0,0,5"/>
                 <widgets:LevelBlock x:Name="LevelBlock" HorizontalAlignment="Left" Margin="0,5,0,0"/>
+                
             </StackPanel>
+            <Ellipse Width="7" Height="7" Margin="0,10,-10,0" Fill="{ThemeResource PrimaryColor}" VerticalAlignment="Top" x:Name="UnreadMessageSign"
+                         Visibility="Collapsed" Grid.Column="1" HorizontalAlignment="Right"/>
             <Grid Background="{ThemeResource PageOverBackground}" CornerRadius="15" Width="30" Height="30"
                   VerticalAlignment="Center" Grid.Column="2" Margin="25,0,0,0">
                 <TextBlock Style="{StaticResource BasicIconTextStyle}" VerticalAlignment="Center" HorizontalAlignment="Center"

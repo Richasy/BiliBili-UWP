@@ -101,7 +101,7 @@ namespace BiliBili_UWP.Components.Account
         public void SetMessageUnread(int unread)
         {
             MessageUnreadBlock.Text = unread.ToString();
-            MessageUnreadContainer.Visibility = unread > 0 ? Visibility.Visible : Visibility.Collapsed;
+            MessageUnreadContainer.Visibility = UnreadMessageSign.Visibility = unread > 0 ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private void MenuListView_ItemClick(object sender, ItemClickEventArgs e)
@@ -115,7 +115,7 @@ namespace BiliBili_UWP.Components.Account
                     App.AppViewModel.NavigateToSubPage(typeof(Pages_Share.Sub.Account.MessagePage));
                     break;
                 case "VideoDynamic":
-                    App.AppViewModel.NavigateToSubPage(typeof(Pages_Share.Sub.Video.VideoDynamicPage));
+                    App.AppViewModel.NavigateToSubPage(typeof(Pages_Share.Sub.Video.DynamicPage));
                     break;
                 case "MyAnime":
                     App.AppViewModel.NavigateToSubPage(typeof(Pages_Share.Sub.Account.FavoriteAnimePage), "anime");

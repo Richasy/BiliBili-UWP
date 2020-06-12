@@ -132,21 +132,6 @@ namespace BiliBili_UWP.Pages_Tablet.Main
             }
         }
 
-        private async void RefreshButton_Click(object sender, RoutedEventArgs e)
-        {
-            var current = RegionListView.SelectedItem as RegionContainer;
-            RefreshButton.IsEnabled = false;
-            if (current != null)
-            {
-                var source = RegionDetailList.Where(p => p.Tid == current.tid).FirstOrDefault();
-                source.Banner.Clear();
-                source.Collection.Clear();
-                source.Ctime = 0;
-                await SwitchRegion(source.Tid);
-            }
-            RefreshButton.IsEnabled = true;
-        }
-
         private void SubRegionButton_Click(object sender, RoutedEventArgs e)
         {
             var region = RegionListView.SelectedItem as RegionContainer;

@@ -77,8 +77,6 @@
                 <TextBlock Text="暂时无法获取到数据" Margin="0,10,0,0" HorizontalAlignment="Center" TextAlignment="Center"
                            Style="{StaticResource SmallTipTextStyle}"/>
             </StackPanel>
-            <Button Style="{StaticResource DefaultCircleButtonStyle}" Opacity="0.8" Content="&#xE9CC;" HorizontalAlignment="Right"
-                    VerticalAlignment="Bottom" x:Name="RefreshButton" Click="RefreshButton_Click" ToolTipService.ToolTip="刷新"/>
         </Grid>
     </Grid>
 </Page>

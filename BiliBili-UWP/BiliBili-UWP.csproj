@@ -24,10 +24,11 @@
     <AppxPackageDir>E:\Package\BiliBili\</AppxPackageDir>
     <GenerateTestArtifacts>False</GenerateTestArtifacts>
     <AppxBundle>Always</AppxBundle>
-    <AppxBundlePlatforms>x64</AppxBundlePlatforms>
+    <AppxBundlePlatforms>x86|x64|arm|arm64</AppxBundlePlatforms>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
     <AppxSymbolPackageEnabled>True</AppxSymbolPackageEnabled>
-    <PackageCertificateThumbprint>107C50E16C9F31893F3648D5B61E5A1BA520C006</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>19DE3251AB16B9B0D867892B047B3BB7FF135FF9</PackageCertificateThumbprint>
+    <PackageCertificateKeyFile />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -430,8 +431,8 @@
     <Compile Include="Pages-Share\Sub\Video\SubRegionPage.xaml.cs">
       <DependentUpon>SubRegionPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages-Share\Sub\Video\VideoDynamicPage.xaml.cs">
-      <DependentUpon>VideoDynamicPage.xaml</DependentUpon>
+    <Compile Include="Pages-Share\Sub\Video\DynamicPage.xaml.cs">
+      <DependentUpon>DynamicPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages-Share\Sub\Video\ViewLaterPage.xaml.cs">
       <DependentUpon>ViewLaterPage.xaml</DependentUpon>
@@ -557,7 +558,6 @@
     <Content Include="Others\NetworkError.txt" />
     <Content Include="Others\Shortcut.txt" />
     <Content Include="Others\Update.txt" />
-    <None Include="BiliBili-UWP_TemporaryKey.pfx" />
     <None Include="Package.StoreAssociation.xml" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
@@ -917,7 +917,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages-Share\Sub\Video\VideoDynamicPage.xaml">
+    <Page Include="Pages-Share\Sub\Video\DynamicPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

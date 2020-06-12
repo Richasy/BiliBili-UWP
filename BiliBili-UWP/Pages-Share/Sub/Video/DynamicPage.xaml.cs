@@ -2,6 +2,7 @@
 using BiliBili_Lib.Service;
 using BiliBili_Lib.Tools;
 using BiliBili_UWP.Components.Controls;
+using BiliBili_UWP.Models.Core;
 using BiliBili_UWP.Models.UI.Interface;
 using System;
 using System.Collections.Generic;
@@ -27,22 +28,29 @@ namespace BiliBili_UWP.Pages_Share.Sub.Video
     /// <summary>
     /// 可用于自身或导航至 Frame 内部的空白页。
     /// </summary>
-    public sealed partial class VideoDynamicPage : Page,IRefreshPage
+    public sealed partial class DynamicPage : Page,IRefreshPage
     {
         private ObservableCollection<Topic> DynamicCollection = new ObservableCollection<Topic>();
+        private List<Topic> TotalList = new List<Topic>();
         private TopicService _topicService = App.BiliViewModel._client.Topic;
         private bool _isDynamicRequesting = false;
-        private string _dynamicOffset = "";
+        private string offset = "";
+        private BiliViewModel biliVM = App.BiliViewModel;
+        private bool _isOnlyVideo = false;
         private bool _isInit = false;
-        public VideoDynamicPage()
+        public DynamicPage()
         {
             this.InitializeComponent();
+            biliVM.IsLoginChanged += IsLoginChanged;
             NavigationCacheMode = NavigationCacheMode.Enabled;
         }
-
+        private async void IsLoginChanged(object sender, bool e)
+        {
+            await Refresh();
+        }
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
-            App.AppViewModel.CurrentSubPageControl.SubPageTitle = "视频动态";
+            App.AppViewModel.CurrentSubPageControl.SubPageTitle = "动态";
             if (e.NavigationMode == NavigationMode.Back)
                 return;
             if (_isInit)
@@ -53,15 +61,23 @@ namespace BiliBili_UWP.Pages_Share.Sub.Video
             await Refresh();
             base.OnNavigatedTo(e);
         }
-
+        private void Reset()
+        {
+            DynamicCollection.Clear();
+            TotalList.Clear();
+            LoadingRing.IsActive = false;
+            offset = "";
+            _isOnlyVideo = AppTool.GetBoolSetting(BiliBili_Lib.Enums.Settings.IsDynamicOnlyVideo);
+            OnlyVideoSwitch.IsOn = _isOnlyVideo;
+            DynamicHolderText.Visibility = Visibility.Collapsed;
+            LoadingBar.Visibility = Visibility.Collapsed;
+        }
         public async Task Refresh()
         {
             _isInit = false;
+            Reset();
             LoadingRing.IsActive = true;
-            DynamicCollection.Clear();
-            _dynamicOffset = "";
-            _isDynamicRequesting = false;
-            await LoadMoreDynamic();
+            await LoadDynamic();
             LoadingRing.IsActive = false;
             _isInit = true;
         }
@@ -71,11 +87,11 @@ namespace BiliBili_UWP.Pages_Share.Sub.Video
             var ele = sender as ScrollViewer;
             if (ele.ExtentHeight - ele.ViewportHeight - ele.VerticalOffset < 50)
             {
-                if (!string.IsNullOrEmpty(_dynamicOffset))
-                    await LoadMoreDynamic();
+                if (!string.IsNullOrEmpty(offset))
+                    await LoadDynamic();
             }
         }
-        private async Task LoadMoreDynamic()
+        private async Task LoadDynamic()
         {
             if (!App.BiliViewModel.IsLogin)
             {
@@ -86,7 +102,7 @@ namespace BiliBili_UWP.Pages_Share.Sub.Video
             {
                 _isDynamicRequesting = true;
                 Tuple<string, List<Topic>> data = null;
-                if (string.IsNullOrEmpty(_dynamicOffset))
+                if (string.IsNullOrEmpty(offset))
                 {
                     string lastSeemId = AppTool.GetLocalSetting(BiliBili_Lib.Enums.Settings.LastSeemDynamicId, "0");
                     var temp = await _topicService.GetNewDynamicAsync(lastSeemId);
@@ -94,11 +110,12 @@ namespace BiliBili_UWP.Pages_Share.Sub.Video
                         data = new Tuple<string, List<Topic>>(temp.history_offset, temp.cards);
                 }
                 else
-                    data = await _topicService.GetHistoryDynamicAsync(_dynamicOffset);
+                    data = await _topicService.GetHistoryDynamicAsync(offset);
                 if (data != null)
                 {
-                    _dynamicOffset = data.Item1;
-                    DynamicCollectionInit(data.Item2);
+                    offset = data.Item1;
+                    data.Item2.ForEach(p => TotalList.Add(p));
+                    DynamicCollectionInit();
                 }
                 DynamicHolderText.Visibility = DynamicCollection.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
                 _isDynamicRequesting = false;
@@ -119,13 +136,18 @@ namespace BiliBili_UWP.Pages_Share.Sub.Video
                     var data = await _topicService.GetNewDynamicAsync(lastSeemId);
                     if (data != null)
                     {
-                        DynamicCollectionInit(data.cards);
+                        for (int i = data.cards.Count - 1; i >= 0; i--)
+                        {
+                            if (!TotalList.Contains(data.cards[i]))
+                                TotalList.Insert(0, data.cards[i]);
+                        }
+                        DynamicCollectionInit();
                     }
                     _isDynamicRequesting = false;
                 }
             }
         }
-        private void DynamicCollectionInit(List<Topic> TotalList)
+        private void DynamicCollectionInit()
         {
             foreach (var item in TotalList)
             {
@@ -137,7 +159,7 @@ namespace BiliBili_UWP.Pages_Share.Sub.Video
                         index = DynamicCollection.IndexOf(temp);
                     else
                         index = DynamicCollection.Count;
-                    if (item.desc.type == 8 || item.desc.type == 512)
+                    if ((_isOnlyVideo && ((item.desc.type == 8) || (item.desc.type == 512))) || !_isOnlyVideo)
                     {
                         DynamicCollection.Insert(index, item);
                     }
@@ -149,6 +171,26 @@ namespace BiliBili_UWP.Pages_Share.Sub.Video
             args.Handled = true;
             TopicCard card = (TopicCard)args.ItemContainer.ContentTemplateRoot;
             card.RenderContainer(args);
+        }
+
+        private void OnlyVideoSwitch_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (!_isInit)
+                return;
+            _isOnlyVideo = (sender as ToggleSwitch).IsOn;
+            AppTool.WriteLocalSetting(BiliBili_Lib.Enums.Settings.IsDynamicOnlyVideo, _isOnlyVideo.ToString());
+            if (_isOnlyVideo)
+            {
+                for (int i = DynamicCollection.Count - 1; i >= 0; i--)
+                {
+                    if (DynamicCollection[i].desc.type != 8 && DynamicCollection[i].desc.type != 512)
+                        DynamicCollection.RemoveAt(i);
+                }
+            }
+            else
+            {
+                DynamicCollectionInit();
+            }
         }
     }
 }
