@@ -60,21 +60,7 @@ namespace BiliBili_UWP.Pages_Tablet.Main
             DetailContainer.Children.Add(_bangumiBlock);
             _bangumiBlock.Visibility = Visibility.Collapsed;
             _videoBlock.Visibility = Visibility.Collapsed;
-            if(VideoCollection.Count>0 && VideoView.SelectedItem != null)
-            {
-                var item = VideoView.SelectedItem as VideoRecommend;
-                HoldContainer.Visibility = Visibility.Collapsed;
-                if (item.card_goto != "bangumi")
-                {
-                    _videoBlock.Visibility = Visibility.Visible;
-                    await _videoBlock.Init(item.args.aid);
-                }
-                else
-                {
-                    _bangumiBlock.Visibility = Visibility.Visible;
-                    await InitBangumi(item);
-                }
-            }
+            VideoView.SelectedIndex = -1;
             if (e.NavigationMode == NavigationMode.Back || _isInit)
                 return;
             await RefreshVideo();

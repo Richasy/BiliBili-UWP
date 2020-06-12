@@ -12,8 +12,8 @@
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:DataType="bilibili:WebVideo" x:Key="RankItemTemplate">
-            <controls:CoverVideoCard Cover="{x:Bind pic}" Duration="{x:Bind duration}" Margin="8"
-                                     RightTopImage="{x:Bind render_sign}" Title="{x:Bind title}"
+            <controls:CoverVideoCard Cover="{x:Bind pic}" Duration="{x:Bind duration}" Margin="0,10"
+                                     RightTopImage="{x:Bind render_sign}" Title="{x:Bind title}" Width="230"
                                      VideoId="{x:Bind aid}" ExtraButtonVisbility="Visible"/>
         </DataTemplate>
     </Page.Resources>
@@ -22,7 +22,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="10"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <ListView Margin="0,30,0,15" ItemTemplate="{StaticResource RegionItemTemplate}"
                   Style="{StaticResource BasicListView}" ItemsSource="{x:Bind RegionCollection}"
@@ -39,21 +39,11 @@
         </Grid>
         <muxc:ProgressBar Style="{StaticResource MuxcProgressBarStyle}" Grid.Row="2" Visibility="Collapsed" x:Name="LoadingBar"/>
         <Grid Grid.Row="3">
-            <adaptivegridview:AdaptiveGridView x:Name="VideoGridView"
-                                        ItemTemplate="{StaticResource RankItemTemplate}"
-                                        IsItemClickEnabled="True"
-                                        DesiredWidth="230"
-                                        Style="{StaticResource BasicGridView}"
-                                        ItemContainerStyle="{StaticResource TransparentGridViewItemContainerStyle}"
-                                        StretchContentForSingleRow="False"
-                                        ItemsSource="{x:Bind DisplayCollection}"
-                                        SelectionChanged="VideoGridView_SelectionChanged"
-                                        />
-            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="NoDataContainer" Visibility="Collapsed">
-                <Image Source="ms-appx:///Assets/null.png" Width="100" HorizontalAlignment="Center"/>
-                <TextBlock Text="暂时无法获取到数据" Margin="0,10,0,0" HorizontalAlignment="Center" TextAlignment="Center"
-                           Style="{StaticResource SmallTipTextStyle}"/>
-            </StackPanel>
+            <ListView x:Name="VideoView" ItemContainerStyle="{StaticResource TransparentListViewContainerStyle}" ItemsSource="{x:Bind DisplayCollection}"
+                  Style="{StaticResource BasicListView}" Padding="0,10" ItemTemplate="{StaticResource RankItemTemplate}" ItemsPanel="{StaticResource HorizontalListViewItemsPanel}"
+                  HorizontalAlignment="Right" SelectionChanged="VideoView_SelectionChanged" SelectionMode="Single" ScrollViewer.VerticalScrollMode="Disabled"/>
+            <TextBlock Style="{StaticResource TipTextStyle}" Text="无法加载排行榜列表" FontWeight="Bold" VerticalAlignment="Center"
+                           x:Name="HolderText" Visibility="Collapsed"/>
         </Grid>
         
     </Grid>

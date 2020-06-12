@@ -43,16 +43,9 @@ namespace BiliBili_UWP.Pages_Tablet.Main
         {
             DetailContainer.Children.Add(_videoBlock);
             _videoBlock.Visibility = Visibility.Collapsed;
-            if (DisplayCollection.Count > 0 && VideoGridView.SelectedItem != null)
-            {
-                var item = VideoGridView.SelectedItem as WebVideo;
-                HoldContainer.Visibility = Visibility.Collapsed;
-                _videoBlock.Visibility = Visibility.Visible;
-                await _videoBlock.Init(Convert.ToInt32(item.aid));
-            }
+            VideoView.SelectedIndex = -1;
             if (e.NavigationMode == NavigationMode.Back || _isInit)
                 return;
-            VideoGridView.EnableAnimation = App.AppViewModel.IsEnableAnimation;
             await Refresh();
             base.OnNavigatedTo(e);
             _isInit = true;
@@ -106,13 +99,11 @@ namespace BiliBili_UWP.Pages_Tablet.Main
         {
             Reset();
             await LoadRegionRankVideo();
-            VideoGridView.EnableAnimation = false;
         }
 
         private async Task LoadRegionRankVideo()
         {
             LoadingBar.Visibility = Visibility.Visible;
-            NoDataContainer.Visibility = Visibility.Visible;
             if (App.AppViewModel.CurrentVideoPlayer != null)
                 App.AppViewModel.CurrentVideoPlayer.Close();
             var source = RankDetailList.Where(p => p.Item1 == _selectRegion).FirstOrDefault();
@@ -135,7 +126,7 @@ namespace BiliBili_UWP.Pages_Tablet.Main
                 }
                 source.Item2.ForEach(p => DisplayCollection.Add(p));
             }
-            NoDataContainer.Visibility = source.Item2.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+            HolderText.Visibility = source.Item2.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
             LoadingBar.Visibility=Visibility.Collapsed;
         }
         private async void RegionListView_ItemClick(object sender, ItemClickEventArgs e)
@@ -145,9 +136,9 @@ namespace BiliBili_UWP.Pages_Tablet.Main
             await LoadRegionRankVideo();
         }
 
-        private async void VideoGridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void VideoView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var item = VideoGridView.SelectedItem as WebVideo;
+            var item = VideoView.SelectedItem as WebVideo;
             if (item == null)
             {
                 _videoBlock.Visibility = Visibility.Collapsed;
