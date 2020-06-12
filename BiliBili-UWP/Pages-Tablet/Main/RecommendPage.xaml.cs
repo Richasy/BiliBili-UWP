@@ -93,6 +93,8 @@ namespace BiliBili_UWP.Pages_Tablet.Main
         {
             DetailContainer.Children.Remove(_videoBlock);
             DetailContainer.Children.Remove(_bangumiBlock);
+            _videoBlock.Visibility = Visibility.Collapsed;
+            _bangumiBlock.Visibility = Visibility.Collapsed;
             TabletMainPage.Current.HideBackgroundImage();
             App.AppViewModel.CurrentVideoPlayer = null;
             _videoBlock.VideoPlayer.Close();
@@ -101,6 +103,10 @@ namespace BiliBili_UWP.Pages_Tablet.Main
         }
         private async Task RefreshVideo()
         {
+            if(App.AppViewModel.CurrentVideoPlayer != null)
+            {
+                App.AppViewModel.CurrentVideoPlayer.Close();
+            }
             _videoBlock.Visibility = Visibility.Collapsed;
             _bangumiBlock.Visibility = Visibility.Collapsed;
             HoldContainer.Visibility = Visibility.Visible;
@@ -135,6 +141,8 @@ namespace BiliBili_UWP.Pages_Tablet.Main
             var item = VideoView.SelectedItem as VideoRecommend;
             if(item==null)
             {
+                if (App.AppViewModel.CurrentVideoPlayer != null)
+                    App.AppViewModel.CurrentVideoPlayer.Close();
                 _videoBlock.Visibility = Visibility.Collapsed;
                 _bangumiBlock.Visibility = Visibility.Collapsed;
                 HoldContainer.Visibility = Visibility.Visible;
@@ -167,6 +175,13 @@ namespace BiliBili_UWP.Pages_Tablet.Main
                     await _bangumiBlock.Init(Convert.ToInt32(item.param), true);
                 }
             }
+        }
+
+        private async void RefreshButton_Click(object sender, RoutedEventArgs e)
+        {
+            RefreshButton.IsLoading = true;
+            await RefreshVideo();
+            RefreshButton.IsLoading = false;
         }
     }
 }

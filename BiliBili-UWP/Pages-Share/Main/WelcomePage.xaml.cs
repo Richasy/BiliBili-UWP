@@ -36,11 +36,13 @@ namespace BiliBili_UWP.Pages_Share.Main
             if (index == 0)
             {
                 AppTool.WriteLocalSetting(BiliBili_Lib.Enums.Settings.DisplayMode, "Desktop");
+                App._isTabletMode = false;
                 rootFrame.Navigate(typeof(DesktopMainPage),new DrillInNavigationTransitionInfo());
             }
             else
             {
                 AppTool.WriteLocalSetting(BiliBili_Lib.Enums.Settings.DisplayMode, "Tablet");
+                App._isTabletMode = true;
                 rootFrame.Navigate(typeof(TabletMainPage), new DrillInNavigationTransitionInfo());
             }
         }

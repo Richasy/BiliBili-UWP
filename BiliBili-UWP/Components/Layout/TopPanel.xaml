@@ -59,6 +59,6 @@
                   ScrollViewer.VerticalScrollMode="Disabled"/>
         <controls1:AppSearchBox Grid.Column="3" VerticalAlignment="Center" Background="{ThemeResource MaskAcrylicBackground}"
                                 Margin="15,0" Width="300" HorizontalAlignment="Right" x:Name="AppSearchBox"/>
-        <account:TopSlimAccountPanel Grid.Column="4" VerticalAlignment="Center"/>
+        <account:TopSlimAccountPanel Grid.Column="4" VerticalAlignment="Center" x:Name="SlimAccountPanel"/>
     </Grid>
 </UserControl>

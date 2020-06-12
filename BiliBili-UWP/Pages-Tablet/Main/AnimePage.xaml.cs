@@ -54,6 +54,7 @@ namespace BiliBili_UWP.Pages_Tablet.Main
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
             DetailContainer.Children.Remove(_bangumiBlock);
+            _bangumiBlock.Visibility = Visibility.Collapsed;
             TabletMainPage.Current.HideBackgroundImage();
             App.AppViewModel.CurrentVideoPlayer = null;
             _bangumiBlock.VideoPlayer.Close();
@@ -86,6 +87,8 @@ namespace BiliBili_UWP.Pages_Tablet.Main
             LoadingBar.Visibility = Visibility.Visible;
             HoldContainer.Visibility = Visibility.Visible;
             _bangumiBlock.Visibility = Visibility.Collapsed;
+            if (App.AppViewModel.CurrentVideoPlayer != null)
+                App.AppViewModel.CurrentVideoPlayer.Close();
             int hot_id = isJP ? 119 : 124;
             HotCollection.Clear();
             var items = await _animeService.GetAnimeSectionExchange(1, hot_id);

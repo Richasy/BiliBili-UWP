@@ -17,6 +17,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid>
             <Grid Padding="30,20" x:Name="DetailContainer">
@@ -27,7 +28,17 @@
                 </StackPanel>
             </Grid>
         </Grid>
-        <Grid Grid.Row="1" Margin="0,20,0,0">
+        <Grid Grid.Row="1" Margin="0,10,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Style="{StaticResource TitleTextStyle}" Text="推荐视频" VerticalAlignment="Center"/>
+            <widgets:AsyncButton Style="{StaticResource DefaultAsyncButtonStyle}" Background="Transparent" BorderBrush="{ThemeResource LineColor}" BorderThickness="1"
+                                 CornerRadius="15" Icon="&#xE9CC;" Text="换一换" x:Name="RefreshButton" Click="RefreshButton_Click" Grid.Column="1"
+                                 VerticalAlignment="Center" FontSize="{CustomResource SmallFontSize}"/>
+        </Grid>
+        <Grid Grid.Row="2" Margin="0,0,0,0">
             <ListView x:Name="VideoView" ItemContainerStyle="{StaticResource TransparentListViewContainerStyle}" ItemsSource="{x:Bind VideoCollection}"
                   Style="{StaticResource BasicListView}" Padding="0,10" ItemTemplate="{StaticResource VideoTemplate}" ItemsPanel="{StaticResource HorizontalListViewItemsPanel}"
                   HorizontalAlignment="Right" SelectionChanged="VideoView_SelectionChanged" SelectionMode="Single" ScrollViewer.VerticalScrollMode="Disabled"/>

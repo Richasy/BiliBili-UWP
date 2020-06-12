@@ -61,6 +61,7 @@ namespace BiliBili_UWP.Pages_Tablet.Main
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
             DetailContainer.Children.Remove(_videoBlock);
+            _videoBlock.Visibility = Visibility.Collapsed;
             TabletMainPage.Current.HideBackgroundImage();
             App.AppViewModel.CurrentVideoPlayer = null;
             _videoBlock.VideoPlayer.Close();
@@ -112,7 +113,8 @@ namespace BiliBili_UWP.Pages_Tablet.Main
         {
             LoadingBar.Visibility = Visibility.Visible;
             NoDataContainer.Visibility = Visibility.Visible;
-
+            if (App.AppViewModel.CurrentVideoPlayer != null)
+                App.AppViewModel.CurrentVideoPlayer.Close();
             var source = RankDetailList.Where(p => p.Item1 == _selectRegion).FirstOrDefault();
             if (source != null)
             {

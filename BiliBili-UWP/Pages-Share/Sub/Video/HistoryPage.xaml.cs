@@ -3,6 +3,7 @@ using BiliBili_Lib.Service;
 using BiliBili_UWP.Components.Widgets;
 using BiliBili_UWP.Dialogs;
 using BiliBili_UWP.Models.Core;
+using BiliBili_UWP.Models.UI.Interface;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -27,7 +28,7 @@ namespace BiliBili_UWP.Pages_Share.Sub.Video
     /// <summary>
     /// 可用于自身或导航至 Frame 内部的空白页。
     /// </summary>
-    public sealed partial class HistoryPage : Page
+    public sealed partial class HistoryPage : Page,IRefreshPage
     {
         private bool _isInit = false;
         public BiliViewModel biliVM = App.BiliViewModel;

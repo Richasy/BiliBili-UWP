@@ -19,6 +19,22 @@
                 <local:SideSlimAccountPanel/>
                 <ListView ItemContainerStyle="{StaticResource BasicListViewContainerStyle}" Style="{StaticResource BasicListView}" Margin="0,15,0,0"
                           IsItemClickEnabled="True" SelectionMode="None" x:Name="MenuListView" ItemClick="MenuListView_ItemClick" Grid.Row="1" MinWidth="250">
+                    <ListViewItem Tag="Message" Padding="8">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <widgets:IconTextBlock Icon="&#xE99E;" Text="我的消息" Foreground="{ThemeResource ImportantTextColor}" HorizontalAlignment="Left"
+                                               FontSize="{CustomResource BodyFontSize}" IconFontSize="{CustomResource BodyFontSize}"/>
+                            <Border Grid.Column="1" VerticalAlignment="Center" Padding="5,3" CornerRadius="2" Background="{ThemeResource PrimaryColorOpacity}"
+                                    x:Name="MessageUnreadContainer">
+                                <TextBlock Style="{StaticResource SmallTipTextStyle}" Foreground="{ThemeResource PrimaryColor}" VerticalAlignment="Center"
+                           x:Name="MessageUnreadBlock"/>
+                            </Border>
+                        </Grid>
+                        
+                    </ListViewItem>
                     <ListViewItem Tag="VideoDynamic" Padding="8">
                         <widgets:IconTextBlock Icon="&#xEA30;" Text="视频动态" Foreground="{ThemeResource ImportantTextColor}"
                                                FontSize="{CustomResource BodyFontSize}" IconFontSize="{CustomResource BodyFontSize}"/>

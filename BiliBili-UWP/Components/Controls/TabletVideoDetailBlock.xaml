@@ -194,7 +194,7 @@
             <local:VideoPlayer x:Name="MyVideoPlayer" FullWindowChanged="VideoPlayer_FullWindowChanged"
                                   CinemaButtonVisibility="Visible" CinemaChanged="VideoPlayer_CinemaChanged"
                                   CompactOverlayChanged="VideoPlayer_CompactOverlayChanged" Loaded="MyVideoPlayer_Loaded"
-                                  SeparateButtonClick="VideoPlayer_SeparateButtonClick" DanmakuBarVisibility="Collapsed"
+                                  SeparateButtonClick="VideoPlayer_SeparateButtonClick"
                                   PartSwitched="VideoPlayer_PartSwitched" MediaEnded="MyVideoPlayer_MediaEnded"
                                PreviousVideoRequest="MyVideoPlayer_PreviousVideoRequest"
                                NextVideoRequest="MyVideoPlayer_NextVideoRequest"/>

@@ -1,0 +1,75 @@
+﻿<Page
+    x:Class="BiliBili_UWP.Pages_Share.Sub.Account.MessagePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BiliBili_UWP.Pages_Share.Sub.Account"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ext="using:BiliBili_Controls.Extensions"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:ui="using:BiliBili_UWP.Models.UI" xmlns:widgets="using:BiliBili_UWP.Components.Widgets" xmlns:feedback="using:BiliBili_Lib.Models.BiliBili.Feedback" xmlns:controls="using:BiliBili_UWP.Components.Controls"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <DataTemplate x:DataType="ui:IconItem" x:Key="HeaderItemTemplate">
+            <ListViewItem x:Name="TabContainer" Margin="10,0">
+                <StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <widgets:IconTextBlock Icon="{x:Bind Icon}" Text="{x:Bind Name}" VerticalAlignment="Center" FontSize="{CustomResource SmallFontSize}" IconFontSize="{CustomResource BasicFontSize}"
+                                       IconForeground="{ThemeResource PrimaryColor}" IsTextSelectionEnabled="False"/>
+                        <Border Visibility="{x:Bind Param,Converter={StaticResource StringVisibilityConverter},Mode=OneWay}"
+                        Background="{ThemeResource SecondaryColorOpacity}" Padding="3" CornerRadius="2" Grid.Column="1"
+                        Margin="8,0,0,0" VerticalAlignment="Center">
+                            <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="{CustomResource MiniFontSize}" Foreground="{ThemeResource SecondaryColorOver}"
+                               Text="{x:Bind Param,Mode=OneWay}"/>
+                        </Border>
+                    </Grid>
+                    <Border Height="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" x:Name="ItemSign" Margin="0,10,0,0"
+                            Background="{Binding ElementName=TabContainer,Path=IsSelected,Converter={StaticResource SideMenuSignColorConverter},Mode=OneWay}"/>
+                </StackPanel>
+            </ListViewItem>
+        </DataTemplate>
+        <DataTemplate x:DataType="feedback:FeedReplyDetail" x:Name="ReplyItemTemplate">
+            <controls:MessageReplyBlock Data="{Binding}" Margin="0,5"/>
+        </DataTemplate>
+        <DataTemplate x:DataType="feedback:FeedAtDetail" x:Name="AtItemTemplate">
+            <controls:MessageAtBlock Data="{Binding}" Margin="0,5"/>
+        </DataTemplate>
+        <DataTemplate x:DataType="feedback:FeedLikeDetail" x:Name="LikeItemTemplate">
+            <controls:MessageLikeBlock Data="{Binding}" Margin="0,5"/>
+        </DataTemplate>
+    </Page.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+        <ListView Margin="0,0,0,10" ItemTemplate="{StaticResource HeaderItemTemplate}"
+                  Style="{StaticResource BasicListView}" ItemsSource="{x:Bind HeaderCollection}" SelectionMode="Single"
+                  ItemsPanel="{StaticResource HorizontalListViewItemsPanel}" Padding="-10,0,0,10"
+                  IsItemClickEnabled="True" x:Name="HeaderListView" ItemClick="HeaderListView_ItemClick"
+                  ext:IndicatorService.Name="ItemSign" ItemContainerStyle="{StaticResource TransparentListViewContainerStyle}"
+                  ext:IndicatorService.IsScaleEnabled="True" ScrollViewer.VerticalScrollMode="Disabled"/>
+        <Grid Grid.Row="1">
+            <ScrollViewer Style="{StaticResource BasicScrollViewer}" ViewChanged="ScrollViewer_ViewChanged">
+                <ListView x:Name="FeedListView"
+                      HorizontalAlignment="Stretch"
+                      ItemContainerStyle="{StaticResource TransparentListViewContainerStyle}"
+                      Style="{StaticResource NoScrollListView}"
+                      SelectionMode="None"
+                      >
+                </ListView>
+            </ScrollViewer>
+            
+            <muxc:ProgressRing Style="{StaticResource MuxcProgressRingStyle}" x:Name="LoadingRing"/>
+            <muxc:ProgressBar Style="{StaticResource MuxcProgressBarStyle}" x:Name="LoadingBar" VerticalAlignment="Bottom"/>
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="NoDataContainer" Visibility="Collapsed">
+                <Image Source="ms-appx:///Assets/null.png" Width="100" HorizontalAlignment="Center"/>
+                <TextBlock Text="没有相关数据" Margin="0,10,0,0" HorizontalAlignment="Center" TextAlignment="Center"
+                           Style="{StaticResource SmallTipTextStyle}"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Page>

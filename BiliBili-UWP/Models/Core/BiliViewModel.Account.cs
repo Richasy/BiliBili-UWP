@@ -66,8 +66,10 @@ namespace BiliBili_UWP.Models.Core
                 if (unread != null)
                 {
                     int total = unread.like + unread.reply + unread.at;
-                    if(!App._isTabletMode)
+                    if (!App._isTabletMode)
                         App.AppViewModel.CurrentSidePanel.SetMenuItemUnread(Enums.AppMenuItemType.MyMessage, total);
+                    else
+                        App.AppViewModel.CurrentTopPanel.SetUnreadCount(total);
                 }
             }
         }

@@ -98,6 +98,12 @@ namespace BiliBili_UWP.Components.Account
             AccountFlyout.ShowAt(DetailContainer);
         }
 
+        public void SetMessageUnread(int unread)
+        {
+            MessageUnreadBlock.Text = unread.ToString();
+            MessageUnreadContainer.Visibility = unread > 0 ? Visibility.Visible : Visibility.Collapsed;
+        }
+
         private void MenuListView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var item = e.ClickedItem as FrameworkElement;
@@ -105,6 +111,9 @@ namespace BiliBili_UWP.Components.Account
             string tag = parent.Tag.ToString();
             switch (tag)
             {
+                case "Message":
+                    App.AppViewModel.NavigateToSubPage(typeof(Pages_Share.Sub.Account.MessagePage));
+                    break;
                 case "VideoDynamic":
                     App.AppViewModel.NavigateToSubPage(typeof(Pages_Share.Sub.Video.VideoDynamicPage));
                     break;

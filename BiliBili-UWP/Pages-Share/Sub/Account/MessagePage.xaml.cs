@@ -21,12 +21,12 @@ using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
-namespace BiliBili_UWP.Pages.Main
+namespace BiliBili_UWP.Pages_Share.Sub.Account
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MessagePage : Page, IRefreshPage
+    public sealed partial class MessagePage : Page,IRefreshPage
     {
         public ObservableCollection<IconItem> HeaderCollection = new ObservableCollection<IconItem>();
         public ObservableCollection<FeedReplyDetail> ReplyCollection = new ObservableCollection<FeedReplyDetail>();
@@ -36,27 +36,18 @@ namespace BiliBili_UWP.Pages.Main
         private FeedCursor _replyCursor;
         private FeedCursor _atCursor;
         private FeedCursor _likeCursor;
-        private double _scrollOffset = 0d;
         public MessagePage()
         {
             this.InitializeComponent();
             NavigationCacheMode = NavigationCacheMode.Enabled;
         }
-
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
-            App.AppViewModel.CurrentPagePanel.ScrollToBottom = ScrollToBottom;
-            App.AppViewModel.CurrentPagePanel.ScrollChanged = ScrollViewerChanged;
+            App.AppViewModel.CurrentSubPageControl.SubPageTitle = "我的消息";
             if (e.NavigationMode == NavigationMode.Back)
                 return;
             await Refresh();
             base.OnNavigatedTo(e);
-        }
-        protected override void OnNavigatedFrom(NavigationEventArgs e)
-        {
-            App.AppViewModel.CurrentPagePanel.ScrollToBottom = null;
-            App.AppViewModel.CurrentPagePanel.ScrollChanged = null;
-            base.OnNavigatedFrom(e);
         }
         public void Reset()
         {
@@ -115,8 +106,8 @@ namespace BiliBili_UWP.Pages.Main
 
         public async Task InitReply(bool isRefresh = false)
         {
-            FeedGridView.ItemTemplate = ReplyItemTemplate;
-            FeedGridView.ItemsSource = ReplyCollection;
+            FeedListView.ItemTemplate = ReplyItemTemplate;
+            FeedListView.ItemsSource = ReplyCollection;
             if (!isRefresh && ((_replyCursor != null && _replyCursor.is_end) || ReplyCollection.Count > 0))
             {
                 NoDataContainer.Visibility = ReplyCollection.Count > 0 ? Visibility.Collapsed : Visibility.Visible;
@@ -139,8 +130,8 @@ namespace BiliBili_UWP.Pages.Main
         }
         public async Task InitAt(bool isRefresh = false)
         {
-            FeedGridView.ItemTemplate = AtItemTemplate;
-            FeedGridView.ItemsSource = AtCollection;
+            FeedListView.ItemTemplate = AtItemTemplate;
+            FeedListView.ItemsSource = AtCollection;
             if (!isRefresh && ((_atCursor != null && _atCursor.is_end) || AtCollection.Count > 0))
             {
                 NoDataContainer.Visibility = AtCollection.Count > 0 ? Visibility.Collapsed : Visibility.Visible;
@@ -164,8 +155,8 @@ namespace BiliBili_UWP.Pages.Main
         }
         public async Task InitLike(bool isRefresh = false)
         {
-            FeedGridView.ItemTemplate = LikeItemTemplate;
-            FeedGridView.ItemsSource = LikeCollection;
+            FeedListView.ItemTemplate = LikeItemTemplate;
+            FeedListView.ItemsSource = LikeCollection;
             if (!isRefresh && ((_likeCursor != null && _likeCursor.is_end) || LikeCollection.Count > 0))
             {
                 NoDataContainer.Visibility = LikeCollection.Count > 0 ? Visibility.Collapsed : Visibility.Visible;
@@ -201,19 +192,6 @@ namespace BiliBili_UWP.Pages.Main
             var item = e.ClickedItem as IconItem;
             await SwitchHeader(item);
         }
-        private void ScrollViewerChanged()
-        {
-            double offset = App.AppViewModel.CurrentPagePanel.PageScrollViewer.VerticalOffset;
-            _scrollOffset = offset;
-        }
-        private async void ScrollToBottom()
-        {
-            var item = HeaderListView.SelectedItem as IconItem;
-            if (item != null)
-            {
-                await SwitchHeader(item, true);
-            }
-        }
 
         private async Task SwitchHeader(IconItem item, bool isRefresh = false)
         {
@@ -226,12 +204,16 @@ namespace BiliBili_UWP.Pages.Main
             await InitHeader();
             await App.BiliViewModel.CheckUnreadMessage();
         }
-
-        private void Page_Loaded(object sender, RoutedEventArgs e)
+        private async void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
         {
-            if (_scrollOffset > 0)
+            var ele = sender as ScrollViewer;
+            if (ele.ExtentHeight - ele.ViewportHeight - ele.VerticalOffset < 50)
             {
-                App.AppViewModel.CurrentPagePanel.PageScrollViewer.ChangeView(0, _scrollOffset, 1);
+                var item = HeaderListView.SelectedItem as IconItem;
+                if (item != null)
+                {
+                    await SwitchHeader(item, true);
+                }
             }
         }
     }

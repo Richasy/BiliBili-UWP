@@ -60,6 +60,11 @@ namespace BiliBili_UWP.Components.Layout
                 TopMenuItemClick?.Invoke(this, item);
             }
         }
+
+        public void SetUnreadCount(int count)
+        {
+            SlimAccountPanel.SetMessageUnread(count);
+        }
         public void SetSelectedItem(AppMenuItemType type)
         {
             if (type == AppMenuItemType.Line)
