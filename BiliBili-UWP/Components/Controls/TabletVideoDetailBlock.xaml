@@ -119,8 +119,9 @@
                         <Setter Target="NarrowRow.Height" Value="0.7*" />
                         <Setter Target="WideColumn.Width" Value="Auto" />
                         <Setter Target="InfoScrollViewer.(Grid.Row)" Value="2" />
-                        <Setter Target="VideoContainer.(Grid.Column)" Value="0" />
+                        <Setter Target="InfoScrollViewer.(Grid.Column)" Value="0" />
                         <Setter Target="VideoContainer.Margin" Value="0,0,0,30" />
+                        <Setter Target="InfoScrollViewer.Margin" Value="0,0,0,0" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -131,15 +132,16 @@
             <RowDefinition Height="Auto" x:Name="NarrowRow"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="1.2*" x:Name="WideColumn"/>
+            <ColumnDefinition Width="1.2*"/>
+            <ColumnDefinition Width="*" x:Name="WideColumn"/>
         </Grid.ColumnDefinitions>
         <Grid Grid.ColumnSpan="2">
             <local:HorizontalScrollSectionPanel Title="播放列表" ItemsSource="{x:Bind PlayBackupCollection}" x:Name="PlayListContainer"
                                                        ItemTemplate="{StaticResource PlayListItemTemplate}" ItemClick="PlayListContainer_ItemClick"
                                                        HoldText="播放列表内木有视频" Margin="0,0,0,20" Visibility="Collapsed"/>
         </Grid>
-        <ScrollViewer Style="{StaticResource BasicScrollViewer}" x:Name="InfoScrollViewer" Grid.Row="1">
+        <ScrollViewer Style="{StaticResource BasicScrollViewer}" x:Name="InfoScrollViewer" Grid.Row="1" Grid.Column="1"
+                       Margin="40,0,0,0">
             <Grid>
                 <StackPanel x:Name="DetailContainer">
                     <TextBlock x:Name="TitleBlock" Style="{StaticResource HeaderTextStyle}" FontSize="{CustomResource HeaderFontSize}" TextWrapping="Wrap"/>
@@ -190,7 +192,7 @@
                 <muxc:ProgressRing Style="{StaticResource MuxcProgressRingStyle}" x:Name="LoadingRing"/>
             </Grid>
         </ScrollViewer>
-        <Grid Grid.Column="1" Grid.Row="1" x:Name="VideoContainer" Margin="40,0,0,0">
+        <Grid Grid.Column="0" Grid.Row="1" x:Name="VideoContainer">
             <local:VideoPlayer x:Name="MyVideoPlayer" FullWindowChanged="VideoPlayer_FullWindowChanged"
                                   CinemaButtonVisibility="Visible" CinemaChanged="VideoPlayer_CinemaChanged"
                                   CompactOverlayChanged="VideoPlayer_CompactOverlayChanged" Loaded="MyVideoPlayer_Loaded"
