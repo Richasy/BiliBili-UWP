@@ -21,7 +21,7 @@
                 <TextBlock Style="{StaticResource SmallTipTextStyle}" Text="在此之后，显示模式可以随时在应用设置中切换" HorizontalAlignment="Center"/>
                 <GridView Margin="0,25,0,0" ItemContainerStyle="{StaticResource TransparentGridViewItemContainerStyle}"
                       Style="{StaticResource NoScrollGridView}" ItemClick="GridView_ItemClick" IsItemClickEnabled="True">
-                    <Grid Padding="30,20" Width="250" Height="200" Margin="0,0,10,0" Background="{ThemeResource CardBackground}">
+                    <Grid Padding="30,20" Width="250" Height="200" Margin="0,0,10,0" Background="{ThemeResource CardBackground}" Tag="Desktop">
                         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
                             <TextBlock Text="&#xE9FB;" Style="{StaticResource AppLogoStyle}" HorizontalAlignment="Center"/>
                             <TextBlock Style="{StaticResource TitleTextStyle}" Text="桌面模式" Foreground="{ThemeResource ImportantTextColor}"
@@ -30,7 +30,7 @@
                                    HorizontalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center" MaxWidth="150"/>
                         </StackPanel>
                     </Grid>
-                    <Grid Padding="30,20" Margin="10,0,0,0" Width="250" Height="200" Background="{ThemeResource CardBackground}">
+                    <Grid Padding="30,20" Margin="10,0,0,0" Width="250" Height="200" Background="{ThemeResource CardBackground}" Tag="Tablet">
                         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
                             <TextBlock Text="&#xE9EA;" Style="{StaticResource AppLogoStyle}" HorizontalAlignment="Center"/>
                             <TextBlock Style="{StaticResource TitleTextStyle}" Text="平板模式" Foreground="{ThemeResource ImportantTextColor}"

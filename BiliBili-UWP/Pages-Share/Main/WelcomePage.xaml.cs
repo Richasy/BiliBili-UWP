@@ -31,9 +31,9 @@ namespace BiliBili_UWP.Pages_Share.Main
 
         private void GridView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            var index = (sender as GridView).SelectedIndex;
+            var item = e.ClickedItem as Grid;
             Frame rootFrame = Window.Current.Content as Frame;
-            if (index == 0)
+            if (item.Tag.ToString() == "Desktop")
             {
                 AppTool.WriteLocalSetting(BiliBili_Lib.Enums.Settings.DisplayMode, "Desktop");
                 App._isTabletMode = false;

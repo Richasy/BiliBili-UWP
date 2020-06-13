@@ -56,6 +56,7 @@ namespace BiliBili_UWP.Models.Core
         public TabletVideoDetailBlock CurrentVideoDetailBlock;
         public TabletBangumiDetailBlock CurrentBangumiDetailBlock;
         public TopPanel CurrentTopPanel;
+        public bool IsVideoPageInit = false;
         public List<Tuple<Guid, Action<Size>>> WindowsSizeChangedNotify { get; set; } = new List<Tuple<Guid, Action<Size>>>();
         public ObservableCollection<SystemFont> FontCollection = new ObservableCollection<SystemFont>();
         public bool IsEnableAnimation = AppTool.GetBoolSetting(Settings.EnableAnimation);
@@ -133,7 +134,7 @@ namespace BiliBili_UWP.Models.Core
             //App._watch.Start();
             CurrentSubPageControl.CheckSubReplyPage();
             SelectedSideMenuItem = null;
-            if (sender != null && IsEnableAnimation)
+            if (sender != null && IsEnableAnimation && !IsVideoPageInit)
             {
                 //var image = VisualTreeExtension.VisualTreeFindName<FrameworkElement>((FrameworkElement)sender, "VideoCover");
                 string animationName = "VideoConnectedAnimation" + Guid.NewGuid().ToString("N");

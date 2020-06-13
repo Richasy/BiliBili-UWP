@@ -124,12 +124,10 @@ namespace BiliBili_UWP.Pages.Main
         private async void ConnectAnimation_Completed(ConnectedAnimation sender, object args)
         {
             sender = null;
-            UpdateLayout();
-            if (!_isInit)
-            {
+            if (!App.AppViewModel.IsVideoPageInit)
                 await Refresh();
-                _isInit = true;
-            }
+            App.AppViewModel.IsVideoPageInit = true;
+            UpdateLayout();
         }
         protected async override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
@@ -651,24 +649,24 @@ namespace BiliBili_UWP.Pages.Main
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            if (_isInit)
+            if (App.AppViewModel.IsVideoPageInit)
                 await Refresh();
-            if (!string.IsNullOrEmpty(App.AppViewModel.ConnectAnimationName))
+            if (!string.IsNullOrEmpty(App.AppViewModel.ConnectAnimationName) && !App.AppViewModel.IsVideoPageInit)
             {
                 var anim = ConnectedAnimationService.GetForCurrentView().GetAnimation(App.AppViewModel.ConnectAnimationName);
                 if (anim != null)
                 {
                     anim.Completed -= ConnectAnimation_Completed;
                     anim.Completed += ConnectAnimation_Completed;
-                    anim.TryStart(VideoPlayer);
+                    anim.TryStart(VideoHolder);
                 }
                 App.AppViewModel.ConnectAnimationName = "";
             }
-            else if (!_isInit)
+            else if (!App.AppViewModel.IsVideoPageInit)
             {
                 await Refresh();
+                App.AppViewModel.IsVideoPageInit = true;
             }
-            _isInit = true;
         }
 
         private void AutoLoopSwitch_Toggled(object sender, RoutedEventArgs e)
