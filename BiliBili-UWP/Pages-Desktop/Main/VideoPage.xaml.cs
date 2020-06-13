@@ -653,23 +653,22 @@ namespace BiliBili_UWP.Pages.Main
         {
             if (_isInit)
                 await Refresh();
-            if (!string.IsNullOrEmpty(App.AppViewModel.ConnectAnimationName) && !_isInit)
+            if (!string.IsNullOrEmpty(App.AppViewModel.ConnectAnimationName))
             {
                 var anim = ConnectedAnimationService.GetForCurrentView().GetAnimation(App.AppViewModel.ConnectAnimationName);
                 if (anim != null)
                 {
                     anim.Completed -= ConnectAnimation_Completed;
                     anim.Completed += ConnectAnimation_Completed;
-                    anim.TryStart(VideoHolder);
+                    anim.TryStart(VideoPlayer);
                 }
                 App.AppViewModel.ConnectAnimationName = "";
             }
             else if (!_isInit)
             {
                 await Refresh();
-                _isInit = true;
             }
-            App._watch.Stop();
+            _isInit = true;
         }
 
         private void AutoLoopSwitch_Toggled(object sender, RoutedEventArgs e)
