@@ -468,8 +468,8 @@ namespace BiliBili_UWP.Pages.Main
             else if (!_isInit)
             {
                 await Refresh();
+                _isInit = true;
             }
-            _isInit = true;
         }
     }
 }

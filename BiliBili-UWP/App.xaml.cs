@@ -47,6 +47,10 @@ namespace BiliBili_UWP
         public App()
         {
             this.InitializeComponent();
+            if (SystemInformation.DeviceFamily == "Windows.Xbox")
+            {
+                Windows.UI.ViewManagement.ApplicationViewScaling.TrySetDisableLayoutScaling(true);
+            }
             CustomXamlResourceLoader.Current = new CustomResourceLoader();
             this.Suspending += OnSuspending;
             UnhandledException += OnUnhandleException;

@@ -74,7 +74,7 @@ namespace BiliBili_UWP
                     await App.BiliViewModel.GetRegionsAsync();
                     App.AppViewModel.FontInit();
                     Window.Current.Dispatcher.AcceleratorKeyActivated += App.AppViewModel.AccelertorKeyActivedHandle;
-                    if (e.Parameter != null && e.Parameter is string argument && !string.IsNullOrEmpty(argument))
+                    if (e.Parameter != null && e.Parameter is string argument && !string.IsNullOrEmpty(argument) && argument.Contains("action"))
                     {
                         App.AppViewModel.AppInitByActivated(argument);
                     }

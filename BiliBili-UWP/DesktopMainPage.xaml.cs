@@ -26,7 +26,7 @@ namespace BiliBili_UWP
     /// <summary>
     /// 可用于自身或导航至 Frame 内部的空白页。
     /// </summary>
-    public sealed partial class DesktopMainPage : Page,IPlayerHost
+    public sealed partial class DesktopMainPage : Page, IPlayerHost
     {
         private bool _isInit = false;
         string tempArgument = string.Empty;
@@ -44,7 +44,7 @@ namespace BiliBili_UWP
             {
                 return;
             }
-            bool isSideOpen=AppTool.GetBoolSetting(BiliBili_Lib.Enums.Settings.IsLastSidePanelOpen);
+            bool isSideOpen = AppTool.GetBoolSetting(BiliBili_Lib.Enums.Settings.IsLastSidePanelOpen);
             AppSplitView.IsPaneOpen = isSideOpen;
             App.AppViewModel.CheckAppUpdate();
             var popup = new WaitingPopup("正在初始化");
@@ -57,7 +57,7 @@ namespace BiliBili_UWP
                     await App.BiliViewModel.GetRegionsAsync();
                     App.AppViewModel.FontInit();
                     Window.Current.Dispatcher.AcceleratorKeyActivated += App.AppViewModel.AccelertorKeyActivedHandle;
-                    if (e.Parameter != null && e.Parameter is string argument && !string.IsNullOrEmpty(argument))
+                    if (e.Parameter != null && e.Parameter is string argument && !string.IsNullOrEmpty(argument) && argument.Contains("action"))
                     {
                         App.AppViewModel.AppInitByActivated(argument);
                     }
@@ -81,7 +81,7 @@ namespace BiliBili_UWP
             _isInit = true;
         }
 
-        
+
 
         private void SidePanel_SideMenuItemClick(object sender, Models.UI.AppMenuItem e)
         {

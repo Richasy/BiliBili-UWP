@@ -28,7 +28,7 @@
                 <controls1:SubPageControl x:Name="SubPageControl" CloseButtonClick="SubPageControl_CloseButtonClick"/>
             </SplitView.Pane>
             <SplitView.Content>
-                <Grid Padding="40,30,40,20">
+                <Grid Padding="40,30,40,10">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
@@ -36,12 +36,12 @@
                     </Grid.RowDefinitions>
                     <layout:TopPanel x:Name="TopPanel" TopMenuItemClick="TopPanel_TopMenuItemClick" BackButtonClick="TopPanel_BackButtonClick"/>
                     <Grid Grid.Row="1">
-                        <Frame x:Name="MainFrame" x:FieldModifier="Public" Padding="0,0,0,15"/>
-                        <Grid Grid.Row="2" Background="{ThemeResource PageBackground}" x:Name="HolderContainer"
+                        <Frame x:Name="MainFrame" x:FieldModifier="Public" Padding="0,0,0,10"/>
+                        <Grid Background="{ThemeResource PageBackground}" x:Name="HolderContainer"
               HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="Collapsed">
                             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                                 <controls:ImageEx Source="ms-appx:///Assets/bilibili logo.png" Width="100"
-                               HorizontalAlignment="Center" Margin="0,0,0,20"/>
+                               HorizontalAlignment="Center"/>
                             </StackPanel>
                         </Grid>
                     </Grid>

@@ -50,11 +50,11 @@
                         <widgets:IconTextBlock Icon="&#xE9E5;" Text="我的收集列表" Foreground="{ThemeResource ImportantTextColor}"
                                                FontSize="{CustomResource BodyFontSize}" IconFontSize="{CustomResource BodyFontSize}"/>
                     </ListViewItem>
-                    <ListViewItem Tag="MyFavorite" Padding="8">
+                    <ListViewItem Tag="MyAnime" Padding="8">
                         <widgets:IconTextBlock Icon="&#xE9E5;" Text="我的追番" Foreground="{ThemeResource ImportantTextColor}"
                                                FontSize="{CustomResource BodyFontSize}" IconFontSize="{CustomResource BodyFontSize}"/>
                     </ListViewItem>
-                    <ListViewItem Tag="MyCollection" Padding="8">
+                    <ListViewItem Tag="MyMovie" Padding="8">
                         <widgets:IconTextBlock Icon="&#xE9E5;" Text="我的追剧" Foreground="{ThemeResource ImportantTextColor}"
                                                FontSize="{CustomResource BodyFontSize}" IconFontSize="{CustomResource BodyFontSize}"/>
                     </ListViewItem>
