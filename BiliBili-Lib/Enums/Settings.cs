@@ -48,6 +48,7 @@ namespace BiliBili_Lib.Enums
         IsAutoNextPart,
         PlayerMode,
         BasicFontSize,
-        DisplayMode
+        DisplayMode,
+        DisableXboxScale
     }
 }

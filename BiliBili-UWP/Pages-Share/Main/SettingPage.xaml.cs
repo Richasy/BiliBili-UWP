@@ -4,12 +4,14 @@ using BiliBili_UWP.Components.Widgets;
 using BiliBili_UWP.Dialogs;
 using BiliBili_UWP.Models.UI;
 using BiliBili_UWP.Models.UI.Others;
+using Microsoft.Toolkit.Uwp.Helpers;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Core;
+using Windows.Devices.Enumeration;
 using Windows.Storage;
 using Windows.System;
 using Windows.UI.Xaml;
@@ -66,6 +68,9 @@ namespace BiliBili_UWP.Pages_Share.Main
             EnableStartupSwitch.IsOn = isEnableStartup;
             double fontSize = Convert.ToDouble(AppTool.GetLocalSetting(Settings.BasicFontSize, "14"));
             FontSizeBox.Value = fontSize;
+            DisableScaleInXboxSwitch.IsEnabled = SystemInformation.DeviceFamily == "Windows.Xbox";
+            bool disableScale = AppTool.GetBoolSetting(Settings.DisableXboxScale);
+            DisableScaleInXboxSwitch.IsOn = disableScale;
             #endregion
 
             #region 播放器设置
@@ -381,6 +386,14 @@ namespace BiliBili_UWP.Pages_Share.Main
                 return;
             var item = DisplayModeComboBox.SelectedItem as ComboBoxItem;
             AppTool.WriteLocalSetting(Settings.DisplayMode, item.Tag.ToString());
+            await ShowRestartDialog();
+        }
+
+        private async void DisableScaleInXboxSwitch_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (!_isInit)
+                return;
+            AppTool.WriteLocalSetting(Settings.DisableXboxScale, DisableScaleInXboxSwitch.IsOn.ToString());
             await ShowRestartDialog();
         }
     }

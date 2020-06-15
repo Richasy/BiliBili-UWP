@@ -58,6 +58,8 @@
                                    Minimum="700" Maximum="8000" Step="100" BoxWidth="200"/>
                             <ToggleSwitch Style="{StaticResource BasicToggleSwitchStyle}" HeaderTemplate="{StaticResource TipHeaderStyle}"
                               Header="跟随系统启动" Margin="0,15,0,0" x:Name="EnableStartupSwitch" Toggled="EnableStartupSwitch_Toggled"/>
+                            <ToggleSwitch Style="{StaticResource BasicToggleSwitchStyle}" HeaderTemplate="{StaticResource TipHeaderStyle}"
+                              Header="XBOX中禁用缩放" Margin="0,15,0,0" x:Name="DisableScaleInXboxSwitch" Toggled="DisableScaleInXboxSwitch_Toggled"/>
                             <StackPanel Margin="0,15,0,0">
                                 <ContentPresenter ContentTemplate="{StaticResource TipHeaderStyle}" Content="日志"/>
                                 <widgets:AsyncButton Style="{StaticResource DefaultAsyncButtonStyle}" Text="打开日志文件夹" x:Name="ExportLogButton"

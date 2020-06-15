@@ -47,7 +47,8 @@ namespace BiliBili_UWP
         public App()
         {
             this.InitializeComponent();
-            if (SystemInformation.DeviceFamily == "Windows.Xbox")
+            bool isDisableScale = AppTool.GetBoolSetting(Settings.DisableXboxScale);
+            if (SystemInformation.DeviceFamily == "Windows.Xbox" && isDisableScale)
             {
                 Windows.UI.ViewManagement.ApplicationViewScaling.TrySetDisableLayoutScaling(true);
             }

@@ -115,7 +115,7 @@ namespace BiliBili_UWP.Pages.Main
                     _isPlayList = false;
                     _fromSign = "";
                 }
-                if (_isCurrently && _isInit)
+                if (_isCurrently && App.AppViewModel.IsVideoPageInit)
                     await Refresh();
             }
             _isCurrently = true;
