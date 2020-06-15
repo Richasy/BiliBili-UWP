@@ -143,7 +143,7 @@ namespace BiliBili_UWP.Components.Controls
             if (_detail.pages != null)
             {
                 _detail.pages.ForEach(p => VideoPartCollection.Add(p));
-                PartListView.SelectedIndex = 0;
+                PartGridView.SelectedIndex = 0;
             }
             PartContainer.Visibility = _detail.pages.Count > 1 ? Visibility.Visible : Visibility.Collapsed;
             if (_detail.tag != null && _detail.tag.Count > 0)
@@ -291,7 +291,7 @@ namespace BiliBili_UWP.Components.Controls
             CheckLikeHoldState();
         }
 
-        private async void PartListView_ItemClick(object sender, ItemClickEventArgs e)
+        private async void PartGridView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var item = e.ClickedItem as VideoPart;
             if (item.cid != _currentPartId)
@@ -399,8 +399,8 @@ namespace BiliBili_UWP.Components.Controls
         }
         private void VideoPlayer_PartSwitched(object sender, int e)
         {
-            PartListView.SelectedIndex = e;
-            PartListView.ScrollIntoView(VideoPartCollection[e], ScrollIntoViewAlignment.Leading);
+            PartGridView.SelectedIndex = e;
+            PartGridView.ScrollIntoView(VideoPartCollection[e], ScrollIntoViewAlignment.Leading);
         }
         private void SingleUserContainer_Tapped(object sender, TappedRoutedEventArgs e)
         {

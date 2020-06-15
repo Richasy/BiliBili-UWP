@@ -27,12 +27,13 @@
             </Border>
         </DataTemplate>
         <DataTemplate x:DataType="video:VideoPart" x:Key="PartListItemTemplate">
-            <ListViewItem x:Name="Container">
-                <Grid Background="{Binding ElementName=Container,Path=IsSelected,Converter={StaticResource SelectedColorConverter}}" CornerRadius="4" Padding="10">
+            <GridViewItem x:Name="Container">
+                <Grid Background="{Binding ElementName=Container,Path=IsSelected,Converter={StaticResource SelectedColorConverter}}" CornerRadius="4" Padding="10"
+                      Width="180">
                     <TextBlock Text="{x:Bind part}" Style="{StaticResource SmallTipTextStyle}" MaxLines="1"
                                Foreground="{Binding ElementName=Container,Path=IsSelected,Converter={StaticResource SelectedColorConverter},ConverterParameter='Foreground'}"/>
                 </Grid>
-            </ListViewItem>
+            </GridViewItem>
         </DataTemplate>
         <DataTemplate x:DataType="video:Staff" x:Key="StaffItemTemplate">
             <Grid Margin="10,10,10,0">
@@ -175,19 +176,17 @@
                         <widgets:CheckButton Margin="15,0,0,0" Icon="&#xEA44;" x:Name="RepostButton" FlyoutBase.AttachedFlyout="{StaticResource ShareFlyout}" Click="RepostButton_Click"/>
                         <widgets:CheckButton Margin="15,0,0,0" Icon="&#xE99E;" x:Name="CommentButton" Click="CommentButton_Click"/>
                     </StackPanel>
-                    <Grid x:Name="PartContainer" Margin="0,15,0,0">
-                        <ListView ItemTemplate="{StaticResource PartListItemTemplate}" ItemsSource="{x:Bind VideoPartCollection}"
-                      IsItemClickEnabled="True" ItemsPanel="{StaticResource HorizontalListViewItemsPanel}"
-                      Padding="0,0,0,5" Style="{StaticResource BasicListView}" ItemContainerStyle="{StaticResource TransparentListViewContainerStyle}"
-                      x:Name="PartListView" ItemClick="PartListView_ItemClick" ScrollViewer.VerticalScrollMode="Disabled"/>
-                    </Grid>
-
                     <widgets:TrimTextBlock x:Name="DescriptionBlock" Margin="0,15,0,0" HorizontalAlignment="Stretch" FontSize="{CustomResource BasicFontSize}"
                               />
                     <GridView ItemTemplate="{StaticResource TagItemTemplate}" ItemsSource="{x:Bind TagCollection}"
                       IsItemClickEnabled="True" ItemContainerStyle="{StaticResource TransparentGridViewItemContainerStyle}"
                       Style="{StaticResource BasicGridView}" Padding="0,0,0,5" Margin="0,15,0,0"
                       x:Name="TagGridView" ItemClick="TagGridView_ItemClick" HorizontalAlignment="Left" ScrollViewer.VerticalScrollMode="Disabled"/>
+                    <Grid x:Name="PartContainer" Margin="0,15,0,0">
+                        <GridView ItemTemplate="{StaticResource PartListItemTemplate}" ItemsSource="{x:Bind VideoPartCollection}"
+                      IsItemClickEnabled="True" Padding="0,0,0,5" Style="{StaticResource NoScrollGridView}" ItemContainerStyle="{StaticResource TransparentGridViewItemContainerStyle}"
+                      x:Name="PartGridView" ItemClick="PartGridView_ItemClick" ScrollViewer.HorizontalScrollMode="Disabled"/>
+                    </Grid>
                 </StackPanel>
                 <muxc:ProgressRing Style="{StaticResource MuxcProgressRingStyle}" x:Name="LoadingRing"/>
             </Grid>
