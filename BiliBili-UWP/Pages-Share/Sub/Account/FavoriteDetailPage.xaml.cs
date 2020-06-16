@@ -117,7 +117,7 @@ namespace BiliBili_UWP.Pages_Share.Sub.Account
         {
             var btn = sender as AppBarButton;
             btn.IsEnabled = false;
-            var context = btn.DataContext as FavoriteVideo;
+            var context = btn.Tag as FavoriteVideo;
             bool result = await App.BiliViewModel._client.Account.RemoveFavoriteVideoAsync(context.id, context.type, _favoriteId);
             if (result)
             {
