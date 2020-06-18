@@ -36,11 +36,7 @@
         </DataTemplate>
     </Page.Resources>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="1*" />
-        </Grid.RowDefinitions>
-        <ScrollViewer Margin="0,15,0,0" Grid.Row="1" Style="{StaticResource BasicScrollViewer}" ViewChanged="ScrollViewer_ViewChanged">
+        <ScrollViewer Style="{StaticResource BasicScrollViewer}" ViewChanged="ScrollViewer_ViewChanged">
             <Grid>
                 <ListView x:Name="AnimeListView" ItemContainerStyle="{StaticResource TransparentListViewContainerStyle}"
                               Style="{StaticResource NoScrollListView}" ItemsSource="{x:Bind AnimeCollection}" HorizontalAlignment="Stretch"
@@ -51,7 +47,7 @@
             </Grid>
         </ScrollViewer>
         <muxc:ProgressBar Style="{StaticResource MuxcProgressBarStyle}" VerticalAlignment="Bottom"
-                             x:Name="LoadingBar" Visibility="Collapsed" Grid.Row="1"/>
-        <muxc:ProgressRing Style="{StaticResource MuxcProgressRingStyle}" Grid.Row="1" x:Name="LoadingRing"/>
+                             x:Name="LoadingBar" Visibility="Collapsed"/>
+        <muxc:ProgressRing Style="{StaticResource MuxcProgressRingStyle}" x:Name="LoadingRing"/>
     </Grid>
 </Page>

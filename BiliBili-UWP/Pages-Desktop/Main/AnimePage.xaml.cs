@@ -173,5 +173,14 @@ namespace BiliBili_UWP.Pages.Main
             var video = (sender as FrameworkElement).DataContext as Card;
             App.AppViewModel.PlayBangumi(video.oid, sender);
         }
+
+        private void MyFavoriteButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (App.BiliViewModel.CheckAccoutStatus())
+            {
+                App.AppViewModel.CurrentSidePanel.SetSelectedItem(Models.Enums.AppMenuItemType.MyFavorite);
+                App.AppViewModel.CurrentPagePanel.NavigateToPage(Models.Enums.AppMenuItemType.MyFavorite);
+            } 
+        }
     }
 }

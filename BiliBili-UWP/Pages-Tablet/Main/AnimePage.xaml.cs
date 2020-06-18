@@ -138,5 +138,10 @@ namespace BiliBili_UWP.Pages_Tablet.Main
             isJP = item.name == "番剧";
             await LoadHotVideo();
         }
+
+        private void MyFavoriteButton_Click(object sender, RoutedEventArgs e)
+        {
+            App.AppViewModel.NavigateToSubPage(typeof(Pages_Share.Sub.Account.FavoriteAnimePage));
+        }
     }
 }
