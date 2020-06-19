@@ -545,7 +545,7 @@ namespace BiliBili_Lib.Service
             param.Add("id", $"cid:{cid}");
             param.Add("aid", aid.ToString());
             string url = BiliTool.UrlContact(Api.VIDEO_SUBTITLE, param, true);
-            string result = await BiliTool.GetTextFromWebAsync(url, true);
+            string result = await BiliTool.GetTextFromWebAsync(url, true,needReferer:true);
             if(!string.IsNullOrEmpty(result) && result.Contains("subtitle"))
             {
                 var json = Regex.Match(result, @"<subtitle>(.*?)</subtitle>").Groups[1].Value;

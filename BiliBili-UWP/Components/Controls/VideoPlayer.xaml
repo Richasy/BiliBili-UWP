@@ -47,13 +47,13 @@
                     <ComboBox Style="{StaticResource BasicComboBoxStyle}" ItemContainerStyle="{StaticResource BasicComboBoxItemContainerStyle}"
                               x:Name="ModeComboBox" HorizontalAlignment="Stretch" Margin="0,5,0,0">
                         <ComboBoxItem Tag="1" IsSelected="True">
-                            <widgets:IconTextBlock Icon="&#xEA27;" IconFontSize="22" FontSize="{CustomResource SmallFontSize}" Text="滚动字幕" IconForeground="{ThemeResource PrimaryColor}"/>
+                            <widgets:IconTextBlock Icon="&#xEA27;" IconFontSize="22" FontSize="{CustomResource SmallFontSize}" Text="滚动弹幕" IconForeground="{ThemeResource PrimaryColor}"/>
                         </ComboBoxItem>
                         <ComboBoxItem Tag="4">
-                            <widgets:IconTextBlock Icon="&#xEA29;" IconFontSize="22" FontSize="{CustomResource SmallFontSize}" Text="底部字幕" IconForeground="{ThemeResource PrimaryColor}"/>
+                            <widgets:IconTextBlock Icon="&#xEA29;" IconFontSize="22" FontSize="{CustomResource SmallFontSize}" Text="底部弹幕" IconForeground="{ThemeResource PrimaryColor}"/>
                         </ComboBoxItem>
                         <ComboBoxItem Tag="5">
-                            <widgets:IconTextBlock Icon="&#xEA2B;" IconFontSize="22" FontSize="{CustomResource SmallFontSize}" Text="顶部字幕" IconForeground="{ThemeResource PrimaryColor}"/>
+                            <widgets:IconTextBlock Icon="&#xEA2B;" IconFontSize="22" FontSize="{CustomResource SmallFontSize}" Text="顶部弹幕" IconForeground="{ThemeResource PrimaryColor}"/>
                         </ComboBoxItem>
                     </ComboBox>
                 </StackPanel>
