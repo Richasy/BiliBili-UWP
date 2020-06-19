@@ -171,7 +171,7 @@ namespace BiliBili_Lib.Service
                 param.Add("bvid", bvId.ToString());
             param.Add("from_spmid", fromSign);
             string url = BiliTool.UrlContact(Api.VIDEO_DETAIL_INFO, param, true);
-            var data = await BiliTool.ConvertEntityFromWebAsync<VideoDetail>(url);
+            var data = await BiliTool.ConvertEntityFromWebAsync<VideoDetail>(url,needReferer:true);
             return data;
         }
         /// <summary>

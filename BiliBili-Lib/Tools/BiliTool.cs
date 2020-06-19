@@ -36,7 +36,7 @@ namespace BiliBili_Lib.Tools
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
-        public static async Task<string> GetTextFromWebAsync(string url, bool total = false, string path = "data",bool needReferer=false)
+        public static async Task<string> GetTextFromWebAsync(string url, bool total = false, string path = "data", bool needReferer = false)
         {
             HttpBaseProtocolFilter filter = new HttpBaseProtocolFilter();
             filter.IgnorableServerCertificateErrors.Add(ChainValidationResult.Expired);
@@ -47,9 +47,11 @@ namespace BiliBili_Lib.Tools
             {
                 try
                 {
-                    client.DefaultRequestHeaders.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4150.0 Safari/537.36 Edg/85.0.529.0");
-                    if(needReferer)
-                        client.DefaultRequestHeaders.Referer = new Uri("http://www.bilibili.com/");
+                    //client.DefaultRequestHeaders.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36 Edge/18.19041");
+                    client.DefaultRequestHeaders.Add("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9");
+                    var uri = new Uri(url);
+                    if (needReferer)
+                        client.DefaultRequestHeaders.Referer = new Uri(uri.Scheme + "://" + uri.Host);
                     var response = await client.GetAsync(new Uri(url));
                     if (response.IsSuccessStatusCode)
                     {
@@ -64,7 +66,7 @@ namespace BiliBili_Lib.Tools
                             content = res;
                         return content;
                     }
-                    else if(response.StatusCode==Windows.Web.Http.HttpStatusCode.TemporaryRedirect || response.StatusCode==Windows.Web.Http.HttpStatusCode.MovedPermanently)
+                    else if (response.StatusCode == Windows.Web.Http.HttpStatusCode.TemporaryRedirect || response.StatusCode == Windows.Web.Http.HttpStatusCode.MovedPermanently)
                     {
                         string tempUrl = response.Headers.Location.AbsoluteUri;
                         return await GetTextFromWebAsync(tempUrl, total, path);
@@ -88,9 +90,9 @@ namespace BiliBili_Lib.Tools
         /// <typeparam name="T">类型</typeparam>
         /// <param name="url">地址</param>
         /// <returns></returns>
-        public static async Task<T> ConvertEntityFromWebAsync<T>(string url, string path = "data") where T : class
+        public static async Task<T> ConvertEntityFromWebAsync<T>(string url, string path = "data", bool needReferer = false) where T : class
         {
-            string response = await GetTextFromWebAsync(url, path: path);
+            string response = await GetTextFromWebAsync(url, path: path, needReferer: needReferer);
             if (!string.IsNullOrEmpty(response))
             {
                 try
@@ -298,10 +300,10 @@ namespace BiliBili_Lib.Tools
             {
                 var regex_av = new Regex(@"av(\d+)");
                 var regex_bv = new Regex(@"BV(.*)");
-                
+
                 if (regex_av.IsMatch(path))
                 {
-                    string aid = regex_av.Match(path).Value.Replace("av","");
+                    string aid = regex_av.Match(path).Value.Replace("av", "");
                     return new UriResult(Enums.UriType.VideoA, aid);
                 }
                 else if (regex_bv.IsMatch(path))
