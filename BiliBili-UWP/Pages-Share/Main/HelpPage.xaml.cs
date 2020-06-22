@@ -86,5 +86,10 @@ namespace BiliBili_UWP.Pages_Share.Main
         {
             await Launcher.LaunchUriAsync(new Uri("https://www.richasy.cn/document/bilibili/update.html"));
         }
+
+        private async void QAButton_Click(object sender, RoutedEventArgs e)
+        {
+            await Launcher.LaunchUriAsync(new Uri("https://www.richasy.cn/document/bilibili/qa.html"));
+        }
     }
 }

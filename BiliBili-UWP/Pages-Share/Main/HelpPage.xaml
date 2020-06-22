@@ -27,16 +27,19 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <StackPanel x:Name="MainContainer">
-                    <controls1:MarkdownTextBlock Style="{StaticResource BasicMarkdownTextBlock}" x:Name="RenderBlock" MaxWidth="400" HorizontalAlignment="Left"
-                           TextWrapping="Wrap" LinkClicked="RenderBlock_LinkClicked" LinkForeground="{ThemeResource SecondaryColor}"/>
-                    <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+                    <StackPanel Orientation="Horizontal">
                         <widgets:AsyncButton Style="{StaticResource PrimaryAsyncButtonStyle}" Icon="&#xE901;" Text="开发者B站主页"
                                          x:Name="ToBiliButton" Click="ToBiliButton_Click"/>
                         <widgets:AsyncButton Style="{StaticResource SecondaryAsyncButtonStyle}" Icon="&#xE996;" Text="发送邮件"
                                          x:Name="SendMailButton" Click="SendMailButton_Click" Margin="15,0,0,0"/>
                         <widgets:AsyncButton Style="{StaticResource DefaultAsyncButtonStyle}" Icon="&#xEA3B;" Text="更新历史"
                                          x:Name="UpdateHistoryButton" Click="UpdateHistoryButton_Click" Margin="15,0,0,0"/>
+                        <widgets:AsyncButton Style="{StaticResource DefaultAsyncButtonStyle}" Icon="&#xE982;" Text="常见问题"
+                                         x:Name="QAButton" Click="QAButton_Click"  Margin="15,0,0,0"/>
                     </StackPanel>
+                    <controls1:MarkdownTextBlock Style="{StaticResource BasicMarkdownTextBlock}" x:Name="RenderBlock" MaxWidth="400" HorizontalAlignment="Left"
+                           TextWrapping="Wrap" LinkClicked="RenderBlock_LinkClicked" LinkForeground="{ThemeResource SecondaryColor}" Margin="0,20,0,0"/>
+                    
                 </StackPanel>
                 <StackPanel x:Name="SubContainer" Grid.Column="1">
                     <controls1:MarkdownTextBlock Style="{StaticResource BasicMarkdownTextBlock}" x:Name="ShortcutBlock" MaxWidth="400" HorizontalAlignment="Left"

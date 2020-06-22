@@ -402,6 +402,7 @@ namespace BiliBili_UWP.Components.Controls
         {
             await DispatcherHelper.ExecuteOnUIThreadAsync(async () =>
             {
+                SendDanmakuList.Clear();
                 if (!_player.IsLoopingEnabled)
                 {
                     VideoMTC.IsPlaying = false;

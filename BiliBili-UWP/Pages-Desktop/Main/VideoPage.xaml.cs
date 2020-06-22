@@ -62,7 +62,6 @@ namespace BiliBili_UWP.Pages.Main
         private string _fromSign = "";
         private string _lastSelectPartType = "row";
         private bool _isPlayList = false;
-        private bool _isInit = false;
         private bool _isCurrently = false;
 
 
@@ -671,7 +670,7 @@ namespace BiliBili_UWP.Pages.Main
 
         private void AutoLoopSwitch_Toggled(object sender, RoutedEventArgs e)
         {
-            if (!_isInit)
+            if (!App.AppViewModel.IsVideoPageInit)
                 return;
             VideoPlayer.AutoLoop = AutoLoopSwitch.IsOn;
         }
