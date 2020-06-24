@@ -105,7 +105,11 @@ namespace BiliBili_Lib.Models.Others
         /// <summary>
         /// 获取收藏夹列表
         /// </summary>
-        public const string ACCOUNT_FAVORITE_LIST = _apiBase + "/medialist/gateway/base/created";
+        public const string ACCOUNT_FAVORITE_LIST = _apiBase + "/x/v3/fav/folder/created/list";
+        /// <summary>
+        /// 获取收集列表
+        /// </summary>
+        public const string ACCOUNT_COLLECT_LIST = _apiBase + "/x/v3/fav/folder/collected/list";
         /// <summary>
         /// 历史记录
         /// </summary>
@@ -135,9 +139,9 @@ namespace BiliBili_Lib.Models.Others
         /// </summary>
         public const string ACCOUNT_VIEWLATER_CLEAR = _apiBase + "/x/v2/history/toview/clear";
         /// <summary>
-        /// 我的播单信息
+        /// 我的综合播单信息
         /// </summary>
-        public const string ACCOUNT_MEDIALIST = _apiBase + "/medialist/gateway/base/space";
+        public const string ACCOUNT_MEDIALIST = _apiBase + "/x/v3/fav/folder/space";
         /// <summary>
         /// 稍后再看记录
         /// </summary>
@@ -307,6 +311,10 @@ namespace BiliBili_Lib.Models.Others
         /// 视频详细信息
         /// </summary>
         public const string VIDEO_DETAIL_INFO = _appBase + "/x/v2/view";
+        /// <summary>
+        /// 视频收藏夹
+        /// </summary>
+        public const string VIDEO_FAVORITE_LIST = _apiBase + "/medialist/gateway/base/created";
         /// <summary>
         /// 视频简易信息
         /// </summary>

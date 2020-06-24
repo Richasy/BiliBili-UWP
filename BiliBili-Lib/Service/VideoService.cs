@@ -389,7 +389,7 @@ namespace BiliBili_Lib.Service
             param.Add("ps", "100");
             param.Add("pn", "1");
             param.Add("type", "2");
-            string url = BiliTool.UrlContact(Api.ACCOUNT_FAVORITE_LIST, param, true);
+            string url = BiliTool.UrlContact(Api.VIDEO_FAVORITE_LIST, param, true);
             return await BiliTool.ConvertEntityFromWebAsync<List<FavoriteItem>>(url, "data.list");
         }
         /// <summary>

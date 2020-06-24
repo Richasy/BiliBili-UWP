@@ -66,7 +66,7 @@ namespace BiliBili_UWP.Pages.Main
                 var tasks = new List<Task>();
                 var task1 = Task.Run(async () =>
                 {
-                    var favorite = await _account.GetMyFavoritesAsync();
+                    var favorite = await _account.GetMyMainlyFavoritesAsync();
                     await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
                     {
                         if (favorite != null)
@@ -146,6 +146,16 @@ namespace BiliBili_UWP.Pages.Main
                 MyAnimeCollection.Remove(data);
                 MyCinemaListView.HolderVisibility = MyCinemaCollection.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
             }
+        }
+
+        private void MyFavoriteListView_RefreshButtonClick(object sender, EventArgs e)
+        {
+            App.AppViewModel.NavigateToSubPage(typeof(Pages_Share.Sub.Account.FavoriteContainerPage), "Favorite");
+        }
+
+        private void MyCollectListView_RefreshButtonClick(object sender, EventArgs e)
+        {
+            App.AppViewModel.NavigateToSubPage(typeof(Pages_Share.Sub.Account.FavoriteContainerPage), "Collect");
         }
     }
 }

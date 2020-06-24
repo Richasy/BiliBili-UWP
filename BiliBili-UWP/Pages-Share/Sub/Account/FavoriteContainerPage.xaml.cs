@@ -1,5 +1,6 @@
 ﻿using BiliBili_Lib.Models.BiliBili;
 using BiliBili_Lib.Service;
+using BiliBili_Lib.Tools;
 using BiliBili_UWP.Models.UI.Interface;
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,8 @@ namespace BiliBili_UWP.Pages_Share.Sub.Account
         private ObservableCollection<FavoriteItem> FavoriteCollection = new ObservableCollection<FavoriteItem>();
         private string _type = "";
         private AccountService _account = App.BiliViewModel._client.Account;
+        private int pn = 1;
+        private bool _isRequesting = false;
         public FavoriteContainerPage()
         {
             this.InitializeComponent();
@@ -53,26 +56,50 @@ namespace BiliBili_UWP.Pages_Share.Sub.Account
         public async Task Refresh()
         {
             FavoriteCollection.Clear();
+            pn = 1;
             LoadingRing.IsActive = true;
             if (App.BiliViewModel.CheckAccoutStatus())
             {
-                var favorite = await _account.GetMyFavoritesAsync();
-                if (favorite != null)
-                {
-                    if(_type=="Favorite")
-                        favorite.Item1.ForEach(p => FavoriteCollection.Add(p));
-                    else
-                        favorite.Item2.ForEach(p => FavoriteCollection.Add(p));
-                }
+                await LoadMoreFavoriteItem();
+            }
+            LoadingRing.IsActive = false;
+        }
+
+        private async Task LoadMoreFavoriteItem(bool isIncrease=false)
+        {
+            if (_isRequesting)
+                return;
+            _isRequesting = true;
+            List<FavoriteItem> items = new List<FavoriteItem>();
+            if (isIncrease)
+                pn += 1;
+            if (_type == "Favorite")
+                items = await _account.GetFavoritesAsync(Convert.ToInt32(BiliTool.mid), pn);
+            else
+                items = await _account.GetCollectListAsync(Convert.ToInt32(BiliTool.mid), pn);
+            if(items!=null && items.Count > 0)
+            {
+                items.ForEach(p => FavoriteCollection.Add(p));
             }
             HolderText.Visibility = FavoriteCollection.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
-            LoadingRing.IsActive = false;
+            _isRequesting = false;
         }
 
         private void FavoriteListView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var item = e.ClickedItem as FavoriteItem;
             App.AppViewModel.NavigateToSubPage(typeof(FavoriteDetailPage), item);
+        }
+
+        private async void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
+        {
+            var ele = sender as ScrollViewer;
+            if (ele.ExtentHeight - ele.ViewportHeight - ele.VerticalOffset < 50)
+            {
+                LoadingBar.Visibility = Visibility.Visible;
+                await LoadMoreFavoriteItem(true);
+                LoadingBar.Visibility = Visibility.Collapsed;
+            }
         }
     }
 }

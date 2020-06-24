@@ -83,7 +83,7 @@
                 </Grid>
             </ScrollViewer>
             <muxc:ProgressBar Style="{StaticResource MuxcProgressBarStyle}" VerticalAlignment="Bottom"
-                             x:Name="LoadingBar" Visibility="Collapsed" Grid.Row="1"/>
+                             x:Name="LoadingBar" Visibility="Collapsed"/>
             <muxc:ProgressRing Style="{StaticResource MuxcProgressRingStyle}" x:Name="LoadingRing"
                       />
             <Grid x:Name="HolderContainer" Visibility="Collapsed">

@@ -28,7 +28,7 @@
                 <controls1:SubPageControl x:Name="SubPageControl" CloseButtonClick="SubPageControl_CloseButtonClick"/>
             </SplitView.Pane>
             <SplitView.Content>
-                <Grid Padding="40,30,40,10">
+                <Grid Padding="30,30,30,10">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>

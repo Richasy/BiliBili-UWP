@@ -53,11 +53,13 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <controls1:HorizontalScrollSectionPanel Title="我的创建" HoldText="我还没有创建播单哟~" x:Name="MyFavoriteListView"
-                                                ItemClick="MyFavoriteListView_ItemClick" ItemTemplate="{StaticResource CollectItemTemplate}"
-                                                ItemsSource="{x:Bind MyFavoriteCollection}"/>
+                                                ItemClick="MyFavoriteListView_ItemClick" ItemTemplate="{StaticResource CollectItemTemplate}" RefreshButtonVisibility="Visible"
+                                                ItemsSource="{x:Bind MyFavoriteCollection}" CustomButtonText="查看全部" RefreshButtonClick="MyFavoriteListView_RefreshButtonClick"
+                                                CustomButtonIcon="&#xE963;" />
         <controls1:HorizontalScrollSectionPanel Title="我的收藏" HoldText="我还没有收藏播单哟~" x:Name="MyCollectListView" Grid.Row="1"
-                                                ItemClick="MyFavoriteListView_ItemClick"  ItemTemplate="{StaticResource CollectItemTemplate}"
-                                                ItemsSource="{x:Bind MyCollectCollection}" Margin="0,20,0,0"/>
+                                                ItemClick="MyFavoriteListView_ItemClick"  ItemTemplate="{StaticResource CollectItemTemplate}" RefreshButtonVisibility="Visible"
+                                                ItemsSource="{x:Bind MyCollectCollection}" Margin="0,20,0,0" CustomButtonText="查看全部" RefreshButtonClick="MyCollectListView_RefreshButtonClick"
+                                                CustomButtonIcon="&#xE963;" />
         <controls1:HorizontalScrollSectionPanel Title="我的追番" HoldText="我还没有追番哟~" x:Name="MyAnimeListView" Grid.Row="2"
                                                 ItemClick="MyAnimeListView_ItemClick"  ItemTemplate="{StaticResource AnimeItemTemplate}"
                                                 ItemsSource="{x:Bind MyAnimeCollection}" Margin="0,20,0,0" RefreshButtonVisibility="Visible"

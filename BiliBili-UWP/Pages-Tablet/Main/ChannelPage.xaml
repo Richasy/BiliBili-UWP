@@ -77,7 +77,7 @@
         <Grid Grid.Row="2" Margin="0,25,0,0" x:Name="ScanContainer">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <TextBlock Style="{StaticResource TipTextStyle}" Text="我看过的" HorizontalAlignment="Left" Foreground="{ThemeResource NormalTextColor}" FontWeight="Bold"/>
             <Grid Grid.Row="1" Margin="0,15,0,0">

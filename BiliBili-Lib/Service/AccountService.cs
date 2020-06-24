@@ -322,9 +322,11 @@ namespace BiliBili_Lib.Service
         /// 获取我收藏的播单(最多20个)
         /// </summary>
         /// <returns>Item1: 我创建的；Item2: 我收藏的</returns>
-        public async Task<Tuple<List<FavoriteItem>, List<FavoriteItem>>> GetMyFavoritesAsync()
+        public async Task<Tuple<List<FavoriteItem>, List<FavoriteItem>>> GetMyMainlyFavoritesAsync()
         {
-            string url = BiliTool.UrlContact(Api.ACCOUNT_MEDIALIST, null, true);
+            var param = new Dictionary<string, string>();
+            param.Add("up_mid", _userId);
+            string url = BiliTool.UrlContact(Api.ACCOUNT_MEDIALIST, param, true);
             string response = await BiliTool.GetTextFromWebAsync(url);
             try
             {
@@ -347,6 +349,38 @@ namespace BiliBili_Lib.Service
             {
                 return null;
             }
+        }
+
+        /// <summary>
+        /// 获取收藏夹
+        /// </summary>
+        /// <param name="uid">用户ID</param>
+        /// <param name="pn">页码</param>
+        /// <returns></returns>
+        public async Task<List<FavoriteItem>> GetFavoritesAsync(int uid,int pn=1)
+        {
+            var param = new Dictionary<string, string>();
+            param.Add("up_mid", uid.ToString());
+            param.Add("ps", "20");
+            param.Add("pn", pn.ToString());
+            param.Add("type", "2");
+            string url = BiliTool.UrlContact(Api.ACCOUNT_FAVORITE_LIST, param, true);
+            return await BiliTool.ConvertEntityFromWebAsync<List<FavoriteItem>>(url, "data.list");
+        }
+        /// <summary>
+        /// 获取收集列表
+        /// </summary>
+        /// <param name="uid">用户ID</param>
+        /// <param name="pn">页码</param>
+        /// <returns></returns>
+        public async Task<List<FavoriteItem>> GetCollectListAsync(int uid,int pn=1)
+        {
+            var param = new Dictionary<string, string>();
+            param.Add("up_mid", uid.ToString());
+            param.Add("ps", "20");
+            param.Add("pn", pn.ToString());
+            string url = BiliTool.UrlContact(Api.ACCOUNT_COLLECT_LIST, param, true);
+            return await BiliTool.ConvertEntityFromWebAsync<List<FavoriteItem>>(url, "data.list");
         }
 
         /// <summary>

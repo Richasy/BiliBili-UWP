@@ -9,18 +9,18 @@
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:DataType="bilibili:FavoriteItem" x:Key="CollectItemTemplate">
-            <Grid Margin="0,10,0,10">
+            <Grid Margin="0,0,0,10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <controls:ImageEx Source="{x:Bind cover,Converter={StaticResource CoverResolutionConverter},ConverterParameter=150}"
                                   PlaceholderSource="ms-appx:///Assets/img_holder_rect.png" PlaceholderStretch="Uniform"
-                                  Stretch="UniformToFill" CornerRadius="4" IsCacheEnabled="True" Width="130" Height="80"/>
+                                  Stretch="UniformToFill" CornerRadius="4" IsCacheEnabled="True" Width="120" Height="80"/>
                 <StackPanel Margin="10,0,0,0" Grid.Column="1" HorizontalAlignment="Left">
                     <TextBlock Style="{StaticResource TipTextStyle}" Foreground="{ThemeResource ImportantTextColor}" TextWrapping="Wrap"
-                               MaxLines="2" Text="{x:Bind title}" ToolTipService.ToolTip="{x:Bind title}" FontSize="{CustomResource BodyFontSize}"/>
-                    <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="{CustomResource BasicFontSize}" Margin="0,5,0,0">
+                               MaxLines="2" Text="{x:Bind title}" ToolTipService.ToolTip="{x:Bind title}" FontSize="{CustomResource BasicFontSize}"/>
+                    <TextBlock Style="{StaticResource SmallTipTextStyle}" FontSize="{CustomResource SmallFontSize}" Margin="0,5,0,0">
                         <Run Text="{x:Bind media_count,Converter={StaticResource NumberAbbrConverter}}"/>
                         <Run Text="个内容 · "/>
                         <Run Text="{x:Bind upper.name}"/>
@@ -30,11 +30,15 @@
         </DataTemplate>
     </Page.Resources>
     <Grid>
-        <ListView x:Name="FavoriteListView" ItemsSource="{x:Bind FavoriteCollection}"
+        <ScrollViewer Style="{StaticResource BasicScrollViewer}" ViewChanged="ScrollViewer_ViewChanged">
+            <ListView x:Name="FavoriteListView" ItemsSource="{x:Bind FavoriteCollection}"
                   IsItemClickEnabled="True" ItemClick="FavoriteListView_ItemClick"
                   ItemContainerStyle="{StaticResource TransparentListViewContainerStyle}"
-                  Style="{StaticResource BasicListView}" ItemTemplate="{StaticResource CollectItemTemplate}"
+                  Style="{StaticResource NoScrollListView}" ItemTemplate="{StaticResource CollectItemTemplate}"
                   />
+        </ScrollViewer>
+        <muxc:ProgressBar Style="{StaticResource MuxcProgressBarStyle}" VerticalAlignment="Bottom"
+                             x:Name="LoadingBar" Visibility="Collapsed"/>
         <muxc:ProgressRing x:Name="LoadingRing" Style="{StaticResource MuxcProgressRingStyle}"
                            />
         <TextBlock Style="{StaticResource TitleTextStyle}" Text="没有收藏夹呀~" x:Name="HolderText"
