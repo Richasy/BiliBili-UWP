@@ -93,7 +93,7 @@ namespace BiliBili_UWP.Components.Widgets
 
         // Using a DependencyProperty as the backing store for IsTextSelectionEnable.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty IsTextSelectionEnabledProperty =
-            DependencyProperty.Register("IsTextSelectionEnabled", typeof(bool), typeof(CheckButton), new PropertyMetadata(false));
+            DependencyProperty.Register("IsTextSelectionEnabled", typeof(bool), typeof(IconTextBlock), new PropertyMetadata(false));
 
     }
 }
