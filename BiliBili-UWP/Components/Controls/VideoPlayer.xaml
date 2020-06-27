@@ -12,7 +12,7 @@
     xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
     xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
     xmlns:extensions="using:Microsoft.Toolkit.Uwp.UI.Extensions"
-    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls" xmlns:font="using:Richasy.Font.UWP"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400"
@@ -22,7 +22,7 @@
     PointerMoved="UserControl_PointerMoved"
     PointerExited="UserControl_PointerExited">
     <UserControl.Resources>
-        <DataTemplate x:Key="FontItemTemplate" x:DataType="others:SystemFont">
+        <DataTemplate x:Key="FontItemTemplate" x:DataType="font:SystemFont">
             <Grid Padding="3,5,8,5">
                 <TextBlock Style="{StaticResource SmallTipTextStyle}" FontFamily="{x:Bind FontFamily}"
                            Foreground="{ThemeResource NormalTextColor}" Text="{x:Bind Name}"/>

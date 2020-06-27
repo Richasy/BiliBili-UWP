@@ -6,11 +6,11 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:others="using:BiliBili_UWP.Models.UI.Others"
-    xmlns:widgets="using:BiliBili_UWP.Components.Widgets"
+    xmlns:widgets="using:BiliBili_UWP.Components.Widgets" xmlns:font="using:Richasy.Font.UWP"
     Loaded="Page_Loaded"
     mc:Ignorable="d">
     <Page.Resources>
-        <DataTemplate x:Key="FontItemTemplate" x:DataType="others:SystemFont">
+        <DataTemplate x:Key="FontItemTemplate" x:DataType="font:SystemFont">
             <Grid Padding="3,5,8,5">
                 <TextBlock Style="{StaticResource SmallTipTextStyle}" FontFamily="{x:Bind FontFamily}"
                            Foreground="{ThemeResource NormalTextColor}" Text="{x:Bind Name}"/>

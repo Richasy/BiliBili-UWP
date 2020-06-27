@@ -27,7 +27,7 @@
     <AppxBundlePlatforms>x86|x64|arm|arm64</AppxBundlePlatforms>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
     <AppxSymbolPackageEnabled>True</AppxSymbolPackageEnabled>
-    <PackageCertificateThumbprint>5743BCCBF7B1EC2693896859392D679BA8DB74CE</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>19DE3251AB16B9B0D867892B047B3BB7FF135FF9</PackageCertificateThumbprint>
     <PackageCertificateKeyFile />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
@@ -323,7 +323,6 @@
     <Compile Include="Models\UI\Others\SearchItemTemplateSelector.cs" />
     <Compile Include="Models\UI\Converter\SelectedColorConverter.cs" />
     <Compile Include="Models\UI\Others\SideMenuItemTemplateSelector.cs" />
-    <Compile Include="Models\UI\Others\SystemFont.cs" />
     <Compile Include="Models\UI\Others\VideoActiveArgs.cs" />
     <Compile Include="Models\UI\Others\VideoTransportControls.cs" />
     <Compile Include="Models\UI\AppMenuItem.cs" />
@@ -1019,8 +1018,11 @@
     <PackageReference Include="Microsoft.UI.Xaml">
       <Version>2.4.2</Version>
     </PackageReference>
-    <PackageReference Include="SharpDX.Direct2D1">
-      <Version>4.0.1</Version>
+    <PackageReference Include="NSDanmaku">
+      <Version>1.5.1</Version>
+    </PackageReference>
+    <PackageReference Include="Richasy.Font.UWP">
+      <Version>1.0.5</Version>
     </PackageReference>
     <PackageReference Include="SYEngine.uwp">
       <Version>1.0.7</Version>
@@ -1041,10 +1043,6 @@
     <ProjectReference Include="..\BiliBili-Notification\BiliBili-Notification.csproj">
       <Project>{8d373cb3-e4fd-474e-aeb6-f3c7c8813680}</Project>
       <Name>BiliBili-Notification</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NSDanmaku\NSDanmaku.csproj">
-      <Project>{964d5bcc-c063-45cc-aeea-89169e4a2e5e}</Project>
-      <Name>NSDanmaku</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

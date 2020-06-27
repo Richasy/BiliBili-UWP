@@ -12,6 +12,7 @@ using Microsoft.Graphics.Canvas;
 using Microsoft.Toolkit.Uwp.Helpers;
 using NSDanmaku.Helper;
 using NSDanmaku.Model;
+using Richasy.Font.UWP;
 using SYEngine;
 using System;
 using System.Collections.Generic;
@@ -52,7 +53,7 @@ namespace BiliBili_UWP.Components.Controls
         private List<DanmakuColor> DanmakuColors = DanmakuColor.GetColorList();
         private List<SubtitleItem> Subtitles = new List<SubtitleItem>();
         private List<DanmakuModel> DanmakuList = new List<DanmakuModel>();
-        private List<string> ShieldTextLish = new List<string>(); //屏蔽关键字列表
+        private List<string> ShieldTextList = new List<string>(); //屏蔽关键字列表
         private List<string> SendDanmakuList = new List<string>();
         #endregion
 
@@ -406,7 +407,7 @@ namespace BiliBili_UWP.Components.Controls
                 if (!_player.IsLoopingEnabled)
                 {
                     VideoMTC.IsPlaying = false;
-                    if (_videoDetail.interaction != null)
+                    if (!isBangumi && _videoDetail.interaction != null)
                     {
                         //互动视频
                         if (ChoiceCollection.Count > 0)
@@ -696,7 +697,7 @@ namespace BiliBili_UWP.Components.Controls
         /// <returns></returns>
         private bool IsTextShouldShield(string text, DanmakuLocation location = DanmakuLocation.Other)
         {
-            if (ShieldTextLish.Any(s => text.Contains(s, StringComparison.OrdinalIgnoreCase)))
+            if (ShieldTextList.Any(s => text.Contains(s, StringComparison.OrdinalIgnoreCase)))
                 return true;
             if (_isMergeSameDanmaku && SendDanmakuList.Contains(text + location))
                 return true;
@@ -1677,7 +1678,7 @@ namespace BiliBili_UWP.Components.Controls
             {
                 if (IsRegenerateFonts)
                 {
-                    var fonts = SystemFont.GetFonts();
+                    var fonts = SystemFont.GetSystemFonts("zh-cn");
                     fonts.ForEach(p => FontCollection.Add(p));
                 }
                 else

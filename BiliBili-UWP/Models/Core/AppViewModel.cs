@@ -15,6 +15,7 @@ using BiliBili_UWP.Models.UI.Others;
 using BiliBili_UWP.Pages.Main;
 using Microsoft.QueryStringDotNET;
 using Microsoft.Toolkit.Uwp.Helpers;
+using Richasy.Font.UWP;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -426,7 +427,7 @@ namespace BiliBili_UWP.Models.Core
         }
         public void FontInit()
         {
-            var fonts = SystemFont.GetFonts();
+            var fonts = SystemFont.GetSystemFonts("zh-cn");
             if (fonts != null && fonts.Count > 0)
                 fonts.ForEach(p => FontCollection.Add(p));
         }

@@ -5,6 +5,7 @@ using BiliBili_UWP.Dialogs;
 using BiliBili_UWP.Models.UI;
 using BiliBili_UWP.Models.UI.Others;
 using Microsoft.Toolkit.Uwp.Helpers;
+using Richasy.Font.UWP;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
