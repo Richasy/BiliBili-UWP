@@ -30,8 +30,6 @@
                     <StackPanel Orientation="Horizontal">
                         <widgets:AsyncButton Style="{StaticResource PrimaryAsyncButtonStyle}" Icon="&#xE901;" Text="开发者B站主页"
                                          x:Name="ToBiliButton" Click="ToBiliButton_Click"/>
-                        <widgets:AsyncButton Style="{StaticResource SecondaryAsyncButtonStyle}" Icon="&#xE996;" Text="发送邮件"
-                                         x:Name="SendMailButton" Click="SendMailButton_Click" Margin="15,0,0,0"/>
                         <widgets:AsyncButton Style="{StaticResource DefaultAsyncButtonStyle}" Icon="&#xEA3B;" Text="更新历史"
                                          x:Name="UpdateHistoryButton" Click="UpdateHistoryButton_Click" Margin="15,0,0,0"/>
                         <widgets:AsyncButton Style="{StaticResource DefaultAsyncButtonStyle}" Icon="&#xE982;" Text="常见问题"

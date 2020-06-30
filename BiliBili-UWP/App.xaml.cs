@@ -50,6 +50,7 @@ namespace BiliBili_UWP
             bool isDisableScale = AppTool.GetBoolSetting(Settings.DisableXboxScale);
             if (SystemInformation.DeviceFamily == "Windows.Xbox" && isDisableScale)
             {
+                Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().SetDesiredBoundsMode(Windows.UI.ViewManagement.ApplicationViewBoundsMode.UseCoreWindow);
                 Windows.UI.ViewManagement.ApplicationViewScaling.TrySetDisableLayoutScaling(true);
             }
             CustomXamlResourceLoader.Current = new CustomResourceLoader();

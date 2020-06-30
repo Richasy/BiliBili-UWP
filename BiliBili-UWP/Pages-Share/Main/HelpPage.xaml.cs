@@ -70,13 +70,6 @@ namespace BiliBili_UWP.Pages_Share.Main
             ToBiliButton.IsLoading = false;
         }
 
-        private async void SendMailButton_Click(object sender, RoutedEventArgs e)
-        {
-            SendMailButton.IsLoading = true;
-            await Launcher.LaunchUriAsync(new Uri("mailto://thansy@foxmail.com"));
-            SendMailButton.IsLoading = false;
-        }
-
         private async void RenderBlock_LinkClicked(object sender, Microsoft.Toolkit.Uwp.UI.Controls.LinkClickedEventArgs e)
         {
             await Launcher.LaunchUriAsync(new Uri(e.Link));

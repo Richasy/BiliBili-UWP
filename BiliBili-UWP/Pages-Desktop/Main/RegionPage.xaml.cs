@@ -61,7 +61,9 @@ namespace BiliBili_UWP.Pages.Main
                 _region = _con;
             }
             TitleBlock.Text = _region.name;
+            
             await Refresh();
+            
             _isInit = true;
         }
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
@@ -85,6 +87,7 @@ namespace BiliBili_UWP.Pages.Main
         {
             if (_isRecommendRequesting)
                 return;
+            VideoLoadingRing.IsActive = true;
             Reset();
             _isRecommendRequesting = true;
             var square = await _regionService.GetRegionSquareAsync(_region.tid, ctime);
@@ -108,6 +111,7 @@ namespace BiliBili_UWP.Pages.Main
                 RankContainer.Visibility = Visibility.Visible;
             }
             _isRecommendRequesting = false;
+            VideoLoadingRing.IsActive = false;
         }
 
         private void SubRegionButton_Click(object sender, RoutedEventArgs e)
@@ -120,12 +124,14 @@ namespace BiliBili_UWP.Pages.Main
             if (_isRecommendRequesting)
                 return;
             _isRecommendRequesting = true;
+            VideoLoadingBar.Visibility = Visibility.Visible;
             var videos = await _regionService.GetRegionSquareAsync(_region.tid, ctime);
             ctime = videos.Item2;
             if (videos.Item3 != null && videos.Item3.Count > 0)
             {
                 videos.Item3.ForEach(p => VideoCollection.Add(p));
             }
+            VideoLoadingBar.Visibility = Visibility.Collapsed;
             _isRecommendRequesting = false;
         }
 

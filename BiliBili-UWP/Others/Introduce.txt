@@ -4,19 +4,11 @@
 
 软件保证在您使用软件的过程中，您的数据仅在您与BiliBili之间流通，开发者不会窃取任何数据。但即便如此，也请您妥善保管自己的账户数据，注意使用环境的安全。
 
-软件只允许通过Microsoft Store下载，请确保您的下载来源安全可靠。
+**软件已经下架**
 
 ---
 
-***在报告问题时请带上日志文件，日志文件夹可在设置中打开***
-
----
-
-作为第三方软件，开发者不会以任何形式为软件本体收费，也不会开通任何捐赠渠道，请注意不要上当受骗。
-
----
-
-由于不会通过软件获取收益，开发者不会就后续的更新维护进行任何承诺，这一点还请理解。
+由于收到官方警告，应用已经停止技术支持及维护，要是出现了影响使用的BUG，请放弃使用该软件
 
 ---
 
@@ -24,10 +16,12 @@
 
 ## 开发人员
 
-[云之幻](https://github.com/Richasy) | [蓝火火](https://github.com/cnbluefire) | [Dino Chen](https://github.com/DinoChan)
+[云之幻](https://github.com/Richasy)
 
 ## 鸣谢(排名不分先后)
 
+- [蓝火火](https://github.com/cnbluefire)
+- [Dino Chen](https://github.com/DinoChan)
 - [NSDanmaku](https://github.com/xiaoyaocz/NSDanmaku)
 - [SYEngine](https://github.com/xqq/SYEngine)
 - [JustinXinLiu/Continuity](https://github.com/JustinXinLiu/Continuity)

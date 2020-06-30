@@ -99,9 +99,9 @@
                 <TextBlock Style="{StaticResource TipTextStyle}" Text="无法加载视频列表" FontWeight="Bold" VerticalAlignment="Center"
                            x:Name="HolderText" Visibility="Collapsed"/>
             </Grid>
-
+            <muxc:ProgressRing Style="{StaticResource MuxcProgressRingStyle}" Grid.Row="1" Grid.RowSpan="2" x:Name="VideoLoadingRing"/>
             <muxc:ProgressBar Style="{StaticResource MuxcProgressBarStyle}" Grid.Row="2"
-                             x:Name="VideLoadingBar" />
+                             x:Name="VideoLoadingBar" />
         </Grid>
     </Grid>
 </Page>
