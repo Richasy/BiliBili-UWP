@@ -49,6 +49,7 @@ namespace BiliBili_Lib.Enums
         PlayerMode,
         BasicFontSize,
         DisplayMode,
-        DisableXboxScale
+        DisableXboxScale,
+        IsFirst4K
     }
 }

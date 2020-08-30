@@ -60,6 +60,7 @@ namespace BiliBili_UWP.Components.Widgets
         private void Reset()
         {
             _isShowTotal = false;
+            DisplayBlock.MaxLines = 3;
             ShowTotalButton.Content = "显示全部";
             ShowTotalButton.Visibility = Visibility.Collapsed;
         }

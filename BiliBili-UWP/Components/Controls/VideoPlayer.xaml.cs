@@ -484,8 +484,24 @@ namespace BiliBili_UWP.Components.Controls
                     }
                     if (_currentQn == 0)
                     {
-                        _currentQn = QualityCollection.First().Item1;
-                        VideoMTC._qualityComboBox.SelectedIndex = 0;
+                        bool isFirst4K = AppTool.GetBoolSetting(Settings.IsFirst4K, false);
+                        if (isFirst4K && QualityCollection.First().Item1 == 120)
+                        {
+                            _currentQn = 120;
+                            VideoMTC._qualityComboBox.SelectedIndex = 0;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < QualityCollection.Count; i++)
+                            {
+                                if (QualityCollection[i].Item1 < 120)
+                                {
+                                    _currentQn = QualityCollection[i].Item1;
+                                    VideoMTC._qualityComboBox.SelectedIndex = i;
+                                    break;
+                                }
+                            }
+                        }
                     }
                 }
             }
