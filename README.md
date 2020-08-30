@@ -54,7 +54,7 @@ BiliBili是以移动应用为主的，在尝试将BiliBili移植到桌面端或�
 
 同时由于API的限制（比如根据设备返回固定的视频条目），不是所有的模块都能完成转化，所以副页就成了沟通移动应用与桌面应用的桥梁。用户能在副页中找到移动界面操作的感觉，不会有很高的迁移成本。这算是我想出来的比较优雅的解决方案了。
 
-在整体的应用界面设计上，桌面模式是一种相对经典的Master-Detail设计思路，及左边导航，右侧显示详情。当然，应用根据实际情况进行了一些改动，丰富了左侧的导航界面，比如将分区集成在导航栏右上角，在导航栏中显示用户信息等。
+在整体的应用界面设计上，桌面模式是一种相对经典的Master-Detail设计思路，即左侧导航，右侧显示详情。当然，应用根据实际情况进行了一些改动，丰富了左侧的导航界面，比如将分区集成在导航栏右上角，在导航栏中显示用户信息等。
 
 平板模式的设计思路来源于XBOX新界面的游戏详情，以及以前的WIN8卷轴式设计。在不播放视频的时候会有很大的留白（出于实际设备机能的考虑，比如我的小surface go，无力承担大量图片的渲染），在滚动方向上基本都是以横向滚动为主。为了丰富视觉表现，在选择视频后，应用的背景会变成虚化的视频封面，以提供一种相对比较骚气的界面。
 
@@ -85,6 +85,7 @@ BiliBili是以移动应用为主的，在尝试将BiliBili移植到桌面端或�
 
 - [蓝火火](https://github.com/cnbluefire)
 - [Dino Chen](https://github.com/DinoChan)
+- [逍遥橙子](https://github.com/xiaoyaocz)
 - [NSDanmaku](https://github.com/xiaoyaocz/NSDanmaku)
 - [SYEngine](https://github.com/xqq/SYEngine)
 - [JustinXinLiu/Continuity](https://github.com/JustinXinLiu/Continuity)
