@@ -83,6 +83,8 @@
                             <ToggleSwitch Style="{StaticResource BasicToggleSwitchStyle}" HeaderTemplate="{StaticResource TipHeaderStyle}"
                               Header="优先4K" x:Name="First4KSwitch" Toggled="First4KSwitch_Toggled" Margin="0,15,0,0"/>
                             <ToggleSwitch Style="{StaticResource BasicToggleSwitchStyle}" HeaderTemplate="{StaticResource TipHeaderStyle}"
+                              Header="优先HEVC (需要额外的解码器)" x:Name="FirstHEVCSwitch" Toggled="FirstHEVCSwitch_Toggled"  Margin="0,15,0,0"/>
+                            <ToggleSwitch Style="{StaticResource BasicToggleSwitchStyle}" HeaderTemplate="{StaticResource TipHeaderStyle}"
                               Header="自动播放下一P" x:Name="AutoNextPartSwitch" Toggled="AutoNextPartSwitch_Toggled" Margin="0,15,0,0"/>
                             <ToggleSwitch Style="{StaticResource BasicToggleSwitchStyle}" HeaderTemplate="{StaticResource TipHeaderStyle}"
                               Header="后台时停止播放视频" x:Name="StopPlayInBackgroundSwitch" Toggled="StopPlayInBackgroundSwitch_Toggled"  Margin="0,15,0,0"/>

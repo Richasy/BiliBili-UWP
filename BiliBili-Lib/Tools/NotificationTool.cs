@@ -10,7 +10,7 @@ namespace BiliBili_Lib.Tools
 {
     public class NotificationTool
     {
-        public static void SendDynamicToast(List<NotificationModel> items)
+        public static async void SendDynamicToast(List<NotificationModel> items)
         {
             int index = 0;
             foreach (var item in items)
@@ -18,6 +18,7 @@ namespace BiliBili_Lib.Tools
                 if (index >= 2)
                 {
                     var overflow = GetOverflowToast("更多动态请在应用内查看");
+                    await Task.Delay(500);
                     ShowToast(overflow, group: "Dynamic");
                     break;
                 }

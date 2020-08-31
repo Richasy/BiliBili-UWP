@@ -85,6 +85,8 @@ namespace BiliBili_UWP.Pages_Share.Main
             PlayerSkipStepBox.Value = playerSkipStep;
             bool isFirst4K = AppTool.GetBoolSetting(Settings.IsFirst4K, false);
             First4KSwitch.IsOn = isFirst4K;
+            bool isFirstHEVC = AppTool.GetBoolSetting(Settings.IsUseHevc, false);
+            FirstHEVCSwitch.IsOn = isFirstHEVC;
             bool isShowDanmakuBarInFullWindow = AppTool.GetBoolSetting(Settings.IsShowDanmakuBarInFullWindow);
             OpenDanmakuBarInFullWindowSwitch.IsOn = isShowDanmakuBarInFullWindow;
             bool isShowDanmakuBarInCinema = AppTool.GetBoolSetting(Settings.IsShowDanmakuBarInCinema);
@@ -405,6 +407,13 @@ namespace BiliBili_UWP.Pages_Share.Main
             if (!_isInit)
                 return;
             AppTool.WriteLocalSetting(Settings.IsFirst4K, First4KSwitch.IsOn.ToString());
+        }
+
+        private void FirstHEVCSwitch_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (!_isInit)
+                return;
+            AppTool.WriteLocalSetting(Settings.IsUseHevc, FirstHEVCSwitch.IsOn.ToString());
         }
     }
 }

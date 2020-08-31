@@ -1118,6 +1118,9 @@ namespace BiliBili_UWP.Components.Controls
             if (video == null)
                 video = data.dash.video.OrderByDescending(p => p.id).FirstOrDefault(p => p.codecid == 7);
             var audio = data.dash.audio?.FirstOrDefault();
+            // 遇到新的电影时，可能出现HEVC音频源，若系统未安装相应解码器，则会解码失败，没有声音
+            if (!isHevc && data.dash.audio.Any(p=>p.codecs.Contains("mp4a")))
+                audio = data.dash.audio.Where(p => p.codecs.Contains("mp4a")).FirstOrDefault();
             MediaSource source = null;
             if (isBangumi)
                 source = await _animeService.CreateMediaSourceAsync(video, audio);
@@ -1622,7 +1625,7 @@ namespace BiliBili_UWP.Components.Controls
                 //弹幕加载
                 if (DanmakuControls == null)
                     return;
-                if (mediaElement.MediaPlayer.PlaybackSession.PlaybackState == MediaPlaybackState.Playing && DanmakuList.Count > 0)
+                if (mediaElement.MediaPlayer!=null && mediaElement.MediaPlayer.PlaybackSession.PlaybackState == MediaPlaybackState.Playing && DanmakuList.Count > 0)
                 {
                     int nowDanmaNum = 0;
                     var currentPosition = mediaElement.MediaPlayer.PlaybackSession.Position.TotalSeconds;
