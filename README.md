@@ -6,7 +6,7 @@
 
 # 哔哩
 
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/Richasy/BiliBili-UWP)![GitHub Release Date](https://img.shields.io/github/release-date/Richasy/BiliBili-UWP)![GitHub All Releases](https://img.shields.io/github/downloads/Richasy/BiliBili-UWP/total)![GitHub stars](https://img.shields.io/github/stars/Richasy/BiliBili-UWP?style=flat)![GitHub forks](https://img.shields.io/github/forks/Richasy/BiliBili-UWP)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/Richasy/BiliBili-UWP)](https://github.com/Richasy/BiliBili-UWP/releases) ![GitHub Release Date](https://img.shields.io/github/release-date/Richasy/BiliBili-UWP) ![GitHub All Releases](https://img.shields.io/github/downloads/Richasy/BiliBili-UWP/total) ![GitHub stars](https://img.shields.io/github/stars/Richasy/BiliBili-UWP?style=flat) ![GitHub forks](https://img.shields.io/github/forks/Richasy/BiliBili-UWP)
 
 `哔哩`是一款设计精美的第三方UWP应用
 
