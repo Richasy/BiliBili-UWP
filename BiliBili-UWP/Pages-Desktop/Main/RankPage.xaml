@@ -22,8 +22,8 @@
                                        Title="{x:Bind title}"
                                        Tip="{x:Bind author}" VideoId="{x:Bind aid}"
                                        FirstSectionContent="{x:Bind play,Converter={StaticResource NumberAbbrConverter}}"
-                                       SecondSectionIcon="&#xEA45;"
-                                       SecondSectionContent="{x:Bind coins,Converter={StaticResource NumberAbbrConverter}}"
+                                       SecondSectionIcon="&#xEA35;"
+                                       SecondSectionContent="{x:Bind video_review,Converter={StaticResource NumberAbbrConverter}}"
                                        />
         </DataTemplate>
     </Page.Resources>
