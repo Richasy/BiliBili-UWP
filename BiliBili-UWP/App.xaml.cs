@@ -19,6 +19,7 @@ using Windows.ApplicationModel.Background;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Notifications;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -47,12 +48,7 @@ namespace BiliBili_UWP
         public App()
         {
             this.InitializeComponent();
-            bool isDisableScale = AppTool.GetBoolSetting(Settings.DisableXboxScale);
-            if (SystemInformation.DeviceFamily == "Windows.Xbox" && isDisableScale)
-            {
-                Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().SetDesiredBoundsMode(Windows.UI.ViewManagement.ApplicationViewBoundsMode.UseCoreWindow);
-                Windows.UI.ViewManagement.ApplicationViewScaling.TrySetDisableLayoutScaling(true);
-            }
+
             CustomXamlResourceLoader.Current = new CustomResourceLoader();
             this.Suspending += OnSuspending;
             UnhandledException += OnUnhandleException;
@@ -147,9 +143,9 @@ namespace BiliBili_UWP
                     if (rootFrame.Content == null)
                     {
                         if (_isTabletMode)
-                            rootFrame.Navigate(typeof(TabletMainPage),null);
+                            rootFrame.Navigate(typeof(TabletMainPage), null);
                         else
-                            rootFrame.Navigate(typeof(DesktopMainPage),null);
+                            rootFrame.Navigate(typeof(DesktopMainPage), null);
                     }
                 }
                 else if (e is ToastNotificationActivatedEventArgs toastActivationArgs)
@@ -183,6 +179,14 @@ namespace BiliBili_UWP
                 }
                 Window.Current.Activate();
                 UIHelper.SetTitleBarColor();
+                bool isDisableScale = AppTool.GetBoolSetting(Settings.DisableXboxScale);
+                if (SystemInformation.DeviceFamily == "Windows.Xbox")
+                {
+                    var view = ApplicationView.GetForCurrentView();
+                    view.SetDesiredBoundsMode(ApplicationViewBoundsMode.UseCoreWindow);
+                    if (isDisableScale)
+                        ApplicationViewScaling.TrySetDisableLayoutScaling(true);
+                }
             }
             catch (Exception ex)
             {
