@@ -531,7 +531,7 @@ namespace BiliBili_UWP.Components.Controls
                     VideoMTC.IsInit = true;
                     if (_player.AutoPlay)
                         Resume();
-                    //mediaElement.PosterSource = null;
+                    mediaElement.PosterSource = null;
                 }
                 else
                     ErrorContainer.Visibility = Visibility.Visible;
