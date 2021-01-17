@@ -531,6 +531,7 @@ namespace BiliBili_UWP.Components.Controls
                     VideoMTC.IsInit = true;
                     if (_player.AutoPlay)
                         Resume();
+                    //mediaElement.PosterSource = null;
                 }
                 else
                     ErrorContainer.Visibility = Visibility.Visible;
@@ -607,6 +608,7 @@ namespace BiliBili_UWP.Components.Controls
                 VideoMTC.IsInit = true;
                 if (_player.AutoPlay)
                     Resume();
+                mediaElement.PosterSource = null;
             }
             else
             {
@@ -1119,7 +1121,7 @@ namespace BiliBili_UWP.Components.Controls
                 video = data.dash.video.OrderByDescending(p => p.id).FirstOrDefault(p => p.codecid == 7);
             var audio = data.dash.audio?.FirstOrDefault();
             // 遇到新的电影时，可能出现HEVC音频源，若系统未安装相应解码器，则会解码失败，没有声音
-            if (!isHevc && data.dash.audio.Any(p=>p.codecs.Contains("mp4a")))
+            if (!isHevc && data.dash.audio.Any(p => p.codecs.Contains("mp4a")))
                 audio = data.dash.audio.Where(p => p.codecs.Contains("mp4a")).FirstOrDefault();
             MediaSource source = null;
             if (isBangumi)
@@ -1576,12 +1578,12 @@ namespace BiliBili_UWP.Components.Controls
 
         // Using a DependencyProperty as the backing store for AutoLoop.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty AutoLoopProperty =
-            DependencyProperty.Register("AutoLoop", typeof(bool), typeof(VideoPlayer), new PropertyMetadata(false,new PropertyChangedCallback(AutoLoop_Changed)));
+            DependencyProperty.Register("AutoLoop", typeof(bool), typeof(VideoPlayer), new PropertyMetadata(false, new PropertyChangedCallback(AutoLoop_Changed)));
 
         private static void AutoLoop_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var instance = d as VideoPlayer;
-            if(instance._player!=null)
+            if (instance._player != null)
                 instance._player.IsLoopingEnabled = (bool)e.NewValue;
         }
 
@@ -1625,7 +1627,7 @@ namespace BiliBili_UWP.Components.Controls
                 //弹幕加载
                 if (DanmakuControls == null)
                     return;
-                if (mediaElement.MediaPlayer!=null && mediaElement.MediaPlayer.PlaybackSession.PlaybackState == MediaPlaybackState.Playing && DanmakuList.Count > 0)
+                if (mediaElement.MediaPlayer != null && mediaElement.MediaPlayer.PlaybackSession.PlaybackState == MediaPlaybackState.Playing && DanmakuList.Count > 0)
                 {
                     int nowDanmaNum = 0;
                     var currentPosition = mediaElement.MediaPlayer.PlaybackSession.Position.TotalSeconds;
@@ -1731,7 +1733,7 @@ namespace BiliBili_UWP.Components.Controls
         public async void ResetDanmakuStatus()
         {
             bool isShow = AppTool.GetBoolSetting(Settings.IsDanmakuOpen);
-            if (isShow && DanmakuControls!=null)
+            if (isShow && DanmakuControls != null)
             {
                 DanmakuControls.Width = 100;
                 await Task.Delay(100);
